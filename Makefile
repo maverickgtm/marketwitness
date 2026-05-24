@@ -77,9 +77,27 @@ demo:
 		--report build/demo/source-registry.md \
 		--html build/demo/source-registry.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ark-holdings-import \
+		--snapshot data/samples/ark-holdings-previous.csv \
+		--fund-symbol ARKK-DEMO \
+		--fund-name "Synthetic ARK-format ETF" \
+		--captured-on 2026-05-22 \
+		--source-url https://example.invalid/ark-demo/2026-05-22 \
+		--synthetic-fixture \
+		--output build/demo/ark-holdings-previous.csv \
+		--report build/demo/ark-holdings-previous-import.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ark-holdings-import \
+		--snapshot data/samples/ark-holdings-current.csv \
+		--fund-symbol ARKK-DEMO \
+		--fund-name "Synthetic ARK-format ETF" \
+		--captured-on 2026-05-23 \
+		--source-url https://example.invalid/ark-demo/2026-05-23 \
+		--synthetic-fixture \
+		--output build/demo/ark-holdings-current.csv \
+		--report build/demo/ark-holdings-current-import.md
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
-		--previous data/samples/etf-holdings-previous.csv \
-		--current data/samples/etf-holdings-current.csv \
+		--previous build/demo/ark-holdings-previous.csv \
+		--current build/demo/ark-holdings-current.csv \
 		--output build/demo/etf-holdings-activity.csv \
 		--report build/demo/etf-holdings-activity.md \
 		--html build/demo/etf-holdings-activity.html \

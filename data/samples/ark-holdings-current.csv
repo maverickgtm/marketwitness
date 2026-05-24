@@ -1,0 +1,5 @@
+date,fund,company,ticker,cusip,shares,market value($),weight(%)
+05/23/2026,ARKK-DEMO,Atlantic Community Bank,ACBK,000000001,"1,200","$120,000.00",4.60
+05/23/2026,ARKK-DEMO,Nova Banking Group,NVBK,000000002,650,"$65,000.00",2.50
+05/23/2026,ARKK-DEMO,Bridge Insurance,BRIN,000000003,500,"$50,000.00",1.90
+05/23/2026,ARKK-DEMO,New Finance Network,NEWF,000000005,300,"$30,000.00",1.10

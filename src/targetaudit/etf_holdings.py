@@ -331,8 +331,8 @@ def _parse_holding(path: str | Path, row: dict[str, str], index: int, as_of: dat
         raise EtfHoldingsDataError(f"{path}: invalid holding amount on row {index}")
     if weight_pct < 0 or weight_pct > 100:
         raise EtfHoldingsDataError(f"{path}: invalid holding weight on row {index}")
-    if effective_date > captured_on or captured_on > as_of:
-        raise EtfHoldingsDataError(f"{path}: holding dates exceed evidence cutoff on row {index}")
+    if captured_on > as_of:
+        raise EtfHoldingsDataError(f"{path}: holding capture exceeds evidence cutoff on row {index}")
     frequency = row["source_frequency"].strip()
     if frequency not in SOURCE_FREQUENCIES:
         raise EtfHoldingsDataError(f"{path}: unsupported source frequency on row {index}")

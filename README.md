@@ -328,11 +328,28 @@ PYTHONPATH=src python3 -m targetaudit etf-holdings-activity \
   --as-of 2026-05-24
 ```
 
-Los datos incluidos son sinteticos: todavia falta conectar descargas
-oficiales diarias por emisor, inicialmente candidatas como ARK y State Street
-SPDR. `SEC N-PORT` se integrara como respaldo regulatorio historico, no como
-fuente en tiempo real. Un aumento o reduccion se presenta como cambio
-observado, no como compra o venta confirmada del gestor.
+Los datos incluidos son sinteticos: todavia falta habilitar publicacion
+abierta de descargas oficiales. Ya existe un importador local de CSV
+descargados desde ARK:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit ark-holdings-import \
+  --snapshot data/raw/etf/ARKK_HOLDINGS.csv \
+  --fund-symbol ARKK \
+  --fund-name "ARK Innovation ETF" \
+  --captured-on YYYY-MM-DD \
+  --output data/raw/etf/arkk-normalized.csv \
+  --report build/live/arkk-import.md
+```
+
+ARK declara actualizacion al cierre de cada dia habil y explica que la fecha
+del CSV corresponde al siguiente dia de negociacion. El adaptador conserva
+esa fecha como efectiva, pero no redistribuye holdings oficiales en el
+repositorio: la publicacion real requiere resolver los terminos de uso.
+State Street SPDR y `SEC N-PORT` siguen pendientes; `N-PORT` servira como
+respaldo regulatorio historico, no como fuente en tiempo real. Un aumento o
+reduccion se presenta como cambio observado, no como compra o venta
+confirmada del gestor.
 
 ## Estado Del Proyecto
 
@@ -364,6 +381,8 @@ auditados en desarrollo:
 - Publica un registro de gobernanza de proveedores, licencias y uso permitido.
 - Genera una pagina `ETF Holdings Activity` para diferencias auditables entre
   snapshots, con una demo sintetica y limites de interpretacion visibles.
+- Normaliza descargas locales de holdings ARK al esquema ETF, manteniendo
+  bloqueada la redistribucion publica de datos oficiales hasta revisar permiso.
 - Importa exportaciones autorizadas de targets con manifiesto y cola de rechazos.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para

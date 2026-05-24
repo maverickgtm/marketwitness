@@ -4,8 +4,8 @@ TargetAudit tendra dos paginas principales. No comparten score: una evalua
 pronosticos ya medibles y la otra sigue eventos de companias que pueden llegar
 al mercado.
 
-Con la expansion internacional, el producto tiene tres paginas activas y una
-cuarta pagina en cola para actividad publicada de ETF:
+Con la expansion internacional, el producto tiene cuatro paginas activas,
+incluida la pagina de actividad publicada de ETF:
 
 ## Vista Transversal: Source Governance
 
@@ -192,9 +192,10 @@ con la frecuencia real de cada fuente.
 
 - Implementado: comparador de snapshots normalizados, CSV de diferencias,
   reporte Markdown y pagina HTML con fixture sintetico reproducible.
-- Pendiente de conexion: descargas oficiales de holdings por emisor,
-  empezando por emisores que publican archivos diarios como ARK y State
-  Street SPDR.
+- Implementado: importador local de CSV ARK descargado por el operador,
+  conservando fecha efectiva y frecuencia diaria declarada.
+- Pendiente de conexion/publicacion: automatizacion y permisos de salidas
+  reales de ARK, junto con emisores como State Street SPDR.
 - Pendiente de conexion: `SEC N-PORT`, auditable pero no equivalente a datos
   intradia ni a un feed diario en tiempo real.
 - Presentacion: posiciones nuevas, aumentadas, reducidas, ausentes o con

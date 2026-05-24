@@ -413,7 +413,9 @@ snapshot contiene: `issuer`, `fund_symbol`, `fund_name`, `effective_date`,
 `source_frequency` admite `synthetic_demo`, `daily_official` o
 `regulatory_periodic`. La fecha de captura no puede exceder el corte del
 reporte, un snapshot no puede repetir ticker y la comparacion rechaza mezclar
-capas de frecuencia distintas.
+capas de frecuencia distintas. `effective_date` puede ser posterior a
+`captured_on` cuando la fuente declara esa convencion, como en el CSV ARK que
+identifica holdings para el siguiente dia de negociacion.
 
 El CSV de diferencias agrega: `previous_effective_date`,
 `current_effective_date`, `previous_shares`, `current_shares`,
@@ -421,3 +423,17 @@ El CSV de diferencias agrega: `previous_effective_date`,
 `weight_change_pct` y `change_type`. Los tipos emitidos son `new_position`,
 `increased`, `decreased`, `removed_position` y `weight_changed`; describen
 cambios observados, no operaciones confirmadas.
+
+## ARK Holdings Import
+
+`ark-holdings-import` acepta el formato descargable de holdings ARK con los
+campos `date`, `fund`, `company`, `ticker`, `cusip`, `shares` y `weight(%)`.
+La salida es un snapshot normalizado de `ETF Holdings Snapshots`.
+
+En una importacion oficial, `date` se conserva como `effective_date` y el
+operador declara `captured_on`; el informe recuerda que ARK describe la fecha
+del CSV como correspondiente al siguiente dia de negociacion. Un ticker vacio
+se representa con su `CUSIP` para no perder una posicion identificable.
+
+El indicador `--synthetic-fixture` esta reservado al demo versionado y evita
+presentar fixtures de prueba como evidencia oficial diaria.

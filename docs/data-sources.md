@@ -198,13 +198,14 @@ solicitudes por segundo.
 La propuesta de mostrar que posiciones aumentan o reducen los ETF es factible,
 pero no debe presentarse como operacion en tiempo real si la fuente no lo
 garantiza. El comparador de snapshots y la pagina de dashboard ya estan
-implementados con datos sinteticos distribuibles. La conexion de fuentes
-reales separara dos capas:
+implementados con datos sinteticos distribuibles. Tambien existe un
+importador local de archivos ARK, sin distribuir sus holdings reales. Las
+fuentes reales se separan en dos capas:
 
 | Fuente | Frecuencia Publica Util | Uso Previsto |
 |---|---|---|
 | SEC `N-PORT` | Registro regulatorio publico con retraso; la publicacion publica disponible no es intradia | Evidencia historica auditable de cartera por fondo |
-| ARK ETF holdings | ARK declara actualizacion diaria de holdings en su sitio | Primer conector diario para fondos activos transparentes |
+| ARK ETF holdings | ARK declara actualizacion diaria de holdings en su sitio | Importador CSV local implementado; publicacion real pendiente de permiso |
 | State Street SPDR holdings | Paginas oficiales indican descarga de todos los holdings diaria para fondos como `SPYM`/`XLU` | Segundo conector diario, incluyendo `XLF` si la descarga oficial es estable |
 | iShares holdings | Paginas oficiales exponen `Download Holdings` con fecha de observacion | Conector por emisor tras verificar terminos y formato estable |
 
@@ -217,8 +218,11 @@ efectivo o ajustes de publicacion.
 La primera version implementada incluye fecha efectiva del holding, fecha de
 captura, emisor, fondo, ticker de la posicion, acciones/peso anterior y
 actual, diferencia y enlace a la evidencia declarada. No se mezcla con
-recomendaciones de compra o venta. Los conectores oficiales se habilitaran
-solo tras confirmar formato estable y politica de uso. El motor rechaza
+recomendaciones de compra o venta. En ARK el parser local ya esta disponible,
+pero la pagina de materiales indica restricciones de reproduccion que impiden
+incluir holdings oficiales en el repositorio sin permiso. Los siguientes
+conectores se habilitaran solo tras confirmar formato estable y politica de
+uso. El motor rechaza
 comparar snapshots de capas diferentes, por ejemplo una lectura diaria contra
 un registro regulatorio periodico.
 

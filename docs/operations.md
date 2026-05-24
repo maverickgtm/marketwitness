@@ -295,16 +295,36 @@ PYTHONPATH=src python3 -m targetaudit etf-holdings-activity \
   --as-of 2026-05-24
 ```
 
-Para una ejecucion real, cada snapshot debe provenir de una descarga
-oficial revisada, conservar su URL, fecha efectiva, fecha de captura y
-frecuencia publicada. La capa diaria por emisor y la verificacion regulatoria
-`SEC N-PORT` aun deben conectarse; `N-PORT` es auditable pero llega con
-retraso.
+Para una ejecucion real, cada snapshot debe provenir de una descarga oficial
+revisada, conservar su URL, fecha efectiva, fecha de captura y frecuencia
+publicada. La verificacion regulatoria `SEC N-PORT` aun debe conectarse;
+`N-PORT` es auditable pero llega con retraso.
 
 Una diferencia entre dos snapshots se reportara como cambio de posicion
 publicada. No se etiquetara automaticamente como compra o venta: puede estar
 afectada por creaciones/redenciones del fondo, derivados o acciones
 corporativas.
+
+### Importacion Local ARK
+
+ARK publica materiales descargables y declara una actualizacion diaria de
+holdings al cierre de cada dia habil. El comando normaliza un archivo CSV
+descargado por el operador sin incorporarlo a Git:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit ark-holdings-import \
+  --snapshot data/raw/etf/ARKK_HOLDINGS.csv \
+  --fund-symbol ARKK \
+  --fund-name "ARK Innovation ETF" \
+  --captured-on YYYY-MM-DD \
+  --output data/raw/etf/arkk-normalized.csv \
+  --report build/live/arkk-import.md
+```
+
+Para producir actividad deben importarse dos capturas oficiales separadas y
+pasar sus CSV normalizados a `etf-holdings-activity`. Los archivos oficiales
+y sus derivados reales permanecen locales mientras la politica de
+redistribucion no este autorizada.
 
 ## Historial De Mercados Globales
 

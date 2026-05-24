@@ -103,6 +103,13 @@ from .providers.alpha_vantage import (
     write_prices_html,
     write_prices_report,
 )
+from .providers.ark import (
+    ARK_DOCUMENTS_URL,
+    ArkHoldingsDataError,
+    load_ark_holdings_snapshot,
+    write_import_report as write_ark_import_report,
+    write_normalized_holdings as write_ark_normalized_holdings,
+)
 from .providers.tsx import (
     TsxDataError,
     fetch_tsx_new_listings,
@@ -340,6 +347,26 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Evidence cutoff in YYYY-MM-DD format.",
     )
+    ark_parser = subparsers.add_parser(
+        "ark-holdings-import",
+        help="Normalize a downloaded ARK ETF holdings CSV for local comparison.",
+    )
+    ark_parser.add_argument("--snapshot", required=True, help="Downloaded ARK holdings CSV.")
+    ark_parser.add_argument("--fund-symbol", required=True, help="ARK fund symbol in the CSV.")
+    ark_parser.add_argument("--fund-name", required=True, help="Readable ARK fund name.")
+    ark_parser.add_argument("--captured-on", required=True, help="Capture date in YYYY-MM-DD.")
+    ark_parser.add_argument(
+        "--source-url",
+        default=ARK_DOCUMENTS_URL,
+        help="Official download page or evidence URL retained with normalized rows.",
+    )
+    ark_parser.add_argument(
+        "--synthetic-fixture",
+        action="store_true",
+        help="Mark project-authored format fixtures as synthetic instead of official evidence.",
+    )
+    ark_parser.add_argument("--output", required=True, help="Normalized ETF holdings CSV path.")
+    ark_parser.add_argument("--report", required=True, help="Import audit Markdown report path.")
     prices_parser = subparsers.add_parser(
         "alpha-vantage-prices",
         help="Normalize adjusted daily price evidence through a cache-first adapter.",
@@ -703,6 +730,27 @@ def main() -> int:
         print(
             f"Wrote ETF holdings activity for {len(changes)} observed changes "
             f"to {args.report}."
+        )
+        return 0
+
+    if args.command == "ark-holdings-import":
+        try:
+            captured_on = date.fromisoformat(args.captured_on)
+            imported = load_ark_holdings_snapshot(
+                args.snapshot,
+                args.fund_symbol,
+                args.fund_name,
+                captured_on,
+                args.source_url,
+                args.synthetic_fixture,
+            )
+            write_ark_normalized_holdings(args.output, imported)
+            write_ark_import_report(args.report, imported)
+        except (ArkHoldingsDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Imported {len(imported.holdings)} ARK-format holdings for "
+            f"{imported.fund_symbol} to {args.output}."
         )
         return 0
 

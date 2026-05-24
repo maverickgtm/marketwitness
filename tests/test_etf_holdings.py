@@ -36,7 +36,7 @@ class EtfHoldingsTests(unittest.TestCase):
         self.assertNotIn("sold", page.lower())
 
     def test_rejects_snapshot_captured_after_cutoff(self) -> None:
-        with self.assertRaisesRegex(EtfHoldingsDataError, "exceed evidence cutoff"):
+        with self.assertRaisesRegex(EtfHoldingsDataError, "capture exceeds evidence cutoff"):
             load_holdings_snapshot(
                 Path("data/samples/etf-holdings-current.csv"), date(2026, 5, 22)
             )

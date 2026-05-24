@@ -56,8 +56,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [ ] Pagina de auditoria de fuente y observaciones excluidas.
 - [x] Pagina `ETF Holdings Activity` con comparador de snapshots, diferencias
   de posiciones, sello de fecha/frecuencia y demo sintetica reproducible.
+- [x] Importador local de archivos diarios ARK con normalizacion auditable y
+  politica de no redistribucion de holdings reales pendiente de permiso.
 - [ ] Conectores de snapshots diarios oficiales por emisor para la pagina
-  `ETF Holdings Activity`.
+  `ETF Holdings Activity`, incluyendo automatizacion autorizada de ARK y SPDR.
 - [ ] Respaldo regulatorio ETF mediante SEC `N-PORT` para periodos publicados,
   separado de las descargas diarias del emisor.
 
