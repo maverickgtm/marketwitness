@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 from datetime import date
-from decimal import Decimal
+from decimal import Decimal, localcontext
 from pathlib import Path
 from statistics import median
 
 from . import METHODOLOGY_VERSION
 from .models import Evaluation
+
+WILSON_Z_95 = Decimal("1.959963984540054")
 
 
 def write_markdown_report(
@@ -50,6 +52,7 @@ def render_markdown_report(
         f"- Evaluated: `{statuses['evaluated']}`",
         f"- Excluded: `{statuses['excluded']}`",
         f"- Pending: `{statuses['pending']}`",
+        "- Hit-rate uncertainty: `95% Wilson score interval`",
         "",
         "## Firm Ranking",
         "",
@@ -59,16 +62,17 @@ def render_markdown_report(
     else:
         lines.extend(
             [
-                "| Firm | N | Target Hit Rate | Mean Terminal Error | Median Days To Hit | Mean Excess Return |",
-                "|---|---:|---:|---:|---:|---:|",
+                "| Firm | N | Target Hit Rate | Hit Rate 95% CI | Mean Terminal Error | Median Days To Hit | Mean Excess Return |",
+                "|---|---:|---:|---:|---:|---:|---:|",
             ]
         )
         for _, count, firm, rows in firms:
             lines.append(
-                "| {firm} | {count} | {hit} | {error} | {days} | {excess} |".format(
+                "| {firm} | {count} | {hit} | {confidence} | {error} | {days} | {excess} |".format(
                     firm=firm,
                     count=count,
                     hit=_pct(_hit_rate(rows)),
+                    confidence=_format_hit_rate_interval(rows),
                     error=_pct(_mean_present(rows, "terminal_absolute_error_pct")),
                     days=_median_hit_days(rows),
                     excess=_pct(_mean_present(rows, "excess_return_pct")),
@@ -91,24 +95,25 @@ def render_markdown_report(
             "",
             "## Direction Breakdown",
             "",
-            "| Direction | N | Target Hit Rate | Mean Terminal Error | Mean Excess Return |",
-            "|---|---:|---:|---:|---:|",
+            "| Direction | N | Target Hit Rate | Hit Rate 95% CI | Mean Terminal Error | Mean Excess Return |",
+            "|---|---:|---:|---:|---:|---:|",
         ]
     )
     for direction in ("up", "down"):
         rows = [item for item in evaluated if item.direction == direction]
         if rows:
             lines.append(
-                "| {direction} | {count} | {hit} | {error} | {excess} |".format(
+                "| {direction} | {count} | {hit} | {confidence} | {error} | {excess} |".format(
                     direction=direction,
                     count=len(rows),
                     hit=_pct(_hit_rate(rows)),
+                    confidence=_format_hit_rate_interval(rows),
                     error=_pct(_mean_present(rows, "terminal_absolute_error_pct")),
                     excess=_pct(_mean_present(rows, "excess_return_pct")),
                 )
             )
     if not evaluated:
-        lines.append("| - | 0 | - | - | - |")
+        lines.append("| - | 0 | - | - | - | - |")
 
     lines.extend(
         [
@@ -119,6 +124,10 @@ def render_markdown_report(
             "published target during the evaluation horizon. It is not evidence that an",
             "investor captured that price or outperformed the market.",
             "",
+            "The 95% Wilson interval quantifies sampling uncertainty in each observed",
+            "hit rate. Wide intervals, especially for small N, should prevent strong",
+            "comparisons between firms even when their point estimates differ.",
+            "",
         ]
     )
     return "\n".join(lines)
@@ -127,6 +136,33 @@ def render_markdown_report(
 def _hit_rate(rows: list[Evaluation]) -> Decimal:
     hits = sum(1 for row in rows if row.hit)
     return Decimal(hits) / Decimal(len(rows))
+
+
+def wilson_interval(hits: int, total: int) -> tuple[Decimal, Decimal]:
+    if total <= 0 or hits < 0 or hits > total:
+        raise ValueError("Wilson interval requires hits between zero and total.")
+    with localcontext() as context:
+        context.prec = 40
+        n = Decimal(total)
+        proportion = Decimal(hits) / n
+        z_squared = WILSON_Z_95 * WILSON_Z_95
+        denominator = Decimal("1") + z_squared / n
+        center = (proportion + z_squared / (Decimal("2") * n)) / denominator
+        spread = (
+            WILSON_Z_95
+            * (
+                (proportion * (Decimal("1") - proportion) / n)
+                + z_squared / (Decimal("4") * n * n)
+            ).sqrt()
+            / denominator
+        )
+        return max(Decimal("0"), center - spread), min(Decimal("1"), center + spread)
+
+
+def _format_hit_rate_interval(rows: list[Evaluation]) -> str:
+    hits = sum(1 for row in rows if row.hit)
+    low, high = wilson_interval(hits, len(rows))
+    return f"{_pct(low)} to {_pct(high)}"
 
 
 def _mean_present(rows: list[Evaluation], field: str) -> Decimal | None:

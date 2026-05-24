@@ -1,8 +1,8 @@
-# Metodologia v0.1
+# Metodologia v0.2
 
 ## Vertical Inicial
 
-`v0.1` prepara el analisis para `U.S. Financials`, comenzando por bancos y
+`v0.2` prepara el analisis para `U.S. Financials`, comenzando por bancos y
 otras companias financieras con targets verificables. Para el piloto real, el
 benchmark sectorial preferido es `XLF`. El motor sigue siendo general para
 permitir pruebas y futuros verticales, pero ningun ranking multisectorial se
@@ -93,7 +93,7 @@ La direccion se deriva comparando el target con el precio de referencia:
 - `up`: target mayor al precio de referencia.
 - `down`: target menor al precio de referencia.
 - `flat`: target igual al precio de referencia; se excluye del scoring direccional
-  en `v0.1`.
+  en esta version.
 
 ## Definicion De Acierto
 
@@ -107,7 +107,7 @@ La direccion se deriva comparando el target con el precio de referencia:
 El reporte presenta este indicador como `target hit`, no como ganancia
 realizada.
 
-## Metricas v0.1
+## Metricas v0.2
 
 Para cada observacion evaluada:
 
@@ -124,19 +124,42 @@ Para cada firma:
 
 - Cantidad de observaciones evaluadas.
 - Tasa de acierto.
+- Intervalo de confianza Wilson del 95% para la tasa de acierto.
 - Error absoluto medio al vencimiento.
 - Mediana de dias hasta target para aciertos.
 - Retorno excesivo promedio.
+
+## Incertidumbre De La Tasa De Acierto
+
+El reporte muestra un intervalo Wilson del 95% para cada `target hit rate` de
+firma y de direccion. Se utiliza Wilson en lugar de una aproximacion normal
+simple porque permanece informativo con muestras pequenas y tasas cercanas a
+`0%` o `100%`.
+
+Para `x` aciertos en `n` observaciones y `z = 1.959963984540054`, el intervalo
+es:
+
+```text
+centro = (p + z^2/(2n)) / (1 + z^2/n)
+margen = z * sqrt(p(1-p)/n + z^2/(4n^2)) / (1 + z^2/n)
+intervalo = [centro - margen, centro + margen]
+```
+
+donde `p = x / n`. Este intervalo cuantifica incertidumbre muestral bajo una
+lectura binomial de los aciertos observados. No corrige sesgos de fuente,
+seleccion de universo, targets repetidos o dependencia entre observaciones.
 
 ## Rankings
 
 El ranking publico de produccion debera exigir al menos 50 observaciones
 evaluables por firma. El CLI permite bajar el limite solo para desarrollo y
 demostraciones, y el reporte informa claramente el umbral utilizado.
+El orden actual conserva la tasa observada y el tamano de muestra, mientras el
+intervalo impide presentar diferencias pequenas o muestras reducidas como
+conclusiones fuertes.
 
 En fases futuras se agregaran:
 
-- Intervalos de confianza binomiales.
 - Ranking ajustado por sector y volatilidad.
 - Manejo de targets revisados como posiciones activas.
 - Costos de transaccion y reglas de salida ejecutables.

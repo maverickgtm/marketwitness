@@ -24,6 +24,8 @@ Objetivo: auditar `price targets` sobre financials de Estados Unidos.
 Componentes:
 
 - Ranking de firmas especialistas frente a generalistas.
+- Intervalo Wilson 95% junto a cada tasa de acierto para hacer visible la
+  incertidumbre de muestras pequenas.
 - Filtros por banco, subindustria, periodo y direccion del target.
 - Comparacion contra `XLF`.
 - Tabla de observaciones excluidas y motivo.

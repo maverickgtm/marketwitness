@@ -330,6 +330,8 @@ auditados en desarrollo:
 - Evalua targets alcistas y bajistas con precios diarios ajustados.
 - Calcula acierto, dias hasta target, error al vencimiento y retorno frente a
   un benchmark.
+- Muestra intervalo Wilson 95% del hit rate para no ocultar incertidumbre de
+  muestras pequenas.
 - Desglosa resultados entre targets alcistas y bajistas.
 - Genera un ranking que muestra el numero de observaciones y aplica una muestra
   minima configurable.
