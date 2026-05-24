@@ -44,7 +44,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 
 - [x] Intervalos de confianza Wilson 95% para hit rate.
 - [x] Ranking por sector y por direccion con minimo muestral por segmento.
-- [ ] Universo historico punto-en-el-tiempo.
+- [x] Universo historico punto-en-el-tiempo con membresia y sector auditables.
 - [ ] Revision de targets encadenados por firma/accion.
 - [ ] Reglas de backtest con salida y costos explicitos.
 

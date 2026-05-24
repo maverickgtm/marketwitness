@@ -1,8 +1,8 @@
-# Metodologia v0.3
+# Metodologia v0.3.1
 
 ## Vertical Inicial
 
-`v0.3` prepara el analisis para `U.S. Financials`, comenzando por bancos y
+`v0.3.1` prepara el analisis para `U.S. Financials`, comenzando por bancos y
 otras companias financieras con targets verificables. Para el piloto real, el
 benchmark sectorial preferido es `XLF`. El motor sigue siendo general para
 permitir pruebas y futuros verticales, pero ningun ranking multisectorial se
@@ -49,6 +49,20 @@ hasta aprobar esos derechos.
 Una fila del export se rechaza antes de evaluar cuando carece de identificador,
 ticker, emisor, firma, fecha ISO, target positivo o URL HTTPS de evidencia, o
 cuando duplica un identificador ya importado.
+
+## Universo Historico
+
+Cuando se publica un ranking real, la evaluacion debe recibir un registro de
+membresia punto-en-el-tiempo. Para cada target, la accion debe constar como
+miembro del universo en su fecha de publicacion; de lo contrario se excluye
+como `outside_historical_universe`.
+
+La membresia tambien proporciona el sector vigente en esa fecha para los
+rankings segmentados. Esto impide reclasificar retrospectivamente una
+observacion con el sector actual de la compania. El reporte identifica el
+universo aplicado; una ejecucion sin registro historico queda marcada como
+`not supplied` y no debe presentarse como ranking publico libre de sesgo de
+supervivencia.
 
 ## Acciones Corporativas
 
@@ -107,7 +121,7 @@ La direccion se deriva comparando el target con el precio de referencia:
 El reporte presenta este indicador como `target hit`, no como ganancia
 realizada.
 
-## Metricas v0.3
+## Metricas v0.3.1
 
 Para cada observacion evaluada:
 
@@ -194,6 +208,8 @@ Una observacion se excluye, con motivo registrado, cuando:
 - No se encuentra benchmark suficiente cuando este fue especificado.
 - Existe un split o cambio de ticker documentado dentro del horizonte y no se
   ha normalizado de forma auditada.
+- El ticker no pertenecia al universo historico suministrado en la fecha del
+  target.
 
 ## Reproducibilidad
 
@@ -201,6 +217,7 @@ Cada reporte debe registrar:
 
 - Version de metodologia.
 - Fecha `as_of` del calculo.
+- Identificador del universo historico utilizado o ausencia declarada.
 - Archivos o proveedor de datos usados.
 - Filas excluidas y motivo.
 - Parametros modificados, como la muestra minima.

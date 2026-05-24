@@ -13,6 +13,7 @@ from .corporate_actions import (
 )
 from .csvio import DataFormatError, load_prices, load_targets, write_evaluations
 from .evaluator import evaluate_all
+from .historical_universe import HistoricalUniverseDataError, load_historical_universe
 from .global_listings import (
     GlobalListingsDataError,
     load_global_market_sources,
@@ -159,6 +160,10 @@ def main() -> int:
     evaluate_parser.add_argument(
         "--corporate-actions",
         help="Optional audited split and ticker-change registry used to block affected scoring.",
+    )
+    evaluate_parser.add_argument(
+        "--universe-membership",
+        help="Optional point-in-time membership CSV used to restrict the scored universe.",
     )
     evaluate_parser.add_argument("--output", required=True, help="Evaluation output CSV.")
     evaluate_parser.add_argument("--report", required=True, help="Markdown report path.")
@@ -825,10 +830,26 @@ def main() -> int:
             if args.corporate_actions
             else None
         )
-        evaluations = evaluate_all(targets, prices, as_of, actions)
+        universe = (
+            load_historical_universe(args.universe_membership)
+            if args.universe_membership
+            else None
+        )
+        evaluations = evaluate_all(targets, prices, as_of, actions, universe)
         write_evaluations(args.output, evaluations)
-        write_markdown_report(args.report, evaluations, as_of, args.minimum_sample)
-    except (CorporateActionDataError, DataFormatError, ValueError) as exc:
+        write_markdown_report(
+            args.report,
+            evaluations,
+            as_of,
+            args.minimum_sample,
+            universe[0].universe_id if universe else "",
+        )
+    except (
+        CorporateActionDataError,
+        DataFormatError,
+        HistoricalUniverseDataError,
+        ValueError,
+    ) as exc:
         parser.error(str(exc))
 
     evaluated = sum(result.status == "evaluated" for result in evaluations)

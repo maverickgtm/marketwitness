@@ -1,0 +1,4 @@
+universe_id,ticker,company_name,sector,member_from,member_to,source_provider,source_url,verified_on
+us-financials-demo,ACBK,Acme Demo Bank,Financials,2020-01-01,,synthetic,https://example.invalid/universe/acbk,2023-01-01
+us-financials-demo,NVBK,Nova Demo Bank,Financials,2020-01-01,,synthetic,https://example.invalid/universe/nvbk,2023-01-01
+us-financials-demo,BRIN,Brio Demo Insurance,Financials,2020-01-01,,synthetic,https://example.invalid/universe/brin,2023-01-01

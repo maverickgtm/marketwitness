@@ -59,6 +59,8 @@ class Evaluation:
     benchmark_symbol: str = ""
     benchmark_directional_return_pct: Decimal | None = None
     excess_return_pct: Decimal | None = None
+    historical_universe_id: str = ""
+    historical_universe_source_url: str = ""
 
     def to_row(self) -> dict[str, str]:
         return {
@@ -89,6 +91,8 @@ class Evaluation:
                 self.benchmark_directional_return_pct
             ),
             "excess_return_pct": _decimal_text(self.excess_return_pct),
+            "historical_universe_id": self.historical_universe_id,
+            "historical_universe_source_url": self.historical_universe_source_url,
         }
 
 

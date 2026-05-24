@@ -37,9 +37,12 @@ class ReportingTests(unittest.TestCase):
             ),
         ]
 
-        result = render_markdown_report(evaluations, date(2025, 1, 1), 1)
+        result = render_markdown_report(
+            evaluations, date(2025, 1, 1), 1, "us-financials-historical"
+        )
 
-        self.assertIn("Methodology version: `0.3`", result)
+        self.assertIn("Methodology version: `0.3.1`", result)
+        self.assertIn("Historical universe control: `us-financials-historical`", result)
         self.assertIn("| Example Firm | 1 | 100.00% | 20.65% to 100.00%", result)
         self.assertIn("## Firm Ranking By Sector", result)
         self.assertIn("### Tech", result)
@@ -78,6 +81,7 @@ class ReportingTests(unittest.TestCase):
 
         result = render_markdown_report([evaluation], date(2025, 1, 1), 1)
 
+        self.assertIn("Historical universe control: `not supplied`", result)
         self.assertIn("### Unclassified", result)
 
 

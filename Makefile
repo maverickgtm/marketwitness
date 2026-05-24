@@ -19,6 +19,7 @@ demo:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit evaluate \
 		--targets build/demo/authorized-targets.csv \
 		--prices data/samples/prices.csv \
+		--universe-membership data/samples/historical_universe.csv \
 		--output build/demo/evaluations.csv \
 		--report build/demo/report.md \
 		--minimum-sample 1 \
@@ -84,6 +85,7 @@ demo:
 		--targets data/samples/targets.csv \
 		--prices data/samples/prices.csv \
 		--corporate-actions data/samples/corporate_actions.csv \
+		--universe-membership data/samples/historical_universe.csv \
 		--output build/demo/evaluations-actions-guarded.csv \
 		--report build/demo/report-actions-guarded.md \
 		--minimum-sample 1 \

@@ -196,6 +196,7 @@ PYTHONPATH=src python3 -m targetaudit evaluate \
   --targets data/samples/targets.csv \
   --prices data/samples/prices.csv \
   --corporate-actions data/samples/corporate_actions.csv \
+  --universe-membership data/samples/historical_universe.csv \
   --output build/live/evaluations.csv \
   --report build/live/report.md \
   --as-of YYYY-MM-DD
@@ -206,6 +207,27 @@ protección funciona. En producción, el registro debe cargarse desde
 comunicados del emisor, filings o avisos de bolsa revisados. Nasdaq Daily List
 y NYSE Corporate Actions son candidatos oficiales; deben evaluarse términos,
 licencia y cobertura antes de automatizar su uso.
+
+## Universo Historico Del Scorecard
+
+Para evitar seleccionar hoy solo las companias que sobrevivieron o permanecen
+en el sector, una ejecucion publicable debe suministrar membresia historica:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit evaluate \
+  --targets data/samples/targets.csv \
+  --prices data/samples/prices.csv \
+  --universe-membership data/samples/historical_universe.csv \
+  --output build/live/evaluations.csv \
+  --report build/live/report.md \
+  --as-of YYYY-MM-DD
+```
+
+El archivo debe representar un unico universo, con ventanas no solapadas y
+fuente verificable por ticker. Los targets fuera de membresia quedan
+excluidos; los incluidos adoptan el sector registrado para la fecha del
+pronostico. El fixture es sintetico: la publicacion real exige una fuente
+licenciada o oficialmente redistribuible de composiciones historicas.
 
 ## Flujo Continuo Recomendado
 

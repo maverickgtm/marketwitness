@@ -334,6 +334,8 @@ auditados en desarrollo:
   muestras pequenas.
 - Compara firmas en rankings separados por sector y por direccion, aplicando
   el minimo muestral dentro de cada segmento.
+- Filtra observaciones contra un universo historico opcional y usa el sector
+  vigente en la fecha del target para evitar clasificacion retrospectiva.
 - Desglosa resultados entre targets alcistas y bajistas.
 - Genera un ranking que muestra el numero de observaciones y aplica una muestra
   minima configurable.
@@ -432,6 +434,7 @@ PYTHONPATH=src python3 -m targetaudit evaluate \
   --targets data/samples/targets.csv \
   --prices data/samples/prices.csv \
   --corporate-actions data/samples/corporate_actions.csv \
+  --universe-membership data/samples/historical_universe.csv \
   --output build/demo/evaluations-actions-guarded.csv \
   --report build/demo/report-actions-guarded.md \
   --minimum-sample 1 \
@@ -462,8 +465,8 @@ docs/                   Metodologia, estrategia, dashboard, fuentes y roadmap
 
 ## Siguientes Versiones
 
-- `v0.3`: normalizacion de firmas e integrantes
-  historicos del universo.
+- `v0.3`: rigor cuantitativo, incluyendo intervalos, segmentos y control de
+  integrantes historicos del universo.
 - `v0.4`: API con FastAPI y base DuckDB/PostgreSQL.
 - `v0.5`: dashboard web, filtros por sector y paginas de firma/accion.
 - `v1.0`: pipeline actualizado periodicamente con una fuente de targets cuya

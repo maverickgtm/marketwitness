@@ -4,6 +4,10 @@ from datetime import date, timedelta
 from decimal import Decimal
 
 from .corporate_actions import CorporateAction, has_action_in_observation_window
+from .historical_universe import (
+    UniverseMembership,
+    membership_at_publication,
+)
 from .models import Evaluation, PriceBar, TargetObservation
 
 MAX_TERMINAL_GAP_DAYS = 7
@@ -16,6 +20,7 @@ def evaluate_all(
     bars_by_ticker: dict[str, list[PriceBar]],
     as_of: date,
     corporate_actions: list[CorporateAction] | None = None,
+    historical_universe: list[UniverseMembership] | None = None,
 ) -> list[Evaluation]:
     duplicate_ids = _duplicates([observation.observation_id for observation in observations])
     return [
@@ -25,6 +30,7 @@ def evaluate_all(
             as_of,
             observation.observation_id in duplicate_ids,
             corporate_actions,
+            historical_universe,
         )
         for observation in observations
     ]
@@ -36,6 +42,7 @@ def evaluate(
     as_of: date,
     duplicate_id: bool = False,
     corporate_actions: list[CorporateAction] | None = None,
+    historical_universe: list[UniverseMembership] | None = None,
 ) -> Evaluation:
     base = _base_fields(observation)
     invalid_reason = _invalid_reason(observation, duplicate_id)
@@ -48,6 +55,18 @@ def evaluate(
     expiry = observation.published_date + timedelta(days=observation.horizon_days)
     if observation.published_date > as_of:
         return Evaluation(**base, status="pending", reason="published_after_as_of")
+    if historical_universe is not None:
+        membership = membership_at_publication(observation, historical_universe)
+        if membership is None:
+            return Evaluation(
+                **base,
+                status="excluded",
+                reason="outside_historical_universe",
+                expiry_date=expiry.isoformat(),
+            )
+        base = _base_fields(observation, membership.sector)
+        base["historical_universe_id"] = membership.universe_id
+        base["historical_universe_source_url"] = membership.source_url
     if expiry > as_of:
         return Evaluation(
             **base, status="pending", reason="horizon_not_mature", expiry_date=expiry.isoformat()
@@ -229,12 +248,14 @@ def evaluate(
     )
 
 
-def _base_fields(observation: TargetObservation) -> dict[str, object]:
+def _base_fields(
+    observation: TargetObservation, historical_sector: str | None = None
+) -> dict[str, object]:
     return {
         "observation_id": observation.observation_id,
         "ticker": observation.ticker,
         "firm": observation.firm,
-        "sector": observation.sector,
+        "sector": historical_sector if historical_sector is not None else observation.sector,
         "published_date": ""
         if observation.published_date is None
         else observation.published_date.isoformat(),

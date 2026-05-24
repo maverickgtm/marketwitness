@@ -17,11 +17,15 @@ def write_markdown_report(
     evaluations: list[Evaluation],
     as_of: date,
     minimum_sample: int,
+    historical_universe_id: str = "",
 ) -> None:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(
-        render_markdown_report(evaluations, as_of, minimum_sample), encoding="utf-8"
+        render_markdown_report(
+            evaluations, as_of, minimum_sample, historical_universe_id
+        ),
+        encoding="utf-8",
     )
 
 
@@ -29,6 +33,7 @@ def render_markdown_report(
     evaluations: list[Evaluation],
     as_of: date,
     minimum_sample: int,
+    historical_universe_id: str = "",
 ) -> str:
     statuses = Counter(item.status for item in evaluations)
     evaluated = [item for item in evaluations if item.status == "evaluated"]
@@ -43,6 +48,7 @@ def render_markdown_report(
         "",
         f"- Methodology version: `{METHODOLOGY_VERSION}`",
         f"- Calculated as of: `{as_of.isoformat()}`",
+        f"- Historical universe control: `{historical_universe_id or 'not supplied'}`",
         f"- Minimum firm sample in ranking: `{minimum_sample}`",
         f"- Input observations: `{len(evaluations)}`",
         f"- Evaluated: `{statuses['evaluated']}`",

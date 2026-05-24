@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 import unittest
 from datetime import date
 from decimal import Decimal
 
 from targetaudit.corporate_actions import CorporateAction
 from targetaudit.evaluator import evaluate_all
+from targetaudit.historical_universe import UniverseMembership
 from targetaudit.models import PriceBar, TargetObservation
 
 
@@ -175,6 +178,56 @@ class EvaluatorTests(unittest.TestCase):
         self.assertEqual(result.status, "excluded")
         self.assertEqual(result.reason, "corporate_action_review_required")
 
+    def test_target_outside_historical_universe_is_excluded(self) -> None:
+        observation = _target("outside-universe", "AAA", Decimal("120"), "")
+
+        result = evaluate_all(
+            [observation],
+            {},
+            date(2025, 1, 1),
+            historical_universe=[_membership("BBB", "Financials")],
+        )[0]
+
+        self.assertEqual(result.status, "excluded")
+        self.assertEqual(result.reason, "outside_historical_universe")
+
+    def test_target_published_after_membership_end_is_excluded(self) -> None:
+        observation = _target("former-member", "AAA", Decimal("120"), "")
+
+        result = evaluate_all(
+            [observation],
+            {},
+            date(2025, 1, 1),
+            historical_universe=[
+                _membership("AAA", "Financials", member_to=date(2022, 12, 31))
+            ],
+        )[0]
+
+        self.assertEqual(result.status, "excluded")
+        self.assertEqual(result.reason, "outside_historical_universe")
+
+    def test_historical_universe_sector_drives_segmented_reporting(self) -> None:
+        observation = _target("historical-sector", "AAA", Decimal("80"), "")
+        prices = {
+            "AAA": [
+                _bar("AAA", "2022-12-30", "101", "99", "100"),
+                _bar("AAA", "2023-01-03", "101", "99", "100"),
+                _bar("AAA", "2024-01-02", "92", "88", "90"),
+            ]
+        }
+
+        result = evaluate_all(
+            [observation],
+            prices,
+            date(2025, 1, 1),
+            historical_universe=[_membership("AAA", "Financials")],
+        )[0]
+
+        self.assertEqual(result.status, "evaluated")
+        self.assertEqual(result.sector, "Financials")
+        self.assertEqual(result.historical_universe_id, "historical-demo")
+        self.assertIn("/universe/aaa", result.historical_universe_source_url)
+
 
 def _target(identifier: str, ticker: str, target: Decimal, benchmark: str) -> TargetObservation:
     return TargetObservation(
@@ -202,6 +255,22 @@ def _bar(ticker: str, day: str, high: str, low: str, close: str) -> PriceBar:
         adjusted_low=Decimal(low),
         adjusted_close=Decimal(close),
         source_provider="synthetic",
+    )
+
+
+def _membership(
+    ticker: str, sector: str, member_to: date | None = None
+) -> UniverseMembership:
+    return UniverseMembership(
+        universe_id="historical-demo",
+        ticker=ticker,
+        company_name=f"{ticker} Company",
+        sector=sector,
+        member_from=date(2020, 1, 1),
+        member_to=member_to,
+        source_provider="synthetic",
+        source_url=f"https://example.invalid/universe/{ticker.lower()}",
+        verified_on=date(2023, 1, 1),
     )
 
 

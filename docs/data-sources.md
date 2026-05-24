@@ -68,6 +68,14 @@ calcula `adjusted_high` y `adjusted_low` aplicando por fila
 un dataset real y resultados derivados no se publicaran hasta aprobar terminos
 y derechos del plan contratado.
 
+## Universo Historico
+
+El scorecard admite `historical_universe.csv` para impedir que una muestra
+retrospectiva seleccione solo companias que hoy continúan visibles. El fixture
+del repositorio es sintetico. Para publicar resultados reales se requerira una
+fuente autorizada de integrantes historicos que identifique ventanas de
+membresia, ticker y sector vigentes en la fecha de cada target.
+
 ## Acciones Corporativas
 
 Revisado al `2026-05-24`:

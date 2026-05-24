@@ -28,6 +28,8 @@ Componentes:
   incertidumbre de muestras pequenas.
 - Rankings separados por sector y por direccion, con umbral de muestra en
   cada segmento.
+- Control de universo historico: identifica la composicion aplicada y excluye
+  targets que no pertenecian al universo en la fecha publicada.
 - Filtros por banco, subindustria, periodo y direccion del target.
 - Comparacion contra `XLF`.
 - Tabla de observaciones excluidas y motivo.

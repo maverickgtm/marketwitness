@@ -68,6 +68,31 @@ operados junto con un cierre ajustado, normaliza por fila:
 `adjusted_low = low * adjusted_close / close`. Las respuestas en vivo se
 cachean bajo `data/raw/`, fuera de Git.
 
+## `historical_universe.csv`
+
+Registro de pertenencia al universo en la fecha historica de cada target. Una
+ejecucion publica del scorecard debe suministrarlo mediante
+`--universe-membership`; el demo contiene una muestra sintetica.
+
+| Columna | Requerida | Descripcion |
+|---|---:|---|
+| `universe_id` | Si | Identificador unico del universo evaluado en el archivo |
+| `ticker` | Si | Simbolo vigente durante la ventana de membresia |
+| `company_name` | Si | Emisor identificado |
+| `sector` | Si | Sector usado para segmentar durante esa ventana |
+| `member_from` | Si | Inicio inclusivo de membresia, fecha ISO |
+| `member_to` | No | Fin inclusivo; vacio si continuaba vigente |
+| `source_provider` | Si | Fuente de la composicion historica |
+| `source_url` | Si | Evidencia HTTPS revisable |
+| `verified_on` | Si | Fecha en que se verifico la evidencia |
+
+El cargador rechaza universos mezclados en un mismo archivo, ventanas
+solapadas para el mismo ticker y fuentes sin URL HTTPS. `verified_on` registra
+cuando se recopilo la evidencia: puede ser posterior al horizonte analizado en
+una reconstruccion historica. Si se suministra el registro, una observacion no
+incluida en su fecha de publicacion sale del scoring con
+`outside_historical_universe`.
+
 ## `corporate_actions.csv`
 
 Registro de splits y cambios de ticker revisados contra evidencia. La muestra
@@ -100,7 +125,9 @@ Contiene tanto observaciones evaluadas como excluidas o pendientes. Incluye
 `reference_date` y `reference_price`, usados para definir la direccion
 original del target sin reinterpretarla despues del movimiento inicial. La columna
 `status` tiene valores `evaluated`, `excluded` o `pending`; `reason` explica
-cualquier fila no evaluada.
+cualquier fila no evaluada. Cuando se aplica un universo historico, las filas
+incluidas conservan `historical_universe_id` y
+`historical_universe_source_url` para auditar su membresia.
 
 Los datasets reales nunca deben agregarse a Git dentro de `data/raw/` o
 `data/private/`, carpetas deliberadamente ignoradas.
