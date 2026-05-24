@@ -53,6 +53,21 @@ demo:
 		--report build/demo/issuer-confirmations.md \
 		--html build/demo/issuer-confirmations.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit corporate-actions-check \
+		--targets data/samples/targets.csv \
+		--actions data/samples/corporate_actions.csv \
+		--output build/demo/corporate-actions.csv \
+		--report build/demo/corporate-actions.md \
+		--html build/demo/corporate-actions.html \
+		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit evaluate \
+		--targets data/samples/targets.csv \
+		--prices data/samples/prices.csv \
+		--corporate-actions data/samples/corporate_actions.csv \
+		--output build/demo/evaluations-actions-guarded.csv \
+		--report build/demo/report-actions-guarded.md \
+		--minimum-sample 1 \
+		--as-of 2025-01-01
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-upcoming \
 		--page-file data/samples/lse-new-issues-page.json \
 		--output build/demo/lse-upcoming.csv \

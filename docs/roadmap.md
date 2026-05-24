@@ -37,7 +37,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Conector SGX `IPO Prospectus` mediante API JSON oficial.
 - [x] Historial y diff diario de los cinco monitores globales con cola de revision.
 - [x] Ingesta de comunicados oficiales para confirmar listings.
-- [ ] Validacion de splits y cambios de ticker.
+- [x] Validacion de splits y cambios de ticker.
 - [x] Validacion de barras de precios duplicadas o incoherentes.
 
 ## Milestone 3: Rigor Cuantitativo (`v0.3`)

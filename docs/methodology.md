@@ -37,6 +37,19 @@ instrumento en una fecha determinada. Es evaluable solo si contiene:
 El analista individual y el rating son opcionales porque algunas fuentes no
 los publican, pero se conservan cuando estan disponibles.
 
+## Acciones Corporativas
+
+Una barra de precio ajustada no basta para asumir que un target nominal
+publicado antes de un split continúa en la misma base por accion. Tampoco un
+cambio de ticker demuestra que dos series locales tengan continuidad completa.
+
+Cuando se proporciona un registro auditado de acciones corporativas, cualquier
+target cuyo horizonte cruce un `stock_split`, `reverse_split` o
+`ticker_change` se excluye como `corporate_action_review_required`. Esta
+version detecta la incompatibilidad; no reescala targets ni encadena símbolos
+automáticamente. Un futuro procedimiento de normalización deberá conservar
+fuente, factor utilizado y serie ajustada resultante.
+
 ## Convenciones Temporales
 
 - Horizonte por defecto: `365` dias calendario desde la publicacion.
@@ -132,6 +145,8 @@ Una observacion se excluye, con motivo registrado, cuando:
 - No hay ventana de precios completa.
 - El target es igual al precio de referencia.
 - No se encuentra benchmark suficiente cuando este fue especificado.
+- Existe un split o cambio de ticker documentado dentro del horizonte y no se
+  ha normalizado de forma auditada.
 
 ## Reproducibilidad
 

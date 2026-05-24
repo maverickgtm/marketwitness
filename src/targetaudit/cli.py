@@ -3,6 +3,14 @@ from __future__ import annotations
 import argparse
 from datetime import date
 
+from .corporate_actions import (
+    CorporateActionDataError,
+    find_affected_observations,
+    load_corporate_actions,
+    write_affected_observations_csv,
+    write_corporate_actions_html,
+    write_corporate_actions_report,
+)
 from .csvio import DataFormatError, load_prices, load_targets, write_evaluations
 from .evaluator import evaluate_all
 from .global_listings import (
@@ -125,6 +133,10 @@ def main() -> int:
     )
     evaluate_parser.add_argument("--targets", required=True, help="Input targets CSV.")
     evaluate_parser.add_argument("--prices", required=True, help="Input adjusted prices CSV.")
+    evaluate_parser.add_argument(
+        "--corporate-actions",
+        help="Optional audited split and ticker-change registry used to block affected scoring.",
+    )
     evaluate_parser.add_argument("--output", required=True, help="Evaluation output CSV.")
     evaluate_parser.add_argument("--report", required=True, help="Markdown report path.")
     evaluate_parser.add_argument(
@@ -242,6 +254,22 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Verification cutoff in YYYY-MM-DD format.",
+    )
+    corporate_parser = subparsers.add_parser(
+        "corporate-actions-check",
+        help="Audit targets that span documented splits or ticker changes.",
+    )
+    corporate_parser.add_argument("--targets", required=True, help="Input targets CSV.")
+    corporate_parser.add_argument(
+        "--actions", required=True, help="Documented corporate actions CSV."
+    )
+    corporate_parser.add_argument("--output", required=True, help="Affected targets CSV path.")
+    corporate_parser.add_argument("--report", required=True, help="Markdown report path.")
+    corporate_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    corporate_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Evidence cutoff in YYYY-MM-DD format.",
     )
     alerts_parser = subparsers.add_parser(
         "global-alerts",
@@ -511,6 +539,24 @@ def main() -> int:
         )
         return 0
 
+    if args.command == "corporate-actions-check":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            targets = load_targets(args.targets)
+            actions = load_corporate_actions(args.actions)
+            affected = find_affected_observations(targets, actions, as_of)
+            write_affected_observations_csv(args.output, affected)
+            write_corporate_actions_report(args.report, actions, affected, as_of)
+            if args.html:
+                write_corporate_actions_html(args.html, actions, affected, as_of)
+        except (CorporateActionDataError, DataFormatError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote corporate-action audit for {len(affected)} affected targets "
+            f"across {len(actions)} documented actions to {args.report}."
+        )
+        return 0
+
     if args.command == "global-alerts":
         try:
             as_of = date.fromisoformat(args.as_of)
@@ -634,10 +680,15 @@ def main() -> int:
             parser.error("--minimum-sample must be positive.")
         targets = load_targets(args.targets)
         prices = load_prices(args.prices)
-        evaluations = evaluate_all(targets, prices, as_of)
+        actions = (
+            load_corporate_actions(args.corporate_actions)
+            if args.corporate_actions
+            else None
+        )
+        evaluations = evaluate_all(targets, prices, as_of, actions)
         write_evaluations(args.output, evaluations)
         write_markdown_report(args.report, evaluations, as_of, args.minimum_sample)
-    except (DataFormatError, ValueError) as exc:
+    except (CorporateActionDataError, DataFormatError, ValueError) as exc:
         parser.error(str(exc))
 
     evaluated = sum(result.status == "evaluated" for result in evaluations)

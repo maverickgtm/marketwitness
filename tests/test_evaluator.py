@@ -2,6 +2,7 @@ import unittest
 from datetime import date
 from decimal import Decimal
 
+from targetaudit.corporate_actions import CorporateAction
 from targetaudit.evaluator import evaluate_all
 from targetaudit.models import PriceBar, TargetObservation
 
@@ -143,6 +144,36 @@ class EvaluatorTests(unittest.TestCase):
 
         self.assertEqual(result.status, "excluded")
         self.assertEqual(result.reason, "misaligned_benchmark_window")
+
+    def test_documented_split_routes_target_out_of_scoring(self) -> None:
+        observation = _target("split-review", "AAA", Decimal("120"), "")
+        action = CorporateAction(
+            action_id="split-1",
+            company_name="AAA Company",
+            prior_ticker="AAA",
+            current_ticker="AAA",
+            action_type="stock_split",
+            effective_date=date(2023, 6, 1),
+            split_ratio_new=Decimal("2"),
+            split_ratio_old=Decimal("1"),
+            evidence_level="exchange_notice",
+            source_title="Official split notice",
+            source_url="https://example.invalid/split-1",
+            verified_on=date(2023, 6, 1),
+            review_note="Review adjusted target basis.",
+        )
+        prices = {
+            "AAA": [
+                _bar("AAA", "2022-12-30", "101", "99", "100"),
+                _bar("AAA", "2023-01-03", "101", "99", "100"),
+                _bar("AAA", "2024-01-02", "116", "113", "115"),
+            ]
+        }
+
+        result = evaluate_all([observation], prices, date(2025, 1, 1), [action])[0]
+
+        self.assertEqual(result.status, "excluded")
+        self.assertEqual(result.reason, "corporate_action_review_required")
 
 
 def _target(identifier: str, ticker: str, target: Decimal, benchmark: str) -> TargetObservation:

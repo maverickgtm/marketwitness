@@ -41,6 +41,21 @@ Por eso `v0.1` acepta CSV documentado y no incluye un scraper.
 TargetAudit requiere precios ajustados con `high`, `low` y `close`, porque un
 target puede ser alcanzado intradia aun cuando el cierre no lo refleje.
 
+## Acciones Corporativas
+
+Revisado al `2026-05-24`:
+
+| Fuente | Senal Disponible | Uso Previsto |
+|---|---|---|
+| Nasdaq Daily List | Especificacion oficial contempla cambios de simbolo, stock splits y reverse splits | Candidato para normalizar acciones Nasdaq; revisar suscripcion/licencia antes de integrar |
+| NYSE Corporate Actions | Pagina oficial de acciones corporativas con fecha de accion | Candidato para eventos de emisores NYSE |
+| Comunicados del emisor / filings SEC | Confirmacion primaria puntual de split o cambio corporativo | Evidencia manual para casos bajo revision |
+
+El demo de `corporate-actions-check` no declara eventos reales: emplea dos
+acciones sintéticas para probar que un target que atraviesa un split o cambio
+de ticker queda fuera del scoring protegido. La aplicación de factores reales
+requerirá evidencia y una política de normalización explícita.
+
 ## Fuentes Publicas Complementarias
 
 | Fuente | Uso |
@@ -196,6 +211,8 @@ de compra o venta.
 - Cerebras IPO closing release: <https://www.cerebras.ai/press-release/cerebras-systems-announces-closing-of-initial-public-offering>
 - Alpha Vantage documentation: <https://www.alphavantage.co/documentation/>
 - Nasdaq Data Link docs: <https://docs.data.nasdaq.com/docs/getting-started>
+- Nasdaq Daily List specifications: <https://www.nasdaqtrader.com/content/technicalSupport/specifications/dataproducts/dlcompletespec.pdf>
+- NYSE Corporate Actions: <https://www.nyse.com/trade/corporate-actions>
 - Historical S&P 500 experiment: <https://github.com/riazarbi/sp500-scraper>
 - London Stock Exchange New Issues: <https://www.londonstockexchange.com/live-markets/new-issues>
 - FCA National Storage Mechanism: <https://www.fca.org.uk/markets/primary-markets/regulatory-disclosures/national-storage-mechanism>

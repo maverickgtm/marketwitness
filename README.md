@@ -29,6 +29,28 @@ TargetAudit no intentara competir inicialmente como una pagina de targets
 actuales. Su propuesta es mostrar el historial verificable, los fallos y la
 utilidad relativa al sector de cada pronostico.
 
+### Auditoria De Acciones Corporativas
+
+Los splits y cambios de ticker pueden volver incomparable un target nominal
+contra precios ajustados. TargetAudit incluye una cola de auditoria que
+identifica targets cuyo horizonte atraviesa una accion corporativa documentada:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit corporate-actions-check \
+  --targets data/samples/targets.csv \
+  --actions data/samples/corporate_actions.csv \
+  --output build/live/corporate-actions.csv \
+  --report build/live/corporate-actions.md \
+  --html build/live/corporate-actions.html \
+  --as-of YYYY-MM-DD
+```
+
+Al ejecutar `evaluate` con `--corporate-actions`, los casos afectados se
+excluyen como `corporate_action_review_required`. El sistema no inventa un
+target reajustado ni asume continuidad entre tickers: esas decisiones exigen
+evidencia revisada. El demo usa eventos sintéticos exclusivamente para probar
+este bloqueo.
+
 ## IPO Watch
 
 El segundo modulo sigue cotizaciones tecnológicas y estrategicas de alto
@@ -244,6 +266,7 @@ observado, no como compra o venta confirmada del gestor.
 - Incluye datos sinteticos y pruebas automatizadas; no distribuye datos
   comerciales.
 - Genera un reporte inicial de `IPO Watch` con estado y fuentes auditables.
+- Marca splits y cambios de ticker documentados antes de puntuar targets.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para
 publicar resultados reales hacen falta observaciones historicas licenciadas o
@@ -264,6 +287,11 @@ instalable. Escribe:
 ```text
 build/demo/evaluations.csv
 build/demo/report.md
+build/demo/corporate-actions.csv
+build/demo/corporate-actions.md
+build/demo/corporate-actions.html
+build/demo/evaluations-actions-guarded.csv
+build/demo/report-actions-guarded.md
 build/demo/ipo-watch.md
 build/demo/ipo-watch.html
 build/demo/sec-ipo-discovery.csv
@@ -318,8 +346,9 @@ Tambien puede ejecutarse directamente:
 PYTHONPATH=src python3 -m targetaudit evaluate \
   --targets data/samples/targets.csv \
   --prices data/samples/prices.csv \
-  --output build/demo/evaluations.csv \
-  --report build/demo/report.md \
+  --corporate-actions data/samples/corporate_actions.csv \
+  --output build/demo/evaluations-actions-guarded.csv \
+  --report build/demo/report-actions-guarded.md \
   --minimum-sample 1 \
   --as-of 2025-01-01
 ```
@@ -350,7 +379,7 @@ docs/                   Metodologia, estrategia, dashboard, fuentes y roadmap
 
 - `v0.2`: conectores para precios publicos/freemium y cache local.
 - `v0.2`: monitor SEC/news para hitos verificables de IPO Watch.
-- `v0.3`: normalizacion de firmas, acciones corporativas e integrantes
+- `v0.3`: normalizacion de firmas e integrantes
   historicos del universo.
 - `v0.4`: API con FastAPI y base DuckDB/PostgreSQL.
 - `v0.5`: dashboard web, filtros por sector y paginas de firma/accion.

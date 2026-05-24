@@ -38,6 +38,32 @@ Las barras con `NaN`, infinito, fechas duplicadas para el mismo ticker o
 cierres fuera del rango `low`/`high` son rechazadas para impedir que datos
 corruptos alteren el ranking.
 
+## `corporate_actions.csv`
+
+Registro de splits y cambios de ticker revisados contra evidencia. La muestra
+del demo es sintética; los datos reales requieren fuente oficial o filing.
+
+| Columna | Requerida | Descripcion |
+|---|---:|---|
+| `action_id` | Si | Identificador estable de la accion |
+| `company_name` | Si | Nombre del emisor |
+| `prior_ticker` | Si | Simbolo anterior o afectado |
+| `current_ticker` | Si | Simbolo posterior; igual al anterior si solo hay split |
+| `action_type` | Si | `stock_split`, `reverse_split` o `ticker_change` |
+| `effective_date` | Si | Fecha efectiva ISO |
+| `split_ratio_new` | Para splits | Numerador de la razon de acciones |
+| `split_ratio_old` | Para splits | Denominador de la razon de acciones |
+| `evidence_level` | Si | `exchange_notice`, `issuer_official_release`, `regulatory_filing` o `synthetic_demo` |
+| `source_title` | Si | Titulo de la evidencia |
+| `source_url` | Si | URL HTTPS revisable |
+| `verified_on` | Si | Fecha de revision de evidencia |
+| `review_note` | Si | Trabajo de comparabilidad requerido |
+
+`corporate-actions-check` produce una cola CSV de observaciones cuyo horizonte
+cruza una acción. Si el mismo registro se entrega a `evaluate`, dichas
+observaciones se excluyen con `corporate_action_review_required`; la versión
+actual no reescala automáticamente targets ni une series de tickers.
+
 ## Salida `evaluations.csv`
 
 Contiene tanto observaciones evaluadas como excluidas o pendientes. Incluye

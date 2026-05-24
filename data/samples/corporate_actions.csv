@@ -1,0 +1,3 @@
+action_id,company_name,prior_ticker,current_ticker,action_type,effective_date,split_ratio_new,split_ratio_old,evidence_level,source_title,source_url,verified_on,review_note
+demo-split-001,Acme Demo Bank,ACBK,ACBK,stock_split,2023-06-01,2,1,synthetic_demo,Synthetic split notice for validation,https://example.invalid/corporate-actions/demo-split-001,2023-06-01,Synthetic event verifies that a target spanning a split is routed out of scoring.
+demo-symbol-001,Nova Demo Bank,NVBK,NVBX,ticker_change,2023-09-01,,,synthetic_demo,Synthetic ticker change notice for validation,https://example.invalid/corporate-actions/demo-symbol-001,2023-09-01,Synthetic event verifies that old and new ticker continuity must be documented.

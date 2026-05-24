@@ -114,6 +114,35 @@ datos a SEC:
 make verify
 ```
 
+## Auditoria De Acciones Corporativas
+
+Antes de publicar un ranking de targets reales se debe cruzar la muestra
+contra splits y cambios de símbolo documentados:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit corporate-actions-check \
+  --targets data/samples/targets.csv \
+  --actions data/samples/corporate_actions.csv \
+  --output build/live/corporate-actions.csv \
+  --report build/live/corporate-actions.md \
+  --html build/live/corporate-actions.html \
+  --as-of YYYY-MM-DD
+
+PYTHONPATH=src python3 -m targetaudit evaluate \
+  --targets data/samples/targets.csv \
+  --prices data/samples/prices.csv \
+  --corporate-actions data/samples/corporate_actions.csv \
+  --output build/live/evaluations.csv \
+  --report build/live/report.md \
+  --as-of YYYY-MM-DD
+```
+
+La muestra incluida contiene acciones sintéticas para comprobar que la
+protección funciona. En producción, el registro debe cargarse desde
+comunicados del emisor, filings o avisos de bolsa revisados. Nasdaq Daily List
+y NYSE Corporate Actions son candidatos oficiales; deben evaluarse términos,
+licencia y cobertura antes de automatizar su uso.
+
 ## Flujo Continuo Recomendado
 
 1. Cada dia habil de mercado, descargar el indice diario SEC una vez.

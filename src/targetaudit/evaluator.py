@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 from decimal import Decimal
 
+from .corporate_actions import CorporateAction, has_action_in_observation_window
 from .models import Evaluation, PriceBar, TargetObservation
 
 MAX_TERMINAL_GAP_DAYS = 7
@@ -14,10 +15,17 @@ def evaluate_all(
     observations: list[TargetObservation],
     bars_by_ticker: dict[str, list[PriceBar]],
     as_of: date,
+    corporate_actions: list[CorporateAction] | None = None,
 ) -> list[Evaluation]:
     duplicate_ids = _duplicates([observation.observation_id for observation in observations])
     return [
-        evaluate(observation, bars_by_ticker, as_of, observation.observation_id in duplicate_ids)
+        evaluate(
+            observation,
+            bars_by_ticker,
+            as_of,
+            observation.observation_id in duplicate_ids,
+            corporate_actions,
+        )
         for observation in observations
     ]
 
@@ -27,6 +35,7 @@ def evaluate(
     bars_by_ticker: dict[str, list[PriceBar]],
     as_of: date,
     duplicate_id: bool = False,
+    corporate_actions: list[CorporateAction] | None = None,
 ) -> Evaluation:
     base = _base_fields(observation)
     invalid_reason = _invalid_reason(observation, duplicate_id)
@@ -42,6 +51,15 @@ def evaluate(
     if expiry > as_of:
         return Evaluation(
             **base, status="pending", reason="horizon_not_mature", expiry_date=expiry.isoformat()
+        )
+    if corporate_actions and has_action_in_observation_window(
+        observation, corporate_actions, as_of
+    ):
+        return Evaluation(
+            **base,
+            status="excluded",
+            reason="corporate_action_review_required",
+            expiry_date=expiry.isoformat(),
         )
 
     series = bars_by_ticker.get(observation.ticker, [])

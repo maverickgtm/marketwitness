@@ -17,6 +17,8 @@ Componentes:
 - Filtros por banco, subindustria, periodo y direccion del target.
 - Comparacion contra `XLF`.
 - Tabla de observaciones excluidas y motivo.
+- `Corporate Actions Audit`: cola de targets atravesados por splits o cambios
+  de ticker, antes de entrar al ranking.
 - Ficha de cada pronostico con fuente, referencia, entrada y resultado.
 
 ## Pagina 2: IPO Watch
