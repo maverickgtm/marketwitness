@@ -57,6 +57,7 @@ demo:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-fca-check \
 		--lse-page-file data/samples/lse-new-issues-page.json \
 		--nsm-fixture data/samples/fca-nsm-results.json \
+		--output build/demo/lse-fca-check.csv \
 		--report build/demo/lse-fca-check.md \
 		--html build/demo/lse-fca-check.html \
 		--as-of 2026-05-24

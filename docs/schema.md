@@ -175,14 +175,30 @@ tipo y enlace de detalle del emisor.
 `lse-fca-check` consulta el índice público `fca-nsm-searchdata` del National
 Storage Mechanism por cada `company_name` observado en LSE. Normaliza:
 `company`, `headline`, `type`, `submitted_date`, `publication_date`,
-`disclosure_id` y `download_link`.
+`disclosure_id` y `download_link`. Su CSV de salida agrega
+`evidence_class`, `classification_basis`, datos del documento seleccionado y
+la fuente NSM.
 
-El resultado asigna uno de dos estados:
+El estado de coincidencia sigue distinguiendo:
 
 - `document_found_review_required`: existe al menos un documento y se debe
   validar si constituye prospecto o evidencia de admisión.
 - `no_document_found`: no apareció un documento en la consulta actual; no
   significa cancelación ni imposibilidad de cotizar.
+
+Además, la clase documental usa solamente el metadato `type` visible de FCA:
+
+- `prospectus_document_signal`: el tipo contiene `Prospectus`.
+- `admission_document_signal`: contiene `Admission Document`.
+- `intention_to_float_notice`: contiene `Intention to Float`; no equivale a
+  prospecto o admisión.
+- `other_document_review`: hay documento, pero el metadato no identifica una
+  de las clases anteriores.
+
+Estas clases sirven para ordenar revisión documental; no confirman que la
+admisión se completó ni que haya iniciado negociación. El titular no crea una
+clase por sí solo para evitar interpretar, por ejemplo, `No Prospectus
+Required` como señal de prospecto.
 
 ## HKEX JSON Feeds
 

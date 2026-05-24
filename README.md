@@ -149,9 +149,14 @@ Para contrastar las próximas emisiones LSE con FCA NSM:
 
 ```bash
 PYTHONPATH=src python3 -m targetaudit lse-fca-check \
+  --output data/raw/global/lse-fca-check.csv \
   --report build/live/lse-fca-check.md \
   --html build/live/lse-fca-check.html
 ```
+
+El chequeo FCA clasifica el campo de tipo publicado para cada documento como señal de
+`prospectus`, `admission document`, `intention to float` u otra revisión. Una
+clasificación no confirma admisión completada ni inicio de negociación.
 
 Para leer ASX en vivo:
 
@@ -262,6 +267,7 @@ build/demo/lse-upcoming.html
 build/demo/lse-upcoming.csv
 build/demo/lse-fca-check.md
 build/demo/lse-fca-check.html
+build/demo/lse-fca-check.csv
 build/demo/hkex-monitor.csv
 build/demo/hkex-monitor.md
 build/demo/hkex-monitor.html

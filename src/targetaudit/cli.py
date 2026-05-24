@@ -59,6 +59,7 @@ from .providers.fca_nsm import (
     FcaNsmDataError,
     check_lse_issues,
     load_nsm_fixture,
+    write_lse_fca_csv,
     write_lse_fca_html,
     write_lse_fca_report,
 )
@@ -272,6 +273,7 @@ def main() -> int:
         "--nsm-fixture",
         help="Saved FCA NSM response fixture; omit for public live searches.",
     )
+    fca_parser.add_argument("--output", help="Optional normalized FCA check CSV path.")
     fca_parser.add_argument("--report", required=True, help="Markdown report path.")
     fca_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
     fca_parser.add_argument(
@@ -394,6 +396,8 @@ def main() -> int:
                 if lookup is not None
                 else check_lse_issues(issues)
             )
+            if args.output:
+                write_lse_fca_csv(args.output, checks)
             write_lse_fca_report(args.report, checks, as_of)
             if args.html:
                 write_lse_fca_html(args.html, checks, as_of)

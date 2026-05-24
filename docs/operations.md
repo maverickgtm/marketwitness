@@ -184,7 +184,11 @@ no como instrucciones para tomar posiciones.
 El contraste FCA NSM distingue entre un emisor sin documento encontrado y
 una coincidencia documental que requiere revisión. No promueve
 automáticamente una fecha esperada a admisión confirmada, porque el NSM no es
-en tiempo real y el tipo de documento debe examinarse.
+en tiempo real y el tipo de documento debe examinarse. Su salida también
+clasifica metadatos visibles en `prospectus_document_signal`,
+`admission_document_signal`, `intention_to_float_notice` u
+`other_document_review`, de modo que una intención de flotar no se confunda
+con evidencia documental más avanzada.
 
 El monitor ASX conserva como `anticipated` los registros con fecha prevista y
 como `withdrawn` los retirados. ASX indica que recibió una solicitud formal,

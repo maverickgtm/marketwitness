@@ -31,7 +31,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Conector HKEX/HKEXnews para estados oficiales AP/PHIP.
 - [x] Snapshot trazable de LSE `Upcoming issues`.
 - [x] Agregar contraste documental FCA NSM para LSE.
-- [ ] Clasificar documentos FCA revisados como prospecto/admission evidence.
+- [x] Clasificar metadatos FCA como prospecto, admission document, intention to float u otra revision.
 - [x] Conector ASX `Upcoming floats and listings` desde HTML oficial.
 - [x] Conector TSX `New Company Listings` como confirmacion de listings.
 - [x] Conector SGX `IPO Prospectus` mediante API JSON oficial.

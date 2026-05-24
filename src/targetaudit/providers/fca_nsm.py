@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import csv
 import json
+from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import date, datetime
@@ -36,6 +38,27 @@ class FcaNsmDocument:
     disclosure_id: str
     document_url: str
 
+    @property
+    def evidence_class(self) -> str:
+        category = self.category.upper()
+        if "PROSPECTUS" in category:
+            return "prospectus_document_signal"
+        if "ADMISSION DOCUMENT" in category:
+            return "admission_document_signal"
+        if "INTENTION TO FLOAT" in category:
+            return "intention_to_float_notice"
+        return "other_document_review"
+
+    @property
+    def classification_basis(self) -> str:
+        basis = {
+            "prospectus_document_signal": "FCA document type contains Prospectus.",
+            "admission_document_signal": "FCA document type contains Admission Document.",
+            "intention_to_float_notice": "FCA document type contains Intention to Float.",
+            "other_document_review": "FCA document type does not identify a prospectus or admission document.",
+        }
+        return basis[self.evidence_class]
+
 
 @dataclass(frozen=True)
 class LseFcaCheck:
@@ -47,6 +70,22 @@ class LseFcaCheck:
         if self.documents:
             return "document_found_review_required"
         return "no_document_found"
+
+    @property
+    def evidence_class(self) -> str:
+        if not self.documents:
+            return "no_document_found"
+        return self.evidence_document.evidence_class
+
+    @property
+    def evidence_document(self) -> FcaNsmDocument:
+        priority = {
+            "prospectus_document_signal": 0,
+            "admission_document_signal": 1,
+            "intention_to_float_notice": 2,
+            "other_document_review": 3,
+        }
+        return min(self.documents, key=lambda item: priority[item.evidence_class])
 
 
 def fetch_nsm_documents(company_name: str, limit: int = 5) -> list[FcaNsmDocument]:
@@ -173,34 +212,39 @@ def load_nsm_fixture(path: str | Path) -> Callable[[str], list[FcaNsmDocument]]:
 
 def render_lse_fca_report(checks: list[LseFcaCheck], as_of: date) -> str:
     found = sum(bool(check.documents) for check in checks)
+    classifications = Counter(check.evidence_class for check in checks)
     lines = [
         "# LSE / FCA NSM Corroboration Monitor",
         "",
         f"- Check generated as of: `{as_of.isoformat()}`",
         f"- LSE upcoming issues checked: `{len(checks)}`",
         f"- Issuers with FCA documents found: `{found}`",
+        f"- Prospectus document signals: `{classifications['prospectus_document_signal']}`",
+        f"- Admission document signals: `{classifications['admission_document_signal']}`",
+        f"- Intention-to-float notices: `{classifications['intention_to_float_notice']}`",
         f"- FCA NSM portal: <{FCA_NSM_PORTAL_URL}>",
         f"- FCA guidance: <{FCA_NSM_GUIDANCE_URL}>",
         "",
-        "An FCA document match is evidence requiring review, not proof of admission",
-        "or a trading instruction. The FCA states that NSM is not real-time.",
+        "Classification uses visible FCA metadata to route document review. A document",
+        "signal is not proof of completed admission, trading or an investment action.",
+        "The FCA states that NSM is not real-time.",
         "",
         "## Checks",
         "",
-        "| LSE Issuer | Expected Trading | FCA Status | Latest FCA Document |",
-        "|---|---|---|---|",
+        "| LSE Issuer | Expected Trading | Evidence Class | FCA Status | Document |",
+        "|---|---|---|---|---|",
     ]
     for check in checks:
         evidence = "-"
         if check.documents:
-            document = check.documents[0]
+            document = check.evidence_document
             evidence = (
                 f"[{document.headline}]({document.document_url}) "
                 f"({document.submitted_at.date().isoformat()})"
             )
         lines.append(
             f"| {check.issue.company_name} | {check.issue.expected_first_trading} | "
-            f"`{check.status}` | {evidence} |"
+            f"`{check.evidence_class}` | `{check.status}` | {evidence} |"
         )
     return "\n".join(lines) + "\n"
 
@@ -211,14 +255,56 @@ def write_lse_fca_report(path: str | Path, checks: list[LseFcaCheck], as_of: dat
     destination.write_text(render_lse_fca_report(checks, as_of), encoding="utf-8")
 
 
+def write_lse_fca_csv(path: str | Path, checks: list[LseFcaCheck]) -> None:
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    fields = [
+        "company_name",
+        "expected_first_trading",
+        "status",
+        "evidence_class",
+        "classification_basis",
+        "document_headline",
+        "document_category",
+        "document_date",
+        "document_url",
+        "source_url",
+    ]
+    with destination.open("w", newline="", encoding="utf-8") as target:
+        writer = csv.DictWriter(target, fieldnames=fields)
+        writer.writeheader()
+        for check in checks:
+            document = check.evidence_document if check.documents else None
+            writer.writerow(
+                {
+                    "company_name": check.issue.company_name,
+                    "expected_first_trading": check.issue.expected_first_trading,
+                    "status": check.status,
+                    "evidence_class": check.evidence_class,
+                    "classification_basis": (
+                        document.classification_basis if document else "No FCA document found."
+                    ),
+                    "document_headline": document.headline if document else "",
+                    "document_category": document.category if document else "",
+                    "document_date": (
+                        document.submitted_at.date().isoformat() if document else ""
+                    ),
+                    "document_url": document.document_url if document else "",
+                    "source_url": FCA_NSM_PORTAL_URL,
+                }
+            )
+
+
 def render_lse_fca_html(checks: list[LseFcaCheck], as_of: date) -> str:
     found = sum(bool(check.documents) for check in checks)
+    classifications = Counter(check.evidence_class for check in checks)
     rows = "".join(
         "<tr>"
-        f"<td><strong>{escape(check.issue.company_name)}</strong></td>"
-        f"<td>{escape(check.issue.expected_first_trading)}</td>"
-        f'<td><span class="badge {escape(check.status)}">{escape(check.status)}</span></td>'
-        f"<td>{_evidence_html(check)}</td>"
+        f'<td data-label="Issuer"><div class="value"><strong>{escape(check.issue.company_name)}</strong></div></td>'
+        f'<td data-label="Expected trading"><div class="value">{escape(check.issue.expected_first_trading)}</div></td>'
+        f'<td data-label="Document signal"><div class="value"><span class="badge {escape(check.evidence_class)}">{escape(check.evidence_class)}</span>{_basis_html(check)}</div></td>'
+        f'<td data-label="FCA state"><div class="value">{escape(check.status)}</div></td>'
+        f'<td data-label="Evidence"><div class="value">{_evidence_html(check)}</div></td>'
         "</tr>"
         for check in checks
     )
@@ -228,24 +314,30 @@ def render_lse_fca_html(checks: list[LseFcaCheck], as_of: date) -> str:
 :root{{--bg:#071016;--panel:#0f1c24;--line:#20343d;--text:#edf1ef;--muted:#98abb0;--mint:#56daac;--gold:#f0bc62;--blue:#62a6ff;}}
 *{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,Arial,sans-serif}}header,main{{max-width:1120px;margin:auto;padding:30px 28px}}
 nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:13px}}h1{{font-size:clamp(34px,5vw,54px);line-height:1.06;margin:38px 0 14px}}.lead{{color:var(--muted);font-size:17px;max-width:780px}}
-.cards{{display:flex;gap:16px;margin:35px 0}}.card,.notice,.table-wrap{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{padding:18px 20px;min-width:220px}}.card p{{margin:0;color:var(--muted)}}.card strong{{font-size:38px;color:var(--mint);display:block}}
-.notice{{border-left:3px solid var(--gold);color:var(--muted);padding:15px 18px}}h2{{margin-top:42px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}th{{text-transform:uppercase;font-size:12px;color:var(--muted);font-weight:500}}a{{color:var(--mint);text-decoration:none}}.badge{{border-radius:999px;padding:5px 9px;font-size:12px}}.no_document_found{{color:var(--blue);background:rgba(98,166,255,.12)}}.document_found_review_required{{color:var(--gold);background:rgba(240,188,98,.12)}}
-@media(max-width:800px){{.cards{{display:block}}.card{{margin-bottom:12px}}.table-wrap{{overflow-x:auto}}table{{min-width:720px}}}}
+.cards{{display:flex;gap:16px;margin:35px 0;flex-wrap:wrap}}.card,.notice,.table-wrap{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{padding:18px 20px;min-width:190px}}.card p{{margin:0;color:var(--muted)}}.card strong{{font-size:38px;color:var(--mint);display:block}}
+.notice{{border-left:3px solid var(--gold);color:var(--muted);padding:15px 18px}}h2{{margin-top:42px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}th{{text-transform:uppercase;font-size:12px;color:var(--muted);font-weight:500}}td small{{display:block;color:var(--muted);margin-top:6px;max-width:290px}}a{{color:var(--mint);text-decoration:none}}.badge{{border-radius:999px;padding:5px 9px;font-size:12px;white-space:nowrap}}.no_document_found{{color:var(--blue);background:rgba(98,166,255,.12)}}.intention_to_float_notice{{color:var(--gold);background:rgba(240,188,98,.12)}}.prospectus_document_signal,.admission_document_signal{{color:var(--mint);background:rgba(86,218,172,.12)}}.other_document_review{{color:var(--muted);background:rgba(152,171,176,.12)}}
+@media(max-width:800px){{header,main{{padding:24px 18px}}.cards{{display:block}}.card{{margin-bottom:12px}}.table-wrap{{border:0;background:transparent}}table,tbody,tr,td{{display:block;width:100%}}thead{{display:none}}tr{{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;padding:8px 0}}td{{border:0;display:grid;grid-template-columns:108px minmax(0,1fr);gap:10px;padding:9px 14px}}td::before{{content:attr(data-label);color:var(--muted);font-size:11px;letter-spacing:.06em;text-transform:uppercase}}.value,td strong,td small{{min-width:0;overflow-wrap:anywhere}}.badge{{white-space:normal;overflow-wrap:anywhere}}}}
 </style></head><body><header><nav>TargetAudit / Global Listings Watch / LSE / FCA NSM</nav>
 <h1>London.<br>Document check.</h1><p class="lead">Upcoming LSE issues cross-checked against public FCA National Storage Mechanism documents.</p>
-<p class="meta">Checked as of {escape(as_of.isoformat())}</p><section class="cards"><article class="card"><p>LSE issues checked</p><strong>{len(checks)}</strong></article><article class="card"><p>FCA matches</p><strong>{found}</strong></article></section></header>
-<main><p class="notice">NSM evidence is not real-time and does not by itself confirm admission or support an investment decision.</p>
-<h2>Corroboration results</h2><div class="table-wrap"><table><thead><tr><th>LSE issuer</th><th>Expected trading</th><th>FCA state</th><th>Latest document</th></tr></thead><tbody>{rows}</tbody></table></div></main></body></html>"""
+<p class="meta">Checked as of {escape(as_of.isoformat())}</p><section class="cards"><article class="card"><p>LSE issues checked</p><strong>{len(checks)}</strong></article><article class="card"><p>FCA matches</p><strong>{found}</strong></article><article class="card"><p>Prospectus signals</p><strong>{classifications['prospectus_document_signal']}</strong></article><article class="card"><p>Admission signals</p><strong>{classifications['admission_document_signal']}</strong></article></section></header>
+<main><p class="notice">Classification is based on FCA metadata. NSM evidence is not real-time and does not by itself confirm completed admission or support an investment decision.</p>
+<h2>Corroboration results</h2><div class="table-wrap"><table><thead><tr><th>LSE issuer</th><th>Expected trading</th><th>Document signal</th><th>FCA state</th><th>Document</th></tr></thead><tbody>{rows}</tbody></table></div></main></body></html>"""
 
 
 def _evidence_html(check: LseFcaCheck) -> str:
     if not check.documents:
         return "-"
-    document = check.documents[0]
+    document = check.evidence_document
     return (
         f'<a href="{escape(document.document_url)}">{escape(document.headline)}</a>'
         f"<small> {escape(document.submitted_at.date().isoformat())}</small>"
     )
+
+
+def _basis_html(check: LseFcaCheck) -> str:
+    if not check.documents:
+        return "<small>No FCA document found.</small>"
+    return f"<small>{escape(check.evidence_document.classification_basis)}</small>"
 
 
 def write_lse_fca_html(path: str | Path, checks: list[LseFcaCheck], as_of: date) -> None:

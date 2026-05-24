@@ -108,9 +108,11 @@ documentos de admision o prospecto.
 El contraste FCA NSM consulta el endpoint público utilizado por su formulario:
 `https://api.data.fca.org.uk/search?index=fca-nsm-searchdata`. Busca el nombre
 del emisor LSE en organizaciones divulgadoras o relacionadas y conserva solo
-la última versión documental. La FCA indica que el NSM no es un servicio en
-tiempo real; por eso `document_found_review_required` exige revisión humana y
-`no_document_found` no descarta una cotización futura.
+la última versión documental. Ahora clasifica el metadato `type` visible como
+`prospectus_document_signal`, `admission_document_signal`,
+`intention_to_float_notice` u `other_document_review`. La FCA indica que el
+NSM no es un servicio en tiempo real; por eso las categorías sólo enrutan
+revisión humana y `no_document_found` no descarta una cotización futura.
 
 El conector ASX lee la tabla HTML de la página oficial
 `https://www.asx.com.au/listings/upcoming-floats-and-listings`. ASX declara
