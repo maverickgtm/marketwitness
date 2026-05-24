@@ -26,6 +26,8 @@ Componentes:
 - Ranking de firmas especialistas frente a generalistas.
 - Intervalo Wilson 95% junto a cada tasa de acierto para hacer visible la
   incertidumbre de muestras pequenas.
+- Rankings separados por sector y por direccion, con umbral de muestra en
+  cada segmento.
 - Filtros por banco, subindustria, periodo y direccion del target.
 - Comparacion contra `XLF`.
 - Tabla de observaciones excluidas y motivo.

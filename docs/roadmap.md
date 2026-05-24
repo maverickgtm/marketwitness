@@ -43,7 +43,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 ## Milestone 3: Rigor Cuantitativo (`v0.3`)
 
 - [x] Intervalos de confianza Wilson 95% para hit rate.
-- [ ] Ranking por sector y por direccion.
+- [x] Ranking por sector y por direccion con minimo muestral por segmento.
 - [ ] Universo historico punto-en-el-tiempo.
 - [ ] Revision de targets encadenados por firma/accion.
 - [ ] Reglas de backtest con salida y costos explicitos.

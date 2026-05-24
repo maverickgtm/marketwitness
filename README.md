@@ -332,6 +332,8 @@ auditados en desarrollo:
   un benchmark.
 - Muestra intervalo Wilson 95% del hit rate para no ocultar incertidumbre de
   muestras pequenas.
+- Compara firmas en rankings separados por sector y por direccion, aplicando
+  el minimo muestral dentro de cada segmento.
 - Desglosa resultados entre targets alcistas y bajistas.
 - Genera un ranking que muestra el numero de observaciones y aplica una muestra
   minima configurable.

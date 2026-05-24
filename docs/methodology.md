@@ -1,8 +1,8 @@
-# Metodologia v0.2
+# Metodologia v0.3
 
 ## Vertical Inicial
 
-`v0.2` prepara el analisis para `U.S. Financials`, comenzando por bancos y
+`v0.3` prepara el analisis para `U.S. Financials`, comenzando por bancos y
 otras companias financieras con targets verificables. Para el piloto real, el
 benchmark sectorial preferido es `XLF`. El motor sigue siendo general para
 permitir pruebas y futuros verticales, pero ningun ranking multisectorial se
@@ -107,7 +107,7 @@ La direccion se deriva comparando el target con el precio de referencia:
 El reporte presenta este indicador como `target hit`, no como ganancia
 realizada.
 
-## Metricas v0.2
+## Metricas v0.3
 
 Para cada observacion evaluada:
 
@@ -128,6 +128,12 @@ Para cada firma:
 - Error absoluto medio al vencimiento.
 - Mediana de dias hasta target para aciertos.
 - Retorno excesivo promedio.
+
+Para cada segmento de firma por sector y por direccion:
+
+- Las mismas metricas de firma, con `N` e intervalo Wilson calculados dentro
+  del segmento.
+- Aplicacion independiente del minimo muestral configurado.
 
 ## Incertidumbre De La Tasa De Acierto
 
@@ -158,9 +164,14 @@ El orden actual conserva la tasa observada y el tamano de muestra, mientras el
 intervalo impide presentar diferencias pequenas o muestras reducidas como
 conclusiones fuertes.
 
+El reporte conserva un ranking general y agrega rankings de firmas por sector
+y por direccion (`up`/`down`). Una firma solo aparece en un segmento si ese
+segmento cumple por si mismo el minimo muestral; la muestra global no habilita
+un subgrupo pequeno.
+
 En fases futuras se agregaran:
 
-- Ranking ajustado por sector y volatilidad.
+- Ajuste adicional por volatilidad dentro de cada sector.
 - Manejo de targets revisados como posiciones activas.
 - Costos de transaccion y reglas de salida ejecutables.
 - Universo punto-en-el-tiempo para eliminar sesgo de supervivencia.

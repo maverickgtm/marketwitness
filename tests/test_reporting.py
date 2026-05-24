@@ -39,8 +39,12 @@ class ReportingTests(unittest.TestCase):
 
         result = render_markdown_report(evaluations, date(2025, 1, 1), 1)
 
-        self.assertIn("Methodology version: `0.2`", result)
+        self.assertIn("Methodology version: `0.3`", result)
         self.assertIn("| Example Firm | 1 | 100.00% | 20.65% to 100.00%", result)
+        self.assertIn("## Firm Ranking By Sector", result)
+        self.assertIn("### Tech", result)
+        self.assertIn("## Firm Ranking By Direction", result)
+        self.assertIn("### up", result)
         self.assertIn("## Direction Breakdown", result)
         self.assertIn("| up | 1 | 100.00% | 20.65% to 100.00%", result)
         self.assertIn("95% Wilson score interval", result)
@@ -55,6 +59,43 @@ class ReportingTests(unittest.TestCase):
     def test_wilson_interval_rejects_invalid_counts(self) -> None:
         with self.assertRaisesRegex(ValueError, "hits between zero and total"):
             wilson_interval(2, 1)
+
+    def test_segmented_ranking_applies_minimum_sample_inside_each_segment(self) -> None:
+        evaluations = [
+            _evaluated("one", "up", True),
+            _evaluated("two", "down", False),
+        ]
+
+        result = render_markdown_report(evaluations, date(2025, 1, 1), 2)
+
+        self.assertIn("| Example Firm | 2 | 50.00%", result)
+        self.assertIn("### Financials", result)
+        self.assertIn("No firm-direction segment meets the configured minimum sample.", result)
+
+    def test_blank_sector_is_reported_as_unclassified(self):
+        evaluation = _evaluated("one", "up", True)
+        evaluation = Evaluation(**{**evaluation.__dict__, "sector": ""})
+
+        result = render_markdown_report([evaluation], date(2025, 1, 1), 1)
+
+        self.assertIn("### Unclassified", result)
+
+
+def _evaluated(identifier: str, direction: str, hit: bool) -> Evaluation:
+    return Evaluation(
+        observation_id=identifier,
+        ticker=identifier.upper(),
+        firm="Example Firm",
+        sector="Financials",
+        published_date="2023-01-02",
+        price_target=Decimal("100"),
+        source_url=f"https://example.invalid/{identifier}",
+        status="evaluated",
+        direction=direction,
+        hit=hit,
+        terminal_absolute_error_pct=Decimal("0.1"),
+        excess_return_pct=Decimal("0.01"),
+    )
 
 
 if __name__ == "__main__":

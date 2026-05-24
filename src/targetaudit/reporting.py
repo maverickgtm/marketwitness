@@ -36,11 +36,7 @@ def render_markdown_report(
     for item in evaluated:
         by_firm[item.firm].append(item)
 
-    firms = []
-    for firm, rows in by_firm.items():
-        if len(rows) >= minimum_sample:
-            firms.append((_hit_rate(rows), len(rows), firm, rows))
-    firms.sort(key=lambda item: (-item[0], -item[1], item[2].lower()))
+    firms = _ranked_rows(by_firm, minimum_sample)
 
     lines = [
         "# TargetAudit Report",
@@ -60,24 +56,43 @@ def render_markdown_report(
     if not firms:
         lines.append("No firm meets the configured minimum sample.")
     else:
-        lines.extend(
-            [
-                "| Firm | N | Target Hit Rate | Hit Rate 95% CI | Mean Terminal Error | Median Days To Hit | Mean Excess Return |",
-                "|---|---:|---:|---:|---:|---:|---:|",
-            ]
-        )
-        for _, count, firm, rows in firms:
-            lines.append(
-                "| {firm} | {count} | {hit} | {confidence} | {error} | {days} | {excess} |".format(
-                    firm=firm,
-                    count=count,
-                    hit=_pct(_hit_rate(rows)),
-                    confidence=_format_hit_rate_interval(rows),
-                    error=_pct(_mean_present(rows, "terminal_absolute_error_pct")),
-                    days=_median_hit_days(rows),
-                    excess=_pct(_mean_present(rows, "excess_return_pct")),
-                )
-            )
+        lines.extend(_ranking_table("Firm", firms))
+
+    lines.extend(["", "## Firm Ranking By Sector", ""])
+    sector_groups: defaultdict[str, defaultdict[str, list[Evaluation]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
+    for item in evaluated:
+        sector_groups[item.sector or "Unclassified"][item.firm].append(item)
+    sector_tables = 0
+    for sector in sorted(sector_groups, key=str.lower):
+        sector_firms = _ranked_rows(sector_groups[sector], minimum_sample)
+        if not sector_firms:
+            continue
+        lines.extend([f"### {sector}", ""])
+        lines.extend(_ranking_table("Firm", sector_firms))
+        lines.append("")
+        sector_tables += 1
+    if not sector_tables:
+        lines.append("No firm-sector segment meets the configured minimum sample.")
+
+    lines.extend(["", "## Firm Ranking By Direction", ""])
+    direction_groups: defaultdict[str, defaultdict[str, list[Evaluation]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
+    for item in evaluated:
+        direction_groups[item.direction][item.firm].append(item)
+    direction_tables = 0
+    for direction in ("up", "down"):
+        direction_firms = _ranked_rows(direction_groups[direction], minimum_sample)
+        if not direction_firms:
+            continue
+        lines.extend([f"### {direction}", ""])
+        lines.extend(_ranking_table("Firm", direction_firms))
+        lines.append("")
+        direction_tables += 1
+    if not direction_tables:
+        lines.append("No firm-direction segment meets the configured minimum sample.")
 
     reason_counts = Counter(
         item.reason for item in evaluations if item.status != "evaluated" and item.reason
@@ -136,6 +151,40 @@ def render_markdown_report(
 def _hit_rate(rows: list[Evaluation]) -> Decimal:
     hits = sum(1 for row in rows if row.hit)
     return Decimal(hits) / Decimal(len(rows))
+
+
+def _ranked_rows(
+    groups: dict[str, list[Evaluation]], minimum_sample: int
+) -> list[tuple[Decimal, int, str, list[Evaluation]]]:
+    ranked = [
+        (_hit_rate(rows), len(rows), label, rows)
+        for label, rows in groups.items()
+        if len(rows) >= minimum_sample
+    ]
+    ranked.sort(key=lambda item: (-item[0], -item[1], item[2].lower()))
+    return ranked
+
+
+def _ranking_table(
+    group_label: str, ranked: list[tuple[Decimal, int, str, list[Evaluation]]]
+) -> list[str]:
+    lines = [
+        f"| {group_label} | N | Target Hit Rate | Hit Rate 95% CI | Mean Terminal Error | Median Days To Hit | Mean Excess Return |",
+        "|---|---:|---:|---:|---:|---:|---:|",
+    ]
+    for _, count, label, rows in ranked:
+        lines.append(
+            "| {label} | {count} | {hit} | {confidence} | {error} | {days} | {excess} |".format(
+                label=label,
+                count=count,
+                hit=_pct(_hit_rate(rows)),
+                confidence=_format_hit_rate_interval(rows),
+                error=_pct(_mean_present(rows, "terminal_absolute_error_pct")),
+                days=_median_hit_days(rows),
+                excess=_pct(_mean_present(rows, "excess_return_pct")),
+            )
+        )
+    return lines
 
 
 def wilson_interval(hits: int, total: int) -> tuple[Decimal, Decimal]:
