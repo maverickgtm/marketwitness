@@ -12,6 +12,13 @@ from .ipo_watch import (
     write_ipo_watch_report,
 )
 from .providers.sec import SecDataError, fetch_company_ticker_map, write_company_ticker_map
+from .providers.sec_ipo import (
+    fetch_daily_master_index,
+    load_master_index,
+    parse_ipo_candidate_filings,
+    write_discovered_filings,
+    write_discovery_report,
+)
 from .reporting import write_markdown_report
 
 
@@ -44,10 +51,25 @@ def main() -> int:
     )
     sec_parser.add_argument(
         "--user-agent",
-        required=True,
+        required=False,
         help='Declared SEC user agent, for example "TargetAudit contact@example.com".',
     )
     sec_parser.add_argument("--output", required=True, help="Output CSV path.")
+    discover_parser = subparsers.add_parser(
+        "sec-ipo-discover",
+        help="Scan a SEC daily master index for potential IPO-related filings.",
+    )
+    discover_parser.add_argument("--date", required=True, help="SEC filing date YYYY-MM-DD.")
+    discover_parser.add_argument("--output", required=True, help="Discovery queue CSV path.")
+    discover_parser.add_argument("--report", required=True, help="Markdown report path.")
+    discover_parser.add_argument(
+        "--user-agent",
+        help="SEC contact user agent; alternatively set TARGETAUDIT_SEC_USER_AGENT.",
+    )
+    discover_parser.add_argument(
+        "--index-file",
+        help="Read an already downloaded SEC master index instead of requesting SEC.",
+    )
     ipo_parser = subparsers.add_parser(
         "ipo-watch", help="Generate an auditable IPO monitoring report."
     )
@@ -80,6 +102,26 @@ def main() -> int:
         except SecDataError as exc:
             parser.error(str(exc))
         print(f"Wrote {len(rows)} SEC company mappings to {args.output}.")
+        return 0
+
+    if args.command == "sec-ipo-discover":
+        try:
+            filing_date = date.fromisoformat(args.date)
+            if args.index_file:
+                index_text, source_url = load_master_index(args.index_file)
+            else:
+                index_text, source_url = fetch_daily_master_index(
+                    filing_date, args.user_agent
+                )
+            filings = parse_ipo_candidate_filings(index_text)
+            write_discovered_filings(args.output, filings)
+            write_discovery_report(args.report, filings, filing_date, source_url)
+        except (SecDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Discovered {len(filings)} SEC filings requiring IPO review "
+            f"for {filing_date.isoformat()}."
+        )
         return 0
 
     try:

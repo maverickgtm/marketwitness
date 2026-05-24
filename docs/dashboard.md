@@ -82,3 +82,10 @@ En lugar de posiciones, la pagina usa estados de investigacion:
   primaria.
 - Historial de cambios: guardar fecha, estado previo, fuente y version del
   reporte.
+
+### Descubrimiento Universal
+
+La pagina no se limita a las siete companias semilla. Una cola interna
+`SEC Discovery Queue` examina diariamente formularios publicos potencialmente
+relacionados con IPO para cualquier emisor. Los casos nuevos aparecen en un
+panel de revision; solo los confirmados pasan al tablero publico.

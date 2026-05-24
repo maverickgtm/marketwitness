@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 from pathlib import Path
 from urllib.error import URLError
 from urllib.request import Request, urlopen
@@ -13,11 +14,18 @@ class SecDataError(ValueError):
     """Raised when SEC reference data is unusable."""
 
 
-def fetch_company_ticker_map(user_agent: str) -> list[dict[str, str]]:
-    if "@" not in user_agent:
+def configured_user_agent(user_agent: str | None = None) -> str:
+    resolved = (user_agent or os.environ.get("TARGETAUDIT_SEC_USER_AGENT", "")).strip()
+    if "@" not in resolved:
         raise SecDataError(
-            "SEC requests require a declared user agent including a contact email."
+            "SEC requests require --user-agent or TARGETAUDIT_SEC_USER_AGENT "
+            "including a contact email."
         )
+    return resolved
+
+
+def fetch_company_ticker_map(user_agent: str | None = None) -> list[dict[str, str]]:
+    user_agent = configured_user_agent(user_agent)
     request = Request(
         SEC_COMPANY_TICKERS_URL,
         headers={"User-Agent": user_agent, "Accept": "application/json"},

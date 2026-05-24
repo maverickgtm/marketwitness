@@ -21,7 +21,9 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Adaptador SEC para metadatos de emisores/CIK.
 - [ ] Adaptador de precios gratuito o freemium con cache y limites.
 - [ ] Importador para exportaciones autorizadas de targets.
-- [ ] Monitor SEC para formularios `S-1`, `S-1/A` y `424B4` de IPO Watch.
+- [x] Descubridor SEC para formularios `S-1`, `F-1`, `424B4` y retiros desde
+  un indice diario completo.
+- [ ] Ejecucion diaria persistente y promocion revisada al tablero IPO Watch.
 - [ ] Ingesta de comunicados oficiales para confirmar listings.
 - [ ] Validacion de splits y cambios de ticker.
 - [x] Validacion de barras de precios duplicadas o incoherentes.

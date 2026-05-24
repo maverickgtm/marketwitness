@@ -48,6 +48,23 @@ confirmadas por el proyecto.
 IPO Watch no genera recomendaciones automaticas de compra, venta ni tamanos
 de posicion.
 
+### Descubrimiento Universal De IPOs
+
+Para no depender solo de una lista manual, TargetAudit incluye una cola de
+descubrimiento basada en los indices diarios publicos de SEC EDGAR. Busca
+formularios como `S-1`, `F-1`, `424B4` y `RW` de cualquier emisor:
+
+```bash
+export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
+PYTHONPATH=src python3 -m targetaudit sec-ipo-discover \
+  --date 2026-05-20 \
+  --output build/live/sec-ipo-discovery.csv \
+  --report build/live/sec-ipo-discovery.md
+```
+
+La cola detecta candidatos para revision; no clasifica automaticamente todo
+`S-1` como IPO, porque algunos registros corresponden a otras ofertas.
+
 ## Estado Del Proyecto
 
 `v0.1` es un motor de investigacion reproducible:
@@ -85,6 +102,8 @@ build/demo/evaluations.csv
 build/demo/report.md
 build/demo/ipo-watch.md
 build/demo/ipo-watch.html
+build/demo/sec-ipo-discovery.csv
+build/demo/sec-ipo-discovery.md
 build/dist/targetaudit-0.1.0-py3-none-any.whl
 ```
 
@@ -145,7 +164,8 @@ docs/                   Metodologia, estrategia, dashboard, fuentes y roadmap
 Consulta [la metodologia](docs/methodology.md),
 [las fuentes evaluadas](docs/data-sources.md) y
 [la estrategia de producto](docs/product-strategy.md). El progreso tecnico se
-mantiene en [el roadmap](docs/roadmap.md).
+mantiene en [el roadmap](docs/roadmap.md) y la ejecucion continua en
+[operations.md](docs/operations.md).
 
 ## Aviso
 

@@ -67,6 +67,11 @@ El monitor futuro priorizara SEC EDGAR y anuncios oficiales. Las noticias
 serviran para abrir una tarea de verificacion, no para cambiar por si solas el
 estado mostrado.
 
+Para descubrir emisores que no estaban en la lista inicial, el proyecto usa
+los indices diarios EDGAR documentados por SEC. El resultado es una cola de
+revision: un formulario de registro encontrado se considera posible evento,
+no una IPO confirmada, hasta revisar el documento.
+
 Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
 respetar la guia de acceso justo, que actualmente fija un maximo de 10
 solicitudes por segundo.

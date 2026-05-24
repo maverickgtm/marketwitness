@@ -20,6 +20,11 @@ demo:
 		--report build/demo/ipo-watch.md \
 		--html build/demo/ipo-watch.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-ipo-discover \
+		--date 2026-05-20 \
+		--index-file data/samples/sec-master-sample.idx \
+		--output build/demo/sec-ipo-discovery.csv \
+		--report build/demo/sec-ipo-discovery.md
 
 package:
 	mkdir -p build/dist

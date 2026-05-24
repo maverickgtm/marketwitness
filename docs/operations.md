@@ -1,0 +1,105 @@
+# Operacion Continua De IPO Watch
+
+## Objetivo
+
+La lista inicial de SpaceX, Cerebras y candidatos conocidos es una semilla.
+El monitor continuo debe detectar **cualquier** potencial nueva IPO visible en
+fuentes publicas, someterla a revision y luego actualizar el dashboard.
+
+## Fuente Primaria: SEC EDGAR
+
+La SEC publica indices diarios de todos los filings presentados. TargetAudit
+escanea los formularios con interes para IPO Watch:
+
+| Formulario | Uso En La Cola |
+|---|---|
+| `S-1`, `F-1` | Nueva declaracion de registro que requiere verificar si es IPO |
+| `S-1/A`, `F-1/A` | Enmienda a una declaracion detectada |
+| `S-1MEF`, `F-1MEF` | Posible ampliacion de valores registrados |
+| `424B4` | Prospecto final que puede confirmar terminos de oferta |
+| `RW` | Solicitud de retiro que puede cancelar el seguimiento |
+
+Un filing descubierto no entra automaticamente como IPO confirmada. Muchos
+formularios de registro pueden representar ofertas secundarias, reventas u
+otras operaciones.
+
+## Que Es El User-Agent
+
+La SEC no pide una cuenta ni una clave API para descargar datos publicos.
+Solicita que el trafico automatizado se identifique con una organizacion o
+proyecto y un correo monitoreado.
+
+Ejemplo:
+
+```text
+TargetAudit mario@ejemplo.com
+```
+
+El correo debe ser uno que puedas revisar si la SEC necesita contactar al
+operador del monitor. Puede ser tu correo normal o, preferiblemente, un correo
+dedicado al proyecto, por ejemplo `targetaudit@tudominio.com`.
+
+No pongas ese correo en GitHub. Configuralo localmente o como secret del
+repositorio:
+
+```bash
+export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
+```
+
+El archivo `.env.example` muestra el nombre esperado de la variable, pero no
+incluye una credencial real.
+
+## Ejecucion Manual En Vivo
+
+```bash
+export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
+PYTHONPATH=src python3 -m targetaudit sec-ipo-discover \
+  --date YYYY-MM-DD \
+  --output build/live/sec-ipo-discovery.csv \
+  --report build/live/sec-ipo-discovery.md
+```
+
+Para el demo y las pruebas se usa un indice local de ejemplo, sin solicitar
+datos a SEC:
+
+```bash
+make verify
+```
+
+## Flujo Continuo Recomendado
+
+1. Cada dia habil de mercado, descargar el indice diario SEC una vez.
+2. Extraer formularios potencialmente relacionados con IPO.
+3. Guardar la cola y comparar contra ejecuciones anteriores.
+4. Revisar nuevos `S-1`/`F-1` para confirmar si describen una IPO.
+5. Promover casos confirmados al registro `IPO Watch`.
+6. Confirmar ticker, exchange y fecha solo desde prospecto final, exchange o
+   comunicado oficial.
+7. Publicar el dashboard actualizado con historial de cambios.
+
+## Automatizacion A Construir
+
+La siguiente fase agregara almacenamiento persistente y una tarea diaria:
+
+- Entrada: indices diarios SEC y comunicados oficiales.
+- Salida: eventos nuevos, entidades promovidas, retiros y cambios de estado.
+- Alertas: nuevas IPOs confirmadas, pricing, primer dia de cotizacion.
+- Proteccion: maximo muy inferior a las 10 solicitudes por segundo permitidas
+  por SEC; normalmente una solicitud diaria de indice y solicitudes puntuales
+  de documentos a revisar.
+
+En un repositorio GitHub publico, `TARGETAUDIT_SEC_USER_AGENT` se configurara
+como `Actions secret`, nunca escrito en el codigo ni en los reportes.
+
+Una vez confirmado el correo del proyecto, el paso siguiente sera crear una
+tarea diaria que ejecute la cola SEC en dias habiles y produzca un resumen de
+nuevos filings para revision.
+
+## Limites
+
+- Las presentaciones confidenciales no se pueden descubrir hasta hacerse
+  publicas.
+- SEC cubre el mercado regulado en Estados Unidos; IPOs en Londres, Hong Kong
+  u otras plazas necesitan conectores adicionales.
+- Fuentes noticiosas pueden advertir de una operacion, pero no deben confirmar
+  estado por si solas.
