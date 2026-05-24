@@ -56,6 +56,14 @@ from .providers.tsx import (
     write_tsx_html,
     write_tsx_report,
 )
+from .providers.sgx import (
+    SgxDataError,
+    fetch_sgx_prospectuses,
+    load_sgx_snapshot,
+    write_sgx_csv,
+    write_sgx_html,
+    write_sgx_report,
+)
 from .providers.sec import SecDataError, fetch_company_ticker_map, write_company_ticker_map
 from .providers.sec_ipo import (
     fetch_daily_master_index,
@@ -196,6 +204,20 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Report cutoff in YYYY-MM-DD format.",
     )
+    sgx_parser = subparsers.add_parser(
+        "sgx-monitor", help="Read official SGX IPO Prospectus records."
+    )
+    sgx_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    sgx_parser.add_argument("--report", required=True, help="Markdown report path.")
+    sgx_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    sgx_parser.add_argument(
+        "--snapshot", help="Read a saved official SGX JSON response instead of requesting SGX."
+    )
+    sgx_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Report cutoff in YYYY-MM-DD format.",
+    )
     hkex_parser = subparsers.add_parser(
         "hkex-monitor", help="Read official HKEXnews listing-status JSON feeds."
     )
@@ -311,6 +333,26 @@ def main() -> int:
         except (TsxDataError, ValueError) as exc:
             parser.error(str(exc))
         print(f"Wrote TSX monitor for {len(listings)} official records to {args.report}.")
+        return 0
+
+    if args.command == "sgx-monitor":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            prospectuses = (
+                load_sgx_snapshot(args.snapshot, as_of)
+                if args.snapshot
+                else fetch_sgx_prospectuses()
+            )
+            write_sgx_csv(args.output, prospectuses)
+            write_sgx_report(args.report, prospectuses, as_of)
+            if args.html:
+                write_sgx_html(args.html, prospectuses, as_of)
+        except (SgxDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote SGX monitor for {len(prospectuses)} official prospectus "
+            f"records to {args.report}."
+        )
         return 0
 
     if args.command == "global-listings":

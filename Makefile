@@ -59,6 +59,12 @@ demo:
 		--report build/demo/tsx-monitor.md \
 		--html build/demo/tsx-monitor.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sgx-monitor \
+		--snapshot data/samples/sgx-ipo-prospectus.json \
+		--output build/demo/sgx-monitor.csv \
+		--report build/demo/sgx-monitor.md \
+		--html build/demo/sgx-monitor.html \
+		--as-of 2026-05-24
 
 package:
 	mkdir -p build/dist

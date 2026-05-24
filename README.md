@@ -85,6 +85,9 @@ Australia ya lee la tabla oficial ASX de solicitudes formales y separa
 listados anticipados de retiros publicados.
 Canada ya lee `TSX New Company Listings` como comprobación de cotizaciones
 completadas; no lo usa para predecir solicitudes futuras.
+Singapur ya consulta el catálogo JSON oficial `SGX IPO Prospectus`; registra
+documentos publicados para revisión y no confirma automáticamente una
+cotización completada.
 
 Para leer HKEX en vivo:
 
@@ -127,6 +130,15 @@ PYTHONPATH=src python3 -m targetaudit tsx-monitor \
   --output data/raw/global/tsx-monitor.csv \
   --report build/live/tsx-monitor.md \
   --html build/live/tsx-monitor.html
+```
+
+Para leer prospectos SGX en vivo:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit sgx-monitor \
+  --output data/raw/global/sgx-monitor.csv \
+  --report build/live/sgx-monitor.md \
+  --html build/live/sgx-monitor.html
 ```
 
 ## Estado Del Proyecto
@@ -183,6 +195,9 @@ build/demo/asx-monitor.html
 build/demo/tsx-monitor.csv
 build/demo/tsx-monitor.md
 build/demo/tsx-monitor.html
+build/demo/sgx-monitor.csv
+build/demo/sgx-monitor.md
+build/demo/sgx-monitor.html
 build/dist/targetaudit-0.1.0-py3-none-any.whl
 ```
 

@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "code": "200",
+    "message": "success",
+    "totalPages": 1,
+    "totalItems": 3
+  },
+  "data": [
+    {
+      "closing_date": 1779249600000,
+      "name": "JUSTCO HOLDINGS LIMITED",
+      "id": "3444",
+      "modified_date": "05/18/2026 02:20:56 AM",
+      "url": "https://links.sgx.com/1.0.0/ipo-prospectus/3444/4e5f29ac82cec21b5fbfcfeb7b5be51363aefb8aea0e9162826dd9b918909bd3",
+      "status": "Completed"
+    },
+    {
+      "closing_date": null,
+      "name": "DBXT IBOXX SINGAPORE ETF 5",
+      "id": "2992",
+      "modified_date": "05/18/2026 06:47:21 AM",
+      "url": "https://links.sgx.com/1.0.0/ipo-prospectus/2992/353573be04905333b008f9aba78d36f8f54d3895f384f1d7eccbca98e9f6e73b",
+      "status": "Completed"
+    },
+    {
+      "closing_date": 1776744000000,
+      "name": "KIN GLOBAL LIMITED",
+      "id": "3443",
+      "modified_date": "04/15/2026 01:55:57 AM",
+      "url": "https://links.sgx.com/1.0.0/ipo-prospectus/3443/de88b56ecb4c18aa8d063f13232eaaf0d56644a847837840d17eded480a72847",
+      "status": "Completed"
+    }
+  ]
+}

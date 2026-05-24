@@ -32,7 +32,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [ ] Clasificar documentos FCA revisados como prospecto/admission evidence.
 - [x] Conector ASX `Upcoming floats and listings` desde HTML oficial.
 - [x] Conector TSX `New Company Listings` como confirmacion de listings.
-- [ ] Conector SGX `IPO Prospectus` tras validar su endpoint público.
+- [x] Conector SGX `IPO Prospectus` mediante API JSON oficial.
 - [ ] Ingesta de comunicados oficiales para confirmar listings.
 - [ ] Validacion de splits y cambios de ticker.
 - [x] Validacion de barras de precios duplicadas o incoherentes.

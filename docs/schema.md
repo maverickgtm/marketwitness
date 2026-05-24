@@ -153,3 +153,13 @@ cuando la propia página marca la solicitud como retirada.
 `company_name`, `symbols`, `listing_date`, `status`, `observed_on`,
 `source_url` y `detail_url`. El único estado emitido es `listed`, ya que
 esta fuente documenta cotizaciones completadas y no solicitudes futuras.
+
+## SGX IPO Prospectus JSON Feed
+
+`sgx-monitor` consulta el API usado por la página oficial `IPO Prospectus` y
+produce: `company_name`, `document_id`, `status`, `closing_date`,
+`modified_date`, `prospectus_url`, `observed_on` y `source_url`.
+
+El estado emitido es `prospectus_published`: prueba que SGX publicó un
+documento de prospecto en su catálogo, pero no confirma por sí solo admisión,
+inicio de negociación o una decisión de inversión.

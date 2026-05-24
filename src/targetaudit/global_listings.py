@@ -144,7 +144,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     counts = Counter(market.connector_status for market in markets)
     cards = [
         ("Mapped markets", len(markets), "Official sources identified"),
-        ("Live feeds", counts["live_official_feed"], "LSE, HKEX, ASX and TSX implemented"),
+        ("Live feeds", counts["live_official_feed"], "LSE, HKEX, ASX, TSX and SGX implemented"),
         ("Verified snapshots", counts["verified_snapshot"], "Official capture, not continuous"),
         ("Expansion queue", counts["planned_connector"], "Official sources to connect"),
     ]
@@ -226,13 +226,14 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     <section class="cards">{cards_html}</section>
   </header>
   <main>
-    <p class="notice">HKEX, LSE, ASX and TSX have official ingestion paths. TSX records completed listings; prospective signals still require their jurisdiction-specific confirmation.</p>
+    <p class="notice">HKEX, LSE, ASX, TSX and SGX have official ingestion paths. TSX records completed listings; SGX records prospectus documents; each signal still requires its jurisdiction-specific review.</p>
     <section class="monitor-links" aria-label="Monitoring pages">
       <a href="hkex-monitor.html">Open HKEX live monitor</a>
       <a href="lse-upcoming.html">Open LSE live monitor</a>
       <a href="lse-fca-check.html">Open LSE / FCA check</a>
       <a href="asx-monitor.html">Open ASX live monitor</a>
       <a href="tsx-monitor.html">Open TSX listing confirmations</a>
+      <a href="sgx-monitor.html">Open SGX prospectus monitor</a>
     </section>
     <h2>Official source map</h2>
     <div class="table-wrap"><table>

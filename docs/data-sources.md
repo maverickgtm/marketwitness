@@ -83,7 +83,7 @@ Revisado al `2026-05-24`:
 | Hong Kong | HKEX/HKEXnews New Listings - AP & PHIP | JSON oficiales de Active AP, Active PHIP, Inactive, Listed y Returned | Feed oficial implementado |
 | Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida, fecha anticipada y retiros | Feed HTML oficial implementado |
 | Canada | TSX New Company Listings | Nuevas companias ya listadas | Feed HTML oficial implementado como confirmación |
-| Singapur | SGX IPO Prospectus | Prospectos IPO publicados | Fuente comprobada; endpoint estable por implementar |
+| Singapur | SGX IPO Prospectus API | Prospectos IPO publicados | Feed JSON oficial implementado |
 
 Las etapas no son intercambiables entre jurisdicciones. Por ejemplo, un
 `PHIP` de HKEX indica aprobacion en principio, mientras una aparicion en ASX
@@ -124,10 +124,11 @@ El conector TSX lee la tabla HTML oficial
 empresas que TSX ya muestra como nuevas cotizaciones y por ello solo asignan
 el estado `listed`; no constituyen una señal previa de IPO.
 
-La página oficial SGX `IPO Prospectus` fue verificada el `2026-05-24` y
-mostró, entre otros, `JUSTCO HOLDINGS LIMITED` con fecha de cierre
-`20 May 2026`. El catálogo se carga dinámicamente; se mantiene pendiente
-identificar y validar su endpoint público estable antes de automatizarlo.
+La página oficial SGX `IPO Prospectus` y el API que la alimenta,
+`https://api.sgx.com/ipoprospectus/v1.0/`, fueron verificados el
+`2026-05-24`. El API mostró `JUSTCO HOLDINGS LIMITED` con fecha de cierre
+`20 May 2026` y permite monitorear prospectos publicados. TargetAudit asigna
+`prospectus_published`: esta evidencia no confirma admisión o negociación.
 
 Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
 respetar la guia de acceso justo, que actualmente fija un maximo de 10

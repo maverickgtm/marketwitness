@@ -105,7 +105,7 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | Hong Kong HKEX | HKEX/HKEXnews AP/PHIP JSON feeds | Feed oficial implementado |
 | Australian Securities Exchange | ASX `Upcoming floats and listings` | Feed HTML oficial implementado |
 | Toronto Stock Exchange | TSX `New Company Listings` | Feed HTML oficial implementado para listings completados |
-| Singapore Exchange | SGX `IPO Prospectus` | Fuente oficial comprobada; integración pendiente |
+| Singapore Exchange | SGX `IPO Prospectus` | Feed JSON oficial implementado para prospectos publicados |
 
 ### Regla De Evidencia
 
@@ -117,9 +117,10 @@ Cada jurisdiccion conserva sus propias etapas:
   aprobacion en principio, no trading completado.
 - Australia: ASX informa que sus upcoming listings tienen solicitud formal
   recibida, pero las fechas de primera cotizacion siguen siendo anticipadas.
-- Canada y Singapur: sus fuentes oficiales identificadas sirven inicialmente
-  para listings/prospectos publicados y requieren disenar el estado previo
-  antes de considerarlos monitores prospectivos.
+- Canada: el feed implementado documenta listings completados y requiere una
+  fuente adicional para alertas prospectivas.
+- Singapur: el feed implementado documenta prospectos publicados; cada
+  documento debe revisarse antes de afirmar admision o inicio de negociacion.
 
 ### Salidas Operativas
 
@@ -133,5 +134,7 @@ Cada jurisdiccion conserva sus propias etapas:
   formales anticipadas y retiros visibles en ASX.
 - `TSX New Company Listings Monitor`: pagina de confirmaciones publicadas de
   compañías ya listadas; no funciona como señal prospectiva.
+- `SGX IPO Prospectus Monitor`: pagina de documentos publicados en el
+  catalogo oficial SGX; funciona como señal documental para revision.
 - La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
-  cobertura global, feed HKEX, feed LSE, contraste FCA, ASX y TSX.
+  cobertura global, feed HKEX, feed LSE, contraste FCA, ASX, TSX y SGX.
