@@ -1,8 +1,8 @@
-# Metodologia v0.3.2
+# Metodologia v0.3.3
 
 ## Vertical Inicial
 
-`v0.3.2` prepara el analisis para `U.S. Financials`, comenzando por bancos y
+`v0.3.3` prepara el analisis para `U.S. Financials`, comenzando por bancos y
 otras companias financieras con targets verificables. Para el piloto real, el
 benchmark sectorial preferido es `XLF`. El motor sigue siendo general para
 permitir pruebas y futuros verticales, pero ningun ranking multisectorial se
@@ -137,7 +137,24 @@ La direccion se deriva comparando el target con el precio de referencia:
 El reporte presenta este indicador como `target hit`, no como ganancia
 realizada.
 
-## Metricas v0.3.2
+## Backtest Ejecutable
+
+El reporte separa la precision del target de una simulacion de estrategia:
+
+- Entrada: cierre ajustado del primer dia elegible posterior a publicacion.
+- Salida si hay acierto: orden limite ejecutada exactamente al precio target
+  en la primera fecha cuyo maximo/minimo ajustado lo atraviesa.
+- Salida si no hay acierto: cierre ajustado del vencimiento.
+- Costos: `10 bps` por lado por defecto, aplicados en entrada y salida; el CLI
+  permite modificarlo mediante `--transaction-cost-bps`.
+- Benchmark: para retorno neto excedente se usa la misma direccion y la misma
+  fecha de salida de la estrategia, siempre que exista barra del benchmark.
+
+La salida limite es un supuesto reproducible, no una prueba de ejecucion real.
+El backtest no modela slippage, fees de prestamo en posiciones cortas,
+impuestos, dividendos separados de la serie ajustada ni tamano de posicion.
+
+## Metricas v0.3.3
 
 Para cada observacion evaluada:
 
@@ -149,6 +166,15 @@ Para cada observacion evaluada:
 - `benchmark_directional_return_pct`: misma direccion aplicada al benchmark.
 - `excess_return_pct`: retorno direccional menos retorno direccional del
   benchmark.
+- `strategy_exit_reason`: `target_hit_limit` o `horizon_close`.
+- `strategy_exit_date` y `strategy_exit_price`: salida aplicada a la
+  simulacion.
+- `strategy_gross_return_pct`: retorno a la salida simulada antes de costos.
+- `transaction_cost_bps_per_side`: costo declarado por lado.
+- `strategy_net_return_pct`: retorno de estrategia despues del costo de
+  entrada y salida.
+- `strategy_net_excess_return_pct`: diferencia neta frente al benchmark en la
+  misma fecha de salida cuando la barra correspondiente esta disponible.
 
 Para cada firma:
 
@@ -158,6 +184,9 @@ Para cada firma:
 - Error absoluto medio al vencimiento.
 - Mediana de dias hasta target para aciertos.
 - Retorno excesivo promedio.
+- Retorno neto promedio de la estrategia simulada y su exceso neto promedio.
+- Cantidad de salidas que pudieron alinearse con barra del benchmark para el
+  exceso neto.
 
 Para cada segmento de firma por sector y por direccion:
 
@@ -204,7 +233,7 @@ En fases futuras se agregaran:
 - Ajuste adicional por volatilidad dentro de cada sector.
 - Evaluacion de periodos activos truncados cuando una fuente documente el
   estado de la revision.
-- Costos de transaccion y reglas de salida ejecutables.
+- Modelos adicionales de slippage, borrow fees y dimensionamiento.
 - Integracion de composiciones historicas reales con licencia publicable.
 
 ## Exclusiones
@@ -238,6 +267,7 @@ Cada reporte debe registrar:
 - Fecha `as_of` del calculo.
 - Identificador del universo historico utilizado o ausencia declarada.
 - Observaciones reemplazadas, target sucesor y fecha de la revision.
+- Regla de salida del backtest y costo por lado utilizado.
 - Archivos o proveedor de datos usados.
 - Filas excluidas y motivo.
 - Parametros modificados, como la muestra minima.

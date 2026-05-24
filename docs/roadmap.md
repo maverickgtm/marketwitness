@@ -46,7 +46,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Ranking por sector y por direccion con minimo muestral por segmento.
 - [x] Universo historico punto-en-el-tiempo con membresia y sector auditables.
 - [x] Revision de targets encadenados por firma/accion con exclusion auditable.
-- [ ] Reglas de backtest con salida y costos explicitos.
+- [x] Reglas de backtest con salida y costos explicitos.
 
 ## Milestone 4: Aplicacion (`v0.4`)
 

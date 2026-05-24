@@ -18,12 +18,17 @@ def write_markdown_report(
     as_of: date,
     minimum_sample: int,
     historical_universe_id: str = "",
+    transaction_cost_bps_per_side: Decimal = Decimal("10"),
 ) -> None:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(
         render_markdown_report(
-            evaluations, as_of, minimum_sample, historical_universe_id
+            evaluations,
+            as_of,
+            minimum_sample,
+            historical_universe_id,
+            transaction_cost_bps_per_side,
         ),
         encoding="utf-8",
     )
@@ -34,6 +39,7 @@ def render_markdown_report(
     as_of: date,
     minimum_sample: int,
     historical_universe_id: str = "",
+    transaction_cost_bps_per_side: Decimal = Decimal("10"),
 ) -> str:
     statuses = Counter(item.status for item in evaluations)
     evaluated = [item for item in evaluations if item.status == "evaluated"]
@@ -49,6 +55,8 @@ def render_markdown_report(
         f"- Methodology version: `{METHODOLOGY_VERSION}`",
         f"- Calculated as of: `{as_of.isoformat()}`",
         f"- Historical universe control: `{historical_universe_id or 'not supplied'}`",
+        "- Strategy exit rule: `target limit if hit; otherwise horizon close`",
+        f"- Transaction cost model: `{transaction_cost_bps_per_side} bps per side`",
         f"- Minimum firm sample in ranking: `{minimum_sample}`",
         f"- Input observations: `{len(evaluations)}`",
         f"- Evaluated: `{statuses['evaluated']}`",
@@ -135,7 +143,7 @@ def render_markdown_report(
             "",
             "## Direction Breakdown",
             "",
-            "| Direction | N | Target Hit Rate | Hit Rate 95% CI | Mean Terminal Error | Mean Excess Return |",
+            "| Direction | N | Target Hit Rate | Hit Rate 95% CI | Mean Terminal Error | Mean Horizon Excess Return |",
             "|---|---:|---:|---:|---:|---:|",
         ]
     )
@@ -158,6 +166,50 @@ def render_markdown_report(
     lines.extend(
         [
             "",
+            "## Net Strategy Breakdown",
+            "",
+            "| Firm | N | Mean Net Strategy Return | Matched Benchmark Exits | Mean Net Strategy Excess Return |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
+    if firms:
+        for _, count, label, rows in firms:
+            lines.append(
+                "| {label} | {count} | {net} | {matched} | {excess} |".format(
+                    label=label,
+                    count=count,
+                    net=_pct(_mean_present(rows, "strategy_net_return_pct")),
+                    matched=_count_present(rows, "strategy_net_excess_return_pct"),
+                    excess=_pct(_mean_present(rows, "strategy_net_excess_return_pct")),
+                )
+            )
+    else:
+        lines.append("| - | 0 | - | 0 | - |")
+
+    lines.extend(
+        [
+            "",
+            "## Strategy Exit Breakdown",
+            "",
+            "| Exit Rule | Rows | Mean Net Strategy Return |",
+            "|---|---:|---:|",
+        ]
+    )
+    exits = Counter(item.strategy_exit_reason for item in evaluated if item.strategy_exit_reason)
+    if exits:
+        for rule in ("target_hit_limit", "horizon_close"):
+            rows = [item for item in evaluated if item.strategy_exit_reason == rule]
+            if rows:
+                lines.append(
+                    f"| `{rule}` | {len(rows)} | "
+                    f"{_pct(_mean_present(rows, 'strategy_net_return_pct'))} |"
+                )
+    else:
+        lines.append("| - | 0 | - |")
+
+    lines.extend(
+        [
+            "",
             "## Interpretation",
             "",
             "A target hit only indicates that an adjusted daily high or low reached the",
@@ -167,6 +219,13 @@ def render_markdown_report(
             "The 95% Wilson interval quantifies sampling uncertainty in each observed",
             "hit rate. Wide intervals, especially for small N, should prevent strong",
             "comparisons between firms even when their point estimates differ.",
+            "",
+            "Net strategy returns assume a limit-order exit exactly at the target once",
+            "the adjusted daily range crosses it, otherwise an exit at horizon close.",
+            "They subtract the declared cost on entry and exit; they do not model",
+            "slippage, borrow fees, taxes or position sizing.",
+            "Net excess return is shown only when the benchmark has a bar on the",
+            "strategy exit date; the matched-exit count exposes this coverage.",
             "",
         ]
     )
@@ -194,7 +253,7 @@ def _ranking_table(
     group_label: str, ranked: list[tuple[Decimal, int, str, list[Evaluation]]]
 ) -> list[str]:
     lines = [
-        f"| {group_label} | N | Target Hit Rate | Hit Rate 95% CI | Mean Terminal Error | Median Days To Hit | Mean Excess Return |",
+        f"| {group_label} | N | Target Hit Rate | Hit Rate 95% CI | Mean Terminal Error | Median Days To Hit | Mean Horizon Excess Return |",
         "|---|---:|---:|---:|---:|---:|---:|",
     ]
     for _, count, label, rows in ranked:
@@ -244,6 +303,10 @@ def _mean_present(rows: list[Evaluation], field: str) -> Decimal | None:
     if not values:
         return None
     return sum(values, Decimal("0")) / Decimal(len(values))
+
+
+def _count_present(rows: list[Evaluation], field: str) -> int:
+    return sum(1 for row in rows if getattr(row, field) is not None)
 
 
 def _median_hit_days(rows: list[Evaluation]) -> str:

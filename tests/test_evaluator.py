@@ -22,6 +22,7 @@ class EvaluatorTests(unittest.TestCase):
             ],
             "SPY": [
                 _bar("SPY", "2023-01-03", "101", "99", "100"),
+                _bar("SPY", "2023-06-01", "106", "104", "105"),
                 _bar("SPY", "2024-01-02", "111", "109", "110"),
             ],
         }
@@ -34,6 +35,13 @@ class EvaluatorTests(unittest.TestCase):
         self.assertEqual(result.days_to_target, 149)
         self.assertEqual(result.directional_return_pct, Decimal("0.15"))
         self.assertEqual(result.excess_return_pct, Decimal("0.05"))
+        self.assertEqual(result.strategy_exit_reason, "target_hit_limit")
+        self.assertEqual(result.strategy_exit_date, "2023-06-01")
+        self.assertEqual(result.strategy_exit_price, Decimal("120"))
+        self.assertEqual(result.strategy_gross_return_pct, Decimal("0.2"))
+        self.assertEqual(result.strategy_net_return_pct, Decimal("0.198"))
+        self.assertEqual(result.benchmark_strategy_net_return_pct, Decimal("0.048"))
+        self.assertEqual(result.strategy_net_excess_return_pct, Decimal("0.150"))
 
     def test_downward_target_can_miss_but_return_positive(self) -> None:
         observation = _target("down", "BBB", Decimal("80"), "")
@@ -51,6 +59,30 @@ class EvaluatorTests(unittest.TestCase):
         self.assertEqual(result.direction, "down")
         self.assertFalse(result.hit)
         self.assertEqual(result.directional_return_pct, Decimal("0.1"))
+        self.assertEqual(result.strategy_exit_reason, "horizon_close")
+        self.assertEqual(result.strategy_exit_date, "2024-01-02")
+        self.assertEqual(result.strategy_net_return_pct, Decimal("0.098"))
+
+    def test_net_strategy_excess_requires_benchmark_bar_on_early_exit_date(self) -> None:
+        observation = _target("unmatched-exit", "AAA", Decimal("120"), "SPY")
+        prices = {
+            "AAA": [
+                _bar("AAA", "2022-12-30", "101", "99", "100"),
+                _bar("AAA", "2023-01-03", "101", "99", "100"),
+                _bar("AAA", "2023-06-01", "121", "110", "118"),
+                _bar("AAA", "2024-01-02", "116", "113", "115"),
+            ],
+            "SPY": [
+                _bar("SPY", "2023-01-03", "101", "99", "100"),
+                _bar("SPY", "2024-01-02", "111", "109", "110"),
+            ],
+        }
+
+        result = evaluate_all([observation], prices, date(2025, 1, 1))[0]
+
+        self.assertEqual(result.status, "evaluated")
+        self.assertEqual(result.strategy_net_return_pct, Decimal("0.198"))
+        self.assertIsNone(result.strategy_net_excess_return_pct)
 
     def test_entry_day_intraday_high_is_not_counted_as_a_hit(self) -> None:
         observation = _target("no-look-ahead", "AAA", Decimal("120"), "")
@@ -288,6 +320,36 @@ class EvaluatorTests(unittest.TestCase):
         results = evaluate_all([original, other_firm], prices, date(2025, 1, 1))
 
         self.assertEqual(results[0].status, "evaluated")
+
+    def test_configurable_transaction_cost_changes_net_strategy_return(self) -> None:
+        observation = _target("cost", "AAA", Decimal("120"), "")
+        prices = {
+            "AAA": [
+                _bar("AAA", "2022-12-30", "101", "99", "100"),
+                _bar("AAA", "2023-01-03", "101", "99", "100"),
+                _bar("AAA", "2023-06-01", "121", "110", "118"),
+                _bar("AAA", "2024-01-02", "116", "113", "115"),
+            ]
+        }
+
+        result = evaluate_all(
+            [observation],
+            prices,
+            date(2025, 1, 1),
+            transaction_cost_bps_per_side=Decimal("25"),
+        )[0]
+
+        self.assertEqual(result.transaction_cost_bps_per_side, Decimal("25"))
+        self.assertEqual(result.strategy_net_return_pct, Decimal("0.195"))
+
+    def test_negative_transaction_cost_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "non-negative"):
+            evaluate_all(
+                [],
+                {},
+                date(2025, 1, 1),
+                transaction_cost_bps_per_side=Decimal("-1"),
+            )
 
 
 def _target(identifier: str, ticker: str, target: Decimal, benchmark: str) -> TargetObservation:

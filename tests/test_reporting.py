@@ -23,6 +23,9 @@ class ReportingTests(unittest.TestCase):
                 days_to_target=20,
                 terminal_absolute_error_pct=Decimal("0.05"),
                 excess_return_pct=Decimal("0.03"),
+                strategy_net_return_pct=Decimal("0.19"),
+                strategy_net_excess_return_pct=Decimal("0.08"),
+                strategy_exit_reason="target_hit_limit",
             ),
             Evaluation(
                 observation_id="two",
@@ -41,14 +44,19 @@ class ReportingTests(unittest.TestCase):
             evaluations, date(2025, 1, 1), 1, "us-financials-historical"
         )
 
-        self.assertIn("Methodology version: `0.3.2`", result)
+        self.assertIn("Methodology version: `0.3.3`", result)
         self.assertIn("Historical universe control: `us-financials-historical`", result)
+        self.assertIn("Transaction cost model: `10 bps per side`", result)
         self.assertIn("| Example Firm | 1 | 100.00% | 20.65% to 100.00%", result)
         self.assertIn("## Firm Ranking By Sector", result)
         self.assertIn("### Tech", result)
         self.assertIn("## Firm Ranking By Direction", result)
         self.assertIn("### up", result)
         self.assertIn("## Direction Breakdown", result)
+        self.assertIn("## Net Strategy Breakdown", result)
+        self.assertIn("| Example Firm | 1 | 19.00% | 1 | 8.00% |", result)
+        self.assertIn("## Strategy Exit Breakdown", result)
+        self.assertIn("| `target_hit_limit` | 1 | 19.00% |", result)
         self.assertIn("| up | 1 | 100.00% | 20.65% to 100.00%", result)
         self.assertIn("95% Wilson score interval", result)
         self.assertIn("`missing_source_url`", result)

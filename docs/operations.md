@@ -199,6 +199,7 @@ PYTHONPATH=src python3 -m targetaudit evaluate \
   --universe-membership data/samples/historical_universe.csv \
   --output build/live/evaluations.csv \
   --report build/live/report.md \
+  --transaction-cost-bps 10 \
   --as-of YYYY-MM-DD
 ```
 
@@ -220,6 +221,7 @@ PYTHONPATH=src python3 -m targetaudit evaluate \
   --universe-membership data/samples/historical_universe.csv \
   --output build/live/evaluations.csv \
   --report build/live/report.md \
+  --transaction-cost-bps 10 \
   --as-of YYYY-MM-DD
 ```
 
@@ -246,12 +248,26 @@ PYTHONPATH=src python3 -m targetaudit evaluate \
   --output build/demo/evaluations-target-revisions.csv \
   --report build/demo/report-target-revisions.md \
   --minimum-sample 1 \
+  --transaction-cost-bps 10 \
   --as-of 2025-01-01
 ```
 
 Esta politica es conservadora: un target sustituido no cuenta ni como acierto
 ni como fallo. Si una futura fuente identifica explícitamente el tipo de
 revision, se podran modelar intervalos activos hasta la sustitucion.
+
+## Backtest Con Costos
+
+`evaluate` produce ademas un resultado neto ejecutable bajo una regla
+declarada: compra/venta al primer cierre elegible, salida limite exactamente
+al target si la barra posterior lo alcanza y, en caso contrario, salida al
+cierre del vencimiento. El parametro `--transaction-cost-bps` expresa el costo
+por lado; el valor demostrativo es `10`, equivalente a `20 bps` ida y vuelta.
+
+El reporte muestra retorno neto medio y exceso neto contra el benchmark usando
+la misma fecha de salida cuando existe una barra compatible. Esta simulacion
+no incluye deslizamiento, costo de prestamo para cortos, impuestos ni reglas
+de asignacion de capital.
 
 ## Flujo Continuo Recomendado
 

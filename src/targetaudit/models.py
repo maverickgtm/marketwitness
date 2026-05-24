@@ -63,6 +63,14 @@ class Evaluation:
     historical_universe_source_url: str = ""
     superseded_by_observation_id: str = ""
     superseded_on: str = ""
+    strategy_exit_reason: str = ""
+    strategy_exit_date: str = ""
+    strategy_exit_price: Decimal | None = None
+    strategy_gross_return_pct: Decimal | None = None
+    transaction_cost_bps_per_side: Decimal | None = None
+    strategy_net_return_pct: Decimal | None = None
+    benchmark_strategy_net_return_pct: Decimal | None = None
+    strategy_net_excess_return_pct: Decimal | None = None
 
     def to_row(self) -> dict[str, str]:
         return {
@@ -97,6 +105,20 @@ class Evaluation:
             "historical_universe_source_url": self.historical_universe_source_url,
             "superseded_by_observation_id": self.superseded_by_observation_id,
             "superseded_on": self.superseded_on,
+            "strategy_exit_reason": self.strategy_exit_reason,
+            "strategy_exit_date": self.strategy_exit_date,
+            "strategy_exit_price": _decimal_text(self.strategy_exit_price),
+            "strategy_gross_return_pct": _decimal_text(self.strategy_gross_return_pct),
+            "transaction_cost_bps_per_side": _decimal_text(
+                self.transaction_cost_bps_per_side
+            ),
+            "strategy_net_return_pct": _decimal_text(self.strategy_net_return_pct),
+            "benchmark_strategy_net_return_pct": _decimal_text(
+                self.benchmark_strategy_net_return_pct
+            ),
+            "strategy_net_excess_return_pct": _decimal_text(
+                self.strategy_net_excess_return_pct
+            ),
         }
 
 

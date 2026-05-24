@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import date
+from decimal import Decimal
 
 from .corporate_actions import (
     CorporateActionDataError,
@@ -172,6 +173,12 @@ def main() -> int:
         type=int,
         default=50,
         help="Minimum evaluated observations for a firm ranking (default: 50).",
+    )
+    evaluate_parser.add_argument(
+        "--transaction-cost-bps",
+        type=Decimal,
+        default=Decimal("10"),
+        help="Simulated transaction cost in bps per side (default: 10).",
     )
     evaluate_parser.add_argument(
         "--as-of",
@@ -835,7 +842,9 @@ def main() -> int:
             if args.universe_membership
             else None
         )
-        evaluations = evaluate_all(targets, prices, as_of, actions, universe)
+        evaluations = evaluate_all(
+            targets, prices, as_of, actions, universe, args.transaction_cost_bps
+        )
         write_evaluations(args.output, evaluations)
         write_markdown_report(
             args.report,
@@ -843,6 +852,7 @@ def main() -> int:
             as_of,
             args.minimum_sample,
             universe[0].universe_id if universe else "",
+            args.transaction_cost_bps,
         )
     except (
         CorporateActionDataError,

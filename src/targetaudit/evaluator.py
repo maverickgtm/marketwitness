@@ -13,6 +13,7 @@ from .models import Evaluation, PriceBar, TargetObservation
 MAX_TERMINAL_GAP_DAYS = 7
 MAX_ENTRY_GAP_DAYS = 7
 MAX_REFERENCE_GAP_DAYS = 7
+DEFAULT_TRANSACTION_COST_BPS_PER_SIDE = Decimal("10")
 
 
 def evaluate_all(
@@ -21,7 +22,9 @@ def evaluate_all(
     as_of: date,
     corporate_actions: list[CorporateAction] | None = None,
     historical_universe: list[UniverseMembership] | None = None,
+    transaction_cost_bps_per_side: Decimal = DEFAULT_TRANSACTION_COST_BPS_PER_SIDE,
 ) -> list[Evaluation]:
+    _validate_transaction_cost(transaction_cost_bps_per_side)
     duplicate_ids = _duplicates([observation.observation_id for observation in observations])
     superseded = _superseded_observations(observations, as_of, duplicate_ids)
     return [
@@ -33,6 +36,7 @@ def evaluate_all(
             corporate_actions,
             historical_universe,
             superseded.get(observation.observation_id),
+            transaction_cost_bps_per_side,
         )
         for observation in observations
     ]
@@ -46,7 +50,9 @@ def evaluate(
     corporate_actions: list[CorporateAction] | None = None,
     historical_universe: list[UniverseMembership] | None = None,
     superseding_observation: TargetObservation | None = None,
+    transaction_cost_bps_per_side: Decimal = DEFAULT_TRANSACTION_COST_BPS_PER_SIDE,
 ) -> Evaluation:
+    _validate_transaction_cost(transaction_cost_bps_per_side)
     base = _base_fields(observation)
     invalid_reason = _invalid_reason(observation, duplicate_id)
     if invalid_reason:
@@ -171,8 +177,21 @@ def evaluate(
     terminal_return = _directional_return(
         entry.adjusted_close, terminal.adjusted_close, direction
     )
+    strategy_exit_reason = "target_hit_limit" if hit_bar is not None else "horizon_close"
+    strategy_exit = hit_bar if hit_bar is not None else terminal
+    strategy_exit_price = (
+        observation.price_target if hit_bar is not None else terminal.adjusted_close
+    )
+    strategy_gross_return = _directional_return(
+        entry.adjusted_close, strategy_exit_price, direction
+    )
+    strategy_net_return = strategy_gross_return - _round_trip_cost(
+        transaction_cost_bps_per_side
+    )
     benchmark_return = None
     excess_return = None
+    benchmark_strategy_net_return = None
+    strategy_net_excess_return = None
     if observation.benchmark_symbol:
         benchmark_window = _window(
             bars_by_ticker.get(observation.benchmark_symbol, []),
@@ -235,6 +254,18 @@ def evaluate(
             benchmark_entry.adjusted_close, benchmark_terminal.adjusted_close, direction
         )
         excess_return = terminal_return - benchmark_return
+        benchmark_exit = _bar_on_date(
+            bars_by_ticker.get(observation.benchmark_symbol, []), strategy_exit.date
+        )
+        if benchmark_exit is not None:
+            benchmark_strategy_net_return = _directional_return(
+                benchmark_entry.adjusted_close,
+                benchmark_exit.adjusted_close,
+                direction,
+            ) - _round_trip_cost(transaction_cost_bps_per_side)
+            strategy_net_excess_return = (
+                strategy_net_return - benchmark_strategy_net_return
+            )
 
     return Evaluation(
         **base,
@@ -258,6 +289,14 @@ def evaluate(
         benchmark_symbol=observation.benchmark_symbol,
         benchmark_directional_return_pct=benchmark_return,
         excess_return_pct=excess_return,
+        strategy_exit_reason=strategy_exit_reason,
+        strategy_exit_date=strategy_exit.date.isoformat(),
+        strategy_exit_price=strategy_exit_price,
+        strategy_gross_return_pct=strategy_gross_return,
+        transaction_cost_bps_per_side=transaction_cost_bps_per_side,
+        strategy_net_return_pct=strategy_net_return,
+        benchmark_strategy_net_return_pct=benchmark_strategy_net_return,
+        strategy_net_excess_return_pct=strategy_net_excess_return,
     )
 
 
@@ -339,6 +378,22 @@ def _first_hit(period: list[PriceBar], target: Decimal, direction: str) -> Price
 def _directional_return(entry: Decimal, terminal: Decimal, direction: str) -> Decimal:
     raw_return = (terminal - entry) / entry
     return raw_return if direction == "up" else -raw_return
+
+
+def _bar_on_date(series: list[PriceBar], selected_date: date) -> PriceBar | None:
+    return next((bar for bar in series if bar.date == selected_date), None)
+
+
+def _round_trip_cost(transaction_cost_bps_per_side: Decimal) -> Decimal:
+    return transaction_cost_bps_per_side * Decimal("2") / Decimal("10000")
+
+
+def _validate_transaction_cost(transaction_cost_bps_per_side: Decimal) -> None:
+    if (
+        not transaction_cost_bps_per_side.is_finite()
+        or transaction_cost_bps_per_side < 0
+    ):
+        raise ValueError("Transaction cost bps per side must be a non-negative number.")
 
 
 def _duplicates(values: list[str]) -> set[str]:

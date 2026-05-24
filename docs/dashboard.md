@@ -32,6 +32,8 @@ Componentes:
   targets que no pertenecian al universo en la fecha publicada.
 - Auditoria de revisiones: muestra targets reemplazados por otra nota de la
   misma firma/accion y los retira del score.
+- Resultado de estrategia: salida por target o vencimiento, costos declarados
+  y retorno neto excedente frente a `XLF` sobre la misma fecha de salida.
 - Filtros por banco, subindustria, periodo y direccion del target.
 - Comparacion contra `XLF`.
 - Tabla de observaciones excluidas y motivo.

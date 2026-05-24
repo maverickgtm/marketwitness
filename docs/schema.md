@@ -132,6 +132,23 @@ publica un target posterior para el mismo ticker antes del vencimiento, la
 fila anterior queda excluida como `superseded_by_later_target` y conserva
 `superseded_by_observation_id` y `superseded_on`.
 
+Las filas evaluadas tambien contienen la simulacion operativa:
+
+| Columna | Descripcion |
+|---|---|
+| `strategy_exit_reason` | `target_hit_limit` si sale al target o `horizon_close` al vencer |
+| `strategy_exit_date` | Fecha de salida simulada |
+| `strategy_exit_price` | Target ejecutado o cierre ajustado terminal |
+| `strategy_gross_return_pct` | Retorno direccional antes de costos |
+| `transaction_cost_bps_per_side` | Costo aplicado por cada lado |
+| `strategy_net_return_pct` | Retorno neto despues de entrada y salida |
+| `benchmark_strategy_net_return_pct` | Retorno neto del benchmark en la misma fecha de salida |
+| `strategy_net_excess_return_pct` | Diferencia neta contra benchmark cuando puede alinearse |
+
+El reporte agregado presenta el conteo de salidas con benchmark alineado para
+que una media neta no oculte observaciones sin barra comparable en la fecha
+de salida.
+
 Los datasets reales nunca deben agregarse a Git dentro de `data/raw/` o
 `data/private/`, carpetas deliberadamente ignoradas.
 

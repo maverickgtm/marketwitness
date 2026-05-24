@@ -23,6 +23,7 @@ demo:
 		--output build/demo/evaluations.csv \
 		--report build/demo/report.md \
 		--minimum-sample 1 \
+		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit evaluate \
 		--targets data/samples/targets_revisions.csv \
@@ -31,6 +32,7 @@ demo:
 		--output build/demo/evaluations-target-revisions.csv \
 		--report build/demo/report-target-revisions.md \
 		--minimum-sample 1 \
+		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-ipo-discover \
 		--date 2026-05-20 \
@@ -97,6 +99,7 @@ demo:
 		--output build/demo/evaluations-actions-guarded.csv \
 		--report build/demo/report-actions-guarded.md \
 		--minimum-sample 1 \
+		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-upcoming \
 		--page-file data/samples/lse-new-issues-page.json \

@@ -338,6 +338,8 @@ auditados en desarrollo:
   vigente en la fecha del target para evitar clasificacion retrospectiva.
 - Excluye targets reemplazados por una revision posterior de la misma firma y
   accion, registrando la cadena sin contarlos como fallos.
+- Simula salida al target o al vencimiento con costos configurables y muestra
+  retorno neto frente al benchmark en la misma fecha de salida.
 - Desglosa resultados entre targets alcistas y bajistas.
 - Genera un ranking que muestra el numero de observaciones y aplica una muestra
   minima configurable.
@@ -442,6 +444,7 @@ PYTHONPATH=src python3 -m targetaudit evaluate \
   --output build/demo/evaluations-actions-guarded.csv \
   --report build/demo/report-actions-guarded.md \
   --minimum-sample 1 \
+  --transaction-cost-bps 10 \
   --as-of 2025-01-01
 ```
 

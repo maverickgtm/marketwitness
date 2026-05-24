@@ -84,8 +84,8 @@ Un release publico serio debe incluir:
 4. Un informe real piloto de financials solo cuando cada fila tenga fuente y
    permisos adecuados.
 5. Reportes que siempre expongan `N`, intervalo Wilson 95%, universo
-   historico, revisiones de targets, segmentos de sector/direccion,
-   exclusiones, benchmark y metodologia.
+   historico, revisiones de targets, costos y regla de salida, segmentos de
+   sector/direccion, exclusiones, benchmark y metodologia.
 
 ## Hipotesis Medibles
 
