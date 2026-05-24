@@ -204,7 +204,7 @@ sus holdings reales. Las fuentes reales se separan en dos capas:
 
 | Fuente | Frecuencia Publica Util | Uso Previsto |
 |---|---|---|
-| SEC `N-PORT` | Registro regulatorio publico; datasets SEC actualizados trimestralmente y no intradia | Importador XML `NPORT-P` implementado para posiciones en acciones |
+| SEC `N-PORT` | Registro regulatorio publico; submissions recientes por CIK y datasets actualizados trimestralmente, no intradia | Importador XML y colector EDGAR por serie implementados para posiciones en acciones |
 | ARK ETF holdings | ARK declara actualizacion diaria de holdings en su sitio | Importador CSV local implementado; publicacion real pendiente de permiso |
 | State Street SPDR holdings | La pagina oficial `XLF` indica `Download All Holdings: Daily` | Importador local `XLF` implementado; publicacion real pendiente de consentimiento escrito |
 | iShares holdings | Paginas oficiales exponen `Download Holdings` con fecha de observacion | Conector por emisor tras verificar terminos y formato estable |
@@ -235,6 +235,18 @@ nombre de serie y el identificador de serie. En esta etapa normaliza
 unicamente inversiones expresadas en unidades de acciones (`NS`/`SH`) y
 reporta cuantas posiciones en otras unidades quedaron fuera; no inventa
 equivalencias para efectivo, bonos o derivados.
+
+El colector `sec-nport-collect` obtiene la lista reciente de filings del
+registrante desde la API publica SEC submissions, descarga documentos
+`NPORT-P` candidatos y solo conserva el XML que confirma la `seriesId`
+solicitada. La ventana reciente es adecuada para monitoreo continuo; un
+backfill historico amplio requerira los archivos adicionales o datasets
+trimestrales publicados por la SEC.
+
+El filing oficial `NPORT-P` de `SELECT SECTOR SPDR TRUST` consultado para
+esta integracion identifica a `The Financial Select Sector SPDR Fund`
+(`XLF`) con `CIK 0001064641` y `seriesId S000006411`, por lo que es el
+primer fondo regulatorio configurado para ejecucion operativa.
 
 ## Repositorios Y Proyectos Encontrados
 

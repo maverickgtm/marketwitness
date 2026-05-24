@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from datetime import date
 from decimal import Decimal
+from pathlib import Path
 
 from .corporate_actions import (
     CorporateActionDataError,
@@ -135,9 +136,16 @@ from .providers.sgx import (
 )
 from .providers.sec import SecDataError, fetch_company_ticker_map, write_company_ticker_map
 from .providers.sec_nport import (
+    SEC_ARCHIVES_ROOT,
     SEC_NPORT_DATASETS_URL,
     SecNportDataError,
+    collect_latest_nport_snapshot,
+    fetch_nport_document,
+    fetch_recent_nport_filings,
+    load_nport_document,
     load_nport_xml_snapshot,
+    load_recent_nport_filings,
+    write_collection_report as write_nport_collection_report,
     write_import_report as write_nport_import_report,
     write_normalized_holdings as write_nport_normalized_holdings,
 )
@@ -420,6 +428,38 @@ def main() -> int:
     )
     nport_parser.add_argument("--output", required=True, help="Normalized ETF holdings CSV path.")
     nport_parser.add_argument("--report", required=True, help="Import audit Markdown report path.")
+    nport_collect_parser = subparsers.add_parser(
+        "sec-nport-collect",
+        help="Collect the latest public NPORT-P XML for an SEC fund series.",
+    )
+    nport_collect_parser.add_argument("--cik", required=True, help="SEC registrant CIK.")
+    nport_collect_parser.add_argument("--series-id", required=True, help="SEC fund series ID.")
+    nport_collect_parser.add_argument("--fund-symbol", required=True, help="Fund symbol.")
+    nport_collect_parser.add_argument(
+        "--captured-on", required=True, help="Collection date in YYYY-MM-DD."
+    )
+    nport_collect_parser.add_argument(
+        "--archive-dir", required=True, help="Private directory for collected filing XML."
+    )
+    nport_collect_parser.add_argument("--output", required=True, help="Normalized holdings CSV.")
+    nport_collect_parser.add_argument("--report", required=True, help="Collection audit report.")
+    nport_collect_parser.add_argument(
+        "--user-agent",
+        help="SEC contact user agent; alternatively set TARGETAUDIT_SEC_USER_AGENT.",
+    )
+    nport_collect_parser.add_argument(
+        "--submissions-file",
+        help="Read an already downloaded SEC submissions JSON instead of requesting SEC.",
+    )
+    nport_collect_parser.add_argument(
+        "--document-dir",
+        help="Directory containing locally saved primary documents listed by fixture JSON.",
+    )
+    nport_collect_parser.add_argument(
+        "--synthetic-fixture",
+        action="store_true",
+        help="Mark project-authored submissions/documents as synthetic evidence.",
+    )
     prices_parser = subparsers.add_parser(
         "alpha-vantage-prices",
         help="Normalize adjusted daily price evidence through a cache-first adapter.",
@@ -845,6 +885,47 @@ def main() -> int:
         print(
             f"Imported {len(imported.holdings)} share positions from N-PORT "
             f"for {imported.fund_symbol} to {args.output}."
+        )
+        return 0
+
+    if args.command == "sec-nport-collect":
+        try:
+            captured_on = date.fromisoformat(args.captured_on)
+            if bool(args.submissions_file) != bool(args.document_dir):
+                parser.error("--submissions-file and --document-dir must be used together.")
+            if args.synthetic_fixture and not args.submissions_file:
+                parser.error("--synthetic-fixture requires --submissions-file.")
+            if args.submissions_file:
+                archive_root = (
+                    "https://example.invalid/sec-nport-fixture"
+                    if args.synthetic_fixture
+                    else SEC_ARCHIVES_ROOT
+                )
+                filings = load_recent_nport_filings(
+                    args.submissions_file, args.cik, archive_root
+                )
+                loader = lambda filing: load_nport_document(
+                    Path(args.document_dir) / filing.primary_document
+                )
+            else:
+                filings = fetch_recent_nport_filings(args.cik, args.user_agent)
+                loader = lambda filing: fetch_nport_document(filing, args.user_agent)
+            collection = collect_latest_nport_snapshot(
+                filings,
+                args.series_id,
+                args.fund_symbol,
+                captured_on,
+                args.archive_dir,
+                loader,
+                args.synthetic_fixture,
+            )
+            write_nport_normalized_holdings(args.output, collection.imported)
+            write_nport_collection_report(args.report, collection)
+        except (SecNportDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Collected SEC N-PORT filing {collection.filing.accession_number} "
+            f"for {collection.imported.fund_symbol} to {args.output}."
         )
         return 0
 

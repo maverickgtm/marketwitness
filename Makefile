@@ -128,11 +128,14 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/nport-xlf-previous.csv \
 		--report build/demo/nport-xlf-previous-import.md
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-import \
-		--snapshot data/samples/nport-xlf-current.xml \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-collect \
+		--cik 0000000001 \
+		--series-id S000DEMO01 \
 		--fund-symbol XLF-REG-DEMO \
 		--captured-on 2026-05-24 \
-		--source-url https://example.invalid/sec/nport-xlf-current.xml \
+		--archive-dir build/demo/nport-history \
+		--submissions-file data/samples/sec-nport-submissions.json \
+		--document-dir data/samples \
 		--synthetic-fixture \
 		--output build/demo/nport-xlf-current.csv \
 		--report build/demo/nport-xlf-current-import.md

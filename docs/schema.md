@@ -463,3 +463,14 @@ Para esas posiciones usa `ticker` cuando esta disponible y recurre a
 El reporte del importador cuenta inversiones totales y posiciones omitidas
 por no estar expresadas en acciones. La omision evita presentar efectivo,
 bonos o derivados como si fueran acciones comparables en el dashboard.
+
+`sec-nport-collect` consulta los filings recientes del registrante mediante
+el endpoint SEC submissions por `CIK`. Filtra formularios `NPORT-P` y
+`NPORT-P/A`, construye el enlace del documento primario usando
+`accessionNumber` y descarga candidatos en orden descendente de fecha.
+Cuando submissions publica una ruta de visualizacion
+`xslFormNPORT-P_X01/primary_doc.xml`, el colector recupera el XML crudo
+`primary_doc.xml` del mismo accession en vez del HTML renderizado.
+Un XML solo se archiva y normaliza cuando su campo `seriesId` coincide con
+la serie solicitada. El reporte agrega `CIK`, accession, fecha de filing y
+ruta del XML archivado.

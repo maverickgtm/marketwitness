@@ -369,15 +369,18 @@ diaria y muestra acciones mantenidas y peso. La misma pagina restringe
 reproduccion sin consentimiento escrito, por lo que el repositorio usa
 fixtures sinteticos y mantiene salidas reales solo en almacenamiento local.
 
-La capa historica regulatoria tambien esta implementada mediante archivos
-publicos `SEC NPORT-P` en XML:
+La capa historica regulatoria tambien esta implementada mediante filings
+publicos `SEC NPORT-P` en XML. Para recolectar el filing reciente de una
+serie desde EDGAR y conservar una copia local validada:
 
 ```bash
-PYTHONPATH=src python3 -m targetaudit sec-nport-import \
-  --snapshot data/raw/etf/nport/primary_doc.xml \
+export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
+PYTHONPATH=src python3 -m targetaudit sec-nport-collect \
+  --cik 0001064641 \
+  --series-id S000006411 \
   --fund-symbol XLF \
   --captured-on YYYY-MM-DD \
-  --source-url https://www.sec.gov/Archives/edgar/data/.../primary_doc.xml \
+  --archive-dir data/raw/etf/nport/history \
   --output data/raw/etf/nport/xlf-normalized.csv \
   --report build/live/xlf-nport-import.md
 ```
@@ -385,7 +388,12 @@ PYTHONPATH=src python3 -m targetaudit sec-nport-import \
 `N-PORT` se muestra por separado como evidencia `regulatory_periodic`: la SEC
 indica que los datasets publicos provienen de filings difundidos y se
 actualizan trimestralmente. La primera version normaliza solo posiciones
-declaradas en acciones y registra los instrumentos omitidos.
+declaradas en acciones y registra los instrumentos omitidos. El colector
+consulta la ventana reciente de submissions del registrante por `CIK` y solo
+archiva el XML cuyo contenido confirma la `seriesId` solicitada. Para un
+archivo ya descargado sigue disponible `sec-nport-import`.
+Los identificadores `XLF` anteriores fueron confirmados en un filing
+`NPORT-P` oficial de `SELECT SECTOR SPDR TRUST`.
 
 ## Estado Del Proyecto
 
@@ -422,7 +430,8 @@ auditados en desarrollo:
 - Normaliza descargas locales SPDR/XLF y usa un fixture `XLF-DEMO` para probar
   actividad ETF alineada con la especializacion en financials.
 - Normaliza filings publicos `SEC NPORT-P` en una salida regulatoria ETF
-  separada, omitiendo instrumentos aun no modelados de forma visible.
+  separada, los recolecta por `CIK`/`seriesId` desde EDGAR y omite
+  instrumentos aun no modelados de forma visible.
 - Importa exportaciones autorizadas de targets con manifiesto y cola de rechazos.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para

@@ -66,6 +66,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Respaldo regulatorio ETF mediante SEC `N-PORT` para periodos publicados,
   separado de las descargas diarias del emisor y limitado inicialmente a
   posiciones en acciones.
+- [x] Recoleccion SEC `N-PORT` reciente por `CIK`/`seriesId`, con XML
+  validado archivado localmente y acceso identificado mediante `User-Agent`.
+- [ ] Backfill historico amplio de `N-PORT` mediante datasets trimestrales o
+  archivos adicionales de submissions SEC.
 
 ## Milestone 5: Operacion Publica (`v1.0`)
 

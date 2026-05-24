@@ -201,6 +201,8 @@ con la frecuencia real de cada fuente.
   salidas reales de ARK y State Street SPDR.
 - Implementado: importador XML `SEC NPORT-P` y salida regulatoria separada;
   es auditable pero no equivale a datos intradia ni a un feed diario.
+- Implementado: colector EDGAR de filings recientes por `CIK`/`seriesId`,
+  con archivo local del XML validado y `User-Agent` obligatorio en vivo.
 - Presentacion: posiciones nuevas, aumentadas, reducidas, ausentes o con
   cambio solo de peso, fecha efectiva, frecuencia y enlace de evidencia.
 - Regla de lenguaje: una diferencia de holdings se describe como cambio

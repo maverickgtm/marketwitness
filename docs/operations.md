@@ -351,7 +351,37 @@ contrato documentado; el importador se detiene si faltan campos requeridos.
 
 ### Evidencia Regulatoria SEC N-PORT
 
-Para importar un filing publico `NPORT-P` XML descargado desde EDGAR:
+Para consultar submissions recientes del registrante en EDGAR, confirmar la
+serie dentro del XML y archivarlo localmente:
+
+```bash
+export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
+PYTHONPATH=src python3 -m targetaudit sec-nport-collect \
+  --cik 0001064641 \
+  --series-id S000006411 \
+  --fund-symbol XLF \
+  --captured-on YYYY-MM-DD \
+  --archive-dir data/raw/etf/nport/history \
+  --output data/raw/etf/nport/xlf-normalized.csv \
+  --report build/live/xlf-nport-import.md
+```
+
+Esta salida usa la capa `regulatory_periodic`. No puede compararse con
+snapshots `daily_official` de ARK o SPDR; solo con otro periodo N-PORT del
+mismo fondo. El parser inicial incluye posiciones en acciones y registra las
+posiciones no modeladas que omite. Al descargar desde SEC se mantienen los
+requisitos de `User-Agent` y acceso justo ya documentados para EDGAR.
+
+El colector usa `data.sec.gov/submissions/CIK##########.json`, que la SEC
+describe como historial reciente del filer, y descarga documentos `NPORT-P`
+candidatos hasta que el XML confirma la `seriesId`. Conserva el XML validado
+debajo de `--archive-dir/YYYY-MM-DD/SERIES-ID/`. Para procesar un XML ya
+descargado o hacer un backfill manual:
+
+Cuando EDGAR expone el documento primario bajo una ruta de presentacion
+`xslFormNPORT-P_X01/primary_doc.xml`, el colector usa el XML crudo
+`primary_doc.xml` del mismo accession; la vista XSL responde HTML y no se
+archiva como evidencia estructurada.
 
 ```bash
 PYTHONPATH=src python3 -m targetaudit sec-nport-import \
@@ -363,11 +393,13 @@ PYTHONPATH=src python3 -m targetaudit sec-nport-import \
   --report build/live/xlf-nport-import.md
 ```
 
-Esta salida usa la capa `regulatory_periodic`. No puede compararse con
-snapshots `daily_official` de ARK o SPDR; solo con otro periodo N-PORT del
-mismo fondo. El parser inicial incluye posiciones en acciones y registra las
-posiciones no modeladas que omite. Al descargar desde SEC se mantienen los
-requisitos de `User-Agent` y acceso justo ya documentados para EDGAR.
+La recoleccion masiva de periodos anteriores a la ventana reciente se
+implementara aparte mediante archivos adicionales de submissions o los
+datasets trimestrales de la SEC.
+
+Para el benchmark financiero inicial, un filing oficial `NPORT-P` de
+`SELECT SECTOR SPDR TRUST` confirma `XLF` como serie `S000006411` del
+registrante `CIK 0001064641`.
 
 ## Historial De Mercados Globales
 

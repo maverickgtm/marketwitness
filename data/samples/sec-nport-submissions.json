@@ -1,0 +1,18 @@
+{
+  "filings": {
+    "recent": {
+      "form": ["NPORT-P", "NPORT-P", "N-CSR"],
+      "filingDate": ["2026-05-20", "2026-02-20", "2026-02-10"],
+      "accessionNumber": [
+        "0000000001-26-000002",
+        "0000000001-26-000001",
+        "0000000001-26-000000"
+      ],
+      "primaryDocument": [
+        "nport-xlf-current.xml",
+        "nport-xlf-previous.xml",
+        "annual-report.htm"
+      ]
+    }
+  }
+}
