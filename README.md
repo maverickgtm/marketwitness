@@ -311,13 +311,27 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
 del feed para revisión. Una remoción no confirma retiro, admisión ni inicio de
 negociación.
 
-## ETF Holdings Activity En Cola
+## ETF Holdings Activity
 
-Queda planificada una pagina separada para observar cambios publicados en
-holdings de ETF. La capa mas cercana al mercado usara archivos diarios
-oficiales por emisor, inicialmente candidatos como ARK y State Street SPDR;
-`SEC N-PORT` servira como respaldo regulatorio historico, no como fuente en
-tiempo real. Un aumento o reduccion de holdings se mostrara como cambio
+La primera pagina ETF ya es ejecutable con snapshots normalizados y una demo
+sintetica reproducible. Compara posiciones nuevas, aumentadas, reducidas,
+removidas o con variacion de peso, conservando fecha efectiva, frecuencia y
+enlace de evidencia.
+
+```bash
+PYTHONPATH=src python3 -m targetaudit etf-holdings-activity \
+  --previous data/samples/etf-holdings-previous.csv \
+  --current data/samples/etf-holdings-current.csv \
+  --output build/demo/etf-holdings-activity.csv \
+  --report build/demo/etf-holdings-activity.md \
+  --html build/demo/etf-holdings-activity.html \
+  --as-of 2026-05-24
+```
+
+Los datos incluidos son sinteticos: todavia falta conectar descargas
+oficiales diarias por emisor, inicialmente candidatas como ARK y State Street
+SPDR. `SEC N-PORT` se integrara como respaldo regulatorio historico, no como
+fuente en tiempo real. Un aumento o reduccion se presenta como cambio
 observado, no como compra o venta confirmada del gestor.
 
 ## Estado Del Proyecto
@@ -348,6 +362,8 @@ auditados en desarrollo:
 - Genera un reporte inicial de `IPO Watch` con estado y fuentes auditables.
 - Marca splits y cambios de ticker documentados antes de puntuar targets.
 - Publica un registro de gobernanza de proveedores, licencias y uso permitido.
+- Genera una pagina `ETF Holdings Activity` para diferencias auditables entre
+  snapshots, con una demo sintetica y limites de interpretacion visibles.
 - Importa exportaciones autorizadas de targets con manifiesto y cola de rechazos.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para

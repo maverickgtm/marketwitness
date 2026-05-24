@@ -236,6 +236,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
       <a href="tsx-monitor.html">Open TSX listing confirmations</a>
       <a href="sgx-monitor.html">Open SGX prospectus monitor</a>
       <a href="issuer-confirmations.html">Open issuer confirmations</a>
+      <a href="etf-holdings-activity.html">Open ETF holdings activity</a>
       <a href="source-registry.html">Open source governance</a>
     </section>
     <h2>Official source map</h2>

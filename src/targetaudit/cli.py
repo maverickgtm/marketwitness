@@ -14,6 +14,14 @@ from .corporate_actions import (
 )
 from .csvio import DataFormatError, load_prices, load_targets, write_evaluations
 from .evaluator import evaluate_all
+from .etf_holdings import (
+    EtfHoldingsDataError,
+    compare_holdings,
+    load_holdings_snapshot,
+    write_changes_csv,
+    write_holdings_html,
+    write_holdings_report,
+)
 from .historical_universe import HistoricalUniverseDataError, load_historical_universe
 from .global_listings import (
     GlobalListingsDataError,
@@ -317,6 +325,20 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Governance review cutoff in YYYY-MM-DD format.",
+    )
+    etf_parser = subparsers.add_parser(
+        "etf-holdings-activity",
+        help="Compare ETF holdings snapshots and render observed changes.",
+    )
+    etf_parser.add_argument("--previous", required=True, help="Prior normalized holdings CSV.")
+    etf_parser.add_argument("--current", required=True, help="Current normalized holdings CSV.")
+    etf_parser.add_argument("--output", required=True, help="Observed changes CSV path.")
+    etf_parser.add_argument("--report", required=True, help="Markdown report path.")
+    etf_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    etf_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Evidence cutoff in YYYY-MM-DD format.",
     )
     prices_parser = subparsers.add_parser(
         "alpha-vantage-prices",
@@ -662,6 +684,24 @@ def main() -> int:
             parser.error(str(exc))
         print(
             f"Wrote source governance for {len(providers)} providers "
+            f"to {args.report}."
+        )
+        return 0
+
+    if args.command == "etf-holdings-activity":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            previous = load_holdings_snapshot(args.previous, as_of)
+            current = load_holdings_snapshot(args.current, as_of)
+            changes = compare_holdings(previous, current)
+            write_changes_csv(args.output, changes)
+            write_holdings_report(args.report, previous, current, changes, as_of)
+            if args.html:
+                write_holdings_html(args.html, previous, current, changes, as_of)
+        except (EtfHoldingsDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote ETF holdings activity for {len(changes)} observed changes "
             f"to {args.report}."
         )
         return 0

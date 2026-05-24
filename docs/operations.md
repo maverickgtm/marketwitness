@@ -280,12 +280,26 @@ de asignacion de capital.
    comunicado oficial.
 7. Publicar el dashboard actualizado con historial de cambios.
 
-## Cola Futura: ETF Holdings Activity
+## ETF Holdings Activity
 
-Se reserva una pagina independiente para observar variaciones de holdings
-publicados por ETF. La ejecucion mas cercana al mercado usara descargas
-oficiales diarias cuando el emisor las publique; la verificacion regulatoria
-usara `SEC N-PORT`, que es auditable pero llega con retraso.
+La pagina independiente de holdings se genera a partir de dos snapshots
+normalizados. El demo incluido usa evidencia sintetica:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit etf-holdings-activity \
+  --previous data/samples/etf-holdings-previous.csv \
+  --current data/samples/etf-holdings-current.csv \
+  --output build/demo/etf-holdings-activity.csv \
+  --report build/demo/etf-holdings-activity.md \
+  --html build/demo/etf-holdings-activity.html \
+  --as-of 2026-05-24
+```
+
+Para una ejecucion real, cada snapshot debe provenir de una descarga
+oficial revisada, conservar su URL, fecha efectiva, fecha de captura y
+frecuencia publicada. La capa diaria por emisor y la verificacion regulatoria
+`SEC N-PORT` aun deben conectarse; `N-PORT` es auditable pero llega con
+retraso.
 
 Una diferencia entre dos snapshots se reportara como cambio de posicion
 publicada. No se etiquetara automaticamente como compra o venta: puede estar

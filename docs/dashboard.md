@@ -177,23 +177,28 @@ Cada jurisdiccion conserva sus propias etapas:
   catalogo oficial SGX; funciona como señal documental para revision.
 - `Issuer Listing Confirmations`: pagina de hitos posteriores documentados
   por comunicados oficiales del emisor, con fecha de evento y de verificacion.
+- `ETF Holdings Activity`: pagina de diferencias entre snapshots de posiciones
+  con fixture sintetico inicial y conectores oficiales aun pendientes.
 - `Global Listings Alerts`: bandeja diaria que compara snapshots de los cinco
   mercados y marca registros nuevos, modificados o ausentes para revisión.
 - La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
   cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,
-  TSX, SGX, confirmaciones del emisor y gobernanza de fuentes.
+  TSX, SGX, confirmaciones del emisor, actividad ETF y gobernanza de fuentes.
 
-## Pagina 4 En Cola: ETF Holdings Activity
+## Pagina 4: ETF Holdings Activity
 
 Objetivo: mostrar cambios publicados en las posiciones de ETF observables,
 con la frecuencia real de cada fuente.
 
-- Capa diaria: descargas oficiales de holdings por emisor, empezando por
-  emisores que publican archivos diarios como ARK y State Street SPDR.
-- Capa regulatoria: `SEC N-PORT`, auditable pero no equivalente a datos
+- Implementado: comparador de snapshots normalizados, CSV de diferencias,
+  reporte Markdown y pagina HTML con fixture sintetico reproducible.
+- Pendiente de conexion: descargas oficiales de holdings por emisor,
+  empezando por emisores que publican archivos diarios como ARK y State
+  Street SPDR.
+- Pendiente de conexion: `SEC N-PORT`, auditable pero no equivalente a datos
   intradia ni a un feed diario en tiempo real.
-- Presentacion: posiciones nuevas, aumentadas, reducidas o ausentes entre
-  snapshots, fecha efectiva y enlace oficial.
+- Presentacion: posiciones nuevas, aumentadas, reducidas, ausentes o con
+  cambio solo de peso, fecha efectiva, frecuencia y enlace de evidencia.
 - Regla de lenguaje: una diferencia de holdings se describe como cambio
   observado, no como compra o venta confirmada del gestor sin evidencia
   adicional.

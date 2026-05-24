@@ -193,11 +193,13 @@ Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
 respetar la guia de acceso justo, que actualmente fija un maximo de 10
 solicitudes por segundo.
 
-## ETF Holdings Activity: Modulo En Cola
+## ETF Holdings Activity: Modulo Inicial
 
 La propuesta de mostrar que posiciones aumentan o reducen los ETF es factible,
 pero no debe presentarse como operacion en tiempo real si la fuente no lo
-garantiza. La implementacion futura separara dos capas:
+garantiza. El comparador de snapshots y la pagina de dashboard ya estan
+implementados con datos sinteticos distribuibles. La conexion de fuentes
+reales separara dos capas:
 
 | Fuente | Frecuencia Publica Util | Uso Previsto |
 |---|---|---|
@@ -212,10 +214,13 @@ un gestor "compro" o "vendio": cambios de participacion tambien pueden
 reflejar creaciones/redenciones del ETF, acciones corporativas, derivados,
 efectivo o ajustes de publicacion.
 
-La primera version debe incluir fecha efectiva del holding, fecha de captura,
-emisor, fondo, ticker de la posicion, acciones/peso anterior y actual,
-diferencia y enlace a la descarga oficial. No se mezclara con recomendaciones
-de compra o venta.
+La primera version implementada incluye fecha efectiva del holding, fecha de
+captura, emisor, fondo, ticker de la posicion, acciones/peso anterior y
+actual, diferencia y enlace a la evidencia declarada. No se mezcla con
+recomendaciones de compra o venta. Los conectores oficiales se habilitaran
+solo tras confirmar formato estable y politica de uso. El motor rechaza
+comparar snapshots de capas diferentes, por ejemplo una lectura diaria contra
+un registro regulatorio periodico.
 
 ## Repositorios Y Proyectos Encontrados
 

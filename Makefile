@@ -77,6 +77,13 @@ demo:
 		--report build/demo/source-registry.md \
 		--html build/demo/source-registry.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
+		--previous data/samples/etf-holdings-previous.csv \
+		--current data/samples/etf-holdings-current.csv \
+		--output build/demo/etf-holdings-activity.csv \
+		--report build/demo/etf-holdings-activity.md \
+		--html build/demo/etf-holdings-activity.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit alpha-vantage-prices \
 		--ticker ACBK \
 		--snapshot data/samples/alpha-vantage-daily-adjusted.json \

@@ -54,8 +54,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [ ] API FastAPI con endpoints de rankings, firmas y acciones.
 - [ ] Dashboard web con filtros, series de targets y exportaciones.
 - [ ] Pagina de auditoria de fuente y observaciones excluidas.
-- [ ] Pagina `ETF Holdings Activity` con snapshots diarios oficiales por emisor,
-  diferencias de posiciones y sello claro de fecha/frecuencia.
+- [x] Pagina `ETF Holdings Activity` con comparador de snapshots, diferencias
+  de posiciones, sello de fecha/frecuencia y demo sintetica reproducible.
+- [ ] Conectores de snapshots diarios oficiales por emisor para la pagina
+  `ETF Holdings Activity`.
 - [ ] Respaldo regulatorio ETF mediante SEC `N-PORT` para periodos publicados,
   separado de las descargas diarias del emisor.
 

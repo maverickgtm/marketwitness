@@ -402,3 +402,22 @@ acepta notas de prensa secundarias como confirmación automática.
 Una misma fuente puede confirmar mas de un hito y por eso puede aparecer en
 varias filas. No se permite que la fecha de verificacion preceda el evento ni
 que un reporte incluya evidencia posterior a su fecha de corte.
+
+## ETF Holdings Snapshots
+
+`etf-holdings-activity` compara dos CSV normalizados del mismo fondo. Cada
+snapshot contiene: `issuer`, `fund_symbol`, `fund_name`, `effective_date`,
+`captured_on`, `position_ticker`, `position_name`, `shares`, `weight_pct`,
+`source_frequency` y `source_url`.
+
+`source_frequency` admite `synthetic_demo`, `daily_official` o
+`regulatory_periodic`. La fecha de captura no puede exceder el corte del
+reporte, un snapshot no puede repetir ticker y la comparacion rechaza mezclar
+capas de frecuencia distintas.
+
+El CSV de diferencias agrega: `previous_effective_date`,
+`current_effective_date`, `previous_shares`, `current_shares`,
+`shares_change`, `previous_weight_pct`, `current_weight_pct`,
+`weight_change_pct` y `change_type`. Los tipos emitidos son `new_position`,
+`increased`, `decreased`, `removed_position` y `weight_changed`; describen
+cambios observados, no operaciones confirmadas.
