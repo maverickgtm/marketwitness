@@ -1,8 +1,8 @@
-# Metodologia v0.3.1
+# Metodologia v0.3.2
 
 ## Vertical Inicial
 
-`v0.3.1` prepara el analisis para `U.S. Financials`, comenzando por bancos y
+`v0.3.2` prepara el analisis para `U.S. Financials`, comenzando por bancos y
 otras companias financieras con targets verificables. Para el piloto real, el
 benchmark sectorial preferido es `XLF`. El motor sigue siendo general para
 permitir pruebas y futuros verticales, pero ningun ranking multisectorial se
@@ -64,6 +64,22 @@ universo aplicado; una ejecucion sin registro historico queda marcada como
 `not supplied` y no debe presentarse como ranking publico libre de sesgo de
 supervivencia.
 
+## Targets Revisados
+
+Una firma puede actualizar varias veces el precio objetivo de una misma
+accion. Contar cada target durante su horizonte original haria que varias
+senales superpuestas de la misma fuente inflen el denominador del ranking.
+
+Esta version aplica una regla conservadora: si una observacion valida de la
+misma firma y ticker se publica antes del vencimiento de otra, la anterior se
+excluye como `superseded_by_later_target`. La exclusion guarda el identificador
+y fecha de la revision posterior. No se cuenta como fallo, incluso si el
+target original no habia sido alcanzado; se considera una senal retirada.
+
+Esta regla infiere sustitucion por secuencia `firma + ticker`; futuras fuentes
+que identifiquen expresamente mantenimiento, reiteracion o revision podran
+refinarla y evaluar periodos activos truncados.
+
 ## Acciones Corporativas
 
 Una barra de precio ajustada no basta para asumir que un target nominal
@@ -121,7 +137,7 @@ La direccion se deriva comparando el target con el precio de referencia:
 El reporte presenta este indicador como `target hit`, no como ganancia
 realizada.
 
-## Metricas v0.3.1
+## Metricas v0.3.2
 
 Para cada observacion evaluada:
 
@@ -167,7 +183,7 @@ intervalo = [centro - margen, centro + margen]
 
 donde `p = x / n`. Este intervalo cuantifica incertidumbre muestral bajo una
 lectura binomial de los aciertos observados. No corrige sesgos de fuente,
-seleccion de universo, targets repetidos o dependencia entre observaciones.
+seleccion de universo o dependencia entre observaciones.
 
 ## Rankings
 
@@ -186,9 +202,10 @@ un subgrupo pequeno.
 En fases futuras se agregaran:
 
 - Ajuste adicional por volatilidad dentro de cada sector.
-- Manejo de targets revisados como posiciones activas.
+- Evaluacion de periodos activos truncados cuando una fuente documente el
+  estado de la revision.
 - Costos de transaccion y reglas de salida ejecutables.
-- Universo punto-en-el-tiempo para eliminar sesgo de supervivencia.
+- Integracion de composiciones historicas reales con licencia publicable.
 
 ## Exclusiones
 
@@ -210,6 +227,8 @@ Una observacion se excluye, con motivo registrado, cuando:
   ha normalizado de forma auditada.
 - El ticker no pertenecia al universo historico suministrado en la fecha del
   target.
+- La firma publico un target posterior para el mismo ticker antes del
+  vencimiento de la observacion.
 
 ## Reproducibilidad
 
@@ -218,6 +237,7 @@ Cada reporte debe registrar:
 - Version de metodologia.
 - Fecha `as_of` del calculo.
 - Identificador del universo historico utilizado o ausencia declarada.
+- Observaciones reemplazadas, target sucesor y fecha de la revision.
 - Archivos o proveedor de datos usados.
 - Filas excluidas y motivo.
 - Parametros modificados, como la muestra minima.

@@ -229,6 +229,30 @@ excluidos; los incluidos adoptan el sector registrado para la fecha del
 pronostico. El fixture es sintetico: la publicacion real exige una fuente
 licenciada o oficialmente redistribuible de composiciones historicas.
 
+## Revisiones De Price Targets
+
+El evaluador detecta automáticamente cadenas por `firm` y `ticker`. Cuando
+existe un target valido posterior publicado antes de vencer el anterior, la
+observacion anterior queda excluida como `superseded_by_later_target`; el
+reporte y CSV conservan qué target la reemplazo y en qué fecha.
+
+El demo específico puede regenerarse con:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit evaluate \
+  --targets data/samples/targets_revisions.csv \
+  --prices data/samples/prices_revisions.csv \
+  --universe-membership data/samples/historical_universe.csv \
+  --output build/demo/evaluations-target-revisions.csv \
+  --report build/demo/report-target-revisions.md \
+  --minimum-sample 1 \
+  --as-of 2025-01-01
+```
+
+Esta politica es conservadora: un target sustituido no cuenta ni como acierto
+ni como fallo. Si una futura fuente identifica explícitamente el tipo de
+revision, se podran modelar intervalos activos hasta la sustitucion.
+
 ## Flujo Continuo Recomendado
 
 1. Cada dia habil de mercado, descargar el indice diario SEC una vez.

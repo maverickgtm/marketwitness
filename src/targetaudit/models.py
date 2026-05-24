@@ -61,6 +61,8 @@ class Evaluation:
     excess_return_pct: Decimal | None = None
     historical_universe_id: str = ""
     historical_universe_source_url: str = ""
+    superseded_by_observation_id: str = ""
+    superseded_on: str = ""
 
     def to_row(self) -> dict[str, str]:
         return {
@@ -93,6 +95,8 @@ class Evaluation:
             "excess_return_pct": _decimal_text(self.excess_return_pct),
             "historical_universe_id": self.historical_universe_id,
             "historical_universe_source_url": self.historical_universe_source_url,
+            "superseded_by_observation_id": self.superseded_by_observation_id,
+            "superseded_on": self.superseded_on,
         }
 
 

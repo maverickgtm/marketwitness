@@ -228,6 +228,67 @@ class EvaluatorTests(unittest.TestCase):
         self.assertEqual(result.historical_universe_id, "historical-demo")
         self.assertIn("/universe/aaa", result.historical_universe_source_url)
 
+    def test_later_target_by_same_firm_and_ticker_supersedes_open_target(self) -> None:
+        original = _target("original", "AAA", Decimal("120"), "")
+        revision = TargetObservation(
+            **{
+                **_target("revision", "AAA", Decimal("115"), "").__dict__,
+                "published_date": date(2023, 6, 1),
+            }
+        )
+
+        results = evaluate_all([original, revision], {}, date(2025, 1, 1))
+
+        self.assertEqual(results[0].status, "excluded")
+        self.assertEqual(results[0].reason, "superseded_by_later_target")
+        self.assertEqual(results[0].superseded_by_observation_id, "revision")
+        self.assertEqual(results[0].superseded_on, "2023-06-01")
+
+    def test_invalid_later_target_does_not_supersede_valid_target(self) -> None:
+        original = _target("original", "AAA", Decimal("120"), "")
+        revision = TargetObservation(
+            **{
+                **_target("revision", "AAA", Decimal("115"), "").__dict__,
+                "published_date": date(2023, 6, 1),
+                "source_url": "",
+            }
+        )
+        prices = {
+            "AAA": [
+                _bar("AAA", "2022-12-30", "101", "99", "100"),
+                _bar("AAA", "2023-01-03", "101", "99", "100"),
+                _bar("AAA", "2023-06-01", "121", "110", "118"),
+                _bar("AAA", "2024-01-02", "116", "113", "115"),
+            ]
+        }
+
+        results = evaluate_all([original, revision], prices, date(2025, 1, 1))
+
+        self.assertEqual(results[0].status, "evaluated")
+        self.assertEqual(results[1].reason, "missing_source_url")
+
+    def test_target_from_different_firm_does_not_supersede_signal(self) -> None:
+        original = _target("original", "AAA", Decimal("120"), "")
+        other_firm = TargetObservation(
+            **{
+                **_target("other", "AAA", Decimal("115"), "").__dict__,
+                "firm": "Different Firm",
+                "published_date": date(2023, 6, 1),
+            }
+        )
+        prices = {
+            "AAA": [
+                _bar("AAA", "2022-12-30", "101", "99", "100"),
+                _bar("AAA", "2023-01-03", "101", "99", "100"),
+                _bar("AAA", "2023-06-01", "121", "110", "118"),
+                _bar("AAA", "2024-01-02", "116", "113", "115"),
+            ]
+        }
+
+        results = evaluate_all([original, other_firm], prices, date(2025, 1, 1))
+
+        self.assertEqual(results[0].status, "evaluated")
+
 
 def _target(identifier: str, ticker: str, target: Decimal, benchmark: str) -> TargetObservation:
     return TargetObservation(

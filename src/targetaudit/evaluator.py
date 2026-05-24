@@ -23,6 +23,7 @@ def evaluate_all(
     historical_universe: list[UniverseMembership] | None = None,
 ) -> list[Evaluation]:
     duplicate_ids = _duplicates([observation.observation_id for observation in observations])
+    superseded = _superseded_observations(observations, as_of, duplicate_ids)
     return [
         evaluate(
             observation,
@@ -31,6 +32,7 @@ def evaluate_all(
             observation.observation_id in duplicate_ids,
             corporate_actions,
             historical_universe,
+            superseded.get(observation.observation_id),
         )
         for observation in observations
     ]
@@ -43,6 +45,7 @@ def evaluate(
     duplicate_id: bool = False,
     corporate_actions: list[CorporateAction] | None = None,
     historical_universe: list[UniverseMembership] | None = None,
+    superseding_observation: TargetObservation | None = None,
 ) -> Evaluation:
     base = _base_fields(observation)
     invalid_reason = _invalid_reason(observation, duplicate_id)
@@ -67,6 +70,16 @@ def evaluate(
         base = _base_fields(observation, membership.sector)
         base["historical_universe_id"] = membership.universe_id
         base["historical_universe_source_url"] = membership.source_url
+    if superseding_observation is not None:
+        assert superseding_observation.published_date is not None
+        return Evaluation(
+            **base,
+            status="excluded",
+            reason="superseded_by_later_target",
+            expiry_date=expiry.isoformat(),
+            superseded_by_observation_id=superseding_observation.observation_id,
+            superseded_on=superseding_observation.published_date.isoformat(),
+        )
     if expiry > as_of:
         return Evaluation(
             **base, status="pending", reason="horizon_not_mature", expiry_date=expiry.isoformat()
@@ -336,3 +349,36 @@ def _duplicates(values: list[str]) -> set[str]:
             duplicate.add(value)
         seen.add(value)
     return duplicate
+
+
+def _superseded_observations(
+    observations: list[TargetObservation], as_of: date, duplicate_ids: set[str]
+) -> dict[str, TargetObservation]:
+    valid = [
+        observation
+        for observation in observations
+        if not _invalid_reason(
+            observation, observation.observation_id in duplicate_ids
+        )
+        and observation.published_date is not None
+        and observation.published_date <= as_of
+    ]
+    superseded: dict[str, TargetObservation] = {}
+    for original in valid:
+        assert original.published_date is not None
+        assert original.horizon_days is not None
+        expiry = original.published_date + timedelta(days=original.horizon_days)
+        successors = [
+            later
+            for later in valid
+            if later.firm == original.firm
+            and later.ticker == original.ticker
+            and later.published_date is not None
+            and original.published_date < later.published_date <= expiry
+        ]
+        if successors:
+            successors.sort(
+                key=lambda later: (later.published_date, later.observation_id)
+            )
+            superseded[original.observation_id] = successors[0]
+    return superseded

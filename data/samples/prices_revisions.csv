@@ -1,0 +1,9 @@
+ticker,date,adjusted_high,adjusted_low,adjusted_close,source_provider
+ACBK,2022-12-30,101,99,100,synthetic
+ACBK,2023-01-03,101,99,100,synthetic
+ACBK,2023-06-01,121,116,118,synthetic
+ACBK,2023-06-02,120,117,119,synthetic
+ACBK,2024-01-02,117,113,115,synthetic
+XLF,2023-01-03,38.10,37.70,38.00,synthetic
+XLF,2023-06-02,42.60,42.10,42.30,synthetic
+XLF,2024-01-02,47.70,47.20,47.50,synthetic

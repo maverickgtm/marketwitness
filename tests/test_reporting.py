@@ -41,7 +41,7 @@ class ReportingTests(unittest.TestCase):
             evaluations, date(2025, 1, 1), 1, "us-financials-historical"
         )
 
-        self.assertIn("Methodology version: `0.3.1`", result)
+        self.assertIn("Methodology version: `0.3.2`", result)
         self.assertIn("Historical universe control: `us-financials-historical`", result)
         self.assertIn("| Example Firm | 1 | 100.00% | 20.65% to 100.00%", result)
         self.assertIn("## Firm Ranking By Sector", result)
@@ -52,6 +52,27 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("| up | 1 | 100.00% | 20.65% to 100.00%", result)
         self.assertIn("95% Wilson score interval", result)
         self.assertIn("`missing_source_url`", result)
+
+    def test_report_exposes_superseded_target_exclusion(self) -> None:
+        evaluation = Evaluation(
+            observation_id="original",
+            ticker="AAA",
+            firm="Example Firm",
+            sector="Financials",
+            published_date="2023-01-02",
+            price_target=Decimal("120"),
+            source_url="https://example.invalid/original",
+            status="excluded",
+            reason="superseded_by_later_target",
+            superseded_by_observation_id="revision",
+            superseded_on="2023-06-01",
+        )
+
+        result = render_markdown_report([evaluation], date(2025, 1, 1), 1)
+
+        self.assertIn("`superseded_by_later_target`", result)
+        self.assertIn("### Superseded Target Audit", result)
+        self.assertIn("| original | Example Firm | AAA | revision | 2023-06-01 |", result)
 
     def test_wilson_interval_exposes_small_sample_uncertainty(self) -> None:
         low, high = wilson_interval(1, 2)

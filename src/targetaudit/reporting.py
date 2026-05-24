@@ -111,6 +111,25 @@ def render_markdown_report(
         for reason, count in sorted(reason_counts.items()):
             lines.append(f"| `{reason}` | {count} |")
 
+    superseded = [
+        item for item in evaluations if item.reason == "superseded_by_later_target"
+    ]
+    if superseded:
+        lines.extend(
+            [
+                "",
+                "### Superseded Target Audit",
+                "",
+                "| Excluded Observation | Firm | Ticker | Superseded By | Superseded On |",
+                "|---|---|---|---|---|",
+            ]
+        )
+        for item in superseded:
+            lines.append(
+                f"| {item.observation_id} | {item.firm} | {item.ticker} | "
+                f"{item.superseded_by_observation_id} | {item.superseded_on} |"
+            )
+
     lines.extend(
         [
             "",

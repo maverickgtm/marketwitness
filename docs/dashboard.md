@@ -30,6 +30,8 @@ Componentes:
   cada segmento.
 - Control de universo historico: identifica la composicion aplicada y excluye
   targets que no pertenecian al universo en la fecha publicada.
+- Auditoria de revisiones: muestra targets reemplazados por otra nota de la
+  misma firma/accion y los retira del score.
 - Filtros por banco, subindustria, periodo y direccion del target.
 - Comparacion contra `XLF`.
 - Tabla de observaciones excluidas y motivo.

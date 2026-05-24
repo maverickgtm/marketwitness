@@ -336,6 +336,8 @@ auditados en desarrollo:
   el minimo muestral dentro de cada segmento.
 - Filtra observaciones contra un universo historico opcional y usa el sector
   vigente en la fecha del target para evitar clasificacion retrospectiva.
+- Excluye targets reemplazados por una revision posterior de la misma firma y
+  accion, registrando la cadena sin contarlos como fallos.
 - Desglosa resultados entre targets alcistas y bajistas.
 - Genera un ranking que muestra el numero de observaciones y aplica una muestra
   minima configurable.
@@ -369,6 +371,8 @@ build/demo/authorized-targets.csv
 build/demo/authorized-targets-audit.csv
 build/demo/authorized-targets-import.md
 build/demo/authorized-targets-import.html
+build/demo/report-target-revisions.md
+build/demo/evaluations-target-revisions.csv
 build/demo/source-registry.md
 build/demo/source-registry.html
 build/demo/alpha-vantage-prices.csv

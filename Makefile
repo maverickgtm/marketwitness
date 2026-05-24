@@ -24,6 +24,14 @@ demo:
 		--report build/demo/report.md \
 		--minimum-sample 1 \
 		--as-of 2025-01-01
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit evaluate \
+		--targets data/samples/targets_revisions.csv \
+		--prices data/samples/prices_revisions.csv \
+		--universe-membership data/samples/historical_universe.csv \
+		--output build/demo/evaluations-target-revisions.csv \
+		--report build/demo/report-target-revisions.md \
+		--minimum-sample 1 \
+		--as-of 2025-01-01
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-ipo-discover \
 		--date 2026-05-20 \
 		--index-file data/samples/sec-master-sample.idx \

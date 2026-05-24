@@ -127,7 +127,10 @@ original del target sin reinterpretarla despues del movimiento inicial. La colum
 `status` tiene valores `evaluated`, `excluded` o `pending`; `reason` explica
 cualquier fila no evaluada. Cuando se aplica un universo historico, las filas
 incluidas conservan `historical_universe_id` y
-`historical_universe_source_url` para auditar su membresia.
+`historical_universe_source_url` para auditar su membresia. Cuando una firma
+publica un target posterior para el mismo ticker antes del vencimiento, la
+fila anterior queda excluida como `superseded_by_later_target` y conserva
+`superseded_by_observation_id` y `superseded_on`.
 
 Los datasets reales nunca deben agregarse a Git dentro de `data/raw/` o
 `data/private/`, carpetas deliberadamente ignoradas.
