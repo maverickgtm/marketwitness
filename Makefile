@@ -8,8 +8,16 @@ test:
 
 demo:
 	mkdir -p build/demo
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit targets-import \
+		--export data/samples/authorized-target-export.csv \
+		--manifest data/samples/authorized-target-export-manifest.json \
+		--output build/demo/authorized-targets.csv \
+		--audit build/demo/authorized-targets-audit.csv \
+		--report build/demo/authorized-targets-import.md \
+		--html build/demo/authorized-targets-import.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit evaluate \
-		--targets data/samples/targets.csv \
+		--targets build/demo/authorized-targets.csv \
 		--prices data/samples/prices.csv \
 		--output build/demo/evaluations.csv \
 		--report build/demo/report.md \

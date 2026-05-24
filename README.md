@@ -96,6 +96,30 @@ dia y marca `TIME_SERIES_DAILY_ADJUSTED` como funcion premium. La integracion
 queda disponible para evaluacion interna autorizada, no para alimentar aun un
 ranking publico real.
 
+### Importacion Autorizada De Targets
+
+Los `price targets` reales no se obtendran mediante scraping. TargetAudit
+incluye un importador para exportaciones suministradas con autorizacion o
+licencia documentada. Un manifiesto JSON declara proveedor, mapeo de columnas,
+referencia de licencia y alcance de uso; las filas incompletas se rechazan en
+una auditoria separada antes de ejecutar el scorecard.
+
+```bash
+PYTHONPATH=src python3 -m targetaudit targets-import \
+  --export data/private/targets/proveedor-export.csv \
+  --manifest data/private/targets/proveedor-manifest.json \
+  --output data/raw/targets/normalized-targets.csv \
+  --audit build/live/targets-import-audit.csv \
+  --report build/live/targets-import.md \
+  --html build/live/targets-import.html \
+  --as-of YYYY-MM-DD
+```
+
+El manifiesto habilita el procesamiento solo cuando declara permiso para
+investigacion interna. Una declaracion no demuestra derechos de
+redistribucion: la publicacion del dataset o del ranking real sigue requiriendo
+revision contractual.
+
 ## IPO Watch
 
 El segundo modulo sigue cotizaciones tecnológicas y estrategicas de alto
@@ -298,7 +322,8 @@ observado, no como compra o venta confirmada del gestor.
 
 ## Estado Del Proyecto
 
-`v0.1` es un motor de investigacion reproducible:
+El repositorio contiene un motor de investigacion reproducible con adaptadores
+auditados en desarrollo:
 
 - Importa observaciones de targets desde CSV.
 - Exige firma, ticker, fecha, target y fuente para evaluar una observacion.
@@ -313,6 +338,7 @@ observado, no como compra o venta confirmada del gestor.
 - Genera un reporte inicial de `IPO Watch` con estado y fuentes auditables.
 - Marca splits y cambios de ticker documentados antes de puntuar targets.
 - Publica un registro de gobernanza de proveedores, licencias y uso permitido.
+- Importa exportaciones autorizadas de targets con manifiesto y cola de rechazos.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para
 publicar resultados reales hacen falta observaciones historicas licenciadas o
@@ -333,6 +359,10 @@ instalable. Escribe:
 ```text
 build/demo/evaluations.csv
 build/demo/report.md
+build/demo/authorized-targets.csv
+build/demo/authorized-targets-audit.csv
+build/demo/authorized-targets-import.md
+build/demo/authorized-targets-import.html
 build/demo/source-registry.md
 build/demo/source-registry.html
 build/demo/alpha-vantage-prices.csv
@@ -428,8 +458,6 @@ docs/                   Metodologia, estrategia, dashboard, fuentes y roadmap
 
 ## Siguientes Versiones
 
-- `v0.2`: importador autorizado de targets historicos.
-- `v0.2`: monitor SEC/news para hitos verificables de IPO Watch.
 - `v0.3`: normalizacion de firmas e integrantes
   historicos del universo.
 - `v0.4`: API con FastAPI y base DuckDB/PostgreSQL.

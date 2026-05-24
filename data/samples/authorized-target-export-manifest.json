@@ -1,0 +1,26 @@
+{
+  "provider_id": "authorized-demo",
+  "provider_name": "Authorized Demo Export",
+  "source_provider": "authorized_demo_export",
+  "exported_on": "2026-05-24",
+  "obtained_via": "provider_supplied_export",
+  "license_reference": "https://example.invalid/licenses/authorized-demo",
+  "authorized_for_internal_research": true,
+  "authorized_for_public_output": false,
+  "field_map": {
+    "record_id": "provider_record",
+    "ticker": "symbol",
+    "company_name": "issuer",
+    "firm": "publisher",
+    "analyst": "analyst_name",
+    "published_date": "announced_on",
+    "price_target": "target_value",
+    "rating": "recommendation",
+    "source_url": "evidence_link"
+  },
+  "defaults": {
+    "sector": "Financials",
+    "horizon_days": "365",
+    "benchmark_symbol": "XLF"
+  }
+}

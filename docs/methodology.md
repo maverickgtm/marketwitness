@@ -37,6 +37,19 @@ instrumento en una fecha determinada. Es evaluable solo si contiene:
 El analista individual y el rating son opcionales porque algunas fuentes no
 los publican, pero se conservan cuando estan disponibles.
 
+## Ingreso De Targets Reales
+
+Los targets provenientes de un proveedor externo solo se normalizan mediante
+una exportacion autorizada acompanada por un manifiesto de uso. El manifiesto
+debe identificar proveedor, fecha, referencia de licencia y permiso declarado
+para investigacion interna. Este control demuestra el origen operativo del
+archivo, no derechos de publicacion; el ranking real permanece bloqueado
+hasta aprobar esos derechos.
+
+Una fila del export se rechaza antes de evaluar cuando carece de identificador,
+ticker, emisor, firma, fecha ISO, target positivo o URL HTTPS de evidencia, o
+cuando duplica un identificador ya importado.
+
 ## Acciones Corporativas
 
 Una barra de precio ajustada no basta para asumir que un target nominal

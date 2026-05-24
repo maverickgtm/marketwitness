@@ -133,6 +133,15 @@ from .source_registry import (
     write_source_registry_html,
     write_source_registry_report,
 )
+from .target_imports import (
+    TargetImportDataError,
+    import_authorized_targets,
+    load_target_import_manifest,
+    write_import_audit,
+    write_import_html,
+    write_import_report,
+    write_normalized_targets,
+)
 from .reporting import write_markdown_report
 
 
@@ -326,6 +335,23 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Price evidence cutoff in YYYY-MM-DD format.",
+    )
+    target_import_parser = subparsers.add_parser(
+        "targets-import",
+        help="Normalize a licensed or otherwise authorized analyst-target export.",
+    )
+    target_import_parser.add_argument("--export", required=True, help="Provider export CSV.")
+    target_import_parser.add_argument(
+        "--manifest", required=True, help="Authorization and field-map JSON manifest."
+    )
+    target_import_parser.add_argument("--output", required=True, help="Normalized targets CSV.")
+    target_import_parser.add_argument("--audit", required=True, help="Row audit CSV output.")
+    target_import_parser.add_argument("--report", required=True, help="Markdown import report.")
+    target_import_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    target_import_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Import audit cutoff in YYYY-MM-DD format.",
     )
     alerts_parser = subparsers.add_parser(
         "global-alerts",
@@ -647,6 +673,27 @@ def main() -> int:
         print(
             f"Wrote {len(imported.bars)} adjusted bars for {imported.ticker} "
             f"from {imported.source_mode} evidence to {args.output}."
+        )
+        return 0
+
+    if args.command == "targets-import":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            manifest = load_target_import_manifest(args.manifest)
+            observations, decisions = import_authorized_targets(
+                args.export, manifest, as_of
+            )
+            write_normalized_targets(args.output, observations)
+            write_import_audit(args.audit, decisions)
+            write_import_report(args.report, manifest, decisions, as_of)
+            if args.html:
+                write_import_html(args.html, manifest, decisions, as_of)
+        except (TargetImportDataError, ValueError) as exc:
+            parser.error(str(exc))
+        rejected = sum(decision.status == "rejected" for decision in decisions)
+        print(
+            f"Imported {len(observations)} target observations; rejected {rejected} "
+            f"rows to {args.audit}."
         )
         return 0
 

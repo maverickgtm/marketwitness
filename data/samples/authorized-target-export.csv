@@ -1,0 +1,5 @@
+provider_record,symbol,issuer,publisher,analyst_name,announced_on,target_value,recommendation,evidence_link
+exp-001,ACBK,Acme Demo Bank,Specialist Research,Jane Analyst,2023-01-02,120,Buy,https://example.invalid/authorized-export/exp-001
+exp-002,NVBK,Nova Demo Bank,Specialist Research,John Analyst,2023-01-02,80,Sell,https://example.invalid/authorized-export/exp-002
+exp-003,BRIN,Brio Demo Insurance,Generalist Capital,Alex Analyst,2023-01-02,60,Outperform,https://example.invalid/authorized-export/exp-003
+exp-004,VFIN,Void Demo Finance,Generalist Capital,,2023-01-02,75,Buy,

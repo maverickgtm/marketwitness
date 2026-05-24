@@ -156,6 +156,28 @@ endpoint ajustado diario como premium. Esta operacion requiere acceso
 autorizado al endpoint y sus salidas de datos reales no se habilitan para
 publicacion hasta revisar licencia y terminos.
 
+## Importacion Autorizada De Targets
+
+Una fuente comercial o exportacion entregada legalmente debe ingresar mediante
+un manifiesto conservado junto al archivo original, ambos fuera de Git:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit targets-import \
+  --export data/private/targets/proveedor-export.csv \
+  --manifest data/private/targets/proveedor-manifest.json \
+  --output data/raw/targets/normalized-targets.csv \
+  --audit build/live/targets-import-audit.csv \
+  --report build/live/targets-import.md \
+  --html build/live/targets-import.html \
+  --as-of YYYY-MM-DD
+```
+
+El comando requiere una referencia HTTPS de licencia/autorizacion y
+`authorized_for_internal_research: true`. Cada fila necesita ticker, emisor,
+firma, fecha, target positivo y URL HTTPS de evidencia; de lo contrario queda
+en la auditoria como rechazada. Aunque el manifiesto declare salida publica,
+el despliegue real debe esperar revision contractual.
+
 ## Auditoria De Acciones Corporativas
 
 Antes de publicar un ranking de targets reales se debe cruzar la muestra

@@ -40,7 +40,11 @@ redistribuir en un producto público".
 
 No se identifico una fuente abierta y claramente redistribuible que entregue,
 de forma completa, price targets historicos individuales de firmas de EE. UU.
-Por eso `v0.1` acepta CSV documentado y no incluye un scraper.
+Por eso TargetAudit no incluye un scraper. El comando `targets-import` acepta
+exportaciones suministradas legalmente mediante un manifiesto que declara
+proveedor, mapeo, referencia contractual y uso autorizado; toda fila sin
+evidencia URL o campos evaluables queda rechazada antes del scorecard. El
+fixture incluido es sintetico y no representa una licencia comercial real.
 
 ## Precios Ajustados Y Mercado
 

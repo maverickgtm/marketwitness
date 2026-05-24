@@ -20,6 +20,29 @@ Una fila por price target publicado.
 | `source_provider` | Si | Proveedor o fuente primaria |
 | `source_url` | Si | Referencia verificable |
 
+## Manifiesto De Importacion Autorizada
+
+`targets-import` recibe una exportacion original y un manifiesto JSON fuera de
+Git para producir `targets.csv`. El demo contiene archivos sinteticos
+publicables; una exportacion real debe vivir en `data/private/` o `data/raw/`.
+
+| Campo JSON | Requerido | Descripcion |
+|---|---:|---|
+| `provider_id` | Si | Prefijo estable usado en `observation_id` |
+| `provider_name` | Si | Nombre legible del proveedor/exportacion |
+| `source_provider` | Si | Valor escrito en las filas normalizadas |
+| `exported_on` | Si | Fecha ISO de la exportacion |
+| `obtained_via` | Si | Mecanismo autorizado de entrega |
+| `license_reference` | Si | URL HTTPS de contrato, terminos o registro de autorizacion |
+| `authorized_for_internal_research` | Si | Debe ser `true` para permitir importar |
+| `authorized_for_public_output` | Si | Declaracion visible; no sustituye revision legal |
+| `field_map` | Si | Mapeo de columnas externas a campos canonicos |
+| `defaults` | Si | Sector, benchmark u horizonte si no vienen por fila |
+
+El CSV de auditoria registra `export_record_id`, `observation_id`, `ticker`,
+`firm`, `status`, `reason` y `source_url`. Una fila rechazada nunca se escribe
+al archivo normalizado ni llega al scoring.
+
 ## `prices.csv`
 
 Una fila por instrumento y dia. Debe contener barras ajustadas con la misma
