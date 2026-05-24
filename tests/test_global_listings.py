@@ -21,14 +21,15 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertEqual(len(sources), 5)
         self.assertIn("London Stock Exchange", report)
         self.assertIn("Hong Kong Exchanges and Clearing", report)
-        self.assertIn("Live official feeds: `3`", report)
+        self.assertIn("Live official feeds: `4`", report)
         self.assertIn("Verified snapshots: `0`", report)
         self.assertIn("Beyond Wall Street", page)
-        self.assertIn("HKEX, LSE and ASX have official ingestion paths", page)
+        self.assertIn("HKEX, LSE, ASX and TSX have official ingestion paths", page)
         self.assertIn('href="hkex-monitor.html"', page)
         self.assertIn('href="lse-upcoming.html"', page)
         self.assertIn('href="lse-fca-check.html"', page)
         self.assertIn('href="asx-monitor.html"', page)
+        self.assertIn('href="tsx-monitor.html"', page)
 
     def test_rejects_unknown_connector_status(self) -> None:
         path = _csv(

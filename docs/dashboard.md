@@ -104,8 +104,8 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | London Stock Exchange | LSE `New issues` JSON y FCA National Storage Mechanism | Feed y chequeo documental FCA implementados; admision requiere revision |
 | Hong Kong HKEX | HKEX/HKEXnews AP/PHIP JSON feeds | Feed oficial implementado |
 | Australian Securities Exchange | ASX `Upcoming floats and listings` | Feed HTML oficial implementado |
-| Toronto Stock Exchange | TSX `New Company Listings` | Planificado |
-| Singapore Exchange | SGX `IPO Prospectus` | Planificado |
+| Toronto Stock Exchange | TSX `New Company Listings` | Feed HTML oficial implementado para listings completados |
+| Singapore Exchange | SGX `IPO Prospectus` | Fuente oficial comprobada; integración pendiente |
 
 ### Regla De Evidencia
 
@@ -131,5 +131,7 @@ Cada jurisdiccion conserva sus propias etapas:
   cada emisor próximo y marca coincidencias para revisión.
 - `ASX Upcoming Floats And Listings Monitor`: pagina que muestra solicitudes
   formales anticipadas y retiros visibles en ASX.
+- `TSX New Company Listings Monitor`: pagina de confirmaciones publicadas de
+  compañías ya listadas; no funciona como señal prospectiva.
 - La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
-  cobertura global, feed HKEX, feed LSE, contraste FCA y ASX.
+  cobertura global, feed HKEX, feed LSE, contraste FCA, ASX y TSX.

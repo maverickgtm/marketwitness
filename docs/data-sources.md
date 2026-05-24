@@ -82,8 +82,8 @@ Revisado al `2026-05-24`:
 | Reino Unido | FCA National Storage Mechanism | Prospectos y documentos regulatorios aprobados/publicados | Consulta pública implementada para contraste LSE |
 | Hong Kong | HKEX/HKEXnews New Listings - AP & PHIP | JSON oficiales de Active AP, Active PHIP, Inactive, Listed y Returned | Feed oficial implementado |
 | Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida, fecha anticipada y retiros | Feed HTML oficial implementado |
-| Canada | TSX New Company Listings | Nuevas companias ya listadas | Planificado |
-| Singapur | SGX IPO Prospectus | Prospectos IPO publicados | Planificado |
+| Canada | TSX New Company Listings | Nuevas companias ya listadas | Feed HTML oficial implementado como confirmación |
+| Singapur | SGX IPO Prospectus | Prospectos IPO publicados | Fuente comprobada; endpoint estable por implementar |
 
 Las etapas no son intercambiables entre jurisdicciones. Por ejemplo, un
 `PHIP` de HKEX indica aprobacion en principio, mientras una aparicion en ASX
@@ -118,6 +118,16 @@ que la página solo contiene nuevos listings para los que recibió una
 solicitud formal, normalmente cerca de cuatro a seis semanas antes, y que
 fechas/códigos propuestos pueden cambiar. TargetAudit conserva `anticipated`
 y `withdrawn` sin interpretarlos como instrucción de inversión.
+
+El conector TSX lee la tabla HTML oficial
+`https://www.tsx.com/en/news/new-company-listings`. Sus filas registran
+empresas que TSX ya muestra como nuevas cotizaciones y por ello solo asignan
+el estado `listed`; no constituyen una señal previa de IPO.
+
+La página oficial SGX `IPO Prospectus` fue verificada el `2026-05-24` y
+mostró, entre otros, `JUSTCO HOLDINGS LIMITED` con fecha de cierre
+`20 May 2026`. El catálogo se carga dinámicamente; se mantiene pendiente
+identificar y validar su endpoint público estable antes de automatizarlo.
 
 Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
 respetar la guia de acceso justo, que actualmente fija un maximo de 10

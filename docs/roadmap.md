@@ -31,7 +31,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Agregar contraste documental FCA NSM para LSE.
 - [ ] Clasificar documentos FCA revisados como prospecto/admission evidence.
 - [x] Conector ASX `Upcoming floats and listings` desde HTML oficial.
-- [ ] Conectores TSX y SGX despues de validar UK/HK/ASX.
+- [x] Conector TSX `New Company Listings` como confirmacion de listings.
+- [ ] Conector SGX `IPO Prospectus` tras validar su endpoint público.
 - [ ] Ingesta de comunicados oficiales para confirmar listings.
 - [ ] Validacion de splits y cambios de ticker.
 - [x] Validacion de barras de precios duplicadas o incoherentes.

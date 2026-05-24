@@ -48,6 +48,14 @@ from .providers.asx import (
     write_asx_html,
     write_asx_report,
 )
+from .providers.tsx import (
+    TsxDataError,
+    fetch_tsx_new_listings,
+    load_tsx_snapshot,
+    write_tsx_csv,
+    write_tsx_html,
+    write_tsx_report,
+)
 from .providers.sec import SecDataError, fetch_company_ticker_map, write_company_ticker_map
 from .providers.sec_ipo import (
     fetch_daily_master_index,
@@ -174,6 +182,20 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Report cutoff in YYYY-MM-DD format.",
     )
+    tsx_parser = subparsers.add_parser(
+        "tsx-monitor", help="Read official TSX New Company Listings records."
+    )
+    tsx_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    tsx_parser.add_argument("--report", required=True, help="Markdown report path.")
+    tsx_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    tsx_parser.add_argument(
+        "--snapshot", help="Read a saved official TSX HTML page instead of requesting TSX."
+    )
+    tsx_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Report cutoff in YYYY-MM-DD format.",
+    )
     hkex_parser = subparsers.add_parser(
         "hkex-monitor", help="Read official HKEXnews listing-status JSON feeds."
     )
@@ -272,6 +294,23 @@ def main() -> int:
         except (AsxDataError, ValueError) as exc:
             parser.error(str(exc))
         print(f"Wrote ASX monitor for {len(listings)} official records to {args.report}.")
+        return 0
+
+    if args.command == "tsx-monitor":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            listings = (
+                load_tsx_snapshot(args.snapshot, as_of)
+                if args.snapshot
+                else fetch_tsx_new_listings()
+            )
+            write_tsx_csv(args.output, listings)
+            write_tsx_report(args.report, listings, as_of)
+            if args.html:
+                write_tsx_html(args.html, listings, as_of)
+        except (TsxDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(f"Wrote TSX monitor for {len(listings)} official records to {args.report}.")
         return 0
 
     if args.command == "global-listings":

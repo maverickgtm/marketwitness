@@ -73,7 +73,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `LSE` / Reino Unido: feed JSON oficial de `New issues` y contraste documental con FCA NSM.
 - `HKEX` / Hong Kong: documentos de nuevas solicitudes y `PHIP`.
 - `ASX` / Australia: monitor HTML oficial de upcoming floats and listings.
-- `TSX` / Canada: nuevas companias listadas oficialmente.
+- `TSX` / Canada: monitor HTML oficial de nuevas companias ya listadas.
 - `SGX` / Singapur: catalogo oficial de prospectos IPO.
 
 Hong Kong ya incluye un conector a los JSON oficiales de HKEXnews para
@@ -83,6 +83,8 @@ cruzar cada emisor con documentos públicos del FCA NSM. Una coincidencia
 queda para revisión: no se convierte automáticamente en admisión confirmada.
 Australia ya lee la tabla oficial ASX de solicitudes formales y separa
 listados anticipados de retiros publicados.
+Canada ya lee `TSX New Company Listings` como comprobación de cotizaciones
+completadas; no lo usa para predecir solicitudes futuras.
 
 Para leer HKEX en vivo:
 
@@ -116,6 +118,15 @@ PYTHONPATH=src python3 -m targetaudit asx-monitor \
   --output data/raw/global/asx-monitor.csv \
   --report build/live/asx-monitor.md \
   --html build/live/asx-monitor.html
+```
+
+Para leer confirmaciones TSX en vivo:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit tsx-monitor \
+  --output data/raw/global/tsx-monitor.csv \
+  --report build/live/tsx-monitor.md \
+  --html build/live/tsx-monitor.html
 ```
 
 ## Estado Del Proyecto
@@ -169,6 +180,9 @@ build/demo/hkex-monitor.html
 build/demo/asx-monitor.csv
 build/demo/asx-monitor.md
 build/demo/asx-monitor.html
+build/demo/tsx-monitor.csv
+build/demo/tsx-monitor.md
+build/demo/tsx-monitor.html
 build/dist/targetaudit-0.1.0-py3-none-any.whl
 ```
 

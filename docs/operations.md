@@ -93,9 +93,9 @@ dias habiles:
   revision y resume posibles registros, prospectos o retiros nuevos.
 - `TargetAudit Global Listings diario`: consulta los cinco feeds JSON
   oficiales HKEXnews, el componente JSON oficial LSE `Upcoming issues` y el
-  contraste público FCA NSM, además de la tabla oficial ASX; resume cambios
-  HKEX, emisiones previstas en Londres, coincidencias documentales y
-  solicitudes/retiradas australianas.
+  contraste público FCA NSM, además de las tablas oficiales ASX y TSX; resume
+  cambios HKEX, emisiones previstas en Londres, coincidencias documentales,
+  solicitudes/retiradas australianas y cotizaciones confirmadas en Canadá.
 
 Ambas tareas tratan los eventos como informacion regulatoria para investigar,
 no como instrucciones para tomar posiciones.
@@ -108,6 +108,10 @@ en tiempo real y el tipo de documento debe examinarse.
 El monitor ASX conserva como `anticipated` los registros con fecha prevista y
 como `withdrawn` los retirados. ASX indica que recibió una solicitud formal,
 pero fechas y códigos aún pueden cambiar.
+
+El monitor TSX conserva únicamente el estado `listed`, porque su fuente
+publica nuevas compañías ya cotizadas. Debe utilizarse como confirmación
+posterior y no como detector anticipado de IPO.
 
 ## Despliegue Futuro En GitHub
 

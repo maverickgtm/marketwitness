@@ -53,6 +53,12 @@ demo:
 		--report build/demo/asx-monitor.md \
 		--html build/demo/asx-monitor.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit tsx-monitor \
+		--snapshot data/samples/tsx-new-listings.html \
+		--output build/demo/tsx-monitor.csv \
+		--report build/demo/tsx-monitor.md \
+		--html build/demo/tsx-monitor.html \
+		--as-of 2026-05-24
 
 package:
 	mkdir -p build/dist

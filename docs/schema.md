@@ -146,3 +146,10 @@ listings` y produce un CSV con: `company_name`, `status`, `listing_date`,
 
 Los estados son `anticipated` cuando ASX publica fecha prevista y `withdrawn`
 cuando la propia página marca la solicitud como retirada.
+
+## TSX New Company Listings HTML Feed
+
+`tsx-monitor` parsea la tabla oficial de nuevas compañías listadas y produce:
+`company_name`, `symbols`, `listing_date`, `status`, `observed_on`,
+`source_url` y `detail_url`. El único estado emitido es `listed`, ya que
+esta fuente documenta cotizaciones completadas y no solicitudes futuras.
