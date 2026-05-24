@@ -1,4 +1,5 @@
 import unittest
+import tempfile
 from datetime import date
 from pathlib import Path
 
@@ -8,6 +9,7 @@ from targetaudit.lse_upcoming import (
     load_lse_upcoming,
     render_lse_html,
     render_lse_report,
+    write_lse_csv,
 )
 
 
@@ -49,6 +51,17 @@ class LseUpcomingTests(unittest.TestCase):
             from targetaudit.lse_upcoming import parse_lse_page_payload
 
             parse_lse_page_payload({"components": []}, date(2026, 5, 24))
+
+    def test_writes_normalized_csv_for_history_comparison(self) -> None:
+        issues = load_lse_page_payload(
+            Path("data/samples/lse-new-issues-page.json"), date(2026, 5, 24)
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            destination = Path(temporary) / "lse.csv"
+            write_lse_csv(destination, issues)
+            reloaded = load_lse_upcoming(destination)
+
+        self.assertEqual(reloaded[0].company_name, "Coastal Africa Group Limited")
 
 
 if __name__ == "__main__":

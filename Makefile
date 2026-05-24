@@ -32,6 +32,7 @@ demo:
 		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-upcoming \
 		--page-file data/samples/lse-new-issues-page.json \
+		--output build/demo/lse-upcoming.csv \
 		--report build/demo/lse-upcoming.md \
 		--html build/demo/lse-upcoming.html \
 		--as-of 2026-05-24
@@ -64,6 +65,17 @@ demo:
 		--output build/demo/sgx-monitor.csv \
 		--report build/demo/sgx-monitor.md \
 		--html build/demo/sgx-monitor.html \
+		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit global-alerts \
+		--hkex build/demo/hkex-monitor.csv \
+		--lse build/demo/lse-upcoming.csv \
+		--asx build/demo/asx-monitor.csv \
+		--tsx build/demo/tsx-monitor.csv \
+		--sgx build/demo/sgx-monitor.csv \
+		--previous-dir data/samples/global-alerts-previous \
+		--output build/demo/global-alerts.csv \
+		--report build/demo/global-alerts.md \
+		--html build/demo/global-alerts.html \
 		--as-of 2026-05-24
 
 package:

@@ -163,3 +163,22 @@ produce: `company_name`, `document_id`, `status`, `closing_date`,
 El estado emitido es `prospectus_published`: prueba que SGX publicó un
 documento de prospecto en su catálogo, pero no confirma por sí solo admisión,
 inicio de negociación o una decisión de inversión.
+
+## Global Listings Alerts
+
+`global-alerts` normaliza los CSV actuales de `HKEX`, `LSE`, `ASX`, `TSX` y
+`SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa `--history-dir` y
+compara contra la última captura anterior. Produce un CSV con:
+`market`, `change_type`, `company_name`, `previous_status`, `current_status`,
+`previous_detail`, `current_detail`, `review_action` y `source_url`.
+
+`change_type` admite:
+
+- `new`: evidencia que no estaba en la captura anterior.
+- `changed`: el mismo registro tiene estado o detalle documental modificado.
+- `removed_from_feed_review`: ya no aparece en el feed actual y debe
+  investigarse; no equivale automáticamente a retiro o listing.
+
+En HKEX la identidad comparada es un hito de ciclo de vida
+(`company + status + event_date + stock_code`), porque el feed puede conservar
+al mismo emisor en etapas oficiales distintas.

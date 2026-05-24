@@ -170,6 +170,18 @@ def load_lse_upcoming(path: str | Path) -> list[LseUpcomingIssue]:
         return issues
 
 
+def write_lse_csv(path: str | Path, issues: list[LseUpcomingIssue]) -> None:
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open("w", newline="", encoding="utf-8") as target:
+        writer = csv.DictWriter(target, fieldnames=list(LseUpcomingIssue.__annotations__))
+        writer.writeheader()
+        for issue in issues:
+            row = dict(issue.__dict__)
+            row["observed_on"] = issue.observed_on.isoformat()
+            writer.writerow(row)
+
+
 def render_lse_report(
     issues: list[LseUpcomingIssue], as_of: date, source_mode: str = "snapshot"
 ) -> str:

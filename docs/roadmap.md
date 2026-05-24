@@ -33,6 +33,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Conector ASX `Upcoming floats and listings` desde HTML oficial.
 - [x] Conector TSX `New Company Listings` como confirmacion de listings.
 - [x] Conector SGX `IPO Prospectus` mediante API JSON oficial.
+- [x] Historial y diff diario de los cinco monitores globales con cola de revision.
 - [ ] Ingesta de comunicados oficiales para confirmar listings.
 - [ ] Validacion de splits y cambios de ticker.
 - [x] Validacion de barras de precios duplicadas o incoherentes.

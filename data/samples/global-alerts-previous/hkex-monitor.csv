@@ -1,0 +1,6 @@
+company_name,status,event_date,stock_code,has_phip,source_url
+"Beijing Shougang LanzaTech Technology Co., Ltd.",active_phip,2026-05-21,,true,https://www.hkexnews.hk/ncms/json/eds/appactive_appphip_sehk_e.json
+"Suzhou Calmcar Electronics Technology Co., Limited",inactive,2026-04-21,,false,https://www.hkexnews.hk/ncms/json/eds/appinactive_sehk_e.json
+TenNor Therapeutics (Suzhou) Limited - B,listed,2026-05-06,06872,false,https://www.hkexnews.hk/ncms/json/eds/applisted_sehk_e.json
+China Huitong Finance Holdings Limited,returned,2014-09-26,,false,https://www.hkexnews.hk/ncms/json/eds/appreturned_sehk_e.json
+Example Removed Applicant Limited,active,2026-05-20,,false,https://www.hkexnews.hk/ncms/json/eds/appactive_app_sehk_e.json

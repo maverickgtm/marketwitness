@@ -84,6 +84,31 @@ make verify
    comunicado oficial.
 7. Publicar el dashboard actualizado con historial de cambios.
 
+## Historial De Mercados Globales
+
+Los cinco conectores internacionales generan CSV normalizados. Después de
+obtenerlos, `global-alerts` copia la lectura del día a
+`data/raw/global/history/YYYY-MM-DD/`, selecciona la última captura anterior
+y genera una bandeja común:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit global-alerts \
+  --hkex data/raw/global/hkex-monitor-live.csv \
+  --lse data/raw/global/lse-upcoming-live.csv \
+  --asx data/raw/global/asx-monitor-live.csv \
+  --tsx data/raw/global/tsx-monitor-live.csv \
+  --sgx data/raw/global/sgx-monitor-live.csv \
+  --history-dir data/raw/global/history \
+  --output build/live/global-alerts.csv \
+  --report build/live/global-alerts.md \
+  --html build/live/global-alerts.html
+```
+
+La primera ejecución establece la línea base y no inventa cambios. A partir
+de la segunda, la bandeja marca evidencia nueva, modificada o removida del
+feed para revisión. Una remoción nunca se promueve automáticamente a retirada,
+admisión o cotización completada.
+
 ## Automatizaciones Locales Activas
 
 En la aplicacion Codex se configuraron dos ejecuciones recurrentes locales en
@@ -92,10 +117,11 @@ dias habiles:
 - `TargetAudit IPO Watch diario`: consulta el indice SEC, guarda la cola de
   revision y resume posibles registros, prospectos o retiros nuevos.
 - `TargetAudit Global Listings diario`: consulta los cinco feeds JSON
-  oficiales HKEXnews, el componente JSON oficial LSE `Upcoming issues` y el
+  oficiales o páginas estructuradas, el componente JSON oficial LSE `Upcoming issues` y el
   contraste público FCA NSM, además de las tablas oficiales ASX y TSX; resume
   cambios HKEX, emisiones previstas en Londres, coincidencias documentales,
-  solicitudes/retiradas australianas y cotizaciones confirmadas en Canadá.
+  solicitudes/retiradas australianas, cotizaciones confirmadas en Canadá y
+  prospectos SGX. También preserva snapshots y genera `Global Listings Alerts`.
 
 Ambas tareas tratan los eventos como informacion regulatoria para investigar,
 no como instrucciones para tomar posiciones.
@@ -112,6 +138,10 @@ pero fechas y códigos aún pueden cambiar.
 El monitor TSX conserva únicamente el estado `listed`, porque su fuente
 publica nuevas compañías ya cotizadas. Debe utilizarse como confirmación
 posterior y no como detector anticipado de IPO.
+
+El monitor SGX conserva `prospectus_published`, porque su fuente publica
+documentos de prospecto. Es una señal documental para revisión, no una
+confirmación automática de trading.
 
 ## Despliegue Futuro En GitHub
 

@@ -228,6 +228,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
   <main>
     <p class="notice">HKEX, LSE, ASX, TSX and SGX have official ingestion paths. TSX records completed listings; SGX records prospectus documents; each signal still requires its jurisdiction-specific review.</p>
     <section class="monitor-links" aria-label="Monitoring pages">
+      <a href="global-alerts.html">Open daily change review</a>
       <a href="hkex-monitor.html">Open HKEX live monitor</a>
       <a href="lse-upcoming.html">Open LSE live monitor</a>
       <a href="lse-fca-check.html">Open LSE / FCA check</a>

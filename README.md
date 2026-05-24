@@ -102,6 +102,7 @@ Para leer LSE en vivo:
 
 ```bash
 PYTHONPATH=src python3 -m targetaudit lse-upcoming \
+  --output data/raw/global/lse-upcoming.csv \
   --report build/live/lse-upcoming.md \
   --html build/live/lse-upcoming.html
 ```
@@ -140,6 +141,26 @@ PYTHONPATH=src python3 -m targetaudit sgx-monitor \
   --report build/live/sgx-monitor.md \
   --html build/live/sgx-monitor.html
 ```
+
+Para comparar la lectura global del dia contra la captura anterior y conservar
+historial:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit global-alerts \
+  --hkex data/raw/global/hkex-monitor.csv \
+  --lse data/raw/global/lse-upcoming.csv \
+  --asx data/raw/global/asx-monitor.csv \
+  --tsx data/raw/global/tsx-monitor.csv \
+  --sgx data/raw/global/sgx-monitor.csv \
+  --history-dir data/raw/global/history \
+  --output build/live/global-alerts.csv \
+  --report build/live/global-alerts.md \
+  --html build/live/global-alerts.html
+```
+
+`global-alerts` clasifica diferencias como nuevas, modificadas o removidas
+del feed para revisión. Una remoción no confirma retiro, admisión ni inicio de
+negociación.
 
 ## Estado Del Proyecto
 
@@ -184,6 +205,7 @@ build/demo/global-listings.md
 build/demo/global-listings.html
 build/demo/lse-upcoming.md
 build/demo/lse-upcoming.html
+build/demo/lse-upcoming.csv
 build/demo/lse-fca-check.md
 build/demo/lse-fca-check.html
 build/demo/hkex-monitor.csv
@@ -198,6 +220,9 @@ build/demo/tsx-monitor.html
 build/demo/sgx-monitor.csv
 build/demo/sgx-monitor.md
 build/demo/sgx-monitor.html
+build/demo/global-alerts.csv
+build/demo/global-alerts.md
+build/demo/global-alerts.html
 build/dist/targetaudit-0.1.0-py3-none-any.whl
 ```
 

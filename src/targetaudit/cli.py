@@ -22,8 +22,20 @@ from .lse_upcoming import (
     fetch_lse_upcoming,
     load_lse_page_payload,
     load_lse_upcoming,
+    write_lse_csv,
     write_lse_html,
     write_lse_report,
+)
+from .listing_alerts import (
+    ListingAlertsDataError,
+    archive_snapshot,
+    compare_signals,
+    latest_previous_snapshot,
+    load_current_signals,
+    load_snapshot_directory,
+    write_alerts_csv,
+    write_alerts_html,
+    write_alerts_report,
 )
 from .providers.hkex import (
     HkexDataError,
@@ -145,12 +157,38 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Source review cutoff in YYYY-MM-DD format.",
     )
+    alerts_parser = subparsers.add_parser(
+        "global-alerts",
+        help="Compare normalized international listing feeds and preserve snapshots.",
+    )
+    alerts_parser.add_argument("--hkex", required=True, help="Current HKEX monitor CSV.")
+    alerts_parser.add_argument("--lse", required=True, help="Current LSE upcoming CSV.")
+    alerts_parser.add_argument("--asx", required=True, help="Current ASX monitor CSV.")
+    alerts_parser.add_argument("--tsx", required=True, help="Current TSX monitor CSV.")
+    alerts_parser.add_argument("--sgx", required=True, help="Current SGX monitor CSV.")
+    alerts_parser.add_argument(
+        "--previous-dir",
+        help="Explicit previous snapshot directory for a reproducible comparison.",
+    )
+    alerts_parser.add_argument(
+        "--history-dir",
+        help="Archive current CSVs by date and compare with the latest earlier snapshot.",
+    )
+    alerts_parser.add_argument("--output", required=True, help="Alert output CSV path.")
+    alerts_parser.add_argument("--report", required=True, help="Markdown report path.")
+    alerts_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    alerts_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Observation date in YYYY-MM-DD format.",
+    )
     lse_parser = subparsers.add_parser(
         "lse-upcoming", help="Read official LSE upcoming-issues data."
     )
     lse_input = lse_parser.add_mutually_exclusive_group()
     lse_input.add_argument("--snapshot", help="Observed LSE issues CSV fallback.")
     lse_input.add_argument("--page-file", help="Saved official LSE page JSON fixture.")
+    lse_parser.add_argument("--output", help="Optional normalized output CSV path.")
     lse_parser.add_argument("--report", required=True, help="Markdown report path.")
     lse_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
     lse_parser.add_argument(
@@ -263,6 +301,8 @@ def main() -> int:
             else:
                 issues = fetch_lse_upcoming()
                 source_mode = "live"
+            if args.output:
+                write_lse_csv(args.output, issues)
             write_lse_report(args.report, issues, as_of, source_mode)
             if args.html:
                 write_lse_html(args.html, issues, as_of, source_mode)
@@ -365,6 +405,42 @@ def main() -> int:
         except (GlobalListingsDataError, ValueError) as exc:
             parser.error(str(exc))
         print(f"Wrote global listings coverage for {len(markets)} markets to {args.report}.")
+        return 0
+
+    if args.command == "global-alerts":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            paths = {
+                "HKEX": args.hkex,
+                "LSE": args.lse,
+                "ASX": args.asx,
+                "TSX": args.tsx,
+                "SGX": args.sgx,
+            }
+            current = load_current_signals(paths)
+            previous = None
+            baseline_label = "first recorded snapshot"
+            if args.previous_dir:
+                previous = load_snapshot_directory(args.previous_dir)
+                baseline_label = str(args.previous_dir)
+            elif args.history_dir:
+                prior_path = latest_previous_snapshot(args.history_dir, as_of)
+                if prior_path:
+                    previous = load_snapshot_directory(prior_path)
+                    baseline_label = prior_path.name
+            alerts = compare_signals(current, previous)
+            if args.history_dir:
+                archive_snapshot(args.history_dir, paths, as_of)
+            write_alerts_csv(args.output, alerts)
+            write_alerts_report(args.report, alerts, current, as_of, baseline_label)
+            if args.html:
+                write_alerts_html(args.html, alerts, current, as_of, baseline_label)
+        except (ListingAlertsDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote global alerts for {len(alerts)} changes across "
+            f"{len(current)} current records to {args.report}."
+        )
         return 0
 
     if args.command == "ipo-watch":

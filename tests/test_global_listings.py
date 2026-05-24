@@ -25,6 +25,7 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertIn("Verified snapshots: `0`", report)
         self.assertIn("Beyond Wall Street", page)
         self.assertIn("HKEX, LSE, ASX, TSX and SGX have official ingestion paths", page)
+        self.assertIn('href="global-alerts.html"', page)
         self.assertIn('href="hkex-monitor.html"', page)
         self.assertIn('href="lse-upcoming.html"', page)
         self.assertIn('href="lse-fca-check.html"', page)
