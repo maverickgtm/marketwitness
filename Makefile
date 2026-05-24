@@ -95,9 +95,27 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/ark-holdings-current.csv \
 		--report build/demo/ark-holdings-current-import.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit spdr-holdings-import \
+		--snapshot data/samples/spdr-xlf-holdings-previous.csv \
+		--fund-symbol XLF-DEMO \
+		--fund-name "Synthetic Financials ETF" \
+		--captured-on 2026-05-22 \
+		--source-url https://example.invalid/spdr-demo/2026-05-22 \
+		--synthetic-fixture \
+		--output build/demo/spdr-xlf-holdings-previous.csv \
+		--report build/demo/spdr-xlf-holdings-previous-import.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit spdr-holdings-import \
+		--snapshot data/samples/spdr-xlf-holdings-current.csv \
+		--fund-symbol XLF-DEMO \
+		--fund-name "Synthetic Financials ETF" \
+		--captured-on 2026-05-23 \
+		--source-url https://example.invalid/spdr-demo/2026-05-23 \
+		--synthetic-fixture \
+		--output build/demo/spdr-xlf-holdings-current.csv \
+		--report build/demo/spdr-xlf-holdings-current-import.md
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
-		--previous build/demo/ark-holdings-previous.csv \
-		--current build/demo/ark-holdings-current.csv \
+		--previous build/demo/spdr-xlf-holdings-previous.csv \
+		--current build/demo/spdr-xlf-holdings-current.csv \
 		--output build/demo/etf-holdings-activity.csv \
 		--report build/demo/etf-holdings-activity.md \
 		--html build/demo/etf-holdings-activity.html \

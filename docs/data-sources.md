@@ -198,15 +198,15 @@ solicitudes por segundo.
 La propuesta de mostrar que posiciones aumentan o reducen los ETF es factible,
 pero no debe presentarse como operacion en tiempo real si la fuente no lo
 garantiza. El comparador de snapshots y la pagina de dashboard ya estan
-implementados con datos sinteticos distribuibles. Tambien existe un
-importador local de archivos ARK, sin distribuir sus holdings reales. Las
-fuentes reales se separan en dos capas:
+implementados con datos sinteticos distribuibles. Tambien existen
+importadores locales de archivos ARK y State Street SPDR/XLF, sin distribuir
+sus holdings reales. Las fuentes reales se separan en dos capas:
 
 | Fuente | Frecuencia Publica Util | Uso Previsto |
 |---|---|---|
 | SEC `N-PORT` | Registro regulatorio publico con retraso; la publicacion publica disponible no es intradia | Evidencia historica auditable de cartera por fondo |
 | ARK ETF holdings | ARK declara actualizacion diaria de holdings en su sitio | Importador CSV local implementado; publicacion real pendiente de permiso |
-| State Street SPDR holdings | Paginas oficiales indican descarga de todos los holdings diaria para fondos como `SPYM`/`XLU` | Segundo conector diario, incluyendo `XLF` si la descarga oficial es estable |
+| State Street SPDR holdings | La pagina oficial `XLF` indica `Download All Holdings: Daily` | Importador local `XLF` implementado; publicacion real pendiente de consentimiento escrito |
 | iShares holdings | Paginas oficiales exponen `Download Holdings` con fecha de observacion | Conector por emisor tras verificar terminos y formato estable |
 
 El dashboard mostrara cambios entre snapshots, por ejemplo aumento o
@@ -222,7 +222,11 @@ recomendaciones de compra o venta. En ARK el parser local ya esta disponible,
 pero la pagina de materiales indica restricciones de reproduccion que impiden
 incluir holdings oficiales en el repositorio sin permiso. Los siguientes
 conectores se habilitaran solo tras confirmar formato estable y politica de
-uso. El motor rechaza
+uso. State Street indica en la pagina oficial de `XLF` que los holdings son
+sujetos a cambio, no son recomendacion de compra o venta y la obra no puede
+reproducirse sin consentimiento escrito. El fixture prueba el contrato de
+campos; la primera descarga local autorizada debe confirmar sus encabezados
+antes de una ejecucion real. El motor rechaza
 comparar snapshots de capas diferentes, por ejemplo una lectura diaria contra
 un registro regulatorio periodico.
 
@@ -267,4 +271,5 @@ un registro regulatorio periodico.
 - SGX IPO Prospectus: <https://www.sgx.com/securities/ipo-prospectus>
 - SEC Form N-PORT: <https://www.sec.gov/files/formn-port.pdf>
 - ARK ETF holdings update policy: <https://helpcenter.ark-funds.com/can-you-explain-the-date-listed-on-the-ark-etf-holdings-documents>
+- State Street SPDR XLF holdings page: <https://www.ssga.com/us/en/intermediary/etfs/state-street-financial-select-sector-spdr-etf-xlf>
 - State Street SPDR SPYM holdings: <https://www.ssga.com/us/en/individual/etfs/state-street-spdr-portfolio-sp-500-etf-spym>

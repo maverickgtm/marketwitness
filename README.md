@@ -346,10 +346,28 @@ ARK declara actualizacion al cierre de cada dia habil y explica que la fecha
 del CSV corresponde al siguiente dia de negociacion. El adaptador conserva
 esa fecha como efectiva, pero no redistribuye holdings oficiales en el
 repositorio: la publicacion real requiere resolver los terminos de uso.
-State Street SPDR y `SEC N-PORT` siguen pendientes; `N-PORT` servira como
-respaldo regulatorio historico, no como fuente en tiempo real. Un aumento o
-reduccion se presenta como cambio observado, no como compra o venta
-confirmada del gestor.
+La automatizacion autorizada de State Street SPDR y `SEC N-PORT` siguen
+pendientes; `N-PORT` servira como respaldo regulatorio historico, no como
+fuente en tiempo real. Un aumento o reduccion se presenta como cambio
+observado, no como compra o venta confirmada del gestor.
+
+Para el ETF sectorial que sirve como benchmark del proyecto, tambien existe
+un importador local State Street SPDR/XLF:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit spdr-holdings-import \
+  --snapshot data/raw/etf/XLF_HOLDINGS.csv \
+  --fund-symbol XLF \
+  --fund-name "State Street Financial Select Sector SPDR ETF" \
+  --captured-on YYYY-MM-DD \
+  --output data/raw/etf/xlf-normalized.csv \
+  --report build/live/xlf-import.md
+```
+
+La pagina oficial de `XLF` identifica la descarga completa de holdings como
+diaria y muestra acciones mantenidas y peso. La misma pagina restringe
+reproduccion sin consentimiento escrito, por lo que el repositorio usa
+fixtures sinteticos y mantiene salidas reales solo en almacenamiento local.
 
 ## Estado Del Proyecto
 
@@ -383,6 +401,8 @@ auditados en desarrollo:
   snapshots, con una demo sintetica y limites de interpretacion visibles.
 - Normaliza descargas locales de holdings ARK al esquema ETF, manteniendo
   bloqueada la redistribucion publica de datos oficiales hasta revisar permiso.
+- Normaliza descargas locales SPDR/XLF y usa un fixture `XLF-DEMO` para probar
+  actividad ETF alineada con la especializacion en financials.
 - Importa exportaciones autorizadas de targets con manifiesto y cola de rechazos.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para

@@ -194,8 +194,10 @@ con la frecuencia real de cada fuente.
   reporte Markdown y pagina HTML con fixture sintetico reproducible.
 - Implementado: importador local de CSV ARK descargado por el operador,
   conservando fecha efectiva y frecuencia diaria declarada.
-- Pendiente de conexion/publicacion: automatizacion y permisos de salidas
-  reales de ARK, junto con emisores como State Street SPDR.
+- Implementado: importador local State Street SPDR/XLF y fixture
+  `XLF-DEMO`, alineado al benchmark Financials.
+- Pendiente de conexion/publicacion: automatizacion autorizada y permisos de
+  salidas reales de ARK y State Street SPDR.
 - Pendiente de conexion: `SEC N-PORT`, auditable pero no equivalente a datos
   intradia ni a un feed diario en tiempo real.
 - Presentacion: posiciones nuevas, aumentadas, reducidas, ausentes o con

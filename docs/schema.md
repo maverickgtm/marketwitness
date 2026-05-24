@@ -437,3 +437,14 @@ se representa con su `CUSIP` para no perder una posicion identificable.
 
 El indicador `--synthetic-fixture` esta reservado al demo versionado y evita
 presentar fixtures de prueba como evidencia oficial diaria.
+
+## State Street SPDR Holdings Import
+
+`spdr-holdings-import` normaliza un CSV local con campos identificables como
+`As Of`, `Fund Ticker`, `Name`, `Ticker`, `Shares Held` y `Weight`. La salida
+es un snapshot normalizado que puede entrar a `etf-holdings-activity`.
+
+El demo usa `XLF-DEMO` y `--synthetic-fixture`; nunca presenta esos registros
+como holdings reales del fondo. Para evidencia oficial, la pagina `XLF`
+declara descarga completa diaria, mientras la publicacion de sus datos queda
+sujeta a revision y consentimiento aplicable.

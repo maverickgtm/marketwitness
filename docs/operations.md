@@ -326,6 +326,29 @@ pasar sus CSV normalizados a `etf-holdings-activity`. Los archivos oficiales
 y sus derivados reales permanecen locales mientras la politica de
 redistribucion no este autorizada.
 
+### Importacion Local SPDR/XLF
+
+State Street publica `XLF`, el benchmark sectorial inicial de TargetAudit, y
+su pagina identifica la descarga completa de holdings como diaria. Para
+normalizar un archivo descargado localmente:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit spdr-holdings-import \
+  --snapshot data/raw/etf/XLF_HOLDINGS.csv \
+  --fund-symbol XLF \
+  --fund-name "State Street Financial Select Sector SPDR ETF" \
+  --captured-on YYYY-MM-DD \
+  --output data/raw/etf/xlf-normalized.csv \
+  --report build/live/xlf-import.md
+```
+
+La pagina oficial tambien advierte que holdings y sectores cambian, no son
+recomendaciones de inversion y el contenido no puede reproducirse sin
+consentimiento escrito. Por ello las descargas y diferencias reales quedan
+fuera de Git hasta contar con autorizacion aplicable. Al procesar la primera
+descarga autorizada se deben confirmar los encabezados locales frente al
+contrato documentado; el importador se detiene si faltan campos requeridos.
+
 ## Historial De Mercados Globales
 
 Los cinco conectores internacionales generan CSV normalizados. Después de

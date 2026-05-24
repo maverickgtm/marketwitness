@@ -110,6 +110,13 @@ from .providers.ark import (
     write_import_report as write_ark_import_report,
     write_normalized_holdings as write_ark_normalized_holdings,
 )
+from .providers.spdr import (
+    SPDR_XLF_URL,
+    SpdrHoldingsDataError,
+    load_spdr_holdings_snapshot,
+    write_import_report as write_spdr_import_report,
+    write_normalized_holdings as write_spdr_normalized_holdings,
+)
 from .providers.tsx import (
     TsxDataError,
     fetch_tsx_new_listings,
@@ -367,6 +374,26 @@ def main() -> int:
     )
     ark_parser.add_argument("--output", required=True, help="Normalized ETF holdings CSV path.")
     ark_parser.add_argument("--report", required=True, help="Import audit Markdown report path.")
+    spdr_parser = subparsers.add_parser(
+        "spdr-holdings-import",
+        help="Normalize a downloaded State Street SPDR holdings CSV for local comparison.",
+    )
+    spdr_parser.add_argument("--snapshot", required=True, help="Downloaded SPDR holdings CSV.")
+    spdr_parser.add_argument("--fund-symbol", required=True, help="SPDR fund symbol in the CSV.")
+    spdr_parser.add_argument("--fund-name", required=True, help="Readable SPDR fund name.")
+    spdr_parser.add_argument("--captured-on", required=True, help="Capture date in YYYY-MM-DD.")
+    spdr_parser.add_argument(
+        "--source-url",
+        default=SPDR_XLF_URL,
+        help="Official fund page or evidence URL retained with normalized rows.",
+    )
+    spdr_parser.add_argument(
+        "--synthetic-fixture",
+        action="store_true",
+        help="Mark project-authored format fixtures as synthetic instead of official evidence.",
+    )
+    spdr_parser.add_argument("--output", required=True, help="Normalized ETF holdings CSV path.")
+    spdr_parser.add_argument("--report", required=True, help="Import audit Markdown report path.")
     prices_parser = subparsers.add_parser(
         "alpha-vantage-prices",
         help="Normalize adjusted daily price evidence through a cache-first adapter.",
@@ -750,6 +777,27 @@ def main() -> int:
             parser.error(str(exc))
         print(
             f"Imported {len(imported.holdings)} ARK-format holdings for "
+            f"{imported.fund_symbol} to {args.output}."
+        )
+        return 0
+
+    if args.command == "spdr-holdings-import":
+        try:
+            captured_on = date.fromisoformat(args.captured_on)
+            imported = load_spdr_holdings_snapshot(
+                args.snapshot,
+                args.fund_symbol,
+                args.fund_name,
+                captured_on,
+                args.source_url,
+                args.synthetic_fixture,
+            )
+            write_spdr_normalized_holdings(args.output, imported)
+            write_spdr_import_report(args.report, imported)
+        except (SpdrHoldingsDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Imported {len(imported.holdings)} SPDR-format holdings for "
             f"{imported.fund_symbol} to {args.output}."
         )
         return 0

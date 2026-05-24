@@ -58,8 +58,11 @@ verificables de cotizaciones tecnologicas/estrategicas.
   de posiciones, sello de fecha/frecuencia y demo sintetica reproducible.
 - [x] Importador local de archivos diarios ARK con normalizacion auditable y
   politica de no redistribucion de holdings reales pendiente de permiso.
+- [x] Importador local State Street SPDR/XLF para holdings diarios y demo
+  `XLF-DEMO` alineado a Financials.
 - [ ] Conectores de snapshots diarios oficiales por emisor para la pagina
-  `ETF Holdings Activity`, incluyendo automatizacion autorizada de ARK y SPDR.
+  `ETF Holdings Activity`, incluyendo automatizacion autorizada y permisos de
+  publicacion para ARK y SPDR.
 - [ ] Respaldo regulatorio ETF mediante SEC `N-PORT` para periodos publicados,
   separado de las descargas diarias del emisor.
 
