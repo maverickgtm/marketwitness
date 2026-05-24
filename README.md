@@ -1,12 +1,33 @@
-# TargetAudit
+# TargetAudit Financials
+
+**Auditing Wall Street price targets for U.S. financial stocks.**
 
 Plataforma abierta para evaluar, con datos verificables, la precision historica y
 la utilidad economica de los `price targets` publicados por analistas financieros
-de acciones estadounidenses.
+en bancos y companias financieras cotizadas en Estados Unidos.
 
 TargetAudit nace de una pregunta sencilla: si una firma publica un precio
 objetivo para una accion, ?ese pronostico se cumplio y una estrategia basada en
 el habria superado una alternativa pasiva?
+
+## Especializacion Inicial
+
+La primera linea de investigacion es `U.S. Financials`, con atencion especial a
+bancos. La eleccion es deliberada:
+
+- El experimento que origino el proyecto encontro a KBW, firma especializada en
+  financial services, entre sus mejores resultados aparentes.
+- Permite probar una hipotesis mas interesante que un ranking general: si los
+  especialistas de un sector anticipan mejor sus acciones que firmas
+  generalistas.
+- Existe un benchmark sectorial observable, empezando por `XLF` para
+  financials.
+- Un universo acotado facilita auditar fuentes, acciones corporativas y calidad
+  de cada observacion antes de escalar.
+
+TargetAudit no intentara competir inicialmente como una pagina de targets
+actuales. Su propuesta es mostrar el historial verificable, los fallos y la
+utilidad relativa al sector de cada pronostico.
 
 ## Estado Del Proyecto
 
@@ -17,6 +38,7 @@ el habria superado una alternativa pasiva?
 - Evalua targets alcistas y bajistas con precios diarios ajustados.
 - Calcula acierto, dias hasta target, error al vencimiento y retorno frente a
   un benchmark.
+- Desglosa resultados entre targets alcistas y bajistas.
 - Genera un ranking que muestra el numero de observaciones y aplica una muestra
   minima configurable.
 - Incluye datos sinteticos y pruebas automatizadas; no distribuye datos
@@ -28,19 +50,20 @@ documentadas una por una y precios ajustados cuya licencia permita su uso.
 
 ## Inicio Rapido
 
-Requiere Python 3.11 o superior. No requiere instalar paquetes para ejecutar el
+Requiere Python 3.9 o superior. No requiere instalar paquetes para ejecutar el
 demo.
 
 ```bash
-make test
-make demo
+make verify
 ```
 
-El demo escribe:
+La verificacion ejecuta pruebas, construye el demo y genera un paquete
+instalable. Escribe:
 
 ```text
 build/demo/evaluations.csv
 build/demo/report.md
+build/dist/targetaudit-0.1.0-py3-none-any.whl
 ```
 
 El primer adaptador de fuente publica obtiene el mapa de ticker/CIK de la SEC.
@@ -98,7 +121,8 @@ docs/                   Metodologia, fuentes, esquema y roadmap
 
 Consulta [la metodologia](docs/methodology.md),
 [las fuentes evaluadas](docs/data-sources.md) y
-[el roadmap](docs/roadmap.md) antes de utilizar datos reales.
+[la estrategia de producto](docs/product-strategy.md). El progreso tecnico se
+mantiene en [el roadmap](docs/roadmap.md).
 
 ## Aviso
 

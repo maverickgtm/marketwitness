@@ -6,6 +6,8 @@ from decimal import Decimal
 from .models import Evaluation, PriceBar, TargetObservation
 
 MAX_TERMINAL_GAP_DAYS = 7
+MAX_ENTRY_GAP_DAYS = 7
+MAX_REFERENCE_GAP_DAYS = 7
 
 
 def evaluate_all(
@@ -43,32 +45,71 @@ def evaluate(
         )
 
     series = bars_by_ticker.get(observation.ticker, [])
+    reference = _reference_bar(series, observation.published_date)
+    if reference is None or observation.published_date - reference.date > timedelta(
+        days=MAX_REFERENCE_GAP_DAYS
+    ):
+        return Evaluation(
+            **base,
+            status="excluded",
+            reason="missing_reference_price",
+            expiry_date=expiry.isoformat(),
+        )
     window = _window(series, observation.published_date, expiry)
     if window is None:
         return Evaluation(
             **base,
             status="excluded",
             reason="incomplete_price_window",
+            reference_date=reference.date.isoformat(),
+            reference_price=reference.adjusted_close,
             expiry_date=expiry.isoformat(),
         )
     entry, period, terminal = window
+    if entry.date - observation.published_date > timedelta(days=MAX_ENTRY_GAP_DAYS):
+        return Evaluation(
+            **base,
+            status="excluded",
+            reason="delayed_entry_price",
+            reference_date=reference.date.isoformat(),
+            reference_price=reference.adjusted_close,
+            entry_date=entry.date.isoformat(),
+            entry_price=entry.adjusted_close,
+            expiry_date=expiry.isoformat(),
+        )
     if expiry - terminal.date > timedelta(days=MAX_TERMINAL_GAP_DAYS):
         return Evaluation(
             **base,
             status="excluded",
             reason="incomplete_price_window",
+            reference_date=reference.date.isoformat(),
+            reference_price=reference.adjusted_close,
             entry_date=entry.date.isoformat(),
             entry_price=entry.adjusted_close,
             expiry_date=expiry.isoformat(),
         )
 
-    direction = _direction(observation.price_target, entry.adjusted_close)
+    direction = _direction(observation.price_target, reference.adjusted_close)
     if direction == "flat":
         return Evaluation(
             **base,
             status="excluded",
-            reason="flat_target_at_entry",
+            reason="flat_target_at_reference",
             direction=direction,
+            reference_date=reference.date.isoformat(),
+            reference_price=reference.adjusted_close,
+            entry_date=entry.date.isoformat(),
+            entry_price=entry.adjusted_close,
+            expiry_date=expiry.isoformat(),
+        )
+    if _target_crossed_at_entry(observation.price_target, entry.adjusted_close, direction):
+        return Evaluation(
+            **base,
+            status="excluded",
+            reason="target_crossed_before_entry",
+            direction=direction,
+            reference_date=reference.date.isoformat(),
+            reference_price=reference.adjusted_close,
             entry_date=entry.date.isoformat(),
             entry_price=entry.adjusted_close,
             expiry_date=expiry.isoformat(),
@@ -94,11 +135,42 @@ def evaluate(
                 status="excluded",
                 reason="incomplete_benchmark_window",
                 direction=direction,
+                reference_date=reference.date.isoformat(),
+                reference_price=reference.adjusted_close,
                 entry_date=entry.date.isoformat(),
                 entry_price=entry.adjusted_close,
                 expiry_date=expiry.isoformat(),
             )
         benchmark_entry, _, benchmark_terminal = benchmark_window
+        if benchmark_entry.date - observation.published_date > timedelta(
+            days=MAX_ENTRY_GAP_DAYS
+        ):
+            return Evaluation(
+                **base,
+                status="excluded",
+                reason="delayed_benchmark_entry_price",
+                direction=direction,
+                reference_date=reference.date.isoformat(),
+                reference_price=reference.adjusted_close,
+                entry_date=entry.date.isoformat(),
+                entry_price=entry.adjusted_close,
+                expiry_date=expiry.isoformat(),
+            )
+        if (
+            benchmark_entry.date != entry.date
+            or benchmark_terminal.date != terminal.date
+        ):
+            return Evaluation(
+                **base,
+                status="excluded",
+                reason="misaligned_benchmark_window",
+                direction=direction,
+                reference_date=reference.date.isoformat(),
+                reference_price=reference.adjusted_close,
+                entry_date=entry.date.isoformat(),
+                entry_price=entry.adjusted_close,
+                expiry_date=expiry.isoformat(),
+            )
         if expiry - benchmark_terminal.date > timedelta(days=MAX_TERMINAL_GAP_DAYS):
             return Evaluation(
                 **base,
@@ -118,6 +190,8 @@ def evaluate(
         **base,
         status="evaluated",
         direction=direction,
+        reference_date=reference.date.isoformat(),
+        reference_price=reference.adjusted_close,
         entry_date=entry.date.isoformat(),
         entry_price=entry.adjusted_close,
         expiry_date=expiry.isoformat(),
@@ -182,12 +256,23 @@ def _window(
     return eligible[0], eligible, eligible[-1]
 
 
+def _reference_bar(series: list[PriceBar], published_date: date) -> PriceBar | None:
+    eligible = [bar for bar in series if bar.date <= published_date]
+    return eligible[-1] if eligible else None
+
+
 def _direction(target: Decimal, entry: Decimal) -> str:
     if target > entry:
         return "up"
     if target < entry:
         return "down"
     return "flat"
+
+
+def _target_crossed_at_entry(target: Decimal, entry: Decimal, direction: str) -> bool:
+    if direction == "up":
+        return entry >= target
+    return entry <= target
 
 
 def _first_hit(period: list[PriceBar], target: Decimal, direction: str) -> PriceBar | None:

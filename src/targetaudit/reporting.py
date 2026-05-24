@@ -89,6 +89,30 @@ def render_markdown_report(
     lines.extend(
         [
             "",
+            "## Direction Breakdown",
+            "",
+            "| Direction | N | Target Hit Rate | Mean Terminal Error | Mean Excess Return |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
+    for direction in ("up", "down"):
+        rows = [item for item in evaluated if item.direction == direction]
+        if rows:
+            lines.append(
+                "| {direction} | {count} | {hit} | {error} | {excess} |".format(
+                    direction=direction,
+                    count=len(rows),
+                    hit=_pct(_hit_rate(rows)),
+                    error=_pct(_mean_present(rows, "terminal_absolute_error_pct")),
+                    excess=_pct(_mean_present(rows, "excess_return_pct")),
+                )
+            )
+    if not evaluated:
+        lines.append("| - | 0 | - | - | - |")
+
+    lines.extend(
+        [
+            "",
             "## Interpretation",
             "",
             "A target hit only indicates that an adjusted daily high or low reached the",

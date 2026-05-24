@@ -44,6 +44,8 @@ class Evaluation:
     status: str
     reason: str = ""
     direction: str = ""
+    reference_date: str = ""
+    reference_price: Decimal | None = None
     entry_date: str = ""
     entry_price: Decimal | None = None
     expiry_date: str = ""
@@ -70,6 +72,8 @@ class Evaluation:
             "status": self.status,
             "reason": self.reason,
             "direction": self.direction,
+            "reference_date": self.reference_date,
+            "reference_price": _decimal_text(self.reference_price),
             "entry_date": self.entry_date,
             "entry_price": _decimal_text(self.entry_price),
             "expiry_date": self.expiry_date,

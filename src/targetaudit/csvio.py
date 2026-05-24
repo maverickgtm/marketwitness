@@ -60,6 +60,7 @@ def load_targets(path: str | Path) -> list[TargetObservation]:
 
 def load_prices(path: str | Path) -> dict[str, list[PriceBar]]:
     bars: defaultdict[str, list[PriceBar]] = defaultdict(list)
+    seen_dates: set[tuple[str, date]] = set()
     with Path(path).open(newline="", encoding="utf-8") as source:
         reader = csv.DictReader(source)
         _ensure_columns(path, reader.fieldnames, PRICE_COLUMNS)
@@ -75,12 +76,20 @@ def load_prices(path: str | Path) -> dict[str, list[PriceBar]]:
                 )
             except (InvalidOperation, ValueError) as exc:
                 raise DataFormatError(f"{path}: invalid price data on row {index}") from exc
-            if not bar.ticker or min(
-                bar.adjusted_high, bar.adjusted_low, bar.adjusted_close
-            ) <= 0:
+            values = (bar.adjusted_high, bar.adjusted_low, bar.adjusted_close)
+            if (
+                not bar.ticker
+                or not bar.source_provider
+                or not all(value.is_finite() for value in values)
+                or min(values) <= 0
+            ):
                 raise DataFormatError(f"{path}: invalid price data on row {index}")
-            if bar.adjusted_low > bar.adjusted_high:
-                raise DataFormatError(f"{path}: low exceeds high on row {index}")
+            if not bar.adjusted_low <= bar.adjusted_close <= bar.adjusted_high:
+                raise DataFormatError(f"{path}: close is outside low/high on row {index}")
+            key = (bar.ticker, bar.date)
+            if key in seen_dates:
+                raise DataFormatError(f"{path}: duplicate ticker/date on row {index}")
+            seen_dates.add(key)
             bars[bar.ticker].append(bar)
     for ticker in bars:
         bars[ticker].sort(key=lambda bar: bar.date)
@@ -117,9 +126,10 @@ def _optional_date(raw: str) -> date | None:
 
 def _optional_decimal(raw: str) -> Decimal | None:
     try:
-        return Decimal(raw.strip())
+        value = Decimal(raw.strip())
     except InvalidOperation:
         return None
+    return value if value.is_finite() else None
 
 
 def _optional_int(raw: str, default: int) -> int | None:

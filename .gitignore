@@ -6,6 +6,7 @@ build/
 .env
 .env.*
 *.duckdb
+*.egg-info/
 data/private/
 data/raw/
 *.api-key

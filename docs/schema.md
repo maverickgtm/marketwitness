@@ -34,9 +34,15 @@ convencion para todos los campos.
 | `adjusted_close` | Si | Cierre diario ajustado |
 | `source_provider` | Si | Fuente de precios |
 
+Las barras con `NaN`, infinito, fechas duplicadas para el mismo ticker o
+cierres fuera del rango `low`/`high` son rechazadas para impedir que datos
+corruptos alteren el ranking.
+
 ## Salida `evaluations.csv`
 
-Contiene tanto observaciones evaluadas como excluidas o pendientes. La columna
+Contiene tanto observaciones evaluadas como excluidas o pendientes. Incluye
+`reference_date` y `reference_price`, usados para definir la direccion
+original del target sin reinterpretarla despues del movimiento inicial. La columna
 `status` tiene valores `evaluated`, `excluded` o `pending`; `reason` explica
 cualquier fila no evaluada.
 

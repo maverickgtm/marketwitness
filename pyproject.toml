@@ -7,7 +7,7 @@ name = "targetaudit"
 version = "0.1.0"
 description = "Auditable research engine for analyst price-target accuracy."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.9"
 license = {text = "MIT"}
 authors = [{name = "TargetAudit contributors"}]
 keywords = ["finance", "price-targets", "analysts", "backtesting", "research"]

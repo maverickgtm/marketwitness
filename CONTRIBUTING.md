@@ -10,14 +10,15 @@ Gracias por ayudar a que TargetAudit sea verificable y util.
   pruebas.
 - No presentes una firma como "mejor" sin mostrar muestra, periodo y
   benchmark.
+- El vertical publico inicial es `U.S. Financials`; propuestas para otros
+  sectores deben explicar fuente, universo y benchmark.
 - Mantener fuentes originales o identificadores auditables para toda
   observacion real.
 
 ## Desarrollo
 
 ```bash
-make test
-make demo
+make verify
 ```
 
 Para proponer una fuente de datos, abre un issue indicando cobertura historica,

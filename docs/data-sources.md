@@ -6,6 +6,11 @@ El dato mas dificil del proyecto es el historial de `price targets`
 individuales con fecha, firma y target. Los precios historicos y datos
 regulatorios tienen alternativas publicas o freemium mas amplias.
 
+La investigacion publica inicial se concentrara en `U.S. Financials`, usando
+`XLF` como benchmark sectorial inicial cuando la licencia de precios lo
+permita. Esto responde a la hipotesis de que firmas especializadas en el sector
+pueden comportarse distinto a firmas generalistas.
+
 ## Targets Y Ratings
 
 | Fuente | Cobertura Declarada | Utilidad | Estado Para TargetAudit |

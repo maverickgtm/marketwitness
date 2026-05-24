@@ -1,11 +1,17 @@
 # Roadmap
 
+TargetAudit inicia como **TargetAudit Financials**, auditoria de targets para
+acciones financieras estadounidenses. La expansion a otros sectores dependera
+de validar primero datos, metodologia y demanda del vertical inicial.
+
 ## Milestone 1: Research Engine (`v0.1`)
 
 - [x] Metodologia inicial y esquema auditado.
 - [x] Importacion CSV de targets y barras ajustadas.
 - [x] Evaluacion direccional, error terminal y comparacion con benchmark.
 - [x] Ranking Markdown y datos sinteticos reproducibles.
+- [x] Especializacion inicial en U.S. Financials con benchmark `XLF`.
+- [x] Desglose de resultados por direccion del target.
 - [x] Pruebas unitarias y GitHub Actions.
 
 ## Milestone 2: Data Adapters (`v0.2`)
@@ -14,7 +20,8 @@
 - [x] Adaptador SEC para metadatos de emisores/CIK.
 - [ ] Adaptador de precios gratuito o freemium con cache y limites.
 - [ ] Importador para exportaciones autorizadas de targets.
-- [ ] Validacion de splits, cambios de ticker y duplicados.
+- [ ] Validacion de splits y cambios de ticker.
+- [x] Validacion de barras de precios duplicadas o incoherentes.
 
 ## Milestone 3: Rigor Cuantitativo (`v0.3`)
 

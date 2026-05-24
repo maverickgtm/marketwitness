@@ -1,5 +1,13 @@
 # Metodologia v0.1
 
+## Vertical Inicial
+
+`v0.1` prepara el analisis para `U.S. Financials`, comenzando por bancos y
+otras companias financieras con targets verificables. Para el piloto real, el
+benchmark sectorial preferido es `XLF`. El motor sigue siendo general para
+permitir pruebas y futuros verticales, pero ningun ranking multisectorial se
+presentara como resultado principal de la primera investigacion.
+
 ## Preguntas De Investigacion
 
 TargetAudit separa tres preguntas que no deben confundirse:
@@ -32,12 +40,20 @@ los publican, pero se conservan cuando estan disponibles.
 ## Convenciones Temporales
 
 - Horizonte por defecto: `365` dias calendario desde la publicacion.
+- Referencia: ultimo cierre ajustado disponible en o antes de la fecha de
+  publicacion, con una antiguedad maxima de 7 dias calendario. La direccion
+  alcista o bajista del target se deriva contra esta referencia.
 - Entrada: primer cierre ajustado disponible **posterior** a la fecha de
   publicacion. Esto evita asumir que era posible operar antes de conocer una
   nota publicada durante el dia.
+- Si no existe precio de entrada dentro de los 7 dias calendario siguientes a
+  la publicacion, la observacion se excluye como `delayed_entry_price`.
 - Evaluacion del acierto: comienza en la siguiente barra disponible despues
   del cierre de entrada; un maximo o minimo intradia del propio dia de entrada
   no puede contarse retroactivamente.
+- Si la entrada ya atraveso el target definido contra la referencia, la
+  observacion se excluye como `target_crossed_before_entry`; no era una senal
+  ejecutable bajo esta regla.
 - Vencimiento: ultimo precio disponible en o antes de la fecha de expiracion.
 - Ventana completa: el precio terminal debe estar como maximo a 7 dias
   calendario del vencimiento esperado.
@@ -46,11 +62,11 @@ los publican, pero se conservan cuando estan disponibles.
 
 ## Direccion Del Target
 
-La direccion se deriva comparando el target con el precio de entrada:
+La direccion se deriva comparando el target con el precio de referencia:
 
-- `up`: target mayor al precio de entrada.
-- `down`: target menor al precio de entrada.
-- `flat`: target igual al precio de entrada; se excluye del scoring direccional
+- `up`: target mayor al precio de referencia.
+- `down`: target menor al precio de referencia.
+- `flat`: target igual al precio de referencia; se excluye del scoring direccional
   en `v0.1`.
 
 ## Definicion De Acierto
@@ -107,8 +123,14 @@ Una observacion se excluye, con motivo registrado, cuando:
 - Falta un campo obligatorio o la fuente.
 - El target no es positivo.
 - No existe un precio de entrada posterior a la publicacion.
+- No existe un precio de referencia cercano a la fecha de publicacion.
+- El primer precio util o el primer precio del benchmark aparece con mas de 7
+  dias de retraso.
+- El target ya fue atravesado al momento de la entrada ejecutable.
+- La ventana del benchmark no coincide con las fechas de entrada y vencimiento
+  de la accion evaluada.
 - No hay ventana de precios completa.
-- El target es igual al precio de entrada.
+- El target es igual al precio de referencia.
 - No se encuentra benchmark suficiente cuando este fue especificado.
 
 ## Reproducibilidad

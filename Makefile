@@ -1,7 +1,7 @@
 PYTHONPATH := src
 PYTHON := python3
 
-.PHONY: test demo clean
+.PHONY: test demo package verify clean
 
 test:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m unittest discover -s tests -v
@@ -15,6 +15,12 @@ demo:
 		--report build/demo/report.md \
 		--minimum-sample 1 \
 		--as-of 2025-01-01
+
+package:
+	mkdir -p build/dist
+	$(PYTHON) -m pip wheel --no-deps --no-build-isolation . -w build/dist
+
+verify: test demo package
 
 clean:
 	rm -rf build

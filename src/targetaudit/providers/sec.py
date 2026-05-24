@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import json
 from pathlib import Path
+from urllib.error import URLError
 from urllib.request import Request, urlopen
 
 SEC_COMPANY_TICKERS_URL = "https://www.sec.gov/files/company_tickers_exchange.json"
@@ -19,10 +20,13 @@ def fetch_company_ticker_map(user_agent: str) -> list[dict[str, str]]:
         )
     request = Request(
         SEC_COMPANY_TICKERS_URL,
-        headers={"User-Agent": user_agent, "Accept-Encoding": "gzip, deflate"},
+        headers={"User-Agent": user_agent, "Accept": "application/json"},
     )
-    with urlopen(request, timeout=30) as response:
-        payload = json.load(response)
+    try:
+        with urlopen(request, timeout=30) as response:
+            payload = json.load(response)
+    except (URLError, TimeoutError, OSError, json.JSONDecodeError) as exc:
+        raise SecDataError(f"Unable to retrieve SEC company ticker data: {exc}") from exc
     return parse_company_ticker_payload(payload)
 
 

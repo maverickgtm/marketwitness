@@ -18,6 +18,7 @@ class ReportingTests(unittest.TestCase):
                 price_target=Decimal("120"),
                 source_url="https://example.invalid/one",
                 status="evaluated",
+                direction="up",
                 hit=True,
                 days_to_target=20,
                 terminal_absolute_error_pct=Decimal("0.05"),
@@ -39,6 +40,8 @@ class ReportingTests(unittest.TestCase):
         result = render_markdown_report(evaluations, date(2025, 1, 1), 1)
 
         self.assertIn("| Example Firm | 1 | 100.00%", result)
+        self.assertIn("## Direction Breakdown", result)
+        self.assertIn("| up | 1 | 100.00%", result)
         self.assertIn("`missing_source_url`", result)
 
 

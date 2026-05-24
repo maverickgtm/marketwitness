@@ -11,6 +11,7 @@ class EvaluatorTests(unittest.TestCase):
         observation = _target("up", "AAA", Decimal("120"), "SPY")
         prices = {
             "AAA": [
+                _bar("AAA", "2022-12-30", "101", "99", "100"),
                 _bar("AAA", "2023-01-03", "101", "99", "100"),
                 _bar("AAA", "2023-06-01", "121", "110", "118"),
                 _bar("AAA", "2024-01-02", "116", "113", "115"),
@@ -34,6 +35,7 @@ class EvaluatorTests(unittest.TestCase):
         observation = _target("down", "BBB", Decimal("80"), "")
         prices = {
             "BBB": [
+                _bar("BBB", "2022-12-30", "101", "99", "100"),
                 _bar("BBB", "2023-01-03", "101", "99", "100"),
                 _bar("BBB", "2024-01-02", "92", "88", "90"),
             ]
@@ -50,6 +52,7 @@ class EvaluatorTests(unittest.TestCase):
         observation = _target("no-look-ahead", "AAA", Decimal("120"), "")
         prices = {
             "AAA": [
+                _bar("AAA", "2022-12-30", "101", "99", "100"),
                 _bar("AAA", "2023-01-03", "121", "99", "100"),
                 _bar("AAA", "2024-01-02", "119", "110", "115"),
             ]
@@ -76,6 +79,70 @@ class EvaluatorTests(unittest.TestCase):
 
         self.assertEqual(result.status, "pending")
         self.assertEqual(result.reason, "horizon_not_mature")
+
+    def test_price_entry_too_far_after_publication_is_excluded(self) -> None:
+        observation = _target("late-entry", "AAA", Decimal("120"), "")
+        prices = {
+            "AAA": [
+                _bar("AAA", "2022-12-30", "101", "99", "100"),
+                _bar("AAA", "2023-02-03", "101", "99", "100"),
+                _bar("AAA", "2024-01-02", "120", "110", "115"),
+            ]
+        }
+
+        result = evaluate_all([observation], prices, date(2025, 1, 1))[0]
+
+        self.assertEqual(result.status, "excluded")
+        self.assertEqual(result.reason, "delayed_entry_price")
+
+    def test_direction_is_based_on_published_date_reference_not_later_entry(self) -> None:
+        observation = _target("crossed-entry", "AAA", Decimal("120"), "")
+        prices = {
+            "AAA": [
+                _bar("AAA", "2023-01-02", "101", "99", "100"),
+                _bar("AAA", "2023-01-03", "126", "123", "125"),
+                _bar("AAA", "2024-01-02", "130", "125", "128"),
+            ]
+        }
+
+        result = evaluate_all([observation], prices, date(2025, 1, 1))[0]
+
+        self.assertEqual(result.status, "excluded")
+        self.assertEqual(result.direction, "up")
+        self.assertEqual(result.reason, "target_crossed_before_entry")
+
+    def test_missing_reference_price_is_excluded(self) -> None:
+        observation = _target("no-reference", "AAA", Decimal("120"), "")
+        prices = {
+            "AAA": [
+                _bar("AAA", "2023-01-03", "101", "99", "100"),
+                _bar("AAA", "2024-01-02", "119", "110", "115"),
+            ]
+        }
+
+        result = evaluate_all([observation], prices, date(2025, 1, 1))[0]
+
+        self.assertEqual(result.status, "excluded")
+        self.assertEqual(result.reason, "missing_reference_price")
+
+    def test_misaligned_benchmark_window_is_excluded(self) -> None:
+        observation = _target("misaligned-benchmark", "AAA", Decimal("120"), "XLF")
+        prices = {
+            "AAA": [
+                _bar("AAA", "2022-12-30", "101", "99", "100"),
+                _bar("AAA", "2023-01-03", "101", "99", "100"),
+                _bar("AAA", "2024-01-02", "116", "113", "115"),
+            ],
+            "XLF": [
+                _bar("XLF", "2023-01-04", "41", "39", "40"),
+                _bar("XLF", "2024-01-02", "46", "44", "45"),
+            ],
+        }
+
+        result = evaluate_all([observation], prices, date(2025, 1, 1))[0]
+
+        self.assertEqual(result.status, "excluded")
+        self.assertEqual(result.reason, "misaligned_benchmark_window")
 
 
 def _target(identifier: str, ticker: str, target: Decimal, benchmark: str) -> TargetObservation:
