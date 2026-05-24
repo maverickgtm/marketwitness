@@ -18,7 +18,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 
 ## Milestone 2: Data Adapters (`v0.2`)
 
-- [ ] Registro formal de proveedores y licencias.
+- [x] Registro formal de proveedores y licencias.
 - [x] Adaptador SEC para metadatos de emisores/CIK.
 - [ ] Adaptador de precios gratuito o freemium con cache y limites.
 - [ ] Importador para exportaciones autorizadas de targets.

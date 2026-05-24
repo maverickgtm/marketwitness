@@ -33,6 +33,7 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertIn('href="tsx-monitor.html"', page)
         self.assertIn('href="sgx-monitor.html"', page)
         self.assertIn('href="issuer-confirmations.html"', page)
+        self.assertIn('href="source-registry.html"', page)
 
     def test_rejects_unknown_connector_status(self) -> None:
         path = _csv(

@@ -75,6 +75,30 @@ cualquier fila no evaluada.
 Los datasets reales nunca deben agregarse a Git dentro de `data/raw/` o
 `data/private/`, carpetas deliberadamente ignoradas.
 
+## `source_registry.csv`
+
+Registro transversal de fuentes consideradas por TargetAudit y su control de
+uso antes de publicar un producto con datos reales.
+
+| Columna | Requerida | Descripcion |
+|---|---:|---|
+| `provider_id` | Si | Identificador estable de proveedor o fuente |
+| `provider_name` | Si | Nombre presentado en la auditoria |
+| `data_class` | Si | Targets, precios, listings, documentos o acciones corporativas |
+| `access_model` | Si | `public_endpoint`, `public_web_page`, `public_filing`, `official_release`, `commercial_api_candidate`, `manual_reference` o `synthetic_demo` |
+| `integration_status` | Si | `implemented`, `manual_verified`, `candidate` o `excluded` |
+| `license_status` | Si | `public_access_rules_documented`, `terms_review_required`, `restricted_no_collection` o `project_owned_synthetic` |
+| `publication_policy` | Si | Regla aplicable al output público antes de distribuir datos |
+| `official_url` | Si | Pagina oficial de la fuente |
+| `reference_url` | Si | Política o referencia oficial revisada; puede ser la página fuente si la revisión legal queda pendiente |
+| `reviewed_on` | Si | Fecha ISO del inventario |
+| `review_note` | Si | Alcance y próximo control requerido |
+
+La vista deriva estados operativos: `usable_with_policy`, `review_required`,
+`license_required` o `blocked`. Un conector puede estar técnicamente
+implementado y aun así requerir revisión antes de usarse en un dashboard
+público con datos reales.
+
 ## `ipo_watch.csv`
 
 Registro auditable para la pagina `IPO Watch`. A diferencia de los targets, no

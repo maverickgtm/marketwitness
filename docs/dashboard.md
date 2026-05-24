@@ -7,6 +7,16 @@ al mercado.
 Con la expansion internacional, el producto tiene tres paginas activas y una
 cuarta pagina en cola para actividad publicada de ETF:
 
+## Vista Transversal: Source Governance
+
+Objetivo: hacer visible qué datos pueden alimentar un producto público y qué
+fuentes aún requieren términos, licencia o exclusión expresa.
+
+- Registro de fuentes oficiales, candidatas comerciales y datos sintéticos.
+- Estado de integración separado de estado de licencia/publicación.
+- Bloqueo visible para fuentes que no deben recolectarse automáticamente.
+- Enlace a la referencia oficial usada para cada decisión.
+
 ## Pagina 1: Financials Scorecard
 
 Objetivo: auditar `price targets` sobre financials de Estados Unidos.
@@ -157,7 +167,7 @@ Cada jurisdiccion conserva sus propias etapas:
   mercados y marca registros nuevos, modificados o ausentes para revisión.
 - La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
   cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,
-  TSX, SGX y confirmaciones del emisor.
+  TSX, SGX, confirmaciones del emisor y gobernanza de fuentes.
 
 ## Pagina 4 En Cola: ETF Holdings Activity
 

@@ -11,6 +11,19 @@ La investigacion publica inicial se concentrara en `U.S. Financials`, usando
 permita. Esto responde a la hipotesis de que firmas especializadas en el sector
 pueden comportarse distinto a firmas generalistas.
 
+## Registro Formal De Gobernanza
+
+La clasificación legible por máquina vive en
+`data/samples/source_registry.csv` y se renderiza con `source-registry`.
+Conserva por fuente su modo de acceso, estado técnico, revisión de términos o
+licencia, política de publicación y referencia revisada.
+
+Al `2026-05-24`, el inventario contiene 14 fuentes: 9 conectores o fixtures
+implementados, 9 fuentes que aún exigen revisión de términos/licencia para
+uso público real y 1 referencia bloqueada para colección automatizada. Esta
+separación evita confundir "el endpoint responde" con "sus datos se pueden
+redistribuir en un producto público".
+
 ## Targets Y Ratings
 
 | Fuente | Cobertura Declarada | Utilidad | Estado Para TargetAudit |

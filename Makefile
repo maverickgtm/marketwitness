@@ -53,6 +53,11 @@ demo:
 		--report build/demo/issuer-confirmations.md \
 		--html build/demo/issuer-confirmations.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit source-registry \
+		--registry data/samples/source_registry.csv \
+		--report build/demo/source-registry.md \
+		--html build/demo/source-registry.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit corporate-actions-check \
 		--targets data/samples/targets.csv \
 		--actions data/samples/corporate_actions.csv \

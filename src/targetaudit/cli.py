@@ -119,6 +119,12 @@ from .sec_alerts import (
     write_sec_alerts_html,
     write_sec_alerts_report,
 )
+from .source_registry import (
+    SourceRegistryDataError,
+    load_source_registry,
+    write_source_registry_html,
+    write_source_registry_report,
+)
 from .reporting import write_markdown_report
 
 
@@ -270,6 +276,18 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Evidence cutoff in YYYY-MM-DD format.",
+    )
+    sources_parser = subparsers.add_parser(
+        "source-registry",
+        help="Generate provider access, license-review and publication controls.",
+    )
+    sources_parser.add_argument("--registry", required=True, help="Provider registry CSV.")
+    sources_parser.add_argument("--report", required=True, help="Markdown report path.")
+    sources_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    sources_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Governance review cutoff in YYYY-MM-DD format.",
     )
     alerts_parser = subparsers.add_parser(
         "global-alerts",
@@ -554,6 +572,21 @@ def main() -> int:
         print(
             f"Wrote corporate-action audit for {len(affected)} affected targets "
             f"across {len(actions)} documented actions to {args.report}."
+        )
+        return 0
+
+    if args.command == "source-registry":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            providers = load_source_registry(args.registry)
+            write_source_registry_report(args.report, providers, as_of)
+            if args.html:
+                write_source_registry_html(args.html, providers, as_of)
+        except (SourceRegistryDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote source governance for {len(providers)} providers "
+            f"to {args.report}."
         )
         return 0
 

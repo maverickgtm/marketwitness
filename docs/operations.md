@@ -114,6 +114,24 @@ datos a SEC:
 make verify
 ```
 
+## Registro De Fuentes Y Licencias
+
+Antes de habilitar un nuevo proveedor o mostrar resultados reales, generar la
+vista de gobernanza:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit source-registry \
+  --registry data/samples/source_registry.csv \
+  --report build/live/source-registry.md \
+  --html build/live/source-registry.html \
+  --as-of YYYY-MM-DD
+```
+
+El registro separa `integration_status` de `license_status`: una integración
+puede funcionar técnicamente y permanecer bloqueada para un producto público
+hasta revisar términos de uso o licencia. `restricted_no_collection` impide
+registrar accidentalmente una fuente como conector implementado.
+
 ## Auditoria De Acciones Corporativas
 
 Antes de publicar un ranking de targets reales se debe cruzar la muestra

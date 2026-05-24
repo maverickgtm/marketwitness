@@ -29,6 +29,26 @@ TargetAudit no intentara competir inicialmente como una pagina de targets
 actuales. Su propuesta es mostrar el historial verificable, los fallos y la
 utilidad relativa al sector de cada pronostico.
 
+### Gobernanza De Fuentes
+
+Antes de conectar datos reales, TargetAudit registra qué proveedores están
+implementados, cuáles requieren revisar términos o licencia y qué política de
+publicación corresponde a cada uno:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit source-registry \
+  --registry data/samples/source_registry.csv \
+  --report build/live/source-registry.md \
+  --html build/live/source-registry.html \
+  --as-of YYYY-MM-DD
+```
+
+Una URL pública no equivale a permiso de redistribución. En la muestra inicial,
+SEC/FCA se mantienen como evidencia pública con reglas documentadas; los
+conectores de bolsas internacionales quedan pendientes de revisión de términos;
+Benzinga y Nasdaq Daily List requieren resolver licencia antes de alimentar
+resultados públicos; TipRanks no se adopta para recolección automatizada.
+
 ### Auditoria De Acciones Corporativas
 
 Los splits y cambios de ticker pueden volver incomparable un target nominal
@@ -267,6 +287,7 @@ observado, no como compra o venta confirmada del gestor.
   comerciales.
 - Genera un reporte inicial de `IPO Watch` con estado y fuentes auditables.
 - Marca splits y cambios de ticker documentados antes de puntuar targets.
+- Publica un registro de gobernanza de proveedores, licencias y uso permitido.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para
 publicar resultados reales hacen falta observaciones historicas licenciadas o
@@ -287,6 +308,8 @@ instalable. Escribe:
 ```text
 build/demo/evaluations.csv
 build/demo/report.md
+build/demo/source-registry.md
+build/demo/source-registry.html
 build/demo/corporate-actions.csv
 build/demo/corporate-actions.md
 build/demo/corporate-actions.html
