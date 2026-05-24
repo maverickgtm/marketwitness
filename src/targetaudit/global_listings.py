@@ -195,6 +195,9 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     .card strong {{ display:block; color:var(--mint); font-size:38px; }}
     .card small {{ color:var(--muted); }}
     .notice {{ border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); }}
+    .monitor-links {{ display:flex; flex-wrap:wrap; gap:12px; margin:20px 0 34px; }}
+    .monitor-links a {{ border:1px solid var(--line); border-radius:10px; padding:11px 15px;
+      background:var(--panel); font-weight:600; }}
     h2 {{ margin-top:42px; }} .table-wrap {{ overflow:hidden; margin-top:16px; }}
     table {{ width:100%; border-collapse:collapse; }}
     th,td {{ padding:15px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }}
@@ -224,6 +227,10 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
   </header>
   <main>
     <p class="notice">HKEX has an official JSON ingestion path. LSE remains a verified snapshot until its repeatable retrieval pipeline is implemented and tested.</p>
+    <section class="monitor-links" aria-label="Monitoring pages">
+      <a href="hkex-monitor.html">Open HKEX live monitor</a>
+      <a href="lse-upcoming.html">Open LSE verified snapshot</a>
+    </section>
     <h2>Official source map</h2>
     <div class="table-wrap"><table>
       <thead><tr><th>Market</th><th>Status</th><th>Signal</th><th>Confirmation rule</th><th>Evidence</th></tr></thead>

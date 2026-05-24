@@ -127,3 +127,5 @@ Cada jurisdiccion conserva sus propias etapas:
   oficiales, util para detectar cambios de ciclo.
 - `LSE Upcoming Issues Snapshot`: pagina con registros observados en la tabla
   oficial; se rotula como captura hasta implementar su actualizacion continua.
+- La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
+  cobertura global, feed HKEX y captura LSE.

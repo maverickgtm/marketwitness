@@ -25,6 +25,8 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertIn("Verified snapshots: `1`", report)
         self.assertIn("Beyond Wall Street", page)
         self.assertIn("HKEX has an official JSON ingestion path", page)
+        self.assertIn('href="hkex-monitor.html"', page)
+        self.assertIn('href="lse-upcoming.html"', page)
 
     def test_rejects_unknown_connector_status(self) -> None:
         path = _csv(
