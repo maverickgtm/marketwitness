@@ -63,8 +63,9 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [ ] Conectores de snapshots diarios oficiales por emisor para la pagina
   `ETF Holdings Activity`, incluyendo automatizacion autorizada y permisos de
   publicacion para ARK y SPDR.
-- [ ] Respaldo regulatorio ETF mediante SEC `N-PORT` para periodos publicados,
-  separado de las descargas diarias del emisor.
+- [x] Respaldo regulatorio ETF mediante SEC `N-PORT` para periodos publicados,
+  separado de las descargas diarias del emisor y limitado inicialmente a
+  posiciones en acciones.
 
 ## Milestone 5: Operacion Publica (`v1.0`)
 

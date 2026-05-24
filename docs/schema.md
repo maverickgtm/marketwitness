@@ -448,3 +448,18 @@ El demo usa `XLF-DEMO` y `--synthetic-fixture`; nunca presenta esos registros
 como holdings reales del fondo. Para evidencia oficial, la pagina `XLF`
 declara descarga completa diaria, mientras la publicacion de sus datos queda
 sujeta a revision y consentimiento aplicable.
+
+## SEC N-PORT Import
+
+`sec-nport-import` procesa XML publico `NPORT-P` o `NPORT-P/A`. Extrae
+`regName`, `seriesName`, `seriesId`, `repPdEnd` y las inversiones
+`invstOrSec` que expresan el balance en acciones (`NS`, `SH` o `SHARES`).
+
+Para esas posiciones usa `ticker` cuando esta disponible y recurre a
+`CUSIP:<id>` si no existe ticker. `balance` se normaliza como `shares` y
+`pctVal` como `weight_pct`; la frecuencia de salida siempre es
+`regulatory_periodic`, incluso para fixtures de prueba.
+
+El reporte del importador cuenta inversiones totales y posiciones omitidas
+por no estar expresadas en acciones. La omision evita presentar efectivo,
+bonos o derivados como si fueran acciones comparables en el dashboard.

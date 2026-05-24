@@ -204,7 +204,7 @@ sus holdings reales. Las fuentes reales se separan en dos capas:
 
 | Fuente | Frecuencia Publica Util | Uso Previsto |
 |---|---|---|
-| SEC `N-PORT` | Registro regulatorio publico con retraso; la publicacion publica disponible no es intradia | Evidencia historica auditable de cartera por fondo |
+| SEC `N-PORT` | Registro regulatorio publico; datasets SEC actualizados trimestralmente y no intradia | Importador XML `NPORT-P` implementado para posiciones en acciones |
 | ARK ETF holdings | ARK declara actualizacion diaria de holdings en su sitio | Importador CSV local implementado; publicacion real pendiente de permiso |
 | State Street SPDR holdings | La pagina oficial `XLF` indica `Download All Holdings: Daily` | Importador local `XLF` implementado; publicacion real pendiente de consentimiento escrito |
 | iShares holdings | Paginas oficiales exponen `Download Holdings` con fecha de observacion | Conector por emisor tras verificar terminos y formato estable |
@@ -229,6 +229,12 @@ campos; la primera descarga local autorizada debe confirmar sus encabezados
 antes de una ejecucion real. El motor rechaza
 comparar snapshots de capas diferentes, por ejemplo una lectura diaria contra
 un registro regulatorio periodico.
+
+El importador `SEC NPORT-P` conserva `repPdEnd` como fecha efectiva, el
+nombre de serie y el identificador de serie. En esta etapa normaliza
+unicamente inversiones expresadas en unidades de acciones (`NS`/`SH`) y
+reporta cuantas posiciones en otras unidades quedaron fuera; no inventa
+equivalencias para efectivo, bonos o derivados.
 
 ## Repositorios Y Proyectos Encontrados
 

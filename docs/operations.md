@@ -297,8 +297,8 @@ PYTHONPATH=src python3 -m targetaudit etf-holdings-activity \
 
 Para una ejecucion real, cada snapshot debe provenir de una descarga oficial
 revisada, conservar su URL, fecha efectiva, fecha de captura y frecuencia
-publicada. La verificacion regulatoria `SEC N-PORT` aun debe conectarse;
-`N-PORT` es auditable pero llega con retraso.
+publicada. La verificacion regulatoria `SEC N-PORT` ya puede importarse en
+una capa separada; es auditable pero llega con retraso.
 
 Una diferencia entre dos snapshots se reportara como cambio de posicion
 publicada. No se etiquetara automaticamente como compra o venta: puede estar
@@ -348,6 +348,26 @@ consentimiento escrito. Por ello las descargas y diferencias reales quedan
 fuera de Git hasta contar con autorizacion aplicable. Al procesar la primera
 descarga autorizada se deben confirmar los encabezados locales frente al
 contrato documentado; el importador se detiene si faltan campos requeridos.
+
+### Evidencia Regulatoria SEC N-PORT
+
+Para importar un filing publico `NPORT-P` XML descargado desde EDGAR:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit sec-nport-import \
+  --snapshot data/raw/etf/nport/primary_doc.xml \
+  --fund-symbol XLF \
+  --captured-on YYYY-MM-DD \
+  --source-url https://www.sec.gov/Archives/edgar/data/.../primary_doc.xml \
+  --output data/raw/etf/nport/xlf-normalized.csv \
+  --report build/live/xlf-nport-import.md
+```
+
+Esta salida usa la capa `regulatory_periodic`. No puede compararse con
+snapshots `daily_official` de ARK o SPDR; solo con otro periodo N-PORT del
+mismo fondo. El parser inicial incluye posiciones en acciones y registra las
+posiciones no modeladas que omite. Al descargar desde SEC se mantienen los
+requisitos de `User-Agent` y acceso justo ya documentados para EDGAR.
 
 ## Historial De Mercados Globales
 

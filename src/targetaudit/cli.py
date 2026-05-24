@@ -134,6 +134,13 @@ from .providers.sgx import (
     write_sgx_report,
 )
 from .providers.sec import SecDataError, fetch_company_ticker_map, write_company_ticker_map
+from .providers.sec_nport import (
+    SEC_NPORT_DATASETS_URL,
+    SecNportDataError,
+    load_nport_xml_snapshot,
+    write_import_report as write_nport_import_report,
+    write_normalized_holdings as write_nport_normalized_holdings,
+)
 from .providers.sec_ipo import (
     fetch_daily_master_index,
     load_master_index,
@@ -394,6 +401,25 @@ def main() -> int:
     )
     spdr_parser.add_argument("--output", required=True, help="Normalized ETF holdings CSV path.")
     spdr_parser.add_argument("--report", required=True, help="Import audit Markdown report path.")
+    nport_parser = subparsers.add_parser(
+        "sec-nport-import",
+        help="Normalize a public SEC NPORT-P XML filing for periodic ETF comparison.",
+    )
+    nport_parser.add_argument("--snapshot", required=True, help="Downloaded public NPORT-P XML.")
+    nport_parser.add_argument("--fund-symbol", required=True, help="Fund symbol for the series.")
+    nport_parser.add_argument("--captured-on", required=True, help="Capture date in YYYY-MM-DD.")
+    nport_parser.add_argument(
+        "--source-url",
+        default=SEC_NPORT_DATASETS_URL,
+        help="SEC filing or dataset evidence URL retained with normalized rows.",
+    )
+    nport_parser.add_argument(
+        "--synthetic-fixture",
+        action="store_true",
+        help="Mark project-authored XML fixtures as synthetic evidence.",
+    )
+    nport_parser.add_argument("--output", required=True, help="Normalized ETF holdings CSV path.")
+    nport_parser.add_argument("--report", required=True, help="Import audit Markdown report path.")
     prices_parser = subparsers.add_parser(
         "alpha-vantage-prices",
         help="Normalize adjusted daily price evidence through a cache-first adapter.",
@@ -799,6 +825,26 @@ def main() -> int:
         print(
             f"Imported {len(imported.holdings)} SPDR-format holdings for "
             f"{imported.fund_symbol} to {args.output}."
+        )
+        return 0
+
+    if args.command == "sec-nport-import":
+        try:
+            captured_on = date.fromisoformat(args.captured_on)
+            imported = load_nport_xml_snapshot(
+                args.snapshot,
+                args.fund_symbol,
+                captured_on,
+                args.source_url,
+                args.synthetic_fixture,
+            )
+            write_nport_normalized_holdings(args.output, imported)
+            write_nport_import_report(args.report, imported)
+        except (SecNportDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Imported {len(imported.holdings)} share positions from N-PORT "
+            f"for {imported.fund_symbol} to {args.output}."
         )
         return 0
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edgarSubmission xmlns="http://www.sec.gov/edgar/nport">
+  <headerData><submissionType>NPORT-P</submissionType></headerData>
+  <formData>
+    <genInfo>
+      <regName>TargetAudit Synthetic N-PORT Trust</regName>
+      <seriesName>Synthetic Financials Regulatory ETF</seriesName>
+      <seriesId>S000DEMO01</seriesId>
+      <repPdEnd>2025-12-31</repPdEnd>
+    </genInfo>
+    <invstOrSecs>
+      <invstOrSec><name>Atlantic Community Bank</name><cusip>000000001</cusip><identifiers><ticker value="ACBK"/></identifiers><balance>1000</balance><units>NS</units><pctVal>4.00</pctVal></invstOrSec>
+      <invstOrSec><name>Nova Banking Group</name><cusip>000000002</cusip><identifiers><ticker value="NVBK"/></identifiers><balance>800</balance><units>NS</units><pctVal>3.20</pctVal></invstOrSec>
+      <invstOrSec><name>Bridge Insurance</name><cusip>000000003</cusip><identifiers><ticker value="BRIN"/></identifiers><balance>500</balance><units>NS</units><pctVal>2.00</pctVal></invstOrSec>
+      <invstOrSec><name>Cash Equivalent Position</name><cusip>000000010</cusip><balance>25000</balance><units>USD</units><pctVal>1.00</pctVal></invstOrSec>
+    </invstOrSecs>
+  </formData>
+</edgarSubmission>

@@ -178,7 +178,8 @@ Cada jurisdiccion conserva sus propias etapas:
 - `Issuer Listing Confirmations`: pagina de hitos posteriores documentados
   por comunicados oficiales del emisor, con fecha de evento y de verificacion.
 - `ETF Holdings Activity`: pagina de diferencias entre snapshots de posiciones
-  con fixture sintetico inicial y conectores oficiales aun pendientes.
+  con fixtures sinteticos e importadores locales; la automatizacion autorizada
+  de fuentes diarias aun esta pendiente.
 - `Global Listings Alerts`: bandeja diaria que compara snapshots de los cinco
   mercados y marca registros nuevos, modificados o ausentes para revisión.
 - La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
@@ -198,8 +199,8 @@ con la frecuencia real de cada fuente.
   `XLF-DEMO`, alineado al benchmark Financials.
 - Pendiente de conexion/publicacion: automatizacion autorizada y permisos de
   salidas reales de ARK y State Street SPDR.
-- Pendiente de conexion: `SEC N-PORT`, auditable pero no equivalente a datos
-  intradia ni a un feed diario en tiempo real.
+- Implementado: importador XML `SEC NPORT-P` y salida regulatoria separada;
+  es auditable pero no equivale a datos intradia ni a un feed diario.
 - Presentacion: posiciones nuevas, aumentadas, reducidas, ausentes o con
   cambio solo de peso, fecha efectiva, frecuencia y enlace de evidencia.
 - Regla de lenguaje: una diferencia de holdings se describe como cambio

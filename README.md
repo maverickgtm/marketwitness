@@ -346,10 +346,10 @@ ARK declara actualizacion al cierre de cada dia habil y explica que la fecha
 del CSV corresponde al siguiente dia de negociacion. El adaptador conserva
 esa fecha como efectiva, pero no redistribuye holdings oficiales en el
 repositorio: la publicacion real requiere resolver los terminos de uso.
-La automatizacion autorizada de State Street SPDR y `SEC N-PORT` siguen
-pendientes; `N-PORT` servira como respaldo regulatorio historico, no como
-fuente en tiempo real. Un aumento o reduccion se presenta como cambio
-observado, no como compra o venta confirmada del gestor.
+La automatizacion autorizada de State Street SPDR sigue pendiente; `SEC
+N-PORT` ya se procesa como respaldo regulatorio historico, no como fuente en
+tiempo real. Un aumento o reduccion se presenta como cambio observado, no
+como compra o venta confirmada del gestor.
 
 Para el ETF sectorial que sirve como benchmark del proyecto, tambien existe
 un importador local State Street SPDR/XLF:
@@ -368,6 +368,24 @@ La pagina oficial de `XLF` identifica la descarga completa de holdings como
 diaria y muestra acciones mantenidas y peso. La misma pagina restringe
 reproduccion sin consentimiento escrito, por lo que el repositorio usa
 fixtures sinteticos y mantiene salidas reales solo en almacenamiento local.
+
+La capa historica regulatoria tambien esta implementada mediante archivos
+publicos `SEC NPORT-P` en XML:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit sec-nport-import \
+  --snapshot data/raw/etf/nport/primary_doc.xml \
+  --fund-symbol XLF \
+  --captured-on YYYY-MM-DD \
+  --source-url https://www.sec.gov/Archives/edgar/data/.../primary_doc.xml \
+  --output data/raw/etf/nport/xlf-normalized.csv \
+  --report build/live/xlf-nport-import.md
+```
+
+`N-PORT` se muestra por separado como evidencia `regulatory_periodic`: la SEC
+indica que los datasets publicos provienen de filings difundidos y se
+actualizan trimestralmente. La primera version normaliza solo posiciones
+declaradas en acciones y registra los instrumentos omitidos.
 
 ## Estado Del Proyecto
 
@@ -403,6 +421,8 @@ auditados en desarrollo:
   bloqueada la redistribucion publica de datos oficiales hasta revisar permiso.
 - Normaliza descargas locales SPDR/XLF y usa un fixture `XLF-DEMO` para probar
   actividad ETF alineada con la especializacion en financials.
+- Normaliza filings publicos `SEC NPORT-P` en una salida regulatoria ETF
+  separada, omitiendo instrumentos aun no modelados de forma visible.
 - Importa exportaciones autorizadas de targets con manifiesto y cola de rechazos.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para

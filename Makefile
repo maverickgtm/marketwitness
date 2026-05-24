@@ -120,6 +120,29 @@ demo:
 		--report build/demo/etf-holdings-activity.md \
 		--html build/demo/etf-holdings-activity.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-import \
+		--snapshot data/samples/nport-xlf-previous.xml \
+		--fund-symbol XLF-REG-DEMO \
+		--captured-on 2026-05-24 \
+		--source-url https://example.invalid/sec/nport-xlf-previous.xml \
+		--synthetic-fixture \
+		--output build/demo/nport-xlf-previous.csv \
+		--report build/demo/nport-xlf-previous-import.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-import \
+		--snapshot data/samples/nport-xlf-current.xml \
+		--fund-symbol XLF-REG-DEMO \
+		--captured-on 2026-05-24 \
+		--source-url https://example.invalid/sec/nport-xlf-current.xml \
+		--synthetic-fixture \
+		--output build/demo/nport-xlf-current.csv \
+		--report build/demo/nport-xlf-current-import.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
+		--previous build/demo/nport-xlf-previous.csv \
+		--current build/demo/nport-xlf-current.csv \
+		--output build/demo/etf-holdings-regulatory-activity.csv \
+		--report build/demo/etf-holdings-regulatory-activity.md \
+		--html build/demo/etf-holdings-regulatory-activity.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit alpha-vantage-prices \
 		--ticker ACBK \
 		--snapshot data/samples/alpha-vantage-daily-adjusted.json \
