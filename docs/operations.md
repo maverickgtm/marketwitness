@@ -46,6 +46,13 @@ repositorio:
 export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
 ```
 
+Para una ejecucion recurrente local tambien puede guardarse en el archivo
+ignorado `data/private/sec_user_agent.txt`, con una sola linea:
+
+```text
+TargetAudit tu-correo@ejemplo.com
+```
+
 El archivo `.env.example` muestra el nombre esperado de la variable, pero no
 incluye una credencial real.
 

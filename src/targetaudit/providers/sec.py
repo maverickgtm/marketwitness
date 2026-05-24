@@ -8,6 +8,7 @@ from urllib.error import URLError
 from urllib.request import Request, urlopen
 
 SEC_COMPANY_TICKERS_URL = "https://www.sec.gov/files/company_tickers_exchange.json"
+LOCAL_USER_AGENT_PATH = Path("data/private/sec_user_agent.txt")
 
 
 class SecDataError(ValueError):
@@ -15,11 +16,18 @@ class SecDataError(ValueError):
 
 
 def configured_user_agent(user_agent: str | None = None) -> str:
-    resolved = (user_agent or os.environ.get("TARGETAUDIT_SEC_USER_AGENT", "")).strip()
+    saved_agent = ""
+    if LOCAL_USER_AGENT_PATH.exists():
+        saved_agent = LOCAL_USER_AGENT_PATH.read_text(encoding="utf-8").strip()
+    resolved = (
+        user_agent
+        or os.environ.get("TARGETAUDIT_SEC_USER_AGENT", "")
+        or saved_agent
+    ).strip()
     if "@" not in resolved:
         raise SecDataError(
-            "SEC requests require --user-agent or TARGETAUDIT_SEC_USER_AGENT "
-            "including a contact email."
+            "SEC requests require --user-agent, TARGETAUDIT_SEC_USER_AGENT or "
+            "data/private/sec_user_agent.txt including a contact email."
         )
     return resolved
 

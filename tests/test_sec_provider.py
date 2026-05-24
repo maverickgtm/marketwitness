@@ -5,6 +5,7 @@ from urllib.error import URLError
 
 from targetaudit.providers.sec import (
     SecDataError,
+    configured_user_agent,
     fetch_company_ticker_map,
     parse_company_ticker_payload,
 )
@@ -45,6 +46,19 @@ class SecProviderTests(unittest.TestCase):
         self.assertEqual(result, [])
         request = request_mock.call_args.args[0]
         self.assertEqual(request.headers["User-agent"], "TargetAudit owner@example.com")
+
+    @patch.dict(os.environ, {}, clear=True)
+    def test_reads_user_agent_from_local_private_file(self) -> None:
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sec_user_agent.txt"
+            path.write_text("TargetAudit local@example.com\n", encoding="utf-8")
+            with patch("targetaudit.providers.sec.LOCAL_USER_AGENT_PATH", path):
+                self.assertEqual(
+                    configured_user_agent(), "TargetAudit local@example.com"
+                )
 
     @patch("targetaudit.providers.sec.urlopen", side_effect=URLError("offline"))
     def test_network_error_becomes_provider_error(self, unused_request) -> None:

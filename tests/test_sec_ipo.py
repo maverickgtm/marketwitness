@@ -31,6 +31,13 @@ class SecIpoDiscoveryTests(unittest.TestCase):
         self.assertNotIn("APPLE INC.", report)
         self.assertIn("not a confirmed IPO calendar", report)
 
+    def test_accepts_iso_date_from_normalized_import(self) -> None:
+        filings = parse_ipo_candidate_filings(
+            "1|Example Corp|S-1|2026-05-20|edgar/data/1/example.txt"
+        )
+
+        self.assertEqual(filings[0].filed_date, date(2026, 5, 20))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import csv
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 from urllib.error import URLError
 from urllib.request import Request, urlopen
@@ -75,7 +75,7 @@ def parse_ipo_candidate_filings(index_text: str) -> list[SecIpoFiling]:
         if form not in DISCOVERY_FORMS:
             continue
         try:
-            filed_date = date.fromisoformat(filed_raw)
+            filed_date = _parse_filed_date(filed_raw)
         except ValueError as exc:
             raise SecDataError("SEC daily index contains an invalid filing date.") from exc
         filings.append(
@@ -90,6 +90,12 @@ def parse_ipo_candidate_filings(index_text: str) -> list[SecIpoFiling]:
             )
         )
     return sorted(filings, key=lambda filing: (filing.filed_date, filing.company_name))
+
+
+def _parse_filed_date(raw: str) -> date:
+    if "-" in raw:
+        return date.fromisoformat(raw)
+    return datetime.strptime(raw, "%Y%m%d").date()
 
 
 def write_discovered_filings(path: str | Path, filings: list[SecIpoFiling]) -> None:
