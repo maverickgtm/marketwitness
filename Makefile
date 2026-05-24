@@ -30,6 +30,17 @@ demo:
 		--report build/demo/global-listings.md \
 		--html build/demo/global-listings.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-upcoming \
+		--snapshot data/samples/lse_upcoming_issues.csv \
+		--report build/demo/lse-upcoming.md \
+		--html build/demo/lse-upcoming.html \
+		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit hkex-monitor \
+		--snapshot-dir data/samples/hkex \
+		--output build/demo/hkex-monitor.csv \
+		--report build/demo/hkex-monitor.md \
+		--html build/demo/hkex-monitor.html \
+		--as-of 2026-05-24
 
 package:
 	mkdir -p build/dist

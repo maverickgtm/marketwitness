@@ -21,9 +21,10 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertEqual(len(sources), 5)
         self.assertIn("London Stock Exchange", report)
         self.assertIn("Hong Kong Exchanges and Clearing", report)
-        self.assertIn("Priority connectors: `2`", report)
+        self.assertIn("Live official feeds: `1`", report)
+        self.assertIn("Verified snapshots: `1`", report)
         self.assertIn("Beyond Wall Street", page)
-        self.assertIn("Priority connectors are not live monitors", page)
+        self.assertIn("HKEX has an official JSON ingestion path", page)
 
     def test_rejects_unknown_connector_status(self) -> None:
         path = _csv(

@@ -26,7 +26,9 @@ verificables de cotizaciones tecnologicas/estrategicas.
   un indice diario completo.
 - [ ] Ejecucion diaria persistente y promocion revisada al tablero IPO Watch.
 - [ ] Conector LSE `New issues` con validacion FCA NSM.
-- [ ] Conector HKEX/HKEXnews para Application Proofs y PHIP.
+- [x] Conector HKEX/HKEXnews para estados oficiales AP/PHIP.
+- [x] Snapshot trazable de LSE `Upcoming issues`.
+- [ ] Automatizar ingesta LSE y contraste documental FCA NSM.
 - [ ] Conectores ASX, TSX y SGX despues de validar UK/HK.
 - [ ] Ingesta de comunicados oficiales para confirmar listings.
 - [ ] Validacion de splits y cambios de ticker.

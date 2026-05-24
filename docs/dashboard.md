@@ -101,8 +101,8 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 
 | Mercado | Fuente Oficial Identificada | Estado De Implementacion |
 |---|---|---|
-| London Stock Exchange | LSE `New issues` y FCA National Storage Mechanism | Conector prioritario |
-| Hong Kong HKEX | HKEX/HKEXnews new listings y documentos `PHIP` | Conector prioritario |
+| London Stock Exchange | LSE `New issues` y FCA National Storage Mechanism | Snapshot oficial verificado; automatizacion pendiente |
+| Hong Kong HKEX | HKEX/HKEXnews AP/PHIP JSON feeds | Feed oficial implementado |
 | Australian Securities Exchange | ASX `Upcoming floats and listings` | Planificado |
 | Toronto Stock Exchange | TSX `New Company Listings` | Planificado |
 | Singapore Exchange | SGX `IPO Prospectus` | Planificado |
@@ -120,3 +120,10 @@ Cada jurisdiccion conserva sus propias etapas:
 - Canada y Singapur: sus fuentes oficiales identificadas sirven inicialmente
   para listings/prospectos publicados y requieren disenar el estado previo
   antes de considerarlos monitores prospectivos.
+
+### Salidas Operativas
+
+- `HKEX Listing Monitor`: pagina y CSV generados desde los cinco feeds JSON
+  oficiales, util para detectar cambios de ciclo.
+- `LSE Upcoming Issues Snapshot`: pagina con registros observados en la tabla
+  oficial; se rotula como captura hasta implementar su actualizacion continua.

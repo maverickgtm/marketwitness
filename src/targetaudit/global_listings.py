@@ -7,7 +7,12 @@ from datetime import date
 from html import escape
 from pathlib import Path
 
-CONNECTOR_STATUSES = {"research_verified", "priority_connector", "planned_connector"}
+CONNECTOR_STATUSES = {
+    "live_official_feed",
+    "verified_snapshot",
+    "priority_connector",
+    "planned_connector",
+}
 GLOBAL_SOURCE_COLUMNS = {
     "market_code",
     "market_name",
@@ -92,12 +97,14 @@ def render_global_listings_report(markets: list[GlobalMarketSource], as_of: date
         "",
         f"- Source review date: `{as_of.isoformat()}`",
         f"- Markets mapped: `{len(markets)}`",
+        f"- Live official feeds: `{counts['live_official_feed']}`",
+        f"- Verified snapshots: `{counts['verified_snapshot']}`",
         f"- Priority connectors: `{counts['priority_connector']}`",
         f"- Planned official connectors: `{counts['planned_connector']}`",
         "",
         "This coverage map defines where official listing signals can be monitored.",
-        "A market is not continuously monitored until its connector is implemented",
-        "and verified.",
+        "Only `live_official_feed` identifies an implemented ingestion path. A",
+        "`verified_snapshot` captures official evidence but is not continuous.",
         "",
         "## Coverage Map",
         "",
@@ -137,7 +144,8 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     counts = Counter(market.connector_status for market in markets)
     cards = [
         ("Mapped markets", len(markets), "Official sources identified"),
-        ("Priority builds", counts["priority_connector"], "UK and Hong Kong first"),
+        ("Live feeds", counts["live_official_feed"], "Official endpoint implemented"),
+        ("Verified snapshots", counts["verified_snapshot"], "Official capture, not continuous"),
         ("Expansion queue", counts["planned_connector"], "Official sources to connect"),
     ]
     cards_html = "".join(
@@ -181,7 +189,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     h1 {{ font-size:clamp(34px,5vw,54px); line-height:1.06; margin:38px 0 14px; }}
     .lead {{ color:var(--muted); max-width:740px; font-size:17px; }}
     .meta {{ color:var(--muted); margin-top:30px; font-size:13px; }}
-    .cards {{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:35px 0; }}
+    .cards {{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:35px 0; }}
     .card,.table-wrap,.queue-item,.notice {{ background:var(--panel); border:1px solid var(--line); border-radius:14px; }}
     .card {{ padding:18px 20px; }} .card p {{ margin:0; color:var(--muted); }}
     .card strong {{ display:block; color:var(--mint); font-size:38px; }}
@@ -196,7 +204,8 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     .badge {{ border-radius:999px; padding:5px 9px; font-size:12px; white-space:nowrap; }}
     .priority_connector {{ color:var(--gold); background:rgba(240,188,98,.12); }}
     .planned_connector {{ color:var(--blue); background:rgba(98,166,255,.12); }}
-    .research_verified {{ color:var(--mint); background:rgba(86,218,172,.12); }}
+    .live_official_feed {{ color:var(--mint); background:rgba(86,218,172,.12); }}
+    .verified_snapshot {{ color:var(--gold); background:rgba(240,188,98,.12); }}
     .queue {{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }}
     .queue-item {{ padding:17px; }} .queue-item div {{ display:flex; gap:13px; align-items:baseline; }}
     .queue-item h3 {{ margin:0; color:var(--mint); }} .queue-item span {{ color:var(--muted); }}
@@ -214,7 +223,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     <section class="cards">{cards_html}</section>
   </header>
   <main>
-    <p class="notice">Coverage map only. Priority connectors are not live monitors until their ingestion and validation pipelines are implemented.</p>
+    <p class="notice">HKEX has an official JSON ingestion path. LSE remains a verified snapshot until its repeatable retrieval pipeline is implemented and tested.</p>
     <h2>Official source map</h2>
     <div class="table-wrap"><table>
       <thead><tr><th>Market</th><th>Status</th><th>Signal</th><th>Confirmation rule</th><th>Evidence</th></tr></thead>

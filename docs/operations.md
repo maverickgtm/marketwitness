@@ -1,4 +1,4 @@
-# Operacion Continua De IPO Watch
+# Operacion Continua De Listing Watch
 
 ## Objetivo
 
@@ -84,23 +84,35 @@ make verify
    comunicado oficial.
 7. Publicar el dashboard actualizado con historial de cambios.
 
-## Automatizacion A Construir
+## Automatizaciones Locales Activas
 
-La siguiente fase agregara almacenamiento persistente y una tarea diaria:
+En la aplicacion Codex se configuraron dos ejecuciones recurrentes locales en
+dias habiles:
 
-- Entrada: indices diarios SEC y comunicados oficiales.
+- `TargetAudit IPO Watch diario`: consulta el indice SEC, guarda la cola de
+  revision y resume posibles registros, prospectos o retiros nuevos.
+- `TargetAudit HKEX Listing Monitor diario`: consulta los cinco feeds JSON
+  oficiales HKEXnews y resume nuevas solicitudes, avances `PHIP`, listings,
+  inactivos o devoluciones.
+
+Ambas tareas tratan los eventos como informacion regulatoria para investigar,
+no como instrucciones para tomar posiciones.
+
+El conector LSE no se automatiza todavia: el dashboard solo presenta un
+snapshot observado de `Upcoming issues` hasta contar con una ingesta
+repetible y un contraste documental FCA NSM.
+
+## Despliegue Futuro En GitHub
+
+- Entrada: indices diarios SEC, feeds HKEXnews y comunicados oficiales.
 - Salida: eventos nuevos, entidades promovidas, retiros y cambios de estado.
 - Alertas: nuevas IPOs confirmadas, pricing, primer dia de cotizacion.
-- Proteccion: maximo muy inferior a las 10 solicitudes por segundo permitidas
-  por SEC; normalmente una solicitud diaria de indice y solicitudes puntuales
-  de documentos a revisar.
+- Proteccion SEC: maximo muy inferior a las 10 solicitudes por segundo
+  permitidas; normalmente una solicitud diaria de indice y solicitudes
+  puntuales de documentos a revisar.
 
 En un repositorio GitHub publico, `TARGETAUDIT_SEC_USER_AGENT` se configurara
 como `Actions secret`, nunca escrito en el codigo ni en los reportes.
-
-Una vez confirmado el correo del proyecto, el paso siguiente sera crear una
-tarea diaria que ejecute la cola SEC en dias habiles y produzca un resumen de
-nuevos filings para revision.
 
 ## Limites
 

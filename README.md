@@ -76,9 +76,20 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `TSX` / Canada: nuevas companias listadas oficialmente.
 - `SGX` / Singapur: catalogo oficial de prospectos IPO.
 
-Londres y Hong Kong son los siguientes conectores prioritarios. La pagina
-global diferencia expresamente una fuente oficial ya identificada de un
-monitor automatizado ya construido.
+Hong Kong ya incluye un conector a los JSON oficiales de HKEXnews para
+solicitudes activas, activas con `PHIP`, inactivas, listadas y devueltas.
+Londres dispone de un snapshot trazable de su tabla oficial `Upcoming issues`;
+la obtencion continua se mantiene pendiente hasta verificar un mecanismo de
+ingesta estable.
+
+Para leer HKEX en vivo:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit hkex-monitor \
+  --output data/raw/hkex-monitor.csv \
+  --report build/live/hkex-monitor.md \
+  --html build/live/hkex-monitor.html
+```
 
 ## Estado Del Proyecto
 
@@ -121,6 +132,11 @@ build/demo/sec-ipo-discovery.csv
 build/demo/sec-ipo-discovery.md
 build/demo/global-listings.md
 build/demo/global-listings.html
+build/demo/lse-upcoming.md
+build/demo/lse-upcoming.html
+build/demo/hkex-monitor.csv
+build/demo/hkex-monitor.md
+build/demo/hkex-monitor.html
 build/dist/targetaudit-0.1.0-py3-none-any.whl
 ```
 

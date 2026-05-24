@@ -82,9 +82,35 @@ Registro de fuentes oficiales y conectores internacionales para la pagina
 | `market_code` | Si | Codigo unico: `LSE`, `HKEX`, `ASX`, `TSX`, `SGX` |
 | `market_name` | Si | Mercado o bolsa |
 | `jurisdiction` | Si | Pais o jurisdiccion |
-| `connector_status` | Si | `priority_connector` o `planned_connector` |
+| `connector_status` | Si | `live_official_feed`, `verified_snapshot`, `priority_connector` o `planned_connector` |
 | `official_source_name` | Si | Nombre de fuente primaria |
 | `official_source_url` | Si | URL de consulta |
 | `signal_type` | Si | Tipo de senal documental/listing disponible |
 | `confirmation_rule` | Si | Regla necesaria antes de confirmar estado |
 | `implementation_next` | Si | Trabajo requerido para activar el monitor |
+
+## `lse_upcoming_issues.csv`
+
+Captura normalizada de la tabla oficial `Upcoming issues` de LSE. No
+representa todavia una consulta automatica.
+
+| Columna | Requerida | Descripcion |
+|---|---:|---|
+| `company_name` | Si | Nombre mostrado por LSE |
+| `market` | Si | Segmento, por ejemplo `AIM` |
+| `primary_offer` | Si | Oferta primaria visible o `TBC` |
+| `secondary_offer` | Si | Oferta secundaria visible o `-` |
+| `currency` | Si | Moneda informada por la tabla |
+| `price_range` | Si | Rango publicado o `-` |
+| `expected_first_trading` | Si | Fecha esperada en el texto oficial |
+| `instrument_type` | Si | Tipo de instrumento |
+| `observed_on` | Si | Fecha de captura |
+| `source_url` | Si | URL de la pagina oficial |
+
+## HKEX JSON Feeds
+
+`hkex-monitor` normaliza los JSON oficiales de HKEXnews en un CSV con:
+`company_name`, `status`, `event_date`, `stock_code`, `has_phip` y
+`source_url`. Los estados conservan la taxonomia HKEX y separan el feed de
+avance documental: `active`, `active_phip`, `inactive`, `listed` y
+`returned`.

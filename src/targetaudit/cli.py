@@ -17,6 +17,20 @@ from .ipo_watch import (
     write_ipo_watch_html,
     write_ipo_watch_report,
 )
+from .lse_upcoming import (
+    LseDataError,
+    load_lse_upcoming,
+    write_lse_html,
+    write_lse_report,
+)
+from .providers.hkex import (
+    HkexDataError,
+    fetch_hkex_feeds,
+    load_hkex_snapshot,
+    write_hkex_csv,
+    write_hkex_html,
+    write_hkex_report,
+)
 from .providers.sec import SecDataError, fetch_company_ticker_map, write_company_ticker_map
 from .providers.sec_ipo import (
     fetch_daily_master_index,
@@ -98,7 +112,61 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Source review cutoff in YYYY-MM-DD format.",
     )
+    lse_parser = subparsers.add_parser(
+        "lse-upcoming", help="Generate an LSE upcoming-issues snapshot report."
+    )
+    lse_parser.add_argument("--snapshot", required=True, help="Observed LSE issues CSV.")
+    lse_parser.add_argument("--report", required=True, help="Markdown report path.")
+    lse_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    lse_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Snapshot cutoff in YYYY-MM-DD format.",
+    )
+    hkex_parser = subparsers.add_parser(
+        "hkex-monitor", help="Read official HKEXnews listing-status JSON feeds."
+    )
+    hkex_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    hkex_parser.add_argument("--report", required=True, help="Markdown report path.")
+    hkex_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    hkex_parser.add_argument(
+        "--snapshot-dir",
+        help="Read JSON fixtures in a local directory instead of requesting HKEXnews.",
+    )
+    hkex_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Report cutoff in YYYY-MM-DD format.",
+    )
     args = parser.parse_args()
+
+    if args.command == "hkex-monitor":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            if args.snapshot_dir:
+                listings, update_dates = load_hkex_snapshot(args.snapshot_dir)
+            else:
+                listings, update_dates = fetch_hkex_feeds()
+            write_hkex_csv(args.output, listings)
+            write_hkex_report(args.report, listings, update_dates, as_of)
+            if args.html:
+                write_hkex_html(args.html, listings, update_dates, as_of)
+        except (HkexDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(f"Wrote HKEX monitor for {len(listings)} official records to {args.report}.")
+        return 0
+
+    if args.command == "lse-upcoming":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            issues = load_lse_upcoming(args.snapshot)
+            write_lse_report(args.report, issues, as_of)
+            if args.html:
+                write_lse_html(args.html, issues, as_of)
+        except (LseDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(f"Wrote LSE snapshot for {len(issues)} upcoming issues to {args.report}.")
+        return 0
 
     if args.command == "global-listings":
         try:
