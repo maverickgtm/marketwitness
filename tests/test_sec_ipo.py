@@ -25,8 +25,9 @@ class SecIpoDiscoveryTests(unittest.TestCase):
         filings = parse_ipo_candidate_filings(text)
         report = render_discovery_report(filings, date(2026, 5, 20), source)
 
-        self.assertEqual(len(filings), 3)
-        self.assertEqual(filings[0].company_name, "EXAMPLE INTERNATIONAL LTD.")
+        self.assertEqual(len(filings), 4)
+        self.assertIn("EXAMPLE INTERNATIONAL LTD.", [filing.company_name for filing in filings])
+        self.assertIn("EXAMPLE ACQUISITION CORP.", [filing.company_name for filing in filings])
         self.assertIn("SPACE EXPLORATION TECHNOLOGIES CORP.", report)
         self.assertNotIn("APPLE INC.", report)
         self.assertIn("not a confirmed IPO calendar", report)

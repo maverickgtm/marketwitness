@@ -80,7 +80,10 @@ PYTHONPATH=src python3 -m targetaudit sec-ipo-alerts \
 ```
 
 Esta cola enruta evidencia para revisión; no promueve automáticamente el
-estado de una empresa.
+estado de una empresa. También ordena casos mediante señales explícitas:
+coincidencia exacta de `CIK`, nombres que contienen `Acquisition Corp/Co`,
+nombres que contienen `ETF`, formularios `424B4` y solicitudes `RW`. Las
+señales de nombre son heurísticas para revisión, no hechos confirmados.
 
 ## Global Listings Watch
 

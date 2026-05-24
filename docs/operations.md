@@ -83,6 +83,11 @@ PYTHONPATH=src python3 -m targetaudit sec-ipo-alerts \
 Una coincidencia de `CIK` significa que el documento pertenece a una empresa
 seguida; aún exige leer el filing antes de modificar su estado.
 
+`SEC IPO Alerts` prioriza revisión con indicadores observables: `CIK`
+coincidente, formulario `RW` o `424B4`, y señales de nombre como
+`Acquisition Corp/Co` o `ETF`. Estas últimas solo reducen trabajo manual:
+no confirman que un emisor sea una SPAC, un fondo ni una IPO operativa.
+
 Para el demo y las pruebas se usa un indice local de ejemplo, sin solicitar
 datos a SEC:
 
@@ -133,7 +138,8 @@ dias habiles:
 
 - `TargetAudit IPO Watch diario`: consulta el indice SEC, conserva snapshots,
   genera `SEC IPO Alerts` y resume posibles registros, prospectos o retiros
-  nuevos, incluyendo coincidencias exactas de `CIK` con la watchlist.
+  nuevos, incluyendo coincidencias exactas de `CIK` con la watchlist y triage
+  heuristico visible para SPAC/ETF.
 - `TargetAudit Global Listings diario`: consulta los cinco feeds JSON
   oficiales o páginas estructuradas, el componente JSON oficial LSE `Upcoming issues` y el
   contraste público FCA NSM, además de las tablas oficiales ASX y TSX; resume

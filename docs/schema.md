@@ -78,8 +78,9 @@ estimada en prensa: exige un filing publico o confirmacion primaria.
 `sec-ipo-alerts` consume el CSV de `sec-ipo-discover`, conserva snapshots
 fechados y enlaza un filing a `IPO Watch` solo cuando coincide un `CIK`
 registrado. Produce: `company_name`, `cik`, `form`, `filed_date`,
-`review_state`, `alert_type`, `watch_company`, `watch_status`, `source_url`
-y `review_action`.
+`review_state`, `alert_type`, `watch_company`, `watch_status`,
+`triage_category`, `triage_basis`, `review_priority`, `source_url` y
+`review_action`.
 
 Los tipos de alerta son:
 
@@ -89,6 +90,17 @@ Los tipos de alerta son:
 
 Un vínculo por `CIK` sirve para enrutar la revisión y no cambia el estado
 público del emisor sin inspeccionar la evidencia primaria.
+
+El triage prioriza evidencia sin afirmar la naturaleza de la oferta:
+
+- `watchlist_match`: coincidencia exacta de CIK; prioridad alta.
+- `withdrawal_form_review`: el filing es `RW`; prioridad alta.
+- `possible_spac_name_signal`: el nombre contiene `Acquisition Corp` o
+  `Acquisition Co`; requiere confirmar estructura blank-check.
+- `fund_or_etf_name_signal`: el nombre contiene `ETF`; requiere separar
+  registro de fondo de una IPO operativa.
+- `final_prospectus_review`: el filing es `424B4`.
+- `issuer_filing_review`: no se asigna categoría por nombre; debe leerse.
 
 ## `global_market_sources.csv`
 
