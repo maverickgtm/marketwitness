@@ -67,6 +67,13 @@ El monitor futuro priorizara SEC EDGAR y anuncios oficiales. Las noticias
 serviran para abrir una tarea de verificacion, no para cambiar por si solas el
 estado mostrado.
 
+La ingesta de comunicados oficiales ya se representa mediante
+`issuer_listing_confirmations.csv`. Su muestra inicial preserva dos hitos
+declarados en el comunicado de Cerebras publicado el `2026-05-15`: trading de
+`CBRS` iniciado el `2026-05-14` en Nasdaq Global Select Market y cierre de la
+oferta el `2026-05-15`. Esta fuente confirma esos eventos, no el rendimiento
+futuro de la accion.
+
 Para descubrir emisores que no estaban en la lista inicial, el proyecto usa
 los indices diarios EDGAR documentados por SEC. El resultado es una cola de
 revision: un formulario de registro encontrado se considera posible evento,

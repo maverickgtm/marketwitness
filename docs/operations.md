@@ -202,6 +202,23 @@ El monitor SGX conserva `prospectus_published`, porque su fuente publica
 documentos de prospecto. Es una señal documental para revisión, no una
 confirmación automática de trading.
 
+## Confirmaciones Oficiales Del Emisor
+
+Los comunicados revisados manualmente se normalizan en un registro separado:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit issuer-confirmations \
+  --registry data/samples/issuer_listing_confirmations.csv \
+  --report build/live/issuer-confirmations.md \
+  --html build/live/issuer-confirmations.html \
+  --as-of YYYY-MM-DD
+```
+
+Esta salida conserva un evento por fila y exige fuente HTTPS, mercado,
+ticker, fecha de evento y fecha de verificacion. No rastrea titulares
+generales ni promueve rumores: confirma solamente el hito que declara el
+comunicado oficial revisado.
+
 ## Despliegue Futuro En GitHub
 
 - Entrada: indices diarios SEC, feeds HKEXnews y comunicados oficiales.

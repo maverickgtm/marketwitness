@@ -27,6 +27,12 @@ from .ipo_reviews import (
     write_review_html,
     write_review_report,
 )
+from .issuer_confirmations import (
+    IssuerConfirmationDataError,
+    load_issuer_confirmations,
+    write_issuer_confirmations_html,
+    write_issuer_confirmations_report,
+)
 from .lse_upcoming import (
     LseDataError,
     fetch_lse_upcoming,
@@ -222,6 +228,20 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Source review cutoff in YYYY-MM-DD format.",
+    )
+    confirmations_parser = subparsers.add_parser(
+        "issuer-confirmations",
+        help="Generate verified listing milestones from official issuer releases.",
+    )
+    confirmations_parser.add_argument(
+        "--registry", required=True, help="Curated official issuer-release CSV."
+    )
+    confirmations_parser.add_argument("--report", required=True, help="Markdown report path.")
+    confirmations_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    confirmations_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Verification cutoff in YYYY-MM-DD format.",
     )
     alerts_parser = subparsers.add_parser(
         "global-alerts",
@@ -474,6 +494,21 @@ def main() -> int:
         except (GlobalListingsDataError, ValueError) as exc:
             parser.error(str(exc))
         print(f"Wrote global listings coverage for {len(markets)} markets to {args.report}.")
+        return 0
+
+    if args.command == "issuer-confirmations":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            events = load_issuer_confirmations(args.registry)
+            write_issuer_confirmations_report(args.report, events, as_of)
+            if args.html:
+                write_issuer_confirmations_html(args.html, events, as_of)
+        except (IssuerConfirmationDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote issuer confirmations for {len(events)} official milestones "
+            f"to {args.report}."
+        )
         return 0
 
     if args.command == "global-alerts":

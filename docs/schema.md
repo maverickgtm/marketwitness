@@ -253,3 +253,25 @@ compara contra la última captura anterior. Produce un CSV con:
 En HKEX la identidad comparada es un hito de ciclo de vida
 (`company + status + event_date + stock_code`), porque el feed puede conservar
 al mismo emisor en etapas oficiales distintas.
+
+## `issuer_listing_confirmations.csv`
+
+Registro curado de hitos que un emisor declara en un comunicado oficial. No
+acepta notas de prensa secundarias como confirmación automática.
+
+| Columna | Requerida | Descripcion |
+|---|---:|---|
+| `company_name` | Si | Emisor confirmado |
+| `market` | Si | Mercado que el comunicado identifica |
+| `ticker` | Si | Simbolo identificado por el comunicado |
+| `event_type` | Si | `trading_started`, `offering_closed` o `listing_confirmed` |
+| `event_date` | Si | Fecha ISO del hito declarado |
+| `source_title` | Si | Titulo del comunicado oficial |
+| `source_url` | Si | URL HTTPS del emisor |
+| `verified_on` | Si | Fecha ISO de revision de la evidencia |
+| `evidence_level` | Si | Actualmente `issuer_official_release` |
+| `research_note` | Si | Resumen verificable de lo que confirma la fuente |
+
+Una misma fuente puede confirmar mas de un hito y por eso puede aparecer en
+varias filas. No se permite que la fecha de verificacion preceda el evento ni
+que un reporte incluya evidencia posterior a su fecha de corte.

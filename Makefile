@@ -48,6 +48,11 @@ demo:
 		--report build/demo/global-listings.md \
 		--html build/demo/global-listings.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit issuer-confirmations \
+		--registry data/samples/issuer_listing_confirmations.csv \
+		--report build/demo/issuer-confirmations.md \
+		--html build/demo/issuer-confirmations.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-upcoming \
 		--page-file data/samples/lse-new-issues-page.json \
 		--output build/demo/lse-upcoming.csv \

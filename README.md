@@ -185,6 +185,21 @@ PYTHONPATH=src python3 -m targetaudit sgx-monitor \
   --html build/live/sgx-monitor.html
 ```
 
+Para generar confirmaciones de hitos a partir de comunicados oficiales del emisor revisados:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit issuer-confirmations \
+  --registry data/samples/issuer_listing_confirmations.csv \
+  --report build/live/issuer-confirmations.md \
+  --html build/live/issuer-confirmations.html \
+  --as-of YYYY-MM-DD
+```
+
+La primera evidencia incluida es el comunicado oficial de Cerebras que declara
+inicio de trading de `CBRS` el `2026-05-14` y cierre de su oferta el
+`2026-05-15`. El registro confirma esos hitos solamente; no recomienda una
+posición ni incorpora noticias no verificadas.
+
 Para comparar la lectura global del dia contra la captura anterior y conservar
 historial:
 
@@ -262,6 +277,8 @@ build/demo/sec-review-outcomes.md
 build/demo/sec-review-outcomes.html
 build/demo/global-listings.md
 build/demo/global-listings.html
+build/demo/issuer-confirmations.md
+build/demo/issuer-confirmations.html
 build/demo/lse-upcoming.md
 build/demo/lse-upcoming.html
 build/demo/lse-upcoming.csv

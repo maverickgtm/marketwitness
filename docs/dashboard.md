@@ -149,11 +149,13 @@ Cada jurisdiccion conserva sus propias etapas:
   compañías ya listadas; no funciona como señal prospectiva.
 - `SGX IPO Prospectus Monitor`: pagina de documentos publicados en el
   catalogo oficial SGX; funciona como señal documental para revision.
+- `Issuer Listing Confirmations`: pagina de hitos posteriores documentados
+  por comunicados oficiales del emisor, con fecha de evento y de verificacion.
 - `Global Listings Alerts`: bandeja diaria que compara snapshots de los cinco
   mercados y marca registros nuevos, modificados o ausentes para revisión.
 - La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
   cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,
-  TSX y SGX.
+  TSX, SGX y confirmaciones del emisor.
 
 ## Pagina 4 En Cola: ETF Holdings Activity
 
