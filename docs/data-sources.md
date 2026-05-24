@@ -79,7 +79,7 @@ Revisado al `2026-05-24`:
 | Mercado | Fuente Oficial | Senal Disponible | Estado TargetAudit |
 |---|---|---|---|
 | Reino Unido | London Stock Exchange `New issues` JSON | Upcoming issues con fecha esperada de trading y oferta prevista | Feed oficial implementado |
-| Reino Unido | FCA National Storage Mechanism | Prospectos y documentos regulatorios aprobados/publicados | Contraste requerido para LSE |
+| Reino Unido | FCA National Storage Mechanism | Prospectos y documentos regulatorios aprobados/publicados | Consulta pública implementada para contraste LSE |
 | Hong Kong | HKEX/HKEXnews New Listings - AP & PHIP | JSON oficiales de Active AP, Active PHIP, Inactive, Listed y Returned | Feed oficial implementado |
 | Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida y fecha anticipada | Planificado |
 | Canada | TSX New Company Listings | Nuevas companias ya listadas | Planificado |
@@ -104,6 +104,13 @@ El conector LSE consulta el endpoint JSON que alimenta la pagina oficial:
 La muestra de pruebas fue observada el `2026-05-24`; la aparicion en
 `Upcoming issues` es una senal esperada y todavia debe contrastarse con
 documentos de admision o prospecto.
+
+El contraste FCA NSM consulta el endpoint público utilizado por su formulario:
+`https://api.data.fca.org.uk/search?index=fca-nsm-searchdata`. Busca el nombre
+del emisor LSE en organizaciones divulgadoras o relacionadas y conserva solo
+la última versión documental. La FCA indica que el NSM no es un servicio en
+tiempo real; por eso `document_found_review_required` exige revisión humana y
+`no_document_found` no descarta una cotización futura.
 
 Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
 respetar la guia de acceso justo, que actualmente fija un maximo de 10

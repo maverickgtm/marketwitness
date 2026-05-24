@@ -1,0 +1,24 @@
+{
+  "responses": {
+    "Coastal Africa Group Limited": {
+      "hits": {
+        "total": {"value": 1},
+        "hits": [
+          {
+            "_source": {
+              "submitted_date": "2026-05-21T06:42:32Z",
+              "publication_date": "2026-05-21T06:31:01Z",
+              "type": "Intention to Float - AIM",
+              "download_link": "NSM/RNS/c9c3f577-3b8a-496d-b622-e0b3a46d7c87.html",
+              "disclosure_id": "c9c3f577-3b8a-496d-b622-e0b3a46d7c87",
+              "company": "Coastal Africa Group Limited",
+              "headline": "Announcement of Intention to Float on AIM"
+            }
+          }
+        ]
+      }
+    },
+    "Lansdowne Oil and Gas plc": {"hits": {"total": {"value": 0}, "hits": []}},
+    "Vista Parcs Group Plc": {"hits": {"total": {"value": 0}, "hits": []}}
+  }
+}

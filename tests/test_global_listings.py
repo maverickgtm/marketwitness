@@ -24,9 +24,10 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertIn("Live official feeds: `2`", report)
         self.assertIn("Verified snapshots: `0`", report)
         self.assertIn("Beyond Wall Street", page)
-        self.assertIn("HKEX and LSE now have official JSON ingestion paths", page)
+        self.assertIn("LSE candidates can now be cross-checked against FCA NSM", page)
         self.assertIn('href="hkex-monitor.html"', page)
         self.assertIn('href="lse-upcoming.html"', page)
+        self.assertIn('href="lse-fca-check.html"', page)
 
     def test_rejects_unknown_connector_status(self) -> None:
         path = _csv(

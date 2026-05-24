@@ -226,10 +226,11 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     <section class="cards">{cards_html}</section>
   </header>
   <main>
-    <p class="notice">HKEX and LSE now have official JSON ingestion paths. Expected listings still require document-level confirmation before promotion.</p>
+    <p class="notice">HKEX and LSE have official JSON ingestion paths. LSE candidates can now be cross-checked against FCA NSM documents, while admission still requires review.</p>
     <section class="monitor-links" aria-label="Monitoring pages">
       <a href="hkex-monitor.html">Open HKEX live monitor</a>
       <a href="lse-upcoming.html">Open LSE live monitor</a>
+      <a href="lse-fca-check.html">Open LSE / FCA check</a>
     </section>
     <h2>Official source map</h2>
     <div class="table-wrap"><table>

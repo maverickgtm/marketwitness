@@ -35,6 +35,12 @@ demo:
 		--report build/demo/lse-upcoming.md \
 		--html build/demo/lse-upcoming.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-fca-check \
+		--lse-page-file data/samples/lse-new-issues-page.json \
+		--nsm-fixture data/samples/fca-nsm-results.json \
+		--report build/demo/lse-fca-check.md \
+		--html build/demo/lse-fca-check.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit hkex-monitor \
 		--snapshot-dir data/samples/hkex \
 		--output build/demo/hkex-monitor.csv \

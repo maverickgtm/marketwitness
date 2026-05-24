@@ -70,7 +70,7 @@ La cola detecta candidatos para revision; no clasifica automaticamente todo
 Una tercera pagina separa los mercados internacionales de la cola SEC de
 Estados Unidos. Su primer mapa de fuentes cubre:
 
-- `LSE` / Reino Unido: feed JSON oficial de `New issues` y contraste futuro con prospectos FCA NSM.
+- `LSE` / Reino Unido: feed JSON oficial de `New issues` y contraste documental con FCA NSM.
 - `HKEX` / Hong Kong: documentos de nuevas solicitudes y `PHIP`.
 - `ASX` / Australia: pagina oficial de upcoming floats and listings.
 - `TSX` / Canada: nuevas companias listadas oficialmente.
@@ -78,9 +78,9 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 
 Hong Kong ya incluye un conector a los JSON oficiales de HKEXnews para
 solicitudes activas, activas con `PHIP`, inactivas, listadas y devueltas.
-Londres ya lee el componente JSON oficial de `Upcoming issues`; la
-confirmacion avanzada mediante prospectos o documentos FCA NSM se mantiene
-como siguiente control documental.
+Londres ya lee el componente JSON oficial de `Upcoming issues` y puede
+cruzar cada emisor con documentos públicos del FCA NSM. Una coincidencia
+queda para revisión: no se convierte automáticamente en admisión confirmada.
 
 Para leer HKEX en vivo:
 
@@ -97,6 +97,14 @@ Para leer LSE en vivo:
 PYTHONPATH=src python3 -m targetaudit lse-upcoming \
   --report build/live/lse-upcoming.md \
   --html build/live/lse-upcoming.html
+```
+
+Para contrastar las próximas emisiones LSE con FCA NSM:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit lse-fca-check \
+  --report build/live/lse-fca-check.md \
+  --html build/live/lse-fca-check.html
 ```
 
 ## Estado Del Proyecto
@@ -142,6 +150,8 @@ build/demo/global-listings.md
 build/demo/global-listings.html
 build/demo/lse-upcoming.md
 build/demo/lse-upcoming.html
+build/demo/lse-fca-check.md
+build/demo/lse-fca-check.html
 build/demo/hkex-monitor.csv
 build/demo/hkex-monitor.md
 build/demo/hkex-monitor.html

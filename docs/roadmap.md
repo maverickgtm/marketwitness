@@ -28,7 +28,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Conector LSE `New issues` mediante componente JSON oficial.
 - [x] Conector HKEX/HKEXnews para estados oficiales AP/PHIP.
 - [x] Snapshot trazable de LSE `Upcoming issues`.
-- [ ] Agregar contraste documental FCA NSM para LSE.
+- [x] Agregar contraste documental FCA NSM para LSE.
+- [ ] Clasificar documentos FCA revisados como prospecto/admission evidence.
 - [ ] Conectores ASX, TSX y SGX despues de validar UK/HK.
 - [ ] Ingesta de comunicados oficiales para confirmar listings.
 - [ ] Validacion de splits y cambios de ticker.

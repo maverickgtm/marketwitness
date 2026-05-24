@@ -33,6 +33,13 @@ from .providers.hkex import (
     write_hkex_html,
     write_hkex_report,
 )
+from .providers.fca_nsm import (
+    FcaNsmDataError,
+    check_lse_issues,
+    load_nsm_fixture,
+    write_lse_fca_html,
+    write_lse_fca_report,
+)
 from .providers.sec import SecDataError, fetch_company_ticker_map, write_company_ticker_map
 from .providers.sec_ipo import (
     fetch_daily_master_index,
@@ -127,6 +134,24 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Snapshot cutoff in YYYY-MM-DD format.",
     )
+    fca_parser = subparsers.add_parser(
+        "lse-fca-check",
+        help="Cross-check LSE upcoming issues against FCA NSM documents.",
+    )
+    fca_input = fca_parser.add_mutually_exclusive_group()
+    fca_input.add_argument("--lse-snapshot", help="Observed LSE issues CSV fallback.")
+    fca_input.add_argument("--lse-page-file", help="Saved official LSE page JSON fixture.")
+    fca_parser.add_argument(
+        "--nsm-fixture",
+        help="Saved FCA NSM response fixture; omit for public live searches.",
+    )
+    fca_parser.add_argument("--report", required=True, help="Markdown report path.")
+    fca_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    fca_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Check cutoff in YYYY-MM-DD format.",
+    )
     hkex_parser = subparsers.add_parser(
         "hkex-monitor", help="Read official HKEXnews listing-status JSON feeds."
     )
@@ -180,6 +205,33 @@ def main() -> int:
         print(
             f"Wrote LSE {source_mode} report for {len(issues)} upcoming issues "
             f"to {args.report}."
+        )
+        return 0
+
+    if args.command == "lse-fca-check":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            if args.lse_snapshot:
+                issues = load_lse_upcoming(args.lse_snapshot)
+            elif args.lse_page_file:
+                issues = load_lse_page_payload(args.lse_page_file, as_of)
+            else:
+                issues = fetch_lse_upcoming()
+            lookup = load_nsm_fixture(args.nsm_fixture) if args.nsm_fixture else None
+            checks = (
+                check_lse_issues(issues, lookup)
+                if lookup is not None
+                else check_lse_issues(issues)
+            )
+            write_lse_fca_report(args.report, checks, as_of)
+            if args.html:
+                write_lse_fca_html(args.html, checks, as_of)
+        except (FcaNsmDataError, LseDataError, ValueError) as exc:
+            parser.error(str(exc))
+        matches = sum(bool(check.documents) for check in checks)
+        print(
+            f"Checked {len(checks)} LSE upcoming issues; found FCA documents "
+            f"for {matches} issuers. Report written to {args.report}."
         )
         return 0
 

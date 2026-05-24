@@ -115,6 +115,20 @@ pagina LSE y extrae el componente `type=upcoming-issues`, cuyo bloque
 `upcomingissues.Items` incluye nombre, mercado, ofertas, fecha esperada,
 tipo y enlace de detalle del emisor.
 
+## FCA NSM Search Response
+
+`lse-fca-check` consulta el índice público `fca-nsm-searchdata` del National
+Storage Mechanism por cada `company_name` observado en LSE. Normaliza:
+`company`, `headline`, `type`, `submitted_date`, `publication_date`,
+`disclosure_id` y `download_link`.
+
+El resultado asigna uno de dos estados:
+
+- `document_found_review_required`: existe al menos un documento y se debe
+  validar si constituye prospecto o evidencia de admisión.
+- `no_document_found`: no apareció un documento en la consulta actual; no
+  significa cancelación ni imposibilidad de cotizar.
+
 ## HKEX JSON Feeds
 
 `hkex-monitor` normaliza los JSON oficiales de HKEXnews en un CSV con:
