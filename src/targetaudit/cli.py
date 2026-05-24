@@ -40,6 +40,14 @@ from .providers.fca_nsm import (
     write_lse_fca_html,
     write_lse_fca_report,
 )
+from .providers.asx import (
+    AsxDataError,
+    fetch_asx_upcoming,
+    load_asx_snapshot,
+    write_asx_csv,
+    write_asx_html,
+    write_asx_report,
+)
 from .providers.sec import SecDataError, fetch_company_ticker_map, write_company_ticker_map
 from .providers.sec_ipo import (
     fetch_daily_master_index,
@@ -152,6 +160,20 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Check cutoff in YYYY-MM-DD format.",
     )
+    asx_parser = subparsers.add_parser(
+        "asx-monitor", help="Read official ASX upcoming floats and listings."
+    )
+    asx_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    asx_parser.add_argument("--report", required=True, help="Markdown report path.")
+    asx_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    asx_parser.add_argument(
+        "--snapshot", help="Read a saved official ASX HTML page instead of requesting ASX."
+    )
+    asx_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Report cutoff in YYYY-MM-DD format.",
+    )
     hkex_parser = subparsers.add_parser(
         "hkex-monitor", help="Read official HKEXnews listing-status JSON feeds."
     )
@@ -233,6 +255,23 @@ def main() -> int:
             f"Checked {len(checks)} LSE upcoming issues; found FCA documents "
             f"for {matches} issuers. Report written to {args.report}."
         )
+        return 0
+
+    if args.command == "asx-monitor":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            listings = (
+                load_asx_snapshot(args.snapshot, as_of)
+                if args.snapshot
+                else fetch_asx_upcoming()
+            )
+            write_asx_csv(args.output, listings)
+            write_asx_report(args.report, listings, as_of)
+            if args.html:
+                write_asx_html(args.html, listings, as_of)
+        except (AsxDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(f"Wrote ASX monitor for {len(listings)} official records to {args.report}.")
         return 0
 
     if args.command == "global-listings":

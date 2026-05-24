@@ -47,6 +47,12 @@ demo:
 		--report build/demo/hkex-monitor.md \
 		--html build/demo/hkex-monitor.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit asx-monitor \
+		--snapshot data/samples/asx-upcoming.html \
+		--output build/demo/asx-monitor.csv \
+		--report build/demo/asx-monitor.md \
+		--html build/demo/asx-monitor.html \
+		--as-of 2026-05-24
 
 package:
 	mkdir -p build/dist

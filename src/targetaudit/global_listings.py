@@ -144,7 +144,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     counts = Counter(market.connector_status for market in markets)
     cards = [
         ("Mapped markets", len(markets), "Official sources identified"),
-        ("Live feeds", counts["live_official_feed"], "LSE and HKEX implemented"),
+        ("Live feeds", counts["live_official_feed"], "LSE, HKEX and ASX implemented"),
         ("Verified snapshots", counts["verified_snapshot"], "Official capture, not continuous"),
         ("Expansion queue", counts["planned_connector"], "Official sources to connect"),
     ]
@@ -226,11 +226,12 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     <section class="cards">{cards_html}</section>
   </header>
   <main>
-    <p class="notice">HKEX and LSE have official JSON ingestion paths. LSE candidates can now be cross-checked against FCA NSM documents, while admission still requires review.</p>
+    <p class="notice">HKEX, LSE and ASX have official ingestion paths. LSE candidates can be cross-checked against FCA NSM documents, while all admission claims still require review.</p>
     <section class="monitor-links" aria-label="Monitoring pages">
       <a href="hkex-monitor.html">Open HKEX live monitor</a>
       <a href="lse-upcoming.html">Open LSE live monitor</a>
       <a href="lse-fca-check.html">Open LSE / FCA check</a>
+      <a href="asx-monitor.html">Open ASX live monitor</a>
     </section>
     <h2>Official source map</h2>
     <div class="table-wrap"><table>

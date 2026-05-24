@@ -93,8 +93,9 @@ dias habiles:
   revision y resume posibles registros, prospectos o retiros nuevos.
 - `TargetAudit Global Listings diario`: consulta los cinco feeds JSON
   oficiales HKEXnews, el componente JSON oficial LSE `Upcoming issues` y el
-  contraste público FCA NSM; resume cambios HKEX, emisiones previstas en
-  Londres y coincidencias documentales que requieren revisión.
+  contraste público FCA NSM, además de la tabla oficial ASX; resume cambios
+  HKEX, emisiones previstas en Londres, coincidencias documentales y
+  solicitudes/retiradas australianas.
 
 Ambas tareas tratan los eventos como informacion regulatoria para investigar,
 no como instrucciones para tomar posiciones.
@@ -103,6 +104,10 @@ El contraste FCA NSM distingue entre un emisor sin documento encontrado y
 una coincidencia documental que requiere revisión. No promueve
 automáticamente una fecha esperada a admisión confirmada, porque el NSM no es
 en tiempo real y el tipo de documento debe examinarse.
+
+El monitor ASX conserva como `anticipated` los registros con fecha prevista y
+como `withdrawn` los retirados. ASX indica que recibió una solicitud formal,
+pero fechas y códigos aún pueden cambiar.
 
 ## Despliegue Futuro En GitHub
 

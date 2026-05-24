@@ -136,3 +136,13 @@ El resultado asigna uno de dos estados:
 `source_url`. Los estados conservan la taxonomia HKEX y separan el feed de
 avance documental: `active`, `active_phip`, `inactive`, `listed` y
 `returned`.
+
+## ASX Upcoming HTML Feed
+
+`asx-monitor` parsea cada tabla publicada dentro de `Upcoming floats and
+listings` y produce un CSV con: `company_name`, `status`, `listing_date`,
+`issue_price`, `issue_type`, `security_code`, `capital_to_be_raised`,
+`expected_offer_close_date`, `observed_on` y `source_url`.
+
+Los estados son `anticipated` cuando ASX publica fecha prevista y `withdrawn`
+cuando la propia página marca la solicitud como retirada.

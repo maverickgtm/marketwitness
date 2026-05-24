@@ -81,7 +81,7 @@ Revisado al `2026-05-24`:
 | Reino Unido | London Stock Exchange `New issues` JSON | Upcoming issues con fecha esperada de trading y oferta prevista | Feed oficial implementado |
 | Reino Unido | FCA National Storage Mechanism | Prospectos y documentos regulatorios aprobados/publicados | Consulta pública implementada para contraste LSE |
 | Hong Kong | HKEX/HKEXnews New Listings - AP & PHIP | JSON oficiales de Active AP, Active PHIP, Inactive, Listed y Returned | Feed oficial implementado |
-| Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida y fecha anticipada | Planificado |
+| Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida, fecha anticipada y retiros | Feed HTML oficial implementado |
 | Canada | TSX New Company Listings | Nuevas companias ya listadas | Planificado |
 | Singapur | SGX IPO Prospectus | Prospectos IPO publicados | Planificado |
 
@@ -111,6 +111,13 @@ del emisor LSE en organizaciones divulgadoras o relacionadas y conserva solo
 la última versión documental. La FCA indica que el NSM no es un servicio en
 tiempo real; por eso `document_found_review_required` exige revisión humana y
 `no_document_found` no descarta una cotización futura.
+
+El conector ASX lee la tabla HTML de la página oficial
+`https://www.asx.com.au/listings/upcoming-floats-and-listings`. ASX declara
+que la página solo contiene nuevos listings para los que recibió una
+solicitud formal, normalmente cerca de cuatro a seis semanas antes, y que
+fechas/códigos propuestos pueden cambiar. TargetAudit conserva `anticipated`
+y `withdrawn` sin interpretarlos como instrucción de inversión.
 
 Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
 respetar la guia de acceso justo, que actualmente fija un maximo de 10
