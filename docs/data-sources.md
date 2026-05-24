@@ -49,6 +49,24 @@ target puede ser alcanzado intradia aun cuando el cierre no lo refleje.
 | SEC EDGAR archives | Trazabilidad de eventos y reportes publicos cuando correspondan |
 | FRED | Series macroeconomicas y benchmarks agregados, sujeto a la serie seleccionada |
 
+## IPO Watch: Verificacion Inicial
+
+Revisado al `2026-05-24`:
+
+| Empresa | Estado En TargetAudit | Evidencia |
+|---|---|---|
+| SpaceX | `filed_public` | Formulario `S-1` de Space Exploration Technologies Corp. presentado ante SEC el `2026-05-20` |
+| Cerebras Systems | `listed` | Comunicado del emisor: comenzo a cotizar en Nasdaq como `CBRS` el `2026-05-14` y cerro su IPO el `2026-05-15` |
+| Anthropic | `candidate_unverified` | No se incorpora como filing confirmado durante esta revision |
+| OpenAI | `candidate_unverified` | No se incorpora como filing confirmado durante esta revision |
+| Canva | `candidate_unverified` | No se incorpora como filing confirmado durante esta revision |
+| Kraken | `candidate_unverified` | No se incorpora como filing confirmado durante esta revision |
+| Shein | `candidate_unverified` | No se incorpora como filing confirmado durante esta revision |
+
+El monitor futuro priorizara SEC EDGAR y anuncios oficiales. Las noticias
+serviran para abrir una tarea de verificacion, no para cambiar por si solas el
+estado mostrado.
+
 Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
 respetar la guia de acceso justo, que actualmente fija un maximo de 10
 solicitudes por segundo.
@@ -78,6 +96,8 @@ solicitudes por segundo.
 - LSEG I/B/E/S: <https://www.lseg.com/en/data-analytics/financial-data/company-data/ibes-estimates>
 - Financial Modeling Prep: <https://site.financialmodelingprep.com/datasets/analyst-estimates-targets>
 - SEC Developer Resources: <https://www.sec.gov/about/developer-resources>
+- SEC SpaceX S-1 (May 20, 2026): <https://www.sec.gov/Archives/edgar/data/1181412/000162828026036936/spaceexplorationtechnologi.htm>
+- Cerebras IPO closing release: <https://www.cerebras.ai/press-release/cerebras-systems-announces-closing-of-initial-public-offering>
 - Alpha Vantage documentation: <https://www.alphavantage.co/documentation/>
 - Nasdaq Data Link docs: <https://docs.data.nasdaq.com/docs/getting-started>
 - Historical S&P 500 experiment: <https://github.com/riazarbi/sp500-scraper>

@@ -1,6 +1,6 @@
-# TargetAudit Financials
+# TargetAudit
 
-**Auditing Wall Street price targets for U.S. financial stocks.**
+**Auditable market intelligence: analyst targets and upcoming public listings.**
 
 Plataforma abierta para evaluar, con datos verificables, la precision historica y
 la utilidad economica de los `price targets` publicados por analistas financieros
@@ -29,6 +29,25 @@ TargetAudit no intentara competir inicialmente como una pagina de targets
 actuales. Su propuesta es mostrar el historial verificable, los fallos y la
 utilidad relativa al sector de cada pronostico.
 
+## IPO Watch
+
+El segundo modulo sigue cotizaciones tecnológicas y estrategicas de alto
+interes. Su pagina futura del dashboard mostrara:
+
+- Estado confirmado: candidata, filing publico, listada o retirada.
+- Fuente primaria y fecha de verificacion.
+- Eventos siguientes: enmiendas SEC, pricing, ticker y primer dia de mercado.
+- Riesgos publicados y tareas de investigacion.
+
+Al `2026-05-24`, la muestra incluida refleja dos hechos confirmados: SpaceX
+presento un `S-1` publico ante la SEC el `2026-05-20`, y Cerebras Systems ya
+comenzo a cotizar como `CBRS` en Nasdaq el `2026-05-14`. Anthropic, OpenAI,
+Canva, Kraken y Shein aparecen como candidatas para monitorear, no como IPOs
+confirmadas por el proyecto.
+
+IPO Watch no genera recomendaciones automaticas de compra, venta ni tamanos
+de posicion.
+
 ## Estado Del Proyecto
 
 `v0.1` es un motor de investigacion reproducible:
@@ -43,6 +62,7 @@ utilidad relativa al sector de cada pronostico.
   minima configurable.
 - Incluye datos sinteticos y pruebas automatizadas; no distribuye datos
   comerciales.
+- Genera un reporte inicial de `IPO Watch` con estado y fuentes auditables.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para
 publicar resultados reales hacen falta observaciones historicas licenciadas o
@@ -63,6 +83,8 @@ instalable. Escribe:
 ```text
 build/demo/evaluations.csv
 build/demo/report.md
+build/demo/ipo-watch.md
+build/demo/ipo-watch.html
 build/dist/targetaudit-0.1.0-py3-none-any.whl
 ```
 
@@ -105,13 +127,14 @@ PYTHONPATH=src python3 -m targetaudit evaluate \
 src/targetaudit/       Motor de validacion, evaluacion, ranking y CLI
 tests/                  Pruebas unitarias
 data/samples/           Dataset sintetico para demostrar el flujo
-docs/                   Metodologia, fuentes, esquema y roadmap
+docs/                   Metodologia, estrategia, dashboard, fuentes y roadmap
 .github/workflows/      Integracion continua
 ```
 
 ## Siguientes Versiones
 
 - `v0.2`: conectores para precios publicos/freemium y cache local.
+- `v0.2`: monitor SEC/news para hitos verificables de IPO Watch.
 - `v0.3`: normalizacion de firmas, acciones corporativas e integrantes
   historicos del universo.
 - `v0.4`: API con FastAPI y base DuckDB/PostgreSQL.

@@ -15,6 +15,11 @@ demo:
 		--report build/demo/report.md \
 		--minimum-sample 1 \
 		--as-of 2025-01-01
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ipo-watch \
+		--registry data/samples/ipo_watch.csv \
+		--report build/demo/ipo-watch.md \
+		--html build/demo/ipo-watch.html \
+		--as-of 2026-05-24
 
 package:
 	mkdir -p build/dist

@@ -5,6 +5,12 @@ from datetime import date
 
 from .csvio import DataFormatError, load_prices, load_targets, write_evaluations
 from .evaluator import evaluate_all
+from .ipo_watch import (
+    IpoWatchDataError,
+    load_ipo_watch,
+    write_ipo_watch_html,
+    write_ipo_watch_report,
+)
 from .providers.sec import SecDataError, fetch_company_ticker_map, write_company_ticker_map
 from .reporting import write_markdown_report
 
@@ -42,7 +48,30 @@ def main() -> int:
         help='Declared SEC user agent, for example "TargetAudit contact@example.com".',
     )
     sec_parser.add_argument("--output", required=True, help="Output CSV path.")
+    ipo_parser = subparsers.add_parser(
+        "ipo-watch", help="Generate an auditable IPO monitoring report."
+    )
+    ipo_parser.add_argument("--registry", required=True, help="IPO watch registry CSV.")
+    ipo_parser.add_argument("--report", required=True, help="Markdown report path.")
+    ipo_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    ipo_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Verification cutoff in YYYY-MM-DD format.",
+    )
     args = parser.parse_args()
+
+    if args.command == "ipo-watch":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            items = load_ipo_watch(args.registry)
+            write_ipo_watch_report(args.report, items, as_of)
+            if args.html:
+                write_ipo_watch_html(args.html, items, as_of)
+        except (IpoWatchDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(f"Wrote IPO watch report for {len(items)} companies to {args.report}.")
+        return 0
 
     if args.command == "sec-company-map":
         try:

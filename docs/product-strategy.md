@@ -2,12 +2,19 @@
 
 ## Nombre Publico
 
-**TargetAudit Financials**
+**TargetAudit**
 
-Tagline: **Auditing Wall Street price targets for U.S. financial stocks.**
+Tagline: **Auditable market intelligence: analyst targets and upcoming public
+listings.**
 
 El paquete tecnico conserva el nombre `targetaudit` para poder extenderse en
 el futuro a otros verticales sin romper integraciones.
+
+El producto tiene dos modulos complementarios:
+
+- `Financials Scorecard`: auditoria sectorial de targets sobre financials.
+- `IPO Watch`: monitoreo basado en fuentes de nuevas cotizaciones
+  tecnologicas/estrategicas.
 
 ## Problema
 
@@ -35,6 +42,11 @@ ofrecer una investigacion publica, replicable y verticalizada:
 
 > Cuando una firma opina sobre bancos y financials de EE. UU., ?su target fue
 > preciso y aporto valor frente al sector?
+
+`IPO Watch` agrega una pregunta distinta y separada:
+
+> ?Que companias de alto interes realmente avanzaron hacia una cotizacion y
+> que documentos/riesgos debe revisar un investigador antes de evaluarlas?
 
 ## Mercado Inicial
 

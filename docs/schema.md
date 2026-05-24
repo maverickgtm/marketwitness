@@ -48,3 +48,26 @@ cualquier fila no evaluada.
 
 Los datasets reales nunca deben agregarse a Git dentro de `data/raw/` o
 `data/private/`, carpetas deliberadamente ignoradas.
+
+## `ipo_watch.csv`
+
+Registro auditable para la pagina `IPO Watch`. A diferencia de los targets, no
+produce un score ni una recomendacion operativa.
+
+| Columna | Requerida | Descripcion |
+|---|---:|---|
+| `company_name` | Si | Empresa monitoreada |
+| `theme` | Si | Vertical: Space/AI, AI hardware, software, crypto, retail |
+| `status` | Si | `candidate_unverified`, `filed_public`, `listed` o `withdrawn` |
+| `status_date` | Si | Fecha ISO del estado verificado o alta de candidata |
+| `ticker` | Para `listed` | Simbolo confirmado |
+| `exchange` | Para `listed` | Mercado confirmado |
+| `filing_type` | No | Por ejemplo `S-1`, `424B4` o `IPO` |
+| `evidence_level` | Si | Tipo de evidencia usada |
+| `source_title` | Si | Titulo legible de la fuente |
+| `source_url` | Si | Fuente o pagina oficial que debe revisarse |
+| `next_event` | Si | Proximo hito que el monitor debe buscar |
+| `risk_flags` | Si | Temas para due diligence, no consejo de inversion |
+
+Una candidata no se eleva a `filed_public` por rumores o por una fecha
+estimada en prensa: exige un filing publico o confirmacion primaria.

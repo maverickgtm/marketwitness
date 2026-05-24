@@ -1,8 +1,8 @@
 # Roadmap
 
-TargetAudit inicia como **TargetAudit Financials**, auditoria de targets para
-acciones financieras estadounidenses. La expansion a otros sectores dependera
-de validar primero datos, metodologia y demanda del vertical inicial.
+TargetAudit inicia con un `Financials Scorecard` para targets de acciones
+financieras estadounidenses y un modulo separado `IPO Watch` para hitos
+verificables de cotizaciones tecnologicas/estrategicas.
 
 ## Milestone 1: Research Engine (`v0.1`)
 
@@ -12,6 +12,7 @@ de validar primero datos, metodologia y demanda del vertical inicial.
 - [x] Ranking Markdown y datos sinteticos reproducibles.
 - [x] Especializacion inicial en U.S. Financials con benchmark `XLF`.
 - [x] Desglose de resultados por direccion del target.
+- [x] Registro y reporte inicial de IPO Watch con SpaceX/Cerebras verificados.
 - [x] Pruebas unitarias y GitHub Actions.
 
 ## Milestone 2: Data Adapters (`v0.2`)
@@ -20,6 +21,8 @@ de validar primero datos, metodologia y demanda del vertical inicial.
 - [x] Adaptador SEC para metadatos de emisores/CIK.
 - [ ] Adaptador de precios gratuito o freemium con cache y limites.
 - [ ] Importador para exportaciones autorizadas de targets.
+- [ ] Monitor SEC para formularios `S-1`, `S-1/A` y `424B4` de IPO Watch.
+- [ ] Ingesta de comunicados oficiales para confirmar listings.
 - [ ] Validacion de splits y cambios de ticker.
 - [x] Validacion de barras de precios duplicadas o incoherentes.
 
