@@ -70,7 +70,7 @@ La cola detecta candidatos para revision; no clasifica automaticamente todo
 Una tercera pagina separa los mercados internacionales de la cola SEC de
 Estados Unidos. Su primer mapa de fuentes cubre:
 
-- `LSE` / Reino Unido: `New issues` y contraste futuro con prospectos FCA NSM.
+- `LSE` / Reino Unido: feed JSON oficial de `New issues` y contraste futuro con prospectos FCA NSM.
 - `HKEX` / Hong Kong: documentos de nuevas solicitudes y `PHIP`.
 - `ASX` / Australia: pagina oficial de upcoming floats and listings.
 - `TSX` / Canada: nuevas companias listadas oficialmente.
@@ -78,9 +78,9 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 
 Hong Kong ya incluye un conector a los JSON oficiales de HKEXnews para
 solicitudes activas, activas con `PHIP`, inactivas, listadas y devueltas.
-Londres dispone de un snapshot trazable de su tabla oficial `Upcoming issues`;
-la obtencion continua se mantiene pendiente hasta verificar un mecanismo de
-ingesta estable.
+Londres ya lee el componente JSON oficial de `Upcoming issues`; la
+confirmacion avanzada mediante prospectos o documentos FCA NSM se mantiene
+como siguiente control documental.
 
 Para leer HKEX en vivo:
 
@@ -89,6 +89,14 @@ PYTHONPATH=src python3 -m targetaudit hkex-monitor \
   --output data/raw/hkex-monitor.csv \
   --report build/live/hkex-monitor.md \
   --html build/live/hkex-monitor.html
+```
+
+Para leer LSE en vivo:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit lse-upcoming \
+  --report build/live/lse-upcoming.md \
+  --html build/live/lse-upcoming.html
 ```
 
 ## Estado Del Proyecto

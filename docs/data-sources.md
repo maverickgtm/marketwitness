@@ -78,7 +78,7 @@ Revisado al `2026-05-24`:
 
 | Mercado | Fuente Oficial | Senal Disponible | Estado TargetAudit |
 |---|---|---|---|
-| Reino Unido | London Stock Exchange `New issues` | Upcoming issues con fecha esperada de trading y oferta prevista | Snapshot oficial verificado |
+| Reino Unido | London Stock Exchange `New issues` JSON | Upcoming issues con fecha esperada de trading y oferta prevista | Feed oficial implementado |
 | Reino Unido | FCA National Storage Mechanism | Prospectos y documentos regulatorios aprobados/publicados | Contraste requerido para LSE |
 | Hong Kong | HKEX/HKEXnews New Listings - AP & PHIP | JSON oficiales de Active AP, Active PHIP, Inactive, Listed y Returned | Feed oficial implementado |
 | Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida y fecha anticipada | Planificado |
@@ -99,9 +99,11 @@ oficial, incluyendo:
 - `https://www.hkexnews.hk/ncms/json/eds/applisted_sehk_e.json`
 - `https://www.hkexnews.hk/ncms/json/eds/appreturned_sehk_e.json`
 
-El registro LSE de muestra fue observado el `2026-05-24` en la tabla oficial
-`Upcoming issues`. Es evidencia de una captura revisable, no prueba de que el
-conector automatico de Londres este activado.
+El conector LSE consulta el endpoint JSON que alimenta la pagina oficial:
+`https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fnew-issues`.
+La muestra de pruebas fue observada el `2026-05-24`; la aparicion en
+`Upcoming issues` es una senal esperada y todavia debe contrastarse con
+documentos de admision o prospecto.
 
 Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
 respetar la guia de acceso justo, que actualmente fija un maximo de 10

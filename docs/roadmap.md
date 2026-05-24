@@ -25,10 +25,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Descubridor SEC para formularios `S-1`, `F-1`, `424B4` y retiros desde
   un indice diario completo.
 - [ ] Ejecucion diaria persistente y promocion revisada al tablero IPO Watch.
-- [ ] Conector LSE `New issues` con validacion FCA NSM.
+- [x] Conector LSE `New issues` mediante componente JSON oficial.
 - [x] Conector HKEX/HKEXnews para estados oficiales AP/PHIP.
 - [x] Snapshot trazable de LSE `Upcoming issues`.
-- [ ] Automatizar ingesta LSE y contraste documental FCA NSM.
+- [ ] Agregar contraste documental FCA NSM para LSE.
 - [ ] Conectores ASX, TSX y SGX despues de validar UK/HK.
 - [ ] Ingesta de comunicados oficiales para confirmar listings.
 - [ ] Validacion de splits y cambios de ticker.

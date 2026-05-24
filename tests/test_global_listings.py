@@ -21,10 +21,10 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertEqual(len(sources), 5)
         self.assertIn("London Stock Exchange", report)
         self.assertIn("Hong Kong Exchanges and Clearing", report)
-        self.assertIn("Live official feeds: `1`", report)
-        self.assertIn("Verified snapshots: `1`", report)
+        self.assertIn("Live official feeds: `2`", report)
+        self.assertIn("Verified snapshots: `0`", report)
         self.assertIn("Beyond Wall Street", page)
-        self.assertIn("HKEX has an official JSON ingestion path", page)
+        self.assertIn("HKEX and LSE now have official JSON ingestion paths", page)
         self.assertIn('href="hkex-monitor.html"', page)
         self.assertIn('href="lse-upcoming.html"', page)
 

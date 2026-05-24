@@ -19,6 +19,8 @@ from .ipo_watch import (
 )
 from .lse_upcoming import (
     LseDataError,
+    fetch_lse_upcoming,
+    load_lse_page_payload,
     load_lse_upcoming,
     write_lse_html,
     write_lse_report,
@@ -113,9 +115,11 @@ def main() -> int:
         help="Source review cutoff in YYYY-MM-DD format.",
     )
     lse_parser = subparsers.add_parser(
-        "lse-upcoming", help="Generate an LSE upcoming-issues snapshot report."
+        "lse-upcoming", help="Read official LSE upcoming-issues data."
     )
-    lse_parser.add_argument("--snapshot", required=True, help="Observed LSE issues CSV.")
+    lse_input = lse_parser.add_mutually_exclusive_group()
+    lse_input.add_argument("--snapshot", help="Observed LSE issues CSV fallback.")
+    lse_input.add_argument("--page-file", help="Saved official LSE page JSON fixture.")
     lse_parser.add_argument("--report", required=True, help="Markdown report path.")
     lse_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
     lse_parser.add_argument(
@@ -159,13 +163,24 @@ def main() -> int:
     if args.command == "lse-upcoming":
         try:
             as_of = date.fromisoformat(args.as_of)
-            issues = load_lse_upcoming(args.snapshot)
-            write_lse_report(args.report, issues, as_of)
+            source_mode = "snapshot"
+            if args.snapshot:
+                issues = load_lse_upcoming(args.snapshot)
+            elif args.page_file:
+                issues = load_lse_page_payload(args.page_file, as_of)
+                source_mode = "live"
+            else:
+                issues = fetch_lse_upcoming()
+                source_mode = "live"
+            write_lse_report(args.report, issues, as_of, source_mode)
             if args.html:
-                write_lse_html(args.html, issues, as_of)
+                write_lse_html(args.html, issues, as_of, source_mode)
         except (LseDataError, ValueError) as exc:
             parser.error(str(exc))
-        print(f"Wrote LSE snapshot for {len(issues)} upcoming issues to {args.report}.")
+        print(
+            f"Wrote LSE {source_mode} report for {len(issues)} upcoming issues "
+            f"to {args.report}."
+        )
         return 0
 
     if args.command == "global-listings":

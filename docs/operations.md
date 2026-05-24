@@ -91,16 +91,17 @@ dias habiles:
 
 - `TargetAudit IPO Watch diario`: consulta el indice SEC, guarda la cola de
   revision y resume posibles registros, prospectos o retiros nuevos.
-- `TargetAudit HKEX Listing Monitor diario`: consulta los cinco feeds JSON
-  oficiales HKEXnews y resume nuevas solicitudes, avances `PHIP`, listings,
-  inactivos o devoluciones.
+- `TargetAudit Global Listings diario`: consulta los cinco feeds JSON
+  oficiales HKEXnews y el componente JSON oficial LSE `Upcoming issues`;
+  resume cambios HKEX y nuevas, modificadas o retiradas emisiones previstas
+  en Londres.
 
 Ambas tareas tratan los eventos como informacion regulatoria para investigar,
 no como instrucciones para tomar posiciones.
 
-El conector LSE no se automatiza todavia: el dashboard solo presenta un
-snapshot observado de `Upcoming issues` hasta contar con una ingesta
-repetible y un contraste documental FCA NSM.
+El conector LSE ya se ejecuta en el monitor recurrente. Falta agregar un
+contraste documental FCA NSM para distinguir automaticamente una cotizacion
+esperada de una admision respaldada.
 
 ## Despliegue Futuro En GitHub
 

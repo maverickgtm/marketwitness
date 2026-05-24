@@ -31,7 +31,7 @@ demo:
 		--html build/demo/global-listings.html \
 		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-upcoming \
-		--snapshot data/samples/lse_upcoming_issues.csv \
+		--page-file data/samples/lse-new-issues-page.json \
 		--report build/demo/lse-upcoming.md \
 		--html build/demo/lse-upcoming.html \
 		--as-of 2026-05-24

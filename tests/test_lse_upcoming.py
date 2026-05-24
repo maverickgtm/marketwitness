@@ -4,6 +4,7 @@ from pathlib import Path
 
 from targetaudit.lse_upcoming import (
     LseDataError,
+    load_lse_page_payload,
     load_lse_upcoming,
     render_lse_html,
     render_lse_report,
@@ -19,7 +20,7 @@ class LseUpcomingTests(unittest.TestCase):
 
         self.assertEqual(len(issues), 3)
         self.assertIn("Lansdowne Oil and Gas plc", report)
-        self.assertIn("not yet an automated live connector", report)
+        self.assertIn("LSE Upcoming Issues Snapshot", report)
         self.assertIn("London", page)
         self.assertIn("Snapshot mode", page)
 
@@ -28,6 +29,26 @@ class LseUpcomingTests(unittest.TestCase):
 
         with self.assertRaisesRegex(LseDataError, "future observation"):
             render_lse_report(issues, date(2026, 5, 23))
+
+    def test_parses_official_json_feed_and_renders_live_mode(self) -> None:
+        issues = load_lse_page_payload(
+            Path("data/samples/lse-new-issues-page.json"), date(2026, 5, 24)
+        )
+
+        report = render_lse_report(issues, date(2026, 5, 24), "live")
+        page = render_lse_html(issues, date(2026, 5, 24), "live")
+
+        self.assertEqual(len(issues), 3)
+        self.assertEqual(issues[1].primary_offer, "GBP 2m")
+        self.assertIn("LSE Upcoming Issues Monitor", report)
+        self.assertIn("Official JSON source", report)
+        self.assertIn("Live official feed", page)
+
+    def test_rejects_page_payload_without_upcoming_component(self) -> None:
+        with self.assertRaisesRegex(LseDataError, "missing upcoming-issues"):
+            from targetaudit.lse_upcoming import parse_lse_page_payload
+
+            parse_lse_page_payload({"components": []}, date(2026, 5, 24))
 
 
 if __name__ == "__main__":

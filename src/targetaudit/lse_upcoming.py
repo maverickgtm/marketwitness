@@ -1,12 +1,19 @@
 from __future__ import annotations
 
 import csv
+import json
 from dataclasses import dataclass
 from datetime import date
 from html import escape
 from pathlib import Path
+from urllib.error import URLError
+from urllib.request import Request, urlopen
 
 LSE_SOURCE_URL = "https://www.londonstockexchange.com/live-markets/new-issues"
+LSE_API_URL = (
+    "https://api.londonstockexchange.com/api/v1/pages"
+    "?path=live-markets%2Fnew-issues"
+)
 LSE_COLUMNS = {
     "company_name",
     "market",
@@ -37,6 +44,94 @@ class LseUpcomingIssue:
     instrument_type: str
     observed_on: date
     source_url: str
+
+
+def fetch_lse_upcoming() -> list[LseUpcomingIssue]:
+    request = Request(
+        LSE_API_URL,
+        headers={
+            "User-Agent": "TargetAudit/0.1 public-research-monitor",
+            "Accept": "application/json",
+        },
+    )
+    try:
+        with urlopen(request, timeout=30) as response:
+            payload = json.load(response)
+    except (URLError, TimeoutError, OSError, json.JSONDecodeError) as exc:
+        raise LseDataError(f"Unable to retrieve LSE upcoming issues: {exc}") from exc
+    return parse_lse_page_payload(payload, date.today())
+
+
+def load_lse_page_payload(path: str | Path, observed_on: date) -> list[LseUpcomingIssue]:
+    try:
+        payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise LseDataError(f"Unable to read LSE page payload {path}: {exc}") from exc
+    return parse_lse_page_payload(payload, observed_on)
+
+
+def parse_lse_page_payload(payload: object, observed_on: date) -> list[LseUpcomingIssue]:
+    if not isinstance(payload, dict):
+        raise LseDataError("Unexpected LSE page payload.")
+    components = payload.get("components")
+    if not isinstance(components, list):
+        raise LseDataError("LSE page payload is missing components.")
+    upcoming = next(
+        (
+            component
+            for component in components
+            if isinstance(component, dict) and component.get("type") == "upcoming-issues"
+        ),
+        None,
+    )
+    if upcoming is None:
+        raise LseDataError("LSE page payload is missing upcoming-issues component.")
+    items = _upcoming_items(upcoming)
+    issues: list[LseUpcomingIssue] = []
+    for item in items:
+        if not isinstance(item, dict):
+            raise LseDataError("LSE upcoming-issues component contains an invalid row.")
+        company = str(item.get("name", "")).strip()
+        expected = str(item.get("firsttradingdate", "")).strip()
+        link = str(item.get("link", "")).strip()
+        if not company or not expected or not link:
+            raise LseDataError("LSE upcoming issue is missing name, date or link.")
+        issues.append(
+            LseUpcomingIssue(
+                company_name=company,
+                market=str(item.get("market", "")).strip(),
+                primary_offer=_display_value(item.get("primaryoffersize")),
+                secondary_offer=_display_value(item.get("secondaryoffersize")),
+                currency=_display_value(item.get("currency")),
+                price_range=_price_range(item.get("minprice"), item.get("maxprice")),
+                expected_first_trading=expected,
+                instrument_type=str(item.get("type", "")).strip(),
+                observed_on=observed_on,
+                source_url=link,
+            )
+        )
+    return issues
+
+
+def _upcoming_items(component: dict[str, object]) -> list[object]:
+    for record in component.get("content", []) if isinstance(component.get("content"), list) else []:
+        if isinstance(record, dict) and record.get("name") == "upcomingissues":
+            value = record.get("value")
+            if isinstance(value, dict) and isinstance(value.get("Items"), list):
+                return value["Items"]
+    raise LseDataError("LSE upcoming-issues component is missing Items.")
+
+
+def _display_value(value: object) -> str:
+    if value is None or str(value).strip() in {"", "-"}:
+        return "-"
+    return str(value).strip().replace("\u00a3", "GBP ")
+
+
+def _price_range(minimum: object, maximum: object) -> str:
+    if minimum in (None, 0) and maximum in (None, 0):
+        return "-"
+    return f"{_display_value(minimum)} - {_display_value(maximum)}"
 
 
 def load_lse_upcoming(path: str | Path) -> list[LseUpcomingIssue]:
@@ -75,24 +170,41 @@ def load_lse_upcoming(path: str | Path) -> list[LseUpcomingIssue]:
         return issues
 
 
-def render_lse_report(issues: list[LseUpcomingIssue], as_of: date) -> str:
+def render_lse_report(
+    issues: list[LseUpcomingIssue], as_of: date, source_mode: str = "snapshot"
+) -> str:
     _validate_as_of(issues, as_of)
+    live = source_mode == "live"
     lines = [
-        "# LSE Upcoming Issues Snapshot",
+        "# LSE Upcoming Issues Monitor" if live else "# LSE Upcoming Issues Snapshot",
         "",
-        f"- Snapshot verified as of: `{as_of.isoformat()}`",
-        f"- Upcoming records captured: `{len(issues)}`",
+        (
+            f"- Live feed read as of: `{as_of.isoformat()}`"
+            if live
+            else f"- Snapshot verified as of: `{as_of.isoformat()}`"
+        ),
+        f"- Upcoming records observed: `{len(issues)}`",
         f"- Official page: <{LSE_SOURCE_URL}>",
-        "",
-        "This is a traceable capture of the London Stock Exchange `Upcoming issues`",
-        "table, not yet an automated live connector. Expected trading dates and offer",
-        "sizes may change; admission evidence must be reviewed before confirmation.",
-        "",
-        "## Upcoming Issues",
-        "",
-        "| Company | Market | Expected First Trading | Primary Offer | Type | Source |",
-        "|---|---|---|---|---|---|",
     ]
+    if live:
+        lines.append(f"- Official JSON source: <{LSE_API_URL}>")
+    lines.extend(
+        [
+            "",
+            (
+            "This monitor reads the London Stock Exchange `Upcoming issues` component"
+            if live
+            else "This is a traceable capture of the London Stock Exchange `Upcoming issues` table"
+            ),
+            "from official evidence. Expected trading dates and offer",
+            "sizes may change; admission evidence must be reviewed before confirmation.",
+            "",
+            "## Upcoming Issues",
+            "",
+            "| Company | Market | Expected First Trading | Primary Offer | Type | Source |",
+            "|---|---|---|---|---|---|",
+        ]
+    )
     for issue in issues:
         lines.append(
             f"| {issue.company_name} | {issue.market} | "
@@ -102,14 +214,24 @@ def render_lse_report(issues: list[LseUpcomingIssue], as_of: date) -> str:
     return "\n".join(lines) + "\n"
 
 
-def write_lse_report(path: str | Path, issues: list[LseUpcomingIssue], as_of: date) -> None:
+def write_lse_report(
+    path: str | Path,
+    issues: list[LseUpcomingIssue],
+    as_of: date,
+    source_mode: str = "snapshot",
+) -> None:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(render_lse_report(issues, as_of), encoding="utf-8")
+    destination.write_text(
+        render_lse_report(issues, as_of, source_mode), encoding="utf-8"
+    )
 
 
-def render_lse_html(issues: list[LseUpcomingIssue], as_of: date) -> str:
+def render_lse_html(
+    issues: list[LseUpcomingIssue], as_of: date, source_mode: str = "snapshot"
+) -> str:
     _validate_as_of(issues, as_of)
+    live = source_mode == "live"
     rows = "".join(
         "<tr>"
         f"<td><strong>{escape(issue.company_name)}</strong></td>"
@@ -131,16 +253,21 @@ nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font
 .notice{{border-left:3px solid var(--gold);color:var(--muted);padding:15px 18px}}h2{{margin-top:42px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left}}th{{text-transform:uppercase;font-size:12px;color:var(--muted);font-weight:500}}a{{color:var(--mint);text-decoration:none}}
 @media(max-width:800px){{.table-wrap{{overflow-x:auto}}table{{min-width:700px}}}}
 </style></head><body><header><nav>TargetAudit / Global Listings Watch / LSE</nav><h1>London.<br>Upcoming issues.</h1>
-<p class="lead">A documented snapshot of upcoming equity listings visible on the official London Stock Exchange page.</p>
-<p class="meta">Observed as of {escape(as_of.isoformat())}</p><article class="card"><p>Upcoming records</p><strong>{len(issues)}</strong><small>Official-page snapshot</small></article></header>
-<main><p class="notice">Snapshot mode. Dates are expected dates from LSE and still require prospectus or admission verification.</p>
+<p class="lead">{"A live reading of upcoming equity listings from the official London Stock Exchange page data." if live else "A documented snapshot of upcoming equity listings visible on the official London Stock Exchange page."}</p>
+<p class="meta">Observed as of {escape(as_of.isoformat())}</p><article class="card"><p>Upcoming records</p><strong>{len(issues)}</strong><small>{"Official JSON feed" if live else "Official-page snapshot"}</small></article></header>
+<main><p class="notice">{"Live official feed." if live else "Snapshot mode."} Dates are expected dates from LSE and still require prospectus or admission verification.</p>
 <h2>Observed upcoming issues</h2><div class="table-wrap"><table><thead><tr><th>Company</th><th>Market</th><th>Expected trading</th><th>Primary offer</th><th>Type</th><th>Evidence</th></tr></thead><tbody>{rows}</tbody></table></div></main></body></html>"""
 
 
-def write_lse_html(path: str | Path, issues: list[LseUpcomingIssue], as_of: date) -> None:
+def write_lse_html(
+    path: str | Path,
+    issues: list[LseUpcomingIssue],
+    as_of: date,
+    source_mode: str = "snapshot",
+) -> None:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(render_lse_html(issues, as_of), encoding="utf-8")
+    destination.write_text(render_lse_html(issues, as_of, source_mode), encoding="utf-8")
 
 
 def _validate_as_of(issues: list[LseUpcomingIssue], as_of: date) -> None:

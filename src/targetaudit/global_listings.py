@@ -144,7 +144,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     counts = Counter(market.connector_status for market in markets)
     cards = [
         ("Mapped markets", len(markets), "Official sources identified"),
-        ("Live feeds", counts["live_official_feed"], "Official endpoint implemented"),
+        ("Live feeds", counts["live_official_feed"], "LSE and HKEX implemented"),
         ("Verified snapshots", counts["verified_snapshot"], "Official capture, not continuous"),
         ("Expansion queue", counts["planned_connector"], "Official sources to connect"),
     ]
@@ -226,10 +226,10 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     <section class="cards">{cards_html}</section>
   </header>
   <main>
-    <p class="notice">HKEX has an official JSON ingestion path. LSE remains a verified snapshot until its repeatable retrieval pipeline is implemented and tested.</p>
+    <p class="notice">HKEX and LSE now have official JSON ingestion paths. Expected listings still require document-level confirmation before promotion.</p>
     <section class="monitor-links" aria-label="Monitoring pages">
       <a href="hkex-monitor.html">Open HKEX live monitor</a>
-      <a href="lse-upcoming.html">Open LSE verified snapshot</a>
+      <a href="lse-upcoming.html">Open LSE live monitor</a>
     </section>
     <h2>Official source map</h2>
     <div class="table-wrap"><table>

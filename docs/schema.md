@@ -91,8 +91,9 @@ Registro de fuentes oficiales y conectores internacionales para la pagina
 
 ## `lse_upcoming_issues.csv`
 
-Captura normalizada de la tabla oficial `Upcoming issues` de LSE. No
-representa todavia una consulta automatica.
+Formato de fallback manual para la tabla oficial `Upcoming issues` de LSE.
+La ejecucion en vivo usa el componente JSON oficial y normaliza estos mismos
+campos.
 
 | Columna | Requerida | Descripcion |
 |---|---:|---|
@@ -106,6 +107,13 @@ representa todavia una consulta automatica.
 | `instrument_type` | Si | Tipo de instrumento |
 | `observed_on` | Si | Fecha de captura |
 | `source_url` | Si | URL de la pagina oficial |
+
+## LSE Page JSON Feed
+
+`lse-upcoming` consulta de forma predeterminada la respuesta oficial de la
+pagina LSE y extrae el componente `type=upcoming-issues`, cuyo bloque
+`upcomingissues.Items` incluye nombre, mercado, ofertas, fecha esperada,
+tipo y enlace de detalle del emisor.
 
 ## HKEX JSON Feeds
 
