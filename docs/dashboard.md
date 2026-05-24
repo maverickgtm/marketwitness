@@ -4,6 +4,8 @@ TargetAudit tendra dos paginas principales. No comparten score: una evalua
 pronosticos ya medibles y la otra sigue eventos de companias que pueden llegar
 al mercado.
 
+Con la expansion internacional, el producto pasa a tres paginas principales:
+
 ## Pagina 1: Financials Scorecard
 
 Objetivo: auditar `price targets` sobre financials de Estados Unidos.
@@ -89,3 +91,32 @@ La pagina no se limita a las siete companias semilla. Una cola interna
 `SEC Discovery Queue` examina diariamente formularios publicos potencialmente
 relacionados con IPO para cualquier emisor. Los casos nuevos aparecen en un
 panel de revision; solo los confirmados pasan al tablero publico.
+
+## Pagina 3: Global Listings Watch
+
+Objetivo: extender la inteligencia de nuevas cotizaciones fuera de Estados
+Unidos sin aplicar reglas SEC a jurisdicciones distintas.
+
+### Cobertura Inicial
+
+| Mercado | Fuente Oficial Identificada | Estado De Implementacion |
+|---|---|---|
+| London Stock Exchange | LSE `New issues` y FCA National Storage Mechanism | Conector prioritario |
+| Hong Kong HKEX | HKEX/HKEXnews new listings y documentos `PHIP` | Conector prioritario |
+| Australian Securities Exchange | ASX `Upcoming floats and listings` | Planificado |
+| Toronto Stock Exchange | TSX `New Company Listings` | Planificado |
+| Singapore Exchange | SGX `IPO Prospectus` | Planificado |
+
+### Regla De Evidencia
+
+Cada jurisdiccion conserva sus propias etapas:
+
+- Reino Unido: una aparicion en `New issues` indica una oferta esperada; la
+  confirmacion avanzada debe contrastarse con prospecto/admission evidence.
+- Hong Kong: un `Application Proof` inicia seguimiento; un `PHIP` indica
+  aprobacion en principio, no trading completado.
+- Australia: ASX informa que sus upcoming listings tienen solicitud formal
+  recibida, pero las fechas de primera cotizacion siguen siendo anticipadas.
+- Canada y Singapur: sus fuentes oficiales identificadas sirven inicialmente
+  para listings/prospectos publicados y requieren disenar el estado previo
+  antes de considerarlos monitores prospectivos.

@@ -72,6 +72,24 @@ los indices diarios EDGAR documentados por SEC. El resultado es una cola de
 revision: un formulario de registro encontrado se considera posible evento,
 no una IPO confirmada, hasta revisar el documento.
 
+## Global Listings Watch: Fuentes Oficiales Identificadas
+
+Revisado al `2026-05-24`:
+
+| Mercado | Fuente Oficial | Senal Disponible | Estado TargetAudit |
+|---|---|---|---|
+| Reino Unido | London Stock Exchange `New issues` | Upcoming issues con fecha esperada de trading y oferta prevista | Conector prioritario |
+| Reino Unido | FCA National Storage Mechanism | Prospectos y documentos regulatorios aprobados/publicados | Contraste requerido para LSE |
+| Hong Kong | HKEX/HKEXnews New Listings | Application Proofs, PHIP y documentos de listing | Conector prioritario |
+| Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida y fecha anticipada | Planificado |
+| Canada | TSX New Company Listings | Nuevas companias ya listadas | Planificado |
+| Singapur | SGX IPO Prospectus | Prospectos IPO publicados | Planificado |
+
+Las etapas no son intercambiables entre jurisdicciones. Por ejemplo, un
+`PHIP` de HKEX indica aprobacion en principio, mientras una aparicion en ASX
+Upcoming Listings solo confirma que ASX recibio una solicitud formal y presenta
+una fecha anticipada.
+
 Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
 respetar la guia de acceso justo, que actualmente fija un maximo de 10
 solicitudes por segundo.
@@ -106,3 +124,9 @@ solicitudes por segundo.
 - Alpha Vantage documentation: <https://www.alphavantage.co/documentation/>
 - Nasdaq Data Link docs: <https://docs.data.nasdaq.com/docs/getting-started>
 - Historical S&P 500 experiment: <https://github.com/riazarbi/sp500-scraper>
+- London Stock Exchange New Issues: <https://www.londonstockexchange.com/live-markets/new-issues>
+- FCA National Storage Mechanism: <https://www.fca.org.uk/markets/primary-markets/regulatory-disclosures/national-storage-mechanism>
+- HKEX listing information: <https://www2.hkexnews.hk/New-Listings/New-Listing-Information/New-Listing-Information?sc_lang=en>
+- ASX Upcoming floats and listings: <https://www.asx.com.au/listings/upcoming-floats-and-listings>
+- TSX New Company Listings: <https://www.tsx.com/en/news/new-company-listings>
+- SGX IPO Prospectus: <https://www.sgx.com/securities/ipo-prospectus>

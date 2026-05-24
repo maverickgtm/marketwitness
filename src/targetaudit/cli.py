@@ -5,6 +5,12 @@ from datetime import date
 
 from .csvio import DataFormatError, load_prices, load_targets, write_evaluations
 from .evaluator import evaluate_all
+from .global_listings import (
+    GlobalListingsDataError,
+    load_global_market_sources,
+    write_global_listings_html,
+    write_global_listings_report,
+)
 from .ipo_watch import (
     IpoWatchDataError,
     load_ipo_watch,
@@ -81,7 +87,30 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Verification cutoff in YYYY-MM-DD format.",
     )
+    global_parser = subparsers.add_parser(
+        "global-listings", help="Generate global listing-source coverage dashboard."
+    )
+    global_parser.add_argument("--sources", required=True, help="Official markets CSV.")
+    global_parser.add_argument("--report", required=True, help="Markdown report path.")
+    global_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    global_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Source review cutoff in YYYY-MM-DD format.",
+    )
     args = parser.parse_args()
+
+    if args.command == "global-listings":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            markets = load_global_market_sources(args.sources)
+            write_global_listings_report(args.report, markets, as_of)
+            if args.html:
+                write_global_listings_html(args.html, markets, as_of)
+        except (GlobalListingsDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(f"Wrote global listings coverage for {len(markets)} markets to {args.report}.")
+        return 0
 
     if args.command == "ipo-watch":
         try:

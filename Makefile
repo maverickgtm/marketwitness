@@ -25,6 +25,11 @@ demo:
 		--index-file data/samples/sec-master-sample.idx \
 		--output build/demo/sec-ipo-discovery.csv \
 		--report build/demo/sec-ipo-discovery.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit global-listings \
+		--sources data/samples/global_market_sources.csv \
+		--report build/demo/global-listings.md \
+		--html build/demo/global-listings.html \
+		--as-of 2026-05-24
 
 package:
 	mkdir -p build/dist

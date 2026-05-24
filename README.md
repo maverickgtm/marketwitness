@@ -65,6 +65,21 @@ PYTHONPATH=src python3 -m targetaudit sec-ipo-discover \
 La cola detecta candidatos para revision; no clasifica automaticamente todo
 `S-1` como IPO, porque algunos registros corresponden a otras ofertas.
 
+## Global Listings Watch
+
+Una tercera pagina separa los mercados internacionales de la cola SEC de
+Estados Unidos. Su primer mapa de fuentes cubre:
+
+- `LSE` / Reino Unido: `New issues` y contraste futuro con prospectos FCA NSM.
+- `HKEX` / Hong Kong: documentos de nuevas solicitudes y `PHIP`.
+- `ASX` / Australia: pagina oficial de upcoming floats and listings.
+- `TSX` / Canada: nuevas companias listadas oficialmente.
+- `SGX` / Singapur: catalogo oficial de prospectos IPO.
+
+Londres y Hong Kong son los siguientes conectores prioritarios. La pagina
+global diferencia expresamente una fuente oficial ya identificada de un
+monitor automatizado ya construido.
+
 ## Estado Del Proyecto
 
 `v0.1` es un motor de investigacion reproducible:
@@ -104,6 +119,8 @@ build/demo/ipo-watch.md
 build/demo/ipo-watch.html
 build/demo/sec-ipo-discovery.csv
 build/demo/sec-ipo-discovery.md
+build/demo/global-listings.md
+build/demo/global-listings.html
 build/dist/targetaudit-0.1.0-py3-none-any.whl
 ```
 

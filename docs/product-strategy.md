@@ -15,6 +15,8 @@ El producto tiene dos modulos complementarios:
 - `Financials Scorecard`: auditoria sectorial de targets sobre financials.
 - `IPO Watch`: monitoreo basado en fuentes de nuevas cotizaciones
   tecnologicas/estrategicas.
+- `Global Listings Watch`: mapa y futuros conectores de listings fuera de
+  Estados Unidos, comenzando por Londres y Hong Kong.
 
 ## Problema
 

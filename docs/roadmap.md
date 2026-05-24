@@ -13,6 +13,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Especializacion inicial en U.S. Financials con benchmark `XLF`.
 - [x] Desglose de resultados por direccion del target.
 - [x] Registro y reporte inicial de IPO Watch con SpaceX/Cerebras verificados.
+- [x] Pagina Global Listings Watch con fuentes oficiales identificadas.
 - [x] Pruebas unitarias y GitHub Actions.
 
 ## Milestone 2: Data Adapters (`v0.2`)
@@ -24,6 +25,9 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Descubridor SEC para formularios `S-1`, `F-1`, `424B4` y retiros desde
   un indice diario completo.
 - [ ] Ejecucion diaria persistente y promocion revisada al tablero IPO Watch.
+- [ ] Conector LSE `New issues` con validacion FCA NSM.
+- [ ] Conector HKEX/HKEXnews para Application Proofs y PHIP.
+- [ ] Conectores ASX, TSX y SGX despues de validar UK/HK.
 - [ ] Ingesta de comunicados oficiales para confirmar listings.
 - [ ] Validacion de splits y cambios de ticker.
 - [x] Validacion de barras de precios duplicadas o incoherentes.

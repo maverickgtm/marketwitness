@@ -71,3 +71,20 @@ produce un score ni una recomendacion operativa.
 
 Una candidata no se eleva a `filed_public` por rumores o por una fecha
 estimada en prensa: exige un filing publico o confirmacion primaria.
+
+## `global_market_sources.csv`
+
+Registro de fuentes oficiales y conectores internacionales para la pagina
+`Global Listings Watch`. Describe cobertura, no eventos de empresas.
+
+| Columna | Requerida | Descripcion |
+|---|---:|---|
+| `market_code` | Si | Codigo unico: `LSE`, `HKEX`, `ASX`, `TSX`, `SGX` |
+| `market_name` | Si | Mercado o bolsa |
+| `jurisdiction` | Si | Pais o jurisdiccion |
+| `connector_status` | Si | `priority_connector` o `planned_connector` |
+| `official_source_name` | Si | Nombre de fuente primaria |
+| `official_source_url` | Si | URL de consulta |
+| `signal_type` | Si | Tipo de senal documental/listing disponible |
+| `confirmation_rule` | Si | Regla necesaria antes de confirmar estado |
+| `implementation_next` | Si | Trabajo requerido para activar el monitor |
