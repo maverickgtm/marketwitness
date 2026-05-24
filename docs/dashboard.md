@@ -29,6 +29,8 @@ Componentes:
 - Tabla de observaciones excluidas y motivo.
 - `Corporate Actions Audit`: cola de targets atravesados por splits o cambios
   de ticker, antes de entrar al ranking.
+- `Adjusted Price Evidence`: importacion cache-first, formula de ajuste y
+  estado de licencia de la fuente de precios.
 - Ficha de cada pronostico con fuente, referencia, entrada y resultado.
 
 ## Pagina 2: IPO Watch

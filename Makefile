@@ -58,6 +58,13 @@ demo:
 		--report build/demo/source-registry.md \
 		--html build/demo/source-registry.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit alpha-vantage-prices \
+		--ticker ACBK \
+		--snapshot data/samples/alpha-vantage-daily-adjusted.json \
+		--output build/demo/alpha-vantage-prices.csv \
+		--report build/demo/alpha-vantage-prices.md \
+		--html build/demo/alpha-vantage-prices.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit corporate-actions-check \
 		--targets data/samples/targets.csv \
 		--actions data/samples/corporate_actions.csv \

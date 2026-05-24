@@ -38,6 +38,13 @@ Las barras con `NaN`, infinito, fechas duplicadas para el mismo ticker o
 cierres fuera del rango `low`/`high` son rechazadas para impedir que datos
 corruptos alteren el ranking.
 
+`alpha-vantage-prices` genera este esquema desde la respuesta
+`TIME_SERIES_DAILY_ADJUSTED`. Como el proveedor entrega maximos y minimos
+operados junto con un cierre ajustado, normaliza por fila:
+`adjusted_high = high * adjusted_close / close` y
+`adjusted_low = low * adjusted_close / close`. Las respuestas en vivo se
+cachean bajo `data/raw/`, fuera de Git.
+
 ## `corporate_actions.csv`
 
 Registro de splits y cambios de ticker revisados contra evidencia. La muestra
@@ -85,7 +92,7 @@ uso antes de publicar un producto con datos reales.
 | `provider_id` | Si | Identificador estable de proveedor o fuente |
 | `provider_name` | Si | Nombre presentado en la auditoria |
 | `data_class` | Si | Targets, precios, listings, documentos o acciones corporativas |
-| `access_model` | Si | `public_endpoint`, `public_web_page`, `public_filing`, `official_release`, `commercial_api_candidate`, `manual_reference` o `synthetic_demo` |
+| `access_model` | Si | `public_endpoint`, `public_web_page`, `public_filing`, `official_release`, `commercial_api_candidate`, `freemium_api`, `manual_reference` o `synthetic_demo` |
 | `integration_status` | Si | `implemented`, `manual_verified`, `candidate` o `excluded` |
 | `license_status` | Si | `public_access_rules_documented`, `terms_review_required`, `restricted_no_collection` o `project_owned_synthetic` |
 | `publication_policy` | Si | Regla aplicable al output público antes de distribuir datos |

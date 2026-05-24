@@ -20,7 +20,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 
 - [x] Registro formal de proveedores y licencias.
 - [x] Adaptador SEC para metadatos de emisores/CIK.
-- [ ] Adaptador de precios gratuito o freemium con cache y limites.
+- [x] Adaptador de precios freemium con cache y limites visibles.
 - [ ] Importador para exportaciones autorizadas de targets.
 - [x] Descubridor SEC para formularios `S-1`, `F-1`, `424B4` y retiros desde
   un indice diario completo.

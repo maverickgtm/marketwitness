@@ -132,6 +132,30 @@ puede funcionar técnicamente y permanecer bloqueada para un producto público
 hasta revisar términos de uso o licencia. `restricted_no_collection` impide
 registrar accidentalmente una fuente como conector implementado.
 
+## Precios Ajustados Alpha Vantage
+
+Para importar un simbolo con clave privada:
+
+```bash
+export TARGETAUDIT_ALPHA_VANTAGE_API_KEY="tu-clave-privada"
+PYTHONPATH=src python3 -m targetaudit alpha-vantage-prices \
+  --ticker JPM \
+  --output data/raw/prices/jpm.csv \
+  --report build/live/jpm-prices.md \
+  --html build/live/jpm-prices.html \
+  --as-of YYYY-MM-DD
+```
+
+La clave tambien puede almacenarse localmente en el archivo ignorado
+`data/private/alpha_vantage_api_key.txt`. El comando usa primero
+`data/raw/prices/alpha-vantage/<TICKER>-daily-adjusted.json`; solo consume una
+solicitud si no hay cache o se indica `--refresh`.
+
+Alpha Vantage declara 25 solicitudes diarias como limite estandar y marca el
+endpoint ajustado diario como premium. Esta operacion requiere acceso
+autorizado al endpoint y sus salidas de datos reales no se habilitan para
+publicacion hasta revisar licencia y terminos.
+
 ## Auditoria De Acciones Corporativas
 
 Antes de publicar un ranking de targets reales se debe cruzar la muestra

@@ -85,6 +85,14 @@ from .providers.asx import (
     write_asx_html,
     write_asx_report,
 )
+from .providers.alpha_vantage import (
+    AlphaVantageDataError,
+    fetch_adjusted_daily,
+    load_alpha_vantage_snapshot,
+    write_prices_csv,
+    write_prices_html,
+    write_prices_report,
+)
 from .providers.tsx import (
     TsxDataError,
     fetch_tsx_new_listings,
@@ -288,6 +296,36 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Governance review cutoff in YYYY-MM-DD format.",
+    )
+    prices_parser = subparsers.add_parser(
+        "alpha-vantage-prices",
+        help="Normalize adjusted daily price evidence through a cache-first adapter.",
+    )
+    prices_parser.add_argument("--ticker", required=True, help="Equity symbol to import.")
+    prices_parser.add_argument(
+        "--snapshot", help="Read a saved Alpha Vantage JSON fixture instead of requesting data."
+    )
+    prices_parser.add_argument(
+        "--cache-dir",
+        default="data/raw/prices/alpha-vantage",
+        help="Private raw-response cache directory.",
+    )
+    prices_parser.add_argument(
+        "--refresh",
+        action="store_true",
+        help="Spend a new API request even when a cached response is available.",
+    )
+    prices_parser.add_argument(
+        "--api-key",
+        help="Alpha Vantage key; prefer TARGETAUDIT_ALPHA_VANTAGE_API_KEY or private file.",
+    )
+    prices_parser.add_argument("--output", required=True, help="Normalized adjusted prices CSV.")
+    prices_parser.add_argument("--report", required=True, help="Markdown audit report path.")
+    prices_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    prices_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Price evidence cutoff in YYYY-MM-DD format.",
     )
     alerts_parser = subparsers.add_parser(
         "global-alerts",
@@ -587,6 +625,28 @@ def main() -> int:
         print(
             f"Wrote source governance for {len(providers)} providers "
             f"to {args.report}."
+        )
+        return 0
+
+    if args.command == "alpha-vantage-prices":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            imported = (
+                load_alpha_vantage_snapshot(args.snapshot, args.ticker)
+                if args.snapshot
+                else fetch_adjusted_daily(
+                    args.ticker, args.api_key, args.cache_dir, args.refresh
+                )
+            )
+            write_prices_csv(args.output, imported)
+            write_prices_report(args.report, imported, as_of)
+            if args.html:
+                write_prices_html(args.html, imported, as_of)
+        except (AlphaVantageDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote {len(imported.bars)} adjusted bars for {imported.ticker} "
+            f"from {imported.source_mode} evidence to {args.output}."
         )
         return 0
 

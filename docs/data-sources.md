@@ -18,8 +18,8 @@ La clasificación legible por máquina vive en
 Conserva por fuente su modo de acceso, estado técnico, revisión de términos o
 licencia, política de publicación y referencia revisada.
 
-Al `2026-05-24`, el inventario contiene 14 fuentes: 9 conectores o fixtures
-implementados, 9 fuentes que aún exigen revisión de términos/licencia para
+Al `2026-05-24`, el inventario contiene 15 fuentes: 10 conectores o fixtures
+implementados, 10 fuentes que aún exigen revisión de términos/licencia para
 uso público real y 1 referencia bloqueada para colección automatizada. Esta
 separación evita confundir "el endpoint responde" con "sus datos se pueden
 redistribuir en un producto público".
@@ -46,13 +46,23 @@ Por eso `v0.1` acepta CSV documentado y no incluye un scraper.
 
 | Fuente | Uso Potencial | Consideracion |
 |---|---|---|
-| Alpha Vantage | Precios, splits, dividendos y listado historico/delisted | Tiene clave gratuita, pero endpoints ajustados y limites deben verificarse por plan al integrar |
+| Alpha Vantage | Precios diarios ajustados, splits y dividendos | Adaptador implementado; `TIME_SERIES_DAILY_ADJUSTED` esta marcado premium y exige revision de publicacion |
 | Nasdaq Data Link | Datasets publicos y premium | Explorar datasets concretos y sus licencias antes de elegir |
 | Stooq / fuentes que lo reutilizan | Precio fin de dia para experimentacion | Validar terminos y calidad antes de publicacion |
 | Proveedor comercial futuro | Precios punto-en-el-tiempo y acciones corporativas | Necesario si se ofrece servicio robusto de produccion |
 
 TargetAudit requiere precios ajustados con `high`, `low` y `close`, porque un
 target puede ser alcanzado intradia aun cuando el cierre no lo refleje.
+
+El adaptador Alpha Vantage es cache-first y limita cada ejecucion en vivo a un
+solo simbolo. La documentacion oficial revisada el `2026-05-24` indica un
+limite estandar de 25 solicitudes diarias y clasifica
+`TIME_SERIES_DAILY_ADJUSTED` como funcion premium. Dado que la respuesta
+diaria ajustada expone `high`/`low` operados y `adjusted close`, TargetAudit
+calcula `adjusted_high` y `adjusted_low` aplicando por fila
+`adjusted_close / raw_close`. El codigo y el fixture sintetico son publicos;
+un dataset real y resultados derivados no se publicaran hasta aprobar terminos
+y derechos del plan contratado.
 
 ## Acciones Corporativas
 
@@ -223,6 +233,7 @@ de compra o venta.
 - SEC SpaceX S-1 (May 20, 2026): <https://www.sec.gov/Archives/edgar/data/1181412/000162828026036936/spaceexplorationtechnologi.htm>
 - Cerebras IPO closing release: <https://www.cerebras.ai/press-release/cerebras-systems-announces-closing-of-initial-public-offering>
 - Alpha Vantage documentation: <https://www.alphavantage.co/documentation/>
+- Alpha Vantage premium and usage-limit reference: <https://www.alphavantage.co/premium/>
 - Nasdaq Data Link docs: <https://docs.data.nasdaq.com/docs/getting-started>
 - Nasdaq Daily List specifications: <https://www.nasdaqtrader.com/content/technicalSupport/specifications/dataproducts/dlcompletespec.pdf>
 - NYSE Corporate Actions: <https://www.nyse.com/trade/corporate-actions>

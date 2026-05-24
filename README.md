@@ -71,6 +71,31 @@ target reajustado ni asume continuidad entre tickers: esas decisiones exigen
 evidencia revisada. El demo usa eventos sintéticos exclusivamente para probar
 este bloqueo.
 
+### Evidencia De Precios Ajustados
+
+TargetAudit incorpora un adaptador cache-first para `Alpha Vantage Daily
+Adjusted`. El endpoint entrega `high` y `low` operados junto con
+`adjusted close`; el adaptador deriva maximos y minimos ajustados usando el
+factor diario `adjusted_close / raw_close`, necesario para auditar si un
+target se alcanzo intradia.
+
+```bash
+export TARGETAUDIT_ALPHA_VANTAGE_API_KEY="tu-clave-privada"
+PYTHONPATH=src python3 -m targetaudit alpha-vantage-prices \
+  --ticker JPM \
+  --output data/raw/prices/jpm.csv \
+  --report build/live/jpm-prices.md \
+  --html build/live/jpm-prices.html \
+  --as-of YYYY-MM-DD
+```
+
+Las respuestas se almacenan por simbolo en `data/raw/prices/alpha-vantage/`;
+un nuevo pedido solo ocurre con un simbolo sin cache o con `--refresh`. Al
+`2026-05-24`, Alpha Vantage publica un limite estandar de 25 solicitudes por
+dia y marca `TIME_SERIES_DAILY_ADJUSTED` como funcion premium. La integracion
+queda disponible para evaluacion interna autorizada, no para alimentar aun un
+ranking publico real.
+
 ## IPO Watch
 
 El segundo modulo sigue cotizaciones tecnológicas y estrategicas de alto
@@ -310,6 +335,9 @@ build/demo/evaluations.csv
 build/demo/report.md
 build/demo/source-registry.md
 build/demo/source-registry.html
+build/demo/alpha-vantage-prices.csv
+build/demo/alpha-vantage-prices.md
+build/demo/alpha-vantage-prices.html
 build/demo/corporate-actions.csv
 build/demo/corporate-actions.md
 build/demo/corporate-actions.html
@@ -400,7 +428,7 @@ docs/                   Metodologia, estrategia, dashboard, fuentes y roadmap
 
 ## Siguientes Versiones
 
-- `v0.2`: conectores para precios publicos/freemium y cache local.
+- `v0.2`: importador autorizado de targets historicos.
 - `v0.2`: monitor SEC/news para hitos verificables de IPO Watch.
 - `v0.3`: normalizacion de firmas e integrantes
   historicos del universo.

@@ -18,7 +18,8 @@ class SourceRegistryTests(unittest.TestCase):
         report = render_source_registry_report(providers, date(2026, 5, 24))
         page = render_source_registry_html(providers, date(2026, 5, 24))
 
-        self.assertEqual(len(providers), 14)
+        self.assertEqual(len(providers), 15)
+        self.assertIn("Alpha Vantage Daily Adjusted", report)
         self.assertIn("SEC EDGAR daily indexes", report)
         self.assertIn("`license_required`", report)
         self.assertIn("TipRanks", report)

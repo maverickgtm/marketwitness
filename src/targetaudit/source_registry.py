@@ -13,6 +13,7 @@ ACCESS_MODELS = {
     "public_filing",
     "official_release",
     "commercial_api_candidate",
+    "freemium_api",
     "manual_reference",
     "synthetic_demo",
 }
