@@ -31,6 +31,7 @@ class IpoWatchTests(unittest.TestCase):
         self.assertIn("SpaceX", page)
         self.assertIn("Research dashboard only", page)
         self.assertIn('href="sec-alerts.html"', page)
+        self.assertIn('href="sec-review-outcomes.html"', page)
         self.assertIn("https://www.sec.gov/Archives/edgar/data/1181412", page)
 
     def test_loads_optional_cik_for_sec_matching(self) -> None:

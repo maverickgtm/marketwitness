@@ -88,6 +88,25 @@ coincidente, formulario `RW` o `424B4`, y señales de nombre como
 `Acquisition Corp/Co` o `ETF`. Estas últimas solo reducen trabajo manual:
 no confirman que un emisor sea una SPAC, un fondo ni una IPO operativa.
 
+Una vez leido un filing, la revision humana puede generar una copia actualizada
+del tablero sin editar el registro base ni aceptar promociones implícitas:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit ipo-watch-review \
+  --alerts build/live/sec-alerts.csv \
+  --registry data/samples/ipo_watch.csv \
+  --decisions data/private/sec-review-decisions.csv \
+  --output-registry build/live/ipo-watch-reviewed.csv \
+  --output build/live/sec-review-outcomes.csv \
+  --report build/live/sec-review-outcomes.md \
+  --html build/live/sec-review-outcomes.html \
+  --as-of YYYY-MM-DD
+```
+
+Cada decision exige nota de revision, URL del filing y `CIK` idénticos a una
+alerta SEC. `confirm_filed_public` solo acepta formularios compatibles y
+`confirm_withdrawn` exige `RW`; las otras decisiones conservan el estado.
+
 Para el demo y las pruebas se usa un indice local de ejemplo, sin solicitar
 datos a SEC:
 
@@ -105,6 +124,18 @@ make verify
 6. Confirmar ticker, exchange y fecha solo desde prospecto final, exchange o
    comunicado oficial.
 7. Publicar el dashboard actualizado con historial de cambios.
+
+## Cola Futura: ETF Holdings Activity
+
+Se reserva una pagina independiente para observar variaciones de holdings
+publicados por ETF. La ejecucion mas cercana al mercado usara descargas
+oficiales diarias cuando el emisor las publique; la verificacion regulatoria
+usara `SEC N-PORT`, que es auditable pero llega con retraso.
+
+Una diferencia entre dos snapshots se reportara como cambio de posicion
+publicada. No se etiquetara automaticamente como compra o venta: puede estar
+afectada por creaciones/redenciones del fondo, derivados o acciones
+corporativas.
 
 ## Historial De Mercados Globales
 

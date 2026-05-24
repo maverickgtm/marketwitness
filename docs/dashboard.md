@@ -4,7 +4,8 @@ TargetAudit tendra dos paginas principales. No comparten score: una evalua
 pronosticos ya medibles y la otra sigue eventos de companias que pueden llegar
 al mercado.
 
-Con la expansion internacional, el producto pasa a tres paginas principales:
+Con la expansion internacional, el producto tiene tres paginas activas y una
+cuarta pagina en cola para actividad publicada de ETF:
 
 ## Pagina 1: Financials Scorecard
 
@@ -92,6 +93,14 @@ La pagina no se limita a las siete companias semilla. Una cola interna
 relacionados con IPO para cualquier emisor. Los casos nuevos aparecen en un
 panel de revision; solo los confirmados pasan al tablero publico.
 
+### Revision Manual De SEC
+
+`SEC IPO Alerts` puede alimentar una copia actualizada de `IPO Watch` solo
+despues de una decision documentada. La pantalla `IPO Watch Manual SEC
+Reviews` muestra decision, resultado, estado anterior/nuevo y evidencia. El
+flujo exige coincidencia exacta de URL de filing y `CIK`; descubrir un filing
+no cambia por si solo el estado.
+
 ## Pagina 3: Global Listings Watch
 
 Objetivo: extender la inteligencia de nuevas cotizaciones fuera de Estados
@@ -144,3 +153,18 @@ Cada jurisdiccion conserva sus propias etapas:
 - La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
   cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,
   TSX y SGX.
+
+## Pagina 4 En Cola: ETF Holdings Activity
+
+Objetivo: mostrar cambios publicados en las posiciones de ETF observables,
+con la frecuencia real de cada fuente.
+
+- Capa diaria: descargas oficiales de holdings por emisor, empezando por
+  emisores que publican archivos diarios como ARK y State Street SPDR.
+- Capa regulatoria: `SEC N-PORT`, auditable pero no equivalente a datos
+  intradia ni a un feed diario en tiempo real.
+- Presentacion: posiciones nuevas, aumentadas, reducidas o ausentes entre
+  snapshots, fecha efectiva y enlace oficial.
+- Regla de lenguaje: una diferencia de holdings se describe como cambio
+  observado, no como compra o venta confirmada del gestor sin evidencia
+  adicional.

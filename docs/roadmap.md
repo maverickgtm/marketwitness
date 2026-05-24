@@ -26,7 +26,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
   un indice diario completo.
 - [x] Ejecucion diaria persistente SEC con historial y cola enlazada por CIK.
 - [x] Triage SEC transparente para coincidencias watchlist, señales SPAC/ETF y prospectos finales.
-- [ ] Promocion revisada desde SEC IPO Alerts al tablero IPO Watch.
+- [x] Promocion revisada desde SEC IPO Alerts al tablero IPO Watch mediante decisiones documentadas.
 - [x] Conector LSE `New issues` mediante componente JSON oficial.
 - [x] Conector HKEX/HKEXnews para estados oficiales AP/PHIP.
 - [x] Snapshot trazable de LSE `Upcoming issues`.
@@ -54,6 +54,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [ ] API FastAPI con endpoints de rankings, firmas y acciones.
 - [ ] Dashboard web con filtros, series de targets y exportaciones.
 - [ ] Pagina de auditoria de fuente y observaciones excluidas.
+- [ ] Pagina `ETF Holdings Activity` con snapshots diarios oficiales por emisor,
+  diferencias de posiciones y sello claro de fecha/frecuencia.
+- [ ] Respaldo regulatorio ETF mediante SEC `N-PORT` para periodos publicados,
+  separado de las descargas diarias del emisor.
 
 ## Milestone 5: Operacion Publica (`v1.0`)
 

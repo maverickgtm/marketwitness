@@ -14,8 +14,18 @@ from .global_listings import (
 from .ipo_watch import (
     IpoWatchDataError,
     load_ipo_watch,
+    write_ipo_watch_csv,
     write_ipo_watch_html,
     write_ipo_watch_report,
+)
+from .ipo_reviews import (
+    IpoReviewDataError,
+    apply_review_decisions,
+    load_alert_evidence,
+    load_review_decisions,
+    write_review_outcomes_csv,
+    write_review_html,
+    write_review_report,
 )
 from .lse_upcoming import (
     LseDataError,
@@ -169,6 +179,26 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Observation date in YYYY-MM-DD format.",
+    )
+    review_parser = subparsers.add_parser(
+        "ipo-watch-review",
+        help="Apply documented manual SEC review decisions to an IPO Watch registry copy.",
+    )
+    review_parser.add_argument("--alerts", required=True, help="SEC IPO Alerts CSV input.")
+    review_parser.add_argument("--registry", required=True, help="IPO Watch registry CSV input.")
+    review_parser.add_argument(
+        "--decisions", required=True, help="Documented manual review decisions CSV."
+    )
+    review_parser.add_argument(
+        "--output-registry", required=True, help="Updated IPO Watch registry CSV output."
+    )
+    review_parser.add_argument("--output", required=True, help="Review audit CSV output.")
+    review_parser.add_argument("--report", required=True, help="Review audit Markdown report.")
+    review_parser.add_argument("--html", help="Optional review audit HTML dashboard page.")
+    review_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Review cutoff in YYYY-MM-DD format.",
     )
     ipo_parser = subparsers.add_parser(
         "ipo-watch", help="Generate an auditable IPO monitoring report."
@@ -488,6 +518,26 @@ def main() -> int:
         except (IpoWatchDataError, ValueError) as exc:
             parser.error(str(exc))
         print(f"Wrote IPO watch report for {len(items)} companies to {args.report}.")
+        return 0
+
+    if args.command == "ipo-watch-review":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            alerts = load_alert_evidence(args.alerts)
+            items = load_ipo_watch(args.registry)
+            decisions = load_review_decisions(args.decisions)
+            reviewed_items, outcomes = apply_review_decisions(items, alerts, decisions, as_of)
+            write_ipo_watch_csv(args.output_registry, reviewed_items)
+            write_review_outcomes_csv(args.output, outcomes)
+            write_review_report(args.report, outcomes, reviewed_items, as_of)
+            if args.html:
+                write_review_html(args.html, outcomes, reviewed_items, as_of)
+        except (IpoReviewDataError, IpoWatchDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Applied {len(outcomes)} documented SEC review decisions; "
+            f"wrote {len(reviewed_items)} IPO Watch records to {args.output_registry}."
+        )
         return 0
 
     if args.command == "sec-ipo-alerts":

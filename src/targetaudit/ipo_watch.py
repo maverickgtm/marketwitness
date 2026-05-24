@@ -22,6 +22,21 @@ IPO_WATCH_COLUMNS = {
     "next_event",
     "risk_flags",
 }
+IPO_WATCH_FIELDNAMES = [
+    "company_name",
+    "cik",
+    "theme",
+    "status",
+    "status_date",
+    "ticker",
+    "exchange",
+    "filing_type",
+    "evidence_level",
+    "source_title",
+    "source_url",
+    "next_event",
+    "risk_flags",
+]
 
 
 class IpoWatchDataError(ValueError):
@@ -274,6 +289,7 @@ def render_ipo_watch_html(items: list[IpoWatchItem], as_of: date) -> str:
   <main>
     <p class="notice">Research dashboard only. This page does not recommend buying, selling, or sizing a position.</p>
     <p class="notice"><a href="sec-alerts.html">Open SEC filing review queue</a> to inspect newly discovered public filing evidence before changing any company status.</p>
+    <p class="notice"><a href="sec-review-outcomes.html">Open documented review audit</a> to verify which manual SEC decisions produced this generated registry.</p>
     <h2>Status board</h2>
     <div class="table-wrap">
       <table>
@@ -293,6 +309,18 @@ def write_ipo_watch_html(path: str | Path, items: list[IpoWatchItem], as_of: dat
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(render_ipo_watch_html(items, as_of), encoding="utf-8")
+
+
+def write_ipo_watch_csv(path: str | Path, items: list[IpoWatchItem]) -> None:
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open("w", newline="", encoding="utf-8") as target:
+        writer = csv.DictWriter(target, fieldnames=IPO_WATCH_FIELDNAMES)
+        writer.writeheader()
+        for item in items:
+            row = dict(item.__dict__)
+            row["status_date"] = item.status_date.isoformat()
+            writer.writerow(row)
 
 
 def _validate_as_of(items: list[IpoWatchItem], as_of: date) -> None:

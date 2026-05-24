@@ -134,6 +134,30 @@ Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
 respetar la guia de acceso justo, que actualmente fija un maximo de 10
 solicitudes por segundo.
 
+## ETF Holdings Activity: Modulo En Cola
+
+La propuesta de mostrar que posiciones aumentan o reducen los ETF es factible,
+pero no debe presentarse como operacion en tiempo real si la fuente no lo
+garantiza. La implementacion futura separara dos capas:
+
+| Fuente | Frecuencia Publica Util | Uso Previsto |
+|---|---|---|
+| SEC `N-PORT` | Registro regulatorio publico con retraso; la publicacion publica disponible no es intradia | Evidencia historica auditable de cartera por fondo |
+| ARK ETF holdings | ARK declara actualizacion diaria de holdings en su sitio | Primer conector diario para fondos activos transparentes |
+| State Street SPDR holdings | Paginas oficiales indican descarga de todos los holdings diaria para fondos como `SPYM`/`XLU` | Segundo conector diario, incluyendo `XLF` si la descarga oficial es estable |
+| iShares holdings | Paginas oficiales exponen `Download Holdings` con fecha de observacion | Conector por emisor tras verificar terminos y formato estable |
+
+El dashboard mostrara cambios entre snapshots, por ejemplo aumento o
+reduccion de acciones reportadas y de peso. No afirmara automaticamente que
+un gestor "compro" o "vendio": cambios de participacion tambien pueden
+reflejar creaciones/redenciones del ETF, acciones corporativas, derivados,
+efectivo o ajustes de publicacion.
+
+La primera version debe incluir fecha efectiva del holding, fecha de captura,
+emisor, fondo, ticker de la posicion, acciones/peso anterior y actual,
+diferencia y enlace a la descarga oficial. No se mezclara con recomendaciones
+de compra o venta.
+
 ## Repositorios Y Proyectos Encontrados
 
 | Proyecto | Idea Aprovechable | Decision |
@@ -170,3 +194,6 @@ solicitudes por segundo.
 - ASX Upcoming floats and listings: <https://www.asx.com.au/listings/upcoming-floats-and-listings>
 - TSX New Company Listings: <https://www.tsx.com/en/news/new-company-listings>
 - SGX IPO Prospectus: <https://www.sgx.com/securities/ipo-prospectus>
+- SEC Form N-PORT: <https://www.sec.gov/files/formn-port.pdf>
+- ARK ETF holdings update policy: <https://helpcenter.ark-funds.com/can-you-explain-the-date-listed-on-the-ark-etf-holdings-documents>
+- State Street SPDR SPYM holdings: <https://www.ssga.com/us/en/individual/etfs/state-street-spdr-portfolio-sp-500-etf-spym>

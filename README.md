@@ -85,6 +85,24 @@ coincidencia exacta de `CIK`, nombres que contienen `Acquisition Corp/Co`,
 nombres que contienen `ETF`, formularios `424B4` y solicitudes `RW`. Las
 señales de nombre son heurísticas para revisión, no hechos confirmados.
 
+Despues de leer un filing, una decision manual documentada puede producir una
+copia revisada del tablero:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit ipo-watch-review \
+  --alerts build/live/sec-alerts.csv \
+  --registry data/samples/ipo_watch.csv \
+  --decisions data/private/sec-review-decisions.csv \
+  --output-registry build/live/ipo-watch-reviewed.csv \
+  --output build/live/sec-review-outcomes.csv \
+  --report build/live/sec-review-outcomes.md \
+  --html build/live/sec-review-outcomes.html \
+  --as-of YYYY-MM-DD
+```
+
+El comando exige que el filing y el `CIK` coincidan con una alerta; una señal
+automatica nunca actualiza por si sola `IPO Watch`.
+
 ## Global Listings Watch
 
 Una tercera pagina separa los mercados internacionales de la cola SEC de
@@ -182,6 +200,15 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
 del feed para revisión. Una remoción no confirma retiro, admisión ni inicio de
 negociación.
 
+## ETF Holdings Activity En Cola
+
+Queda planificada una pagina separada para observar cambios publicados en
+holdings de ETF. La capa mas cercana al mercado usara archivos diarios
+oficiales por emisor, inicialmente candidatos como ARK y State Street SPDR;
+`SEC N-PORT` servira como respaldo regulatorio historico, no como fuente en
+tiempo real. Un aumento o reduccion de holdings se mostrara como cambio
+observado, no como compra o venta confirmada del gestor.
+
 ## Estado Del Proyecto
 
 `v0.1` es un motor de investigacion reproducible:
@@ -224,6 +251,10 @@ build/demo/sec-ipo-discovery.md
 build/demo/sec-alerts.csv
 build/demo/sec-alerts.md
 build/demo/sec-alerts.html
+build/demo/ipo-watch-reviewed.csv
+build/demo/sec-review-outcomes.csv
+build/demo/sec-review-outcomes.md
+build/demo/sec-review-outcomes.html
 build/demo/global-listings.md
 build/demo/global-listings.html
 build/demo/lse-upcoming.md

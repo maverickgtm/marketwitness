@@ -102,6 +102,31 @@ El triage prioriza evidencia sin afirmar la naturaleza de la oferta:
 - `final_prospectus_review`: el filing es `424B4`.
 - `issuer_filing_review`: no se asigna categoría por nombre; debe leerse.
 
+## IPO Watch Manual SEC Reviews
+
+`ipo-watch-review` recibe `sec-alerts.csv`, el registro anterior y un CSV de
+decisiones humanas. Valida que `source_url` y `cik` coincidan exactamente con
+una alerta antes de escribir una nueva copia de `ipo_watch.csv`.
+
+El CSV de decisiones contiene: `source_url`, `cik`, `decision`,
+`display_name`, `theme`, `reviewed_on`, `evidence_level`, `source_title`,
+`next_event`, `risk_flags` y `review_note`.
+
+`decision` admite:
+
+- `confirm_filed_public`: promueve o confirma `filed_public` solo para un
+  formulario de registro o prospecto final revisado.
+- `confirm_withdrawn`: promueve o confirma `withdrawn` solo con formulario
+  `RW` revisado.
+- `retain_for_review`: conserva el caso sin cambio de estado.
+- `reject_not_ipo`: registra que el filing no debe promoverse.
+
+La salida de auditoria contiene `company_name`, `cik`, `decision`, `result`,
+`prior_status`, `current_status`, `reviewed_on`, `source_url` y
+`review_note`. Un filing descubierto o categorizado nunca modifica el tablero
+sin este registro manual. La fecha `reviewed_on` no puede preceder la fecha
+del filing SEC ni superar la fecha del reporte.
+
 ## `global_market_sources.csv`
 
 Registro de fuentes oficiales y conectores internacionales para la pagina

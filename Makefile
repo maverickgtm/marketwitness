@@ -15,11 +15,6 @@ demo:
 		--report build/demo/report.md \
 		--minimum-sample 1 \
 		--as-of 2025-01-01
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ipo-watch \
-		--registry data/samples/ipo_watch.csv \
-		--report build/demo/ipo-watch.md \
-		--html build/demo/ipo-watch.html \
-		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-ipo-discover \
 		--date 2026-05-20 \
 		--index-file data/samples/sec-master-sample.idx \
@@ -34,6 +29,20 @@ demo:
 		--report build/demo/sec-alerts.md \
 		--html build/demo/sec-alerts.html \
 		--as-of 2026-05-20
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ipo-watch-review \
+		--alerts build/demo/sec-alerts.csv \
+		--registry data/samples/ipo_watch.csv \
+		--decisions data/samples/sec-review-decisions.csv \
+		--output-registry build/demo/ipo-watch-reviewed.csv \
+		--output build/demo/sec-review-outcomes.csv \
+		--report build/demo/sec-review-outcomes.md \
+		--html build/demo/sec-review-outcomes.html \
+		--as-of 2026-05-20
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ipo-watch \
+		--registry build/demo/ipo-watch-reviewed.csv \
+		--report build/demo/ipo-watch.md \
+		--html build/demo/ipo-watch.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit global-listings \
 		--sources data/samples/global_market_sources.csv \
 		--report build/demo/global-listings.md \
