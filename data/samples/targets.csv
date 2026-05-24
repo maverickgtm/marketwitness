@@ -1,0 +1,5 @@
+observation_id,ticker,company_name,sector,firm,analyst,published_date,price_target,rating,horizon_days,benchmark_symbol,source_provider,source_url
+demo-up-001,ACME,Acme Demo Corporation,Technology,Example Capital,Jane Analyst,2023-01-02,120,Buy,365,SPY,synthetic,https://example.invalid/targets/demo-up-001
+demo-down-001,NOVA,Nova Demo Bank,Financials,Example Capital,John Analyst,2023-01-02,80,Sell,365,SPY,synthetic,https://example.invalid/targets/demo-down-001
+demo-up-002,BRIO,Brio Demo Health,Health Care,Independent Research,Alex Analyst,2023-01-02,60,Outperform,365,SPY,synthetic,https://example.invalid/targets/demo-up-002
+demo-invalid-001,VOID,Void Demo Inc.,Industrials,Independent Research,,2023-01-02,75,Buy,365,SPY,synthetic,

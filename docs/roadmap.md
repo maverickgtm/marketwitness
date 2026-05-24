@@ -1,0 +1,47 @@
+# Roadmap
+
+## Milestone 1: Research Engine (`v0.1`)
+
+- [x] Metodologia inicial y esquema auditado.
+- [x] Importacion CSV de targets y barras ajustadas.
+- [x] Evaluacion direccional, error terminal y comparacion con benchmark.
+- [x] Ranking Markdown y datos sinteticos reproducibles.
+- [x] Pruebas unitarias y GitHub Actions.
+
+## Milestone 2: Data Adapters (`v0.2`)
+
+- [ ] Registro formal de proveedores y licencias.
+- [x] Adaptador SEC para metadatos de emisores/CIK.
+- [ ] Adaptador de precios gratuito o freemium con cache y limites.
+- [ ] Importador para exportaciones autorizadas de targets.
+- [ ] Validacion de splits, cambios de ticker y duplicados.
+
+## Milestone 3: Rigor Cuantitativo (`v0.3`)
+
+- [ ] Intervalos de confianza para hit rate.
+- [ ] Ranking por sector y por direccion.
+- [ ] Universo historico punto-en-el-tiempo.
+- [ ] Revision de targets encadenados por firma/accion.
+- [ ] Reglas de backtest con salida y costos explicitos.
+
+## Milestone 4: Aplicacion (`v0.4`)
+
+- [ ] DuckDB para analisis local y migracion preparada a PostgreSQL.
+- [ ] API FastAPI con endpoints de rankings, firmas y acciones.
+- [ ] Dashboard web con filtros, series de targets y exportaciones.
+- [ ] Pagina de auditoria de fuente y observaciones excluidas.
+
+## Milestone 5: Operacion Publica (`v1.0`)
+
+- [ ] Licencia de datos apta para mostrar resultados publicamente.
+- [ ] Actualizaciones programadas y monitoreo de calidad.
+- [ ] Versionado de datasets y metodologia.
+- [ ] Informes periodicos reproducibles.
+- [ ] Revision legal del producto y de sus disclaimers.
+
+## Decisiones Pendientes
+
+1. Proveedor legal de targets historicos para la primera muestra real.
+2. Proveedor de precios ajustados que permita publicacion del dashboard.
+3. Nombre/dominio final y alcance: proyecto de investigacion o producto
+   publico con actualizaciones.

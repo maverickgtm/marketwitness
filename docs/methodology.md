@@ -1,0 +1,122 @@
+# Metodologia v0.1
+
+## Preguntas De Investigacion
+
+TargetAudit separa tres preguntas que no deben confundirse:
+
+1. **Target Hit Rate:** ?el precio objetivo fue alcanzado durante su horizonte?
+2. **Forecast Accuracy:** ?que tan cerca estuvo el target del precio al final
+   del horizonte?
+3. **Signal Value:** ?la direccion implicita del target obtuvo mejor retorno
+   que el benchmark durante el mismo periodo?
+
+Una alta tasa de targets alcanzados no demuestra por si sola que una firma
+produzca una estrategia rentable.
+
+## Unidad De Observacion
+
+Una observacion es un target individual publicado por una firma para un
+instrumento en una fecha determinada. Es evaluable solo si contiene:
+
+- Identificador unico de observacion.
+- Ticker e identificacion de la compania disponible.
+- Firma que emitio el target.
+- Fecha de publicacion.
+- Precio objetivo positivo.
+- URL o referencia verificable de la fuente.
+- Serie diaria de precios ajustados suficiente para evaluar el horizonte.
+
+El analista individual y el rating son opcionales porque algunas fuentes no
+los publican, pero se conservan cuando estan disponibles.
+
+## Convenciones Temporales
+
+- Horizonte por defecto: `365` dias calendario desde la publicacion.
+- Entrada: primer cierre ajustado disponible **posterior** a la fecha de
+  publicacion. Esto evita asumir que era posible operar antes de conocer una
+  nota publicada durante el dia.
+- Evaluacion del acierto: comienza en la siguiente barra disponible despues
+  del cierre de entrada; un maximo o minimo intradia del propio dia de entrada
+  no puede contarse retroactivamente.
+- Vencimiento: ultimo precio disponible en o antes de la fecha de expiracion.
+- Ventana completa: el precio terminal debe estar como maximo a 7 dias
+  calendario del vencimiento esperado.
+- Observaciones que aun no vencieron a la fecha de calculo se marcan
+  `pending`, no se consideran fallos.
+
+## Direccion Del Target
+
+La direccion se deriva comparando el target con el precio de entrada:
+
+- `up`: target mayor al precio de entrada.
+- `down`: target menor al precio de entrada.
+- `flat`: target igual al precio de entrada; se excluye del scoring direccional
+  en `v0.1`.
+
+## Definicion De Acierto
+
+- Target `up`: acierto si, despues de la entrada, el maximo ajustado diario
+  alcanza o supera el target dentro del horizonte.
+- Target `down`: acierto si, despues de la entrada, el minimo ajustado diario
+  alcanza o cae por debajo del target dentro del horizonte.
+- `days_to_target`: dias calendario entre la fecha de entrada y la primera
+  fecha de acierto.
+
+El reporte presenta este indicador como `target hit`, no como ganancia
+realizada.
+
+## Metricas v0.1
+
+Para cada observacion evaluada:
+
+- `hit`: target alcanzado o no.
+- `terminal_price`: cierre ajustado al vencimiento.
+- `terminal_absolute_error_pct`: `abs(target - terminal_price) / target`.
+- `directional_return_pct`: retorno de una posicion larga para targets `up` y
+  retorno corto simple para targets `down`, mantenida hasta vencimiento.
+- `benchmark_directional_return_pct`: misma direccion aplicada al benchmark.
+- `excess_return_pct`: retorno direccional menos retorno direccional del
+  benchmark.
+
+Para cada firma:
+
+- Cantidad de observaciones evaluadas.
+- Tasa de acierto.
+- Error absoluto medio al vencimiento.
+- Mediana de dias hasta target para aciertos.
+- Retorno excesivo promedio.
+
+## Rankings
+
+El ranking publico de produccion debera exigir al menos 50 observaciones
+evaluables por firma. El CLI permite bajar el limite solo para desarrollo y
+demostraciones, y el reporte informa claramente el umbral utilizado.
+
+En fases futuras se agregaran:
+
+- Intervalos de confianza binomiales.
+- Ranking ajustado por sector y volatilidad.
+- Manejo de targets revisados como posiciones activas.
+- Costos de transaccion y reglas de salida ejecutables.
+- Universo punto-en-el-tiempo para eliminar sesgo de supervivencia.
+
+## Exclusiones
+
+Una observacion se excluye, con motivo registrado, cuando:
+
+- Falta un campo obligatorio o la fuente.
+- El target no es positivo.
+- No existe un precio de entrada posterior a la publicacion.
+- No hay ventana de precios completa.
+- El target es igual al precio de entrada.
+- No se encuentra benchmark suficiente cuando este fue especificado.
+
+## Reproducibilidad
+
+Cada reporte debe registrar:
+
+- Version de metodologia.
+- Fecha `as_of` del calculo.
+- Archivos o proveedor de datos usados.
+- Filas excluidas y motivo.
+- Parametros modificados, como la muestra minima.

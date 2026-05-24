@@ -1,0 +1,78 @@
+# Fuentes De Datos Evaluadas
+
+Fecha de revision inicial: `2026-05-24`.
+
+El dato mas dificil del proyecto es el historial de `price targets`
+individuales con fecha, firma y target. Los precios historicos y datos
+regulatorios tienen alternativas publicas o freemium mas amplias.
+
+## Targets Y Ratings
+
+| Fuente | Cobertura Declarada | Utilidad | Estado Para TargetAudit |
+|---|---|---|---|
+| Benzinga Analyst Ratings API | Acciones USA, historial desde 2013; firma, analista, rating y targets anterior/actual | Candidato principal para un pipeline real | Requiere revisar plan/licencia antes de almacenar o mostrar datos |
+| Polygon / Benzinga endpoints | Ratings e insights historicos estructurados | Integracion moderna en una API de mercado | Expansion comercial; no asumida como gratuita |
+| LSEG I/B/E/S | Historial institucional de estimaciones y recomendaciones | Fuente de investigacion de alta calidad | Candidata futura, probablemente costosa |
+| Financial Modeling Prep | APIs de price-target summary/consensus e historical grades | Puede complementar o validar cobertura | Confirmar si entrega targets individuales historicos y limites del plan |
+| MarketBeat | Historial, screener y ranking propios | Referencia metodologica y verificacion manual | Herramientas/exportaciones sujetas a suscripcion y terminos |
+| TipRanks | Rankings y targets visibles en su producto | Referencia conceptual | No usar scraping; sus terminos restringen extraccion/copia |
+| Finviz | Eventos visibles en paginas de acciones | Verificacion manual puntual | No adoptado como colector hasta revisar permisos de automatizacion |
+
+### Conclusion Inicial
+
+No se identifico una fuente abierta y claramente redistribuible que entregue,
+de forma completa, price targets historicos individuales de firmas de EE. UU.
+Por eso `v0.1` acepta CSV documentado y no incluye un scraper.
+
+## Precios Ajustados Y Mercado
+
+| Fuente | Uso Potencial | Consideracion |
+|---|---|---|
+| Alpha Vantage | Precios, splits, dividendos y listado historico/delisted | Tiene clave gratuita, pero endpoints ajustados y limites deben verificarse por plan al integrar |
+| Nasdaq Data Link | Datasets publicos y premium | Explorar datasets concretos y sus licencias antes de elegir |
+| Stooq / fuentes que lo reutilizan | Precio fin de dia para experimentacion | Validar terminos y calidad antes de publicacion |
+| Proveedor comercial futuro | Precios punto-en-el-tiempo y acciones corporativas | Necesario si se ofrece servicio robusto de produccion |
+
+TargetAudit requiere precios ajustados con `high`, `low` y `close`, porque un
+target puede ser alcanzado intradia aun cuando el cierre no lo refleje.
+
+## Fuentes Publicas Complementarias
+
+| Fuente | Uso |
+|---|---|
+| SEC `data.sec.gov` | Identificacion de emisores, filings y enriquecimiento regulatorio; no contiene targets de analistas |
+| SEC EDGAR archives | Trazabilidad de eventos y reportes publicos cuando correspondan |
+| FRED | Series macroeconomicas y benchmarks agregados, sujeto a la serie seleccionada |
+
+Para SEC se debe declarar el `User-Agent`, descargar solo lo necesario y
+respetar la guia de acceso justo, que actualmente fija un maximo de 10
+solicitudes por segundo.
+
+## Repositorios Y Proyectos Encontrados
+
+| Proyecto | Idea Aprovechable | Decision |
+|---|---|---|
+| `riazarbi/sp500-scraper` | Construccion de integrantes historicos para reducir sesgo de supervivencia | Evaluar licencia y calidad para un adaptador de universo |
+| `janlukasschroeder/tipranks-api-v2` | Ejemplo de acceso a targets/consenso | No integrar: no muestra licencia y puede depender de endpoints/terminos ajenos |
+| `datasets/s-and-p-500` | Serie historica agregada del indice | Puede servir para documentacion/benchmarks, no para integrantes historicos completos |
+
+## Politica Del Proyecto
+
+- El repositorio publica codigo, datos sinteticos y datos abiertos con licencia
+  compatible.
+- Los datasets comerciales se guardan fuera de Git y se cargan localmente.
+- Todo conector documentara campos obtenidos, limites, terminos y fecha de
+  revision.
+- No se desarrollaran bypasses de paywalls, sesiones privadas ni scrapers
+  contrarios a terminos del proveedor.
+
+## Enlaces De Referencia
+
+- Benzinga: <https://www.benzinga.com/apis/analyst-ratings-api/>
+- Polygon/Benzinga: <https://polygon.io/docs/rest/partners/benzinga/analyst-ratings>
+- LSEG I/B/E/S: <https://www.lseg.com/en/data-analytics/financial-data/company-data/ibes-estimates>
+- Financial Modeling Prep: <https://site.financialmodelingprep.com/datasets/analyst-estimates-targets>
+- SEC Developer Resources: <https://www.sec.gov/about/developer-resources>
+- Alpha Vantage documentation: <https://www.alphavantage.co/documentation/>
+- Nasdaq Data Link docs: <https://docs.data.nasdaq.com/docs/getting-started>
+- Historical S&P 500 experiment: <https://github.com/riazarbi/sp500-scraper>
