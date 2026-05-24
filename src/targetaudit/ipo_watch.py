@@ -31,6 +31,7 @@ class IpoWatchDataError(ValueError):
 @dataclass(frozen=True)
 class IpoWatchItem:
     company_name: str
+    cik: str
     theme: str
     status: str
     status_date: date
@@ -86,6 +87,7 @@ def load_ipo_watch(path: str | Path) -> list[IpoWatchItem]:
             items.append(
                 IpoWatchItem(
                     company_name=company,
+                    cik=row.get("cik", "").strip().zfill(10) if row.get("cik", "").strip() else "",
                     theme=row["theme"].strip(),
                     status=status,
                     status_date=status_date,
@@ -271,6 +273,7 @@ def render_ipo_watch_html(items: list[IpoWatchItem], as_of: date) -> str:
   </header>
   <main>
     <p class="notice">Research dashboard only. This page does not recommend buying, selling, or sizing a position.</p>
+    <p class="notice"><a href="sec-alerts.html">Open SEC filing review queue</a> to inspect newly discovered public filing evidence before changing any company status.</p>
     <h2>Status board</h2>
     <div class="table-wrap">
       <table>

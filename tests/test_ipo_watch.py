@@ -30,7 +30,13 @@ class IpoWatchTests(unittest.TestCase):
         self.assertIn("Upcoming listings", page)
         self.assertIn("SpaceX", page)
         self.assertIn("Research dashboard only", page)
+        self.assertIn('href="sec-alerts.html"', page)
         self.assertIn("https://www.sec.gov/Archives/edgar/data/1181412", page)
+
+    def test_loads_optional_cik_for_sec_matching(self) -> None:
+        items = load_ipo_watch(Path("data/samples/ipo_watch.csv"))
+
+        self.assertEqual(items[0].cik, "0001181412")
 
     def test_listed_company_requires_ticker_and_exchange(self) -> None:
         path = _csv(

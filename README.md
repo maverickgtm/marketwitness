@@ -65,6 +65,23 @@ PYTHONPATH=src python3 -m targetaudit sec-ipo-discover \
 La cola detecta candidatos para revision; no clasifica automaticamente todo
 `S-1` como IPO, porque algunos registros corresponden a otras ofertas.
 
+Para archivar cada cola SEC, evitar avisos duplicados y resaltar filings de
+empresas ya seguidas por `IPO Watch` mediante `CIK`:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit sec-ipo-alerts \
+  --discovery data/raw/sec-ipo-discovery-YYYY-MM-DD.csv \
+  --watchlist data/samples/ipo_watch.csv \
+  --history-dir data/raw/sec/history \
+  --output build/live/sec-alerts.csv \
+  --report build/live/sec-alerts.md \
+  --html build/live/sec-alerts.html \
+  --as-of YYYY-MM-DD
+```
+
+Esta cola enruta evidencia para revisión; no promueve automáticamente el
+estado de una empresa.
+
 ## Global Listings Watch
 
 Una tercera pagina separa los mercados internacionales de la cola SEC de
@@ -201,6 +218,9 @@ build/demo/ipo-watch.md
 build/demo/ipo-watch.html
 build/demo/sec-ipo-discovery.csv
 build/demo/sec-ipo-discovery.md
+build/demo/sec-alerts.csv
+build/demo/sec-alerts.md
+build/demo/sec-alerts.html
 build/demo/global-listings.md
 build/demo/global-listings.html
 build/demo/lse-upcoming.md

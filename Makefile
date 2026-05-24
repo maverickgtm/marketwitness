@@ -25,6 +25,15 @@ demo:
 		--index-file data/samples/sec-master-sample.idx \
 		--output build/demo/sec-ipo-discovery.csv \
 		--report build/demo/sec-ipo-discovery.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-ipo-alerts \
+		--discovery build/demo/sec-ipo-discovery.csv \
+		--watchlist data/samples/ipo_watch.csv \
+		--previous-history-dir data/samples/sec-alerts-history \
+		--history-dir build/demo/sec-history \
+		--output build/demo/sec-alerts.csv \
+		--report build/demo/sec-alerts.md \
+		--html build/demo/sec-alerts.html \
+		--as-of 2026-05-20
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit global-listings \
 		--sources data/samples/global_market_sources.csv \
 		--report build/demo/global-listings.md \

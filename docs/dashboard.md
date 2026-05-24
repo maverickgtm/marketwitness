@@ -124,6 +124,8 @@ Cada jurisdiccion conserva sus propias etapas:
 
 ### Salidas Operativas
 
+- `SEC IPO Alerts`: bandeja de filings SEC nuevos, enlazados por `CIK` a
+  empresas ya seguidas en `IPO Watch` cuando existe coincidencia exacta.
 - `HKEX Listing Monitor`: pagina y CSV generados desde los cinco feeds JSON
   oficiales, util para detectar cambios de ciclo.
 - `LSE Upcoming Issues Monitor`: pagina generada desde el componente JSON

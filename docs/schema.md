@@ -57,6 +57,7 @@ produce un score ni una recomendacion operativa.
 | Columna | Requerida | Descripcion |
 |---|---:|---|
 | `company_name` | Si | Empresa monitoreada |
+| `cik` | No | Identificador SEC normalizado a 10 digitos para enlazar filings EDGAR |
 | `theme` | Si | Vertical: Space/AI, AI hardware, software, crypto, retail |
 | `status` | Si | `candidate_unverified`, `filed_public`, `listed` o `withdrawn` |
 | `status_date` | Si | Fecha ISO del estado verificado o alta de candidata |
@@ -71,6 +72,23 @@ produce un score ni una recomendacion operativa.
 
 Una candidata no se eleva a `filed_public` por rumores o por una fecha
 estimada en prensa: exige un filing publico o confirmacion primaria.
+
+## SEC IPO Alerts
+
+`sec-ipo-alerts` consume el CSV de `sec-ipo-discover`, conserva snapshots
+fechados y enlaza un filing a `IPO Watch` solo cuando coincide un `CIK`
+registrado. Produce: `company_name`, `cik`, `form`, `filed_date`,
+`review_state`, `alert_type`, `watch_company`, `watch_status`, `source_url`
+y `review_action`.
+
+Los tipos de alerta son:
+
+- `new_filing_review`: filing SEC nuevo sin vínculo ya registrado.
+- `watchlist_filing_review`: filing SEC nuevo cuyo `CIK` corresponde a una
+  empresa seguida en `IPO Watch`.
+
+Un vínculo por `CIK` sirve para enrutar la revisión y no cambia el estado
+público del emisor sin inspeccionar la evidencia primaria.
 
 ## `global_market_sources.csv`
 

@@ -24,7 +24,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [ ] Importador para exportaciones autorizadas de targets.
 - [x] Descubridor SEC para formularios `S-1`, `F-1`, `424B4` y retiros desde
   un indice diario completo.
-- [ ] Ejecucion diaria persistente y promocion revisada al tablero IPO Watch.
+- [x] Ejecucion diaria persistente SEC con historial y cola enlazada por CIK.
+- [ ] Promocion revisada desde SEC IPO Alerts al tablero IPO Watch.
 - [x] Conector LSE `New issues` mediante componente JSON oficial.
 - [x] Conector HKEX/HKEXnews para estados oficiales AP/PHIP.
 - [x] Snapshot trazable de LSE `Upcoming issues`.

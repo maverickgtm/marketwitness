@@ -84,6 +84,16 @@ from .providers.sec_ipo import (
     write_discovered_filings,
     write_discovery_report,
 )
+from .sec_alerts import (
+    SecAlertsDataError,
+    archive_discovery,
+    build_filing_alerts,
+    known_source_urls,
+    load_discovered_filings,
+    write_sec_alerts_csv,
+    write_sec_alerts_html,
+    write_sec_alerts_report,
+)
 from .reporting import write_markdown_report
 
 
@@ -134,6 +144,31 @@ def main() -> int:
     discover_parser.add_argument(
         "--index-file",
         help="Read an already downloaded SEC master index instead of requesting SEC.",
+    )
+    sec_alerts_parser = subparsers.add_parser(
+        "sec-ipo-alerts",
+        help="Archive SEC IPO discovery output and generate a new-filing review queue.",
+    )
+    sec_alerts_parser.add_argument(
+        "--discovery", required=True, help="Normalized SEC discovery CSV for this run."
+    )
+    sec_alerts_parser.add_argument(
+        "--watchlist", required=True, help="IPO Watch registry CSV for CIK matching."
+    )
+    sec_alerts_parser.add_argument(
+        "--history-dir", required=True, help="Directory for dated SEC discovery snapshots."
+    )
+    sec_alerts_parser.add_argument(
+        "--previous-history-dir",
+        help="Optional separate history directory used only as the comparison baseline.",
+    )
+    sec_alerts_parser.add_argument("--output", required=True, help="Alert output CSV path.")
+    sec_alerts_parser.add_argument("--report", required=True, help="Markdown report path.")
+    sec_alerts_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    sec_alerts_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Observation date in YYYY-MM-DD format.",
     )
     ipo_parser = subparsers.add_parser(
         "ipo-watch", help="Generate an auditable IPO monitoring report."
@@ -453,6 +488,26 @@ def main() -> int:
         except (IpoWatchDataError, ValueError) as exc:
             parser.error(str(exc))
         print(f"Wrote IPO watch report for {len(items)} companies to {args.report}.")
+        return 0
+
+    if args.command == "sec-ipo-alerts":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            filings = load_discovered_filings(args.discovery)
+            items = load_ipo_watch(args.watchlist)
+            seen_urls = known_source_urls(args.previous_history_dir or args.history_dir, as_of)
+            alerts = build_filing_alerts(filings, items, seen_urls)
+            archive_discovery(args.history_dir, args.discovery, as_of)
+            write_sec_alerts_csv(args.output, alerts)
+            write_sec_alerts_report(args.report, alerts, filings, as_of, len(seen_urls))
+            if args.html:
+                write_sec_alerts_html(args.html, alerts, filings, as_of, len(seen_urls))
+        except (SecAlertsDataError, IpoWatchDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote SEC IPO alerts for {len(alerts)} new filing reviews "
+            f"from {len(filings)} current filings to {args.report}."
+        )
         return 0
 
     if args.command == "sec-company-map":

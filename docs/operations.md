@@ -66,6 +66,23 @@ PYTHONPATH=src python3 -m targetaudit sec-ipo-discover \
   --report build/live/sec-ipo-discovery.md
 ```
 
+Luego, la salida normalizada se convierte en una cola con historial y enlace
+por `CIK` al tablero:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit sec-ipo-alerts \
+  --discovery data/raw/sec-ipo-discovery-YYYY-MM-DD.csv \
+  --watchlist data/samples/ipo_watch.csv \
+  --history-dir data/raw/sec/history \
+  --output build/live/sec-alerts.csv \
+  --report build/live/sec-alerts.md \
+  --html build/live/sec-alerts.html \
+  --as-of YYYY-MM-DD
+```
+
+Una coincidencia de `CIK` significa que el documento pertenece a una empresa
+seguida; aún exige leer el filing antes de modificar su estado.
+
 Para el demo y las pruebas se usa un indice local de ejemplo, sin solicitar
 datos a SEC:
 
@@ -114,8 +131,9 @@ admisión o cotización completada.
 En la aplicacion Codex se configuraron dos ejecuciones recurrentes locales en
 dias habiles:
 
-- `TargetAudit IPO Watch diario`: consulta el indice SEC, guarda la cola de
-  revision y resume posibles registros, prospectos o retiros nuevos.
+- `TargetAudit IPO Watch diario`: consulta el indice SEC, conserva snapshots,
+  genera `SEC IPO Alerts` y resume posibles registros, prospectos o retiros
+  nuevos, incluyendo coincidencias exactas de `CIK` con la watchlist.
 - `TargetAudit Global Listings diario`: consulta los cinco feeds JSON
   oficiales o páginas estructuradas, el componente JSON oficial LSE `Upcoming issues` y el
   contraste público FCA NSM, además de las tablas oficiales ASX y TSX; resume
