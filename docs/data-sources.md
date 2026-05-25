@@ -18,8 +18,8 @@ La clasificación legible por máquina vive en
 Conserva por fuente su modo de acceso, estado técnico, revisión de términos o
 licencia, política de publicación y referencia revisada.
 
-Al `2026-05-24`, el inventario contiene 15 fuentes: 10 conectores o fixtures
-implementados, 10 fuentes que aún exigen revisión de términos/licencia para
+Al `2026-05-24`, el inventario contiene 18 fuentes: 13 conectores o fixtures
+implementados, 12 fuentes que aun exigen revision de terminos/licencia para
 uso público real y 1 referencia bloqueada para colección automatizada. Esta
 separación evita confundir "el endpoint responde" con "sus datos se pueden
 redistribuir en un producto público".
@@ -204,7 +204,7 @@ sus holdings reales. Las fuentes reales se separan en dos capas:
 
 | Fuente | Frecuencia Publica Util | Uso Previsto |
 |---|---|---|
-| SEC `N-PORT` | Registro regulatorio publico; submissions recientes por CIK y datasets actualizados trimestralmente, no intradia | Importador XML, colector EDGAR y backfill tabular trimestral implementados para posiciones en acciones |
+| SEC `N-PORT` | Registro regulatorio publico; submissions recientes por CIK y datasets actualizados trimestralmente, no intradia | Catalogo/descarga local de ZIP, importador XML, colector EDGAR y backfill tabular implementados para posiciones en acciones |
 | ARK ETF holdings | ARK declara actualizacion diaria de holdings en su sitio | Importador CSV local implementado; publicacion real pendiente de permiso |
 | State Street SPDR holdings | La pagina oficial `XLF` indica `Download All Holdings: Daily` | Importador local `XLF` implementado; publicacion real pendiente de consentimiento escrito |
 | iShares holdings | Paginas oficiales exponen `Download Holdings` con fecha de observacion | Conector por emisor tras verificar terminos y formato estable |
@@ -245,6 +245,13 @@ El comando `sec-nport-backfill` consume las tablas oficiales extraidas,
 permite agregar varios trimestres y produce snapshots por `REPORT_DATE` mas
 un manifiesto de accesiones. No selecciona automaticamente entre periodos
 duplicados o enmiendas.
+
+El comando `sec-nport-datasets` obtiene del catalogo oficial las URL de cada
+ZIP trimestral, descarga un trimestre solicitado con `User-Agent` SEC y
+extrae unicamente las cinco tablas requeridas por el backfill. Los ZIP y TSV
+reales permanecen en `data/raw/` y no se versionan.
+En la verificacion del `2026-05-24`, el catalogo oficial publico `26`
+releases, desde `2019q4` hasta `2026q1`.
 
 El filing oficial `NPORT-P` de `SELECT SECTOR SPDR TRUST` consultado para
 esta integracion identifica a `The Financial Select Sector SPDR Fund`

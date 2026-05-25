@@ -77,6 +77,10 @@ demo:
 		--report build/demo/source-registry.md \
 		--html build/demo/source-registry.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-datasets \
+		--catalog-file data/samples/sec-nport-catalog.html \
+		--output build/demo/nport-dataset-catalog.csv \
+		--report build/demo/nport-dataset-catalog.md
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ark-holdings-import \
 		--snapshot data/samples/ark-holdings-previous.csv \
 		--fund-symbol ARKK-DEMO \

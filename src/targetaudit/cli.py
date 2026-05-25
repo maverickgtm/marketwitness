@@ -155,6 +155,14 @@ from .providers.sec_nport_dataset import (
     write_backfill_report,
     write_backfill_snapshots,
 )
+from .providers.sec_nport_catalog import (
+    download_dataset_release,
+    fetch_dataset_catalog,
+    load_dataset_catalog,
+    select_dataset_release,
+    write_catalog_csv,
+    write_catalog_report,
+)
 from .providers.sec_ipo import (
     fetch_daily_master_index,
     load_master_index,
@@ -499,6 +507,33 @@ def main() -> int:
     )
     nport_backfill_parser.add_argument("--manifest", required=True, help="Output period manifest.")
     nport_backfill_parser.add_argument("--report", required=True, help="Backfill audit report.")
+    nport_datasets_parser = subparsers.add_parser(
+        "sec-nport-datasets",
+        help="Inventory SEC N-PORT quarterly ZIP releases and optionally download one.",
+    )
+    nport_datasets_parser.add_argument("--output", required=True, help="Dataset catalog CSV.")
+    nport_datasets_parser.add_argument("--report", required=True, help="Dataset catalog report.")
+    nport_datasets_parser.add_argument(
+        "--user-agent",
+        help="SEC contact user agent; alternatively set TARGETAUDIT_SEC_USER_AGENT.",
+    )
+    nport_datasets_parser.add_argument(
+        "--catalog-file",
+        help="Read a saved SEC catalog HTML page instead of requesting SEC.",
+    )
+    nport_datasets_parser.add_argument(
+        "--download-quarter",
+        help="Optional published quarter to download, for example 2026q1.",
+    )
+    nport_datasets_parser.add_argument(
+        "--storage-dir",
+        help="Private root for ZIP and extracted tables when downloading a quarter.",
+    )
+    nport_datasets_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Replace an existing local dataset for the requested quarter.",
+    )
     prices_parser = subparsers.add_parser(
         "alpha-vantage-prices",
         help="Normalize adjusted daily price evidence through a cache-first adapter.",
@@ -989,6 +1024,31 @@ def main() -> int:
             f"Backfilled {len(outputs)} SEC N-PORT periods for "
             f"{backfill.fund_symbol} to {args.output_dir}."
         )
+        return 0
+
+    if args.command == "sec-nport-datasets":
+        try:
+            releases = (
+                load_dataset_catalog(args.catalog_file)
+                if args.catalog_file
+                else fetch_dataset_catalog(args.user_agent)
+            )
+            if bool(args.download_quarter) != bool(args.storage_dir):
+                parser.error("--download-quarter and --storage-dir must be used together.")
+            downloaded = None
+            if args.download_quarter:
+                release = select_dataset_release(releases, args.download_quarter)
+                downloaded = download_dataset_release(
+                    release, args.storage_dir, args.user_agent, args.force
+                )
+            write_catalog_csv(args.output, releases)
+            write_catalog_report(args.report, releases, downloaded)
+        except (SecNportDataError, ValueError) as exc:
+            parser.error(str(exc))
+        message = f"Wrote SEC N-PORT catalog for {len(releases)} quarterly releases"
+        if downloaded is not None:
+            message += f"; downloaded {downloaded.release.quarter}"
+        print(f"{message} to {args.report}.")
         return 0
 
     if args.command == "alpha-vantage-prices":

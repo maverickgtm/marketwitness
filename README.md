@@ -399,9 +399,16 @@ Para reconstruir varios periodos desde ZIP trimestrales SEC extraidos
 localmente, se puede repetir `--dataset-dir` por trimestre:
 
 ```bash
+export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
+PYTHONPATH=src python3 -m targetaudit sec-nport-datasets \
+  --output build/live/nport-dataset-catalog.csv \
+  --report build/live/nport-dataset-catalog.md \
+  --download-quarter 2026q1 \
+  --storage-dir data/raw/etf/nport/datasets
+
 PYTHONPATH=src python3 -m targetaudit sec-nport-backfill \
-  --dataset-dir data/raw/etf/nport/2025q4 \
-  --dataset-dir data/raw/etf/nport/2026q1 \
+  --dataset-dir data/raw/etf/nport/datasets/2025q4/extracted \
+  --dataset-dir data/raw/etf/nport/datasets/2026q1/extracted \
   --series-id S000006411 \
   --fund-symbol XLF \
   --captured-on YYYY-MM-DD \
@@ -411,9 +418,10 @@ PYTHONPATH=src python3 -m targetaudit sec-nport-backfill \
   --report build/live/xlf-nport-backfill.md
 ```
 
-El backfill une las tablas oficiales por accession y holding, conserva un
-snapshot por `REPORT_DATE` y se detiene si aparecen periodos duplicados que
-puedan corresponder a enmiendas.
+`sec-nport-datasets` mantiene el ZIP en almacenamiento local y extrae solo
+las cinco tablas necesarias para el backfill. El backfill las une por
+accession y holding, conserva un snapshot por `REPORT_DATE` y se detiene si
+aparecen periodos duplicados que puedan corresponder a enmiendas.
 
 ## Estado Del Proyecto
 
@@ -454,6 +462,8 @@ auditados en desarrollo:
   instrumentos aun no modelados de forma visible.
 - Reconstruye periodos historicos ETF desde datasets trimestrales SEC
   extraidos, con manifiesto de accession y control de enmiendas.
+- Cataloga y descarga por trimestre los ZIP SEC `N-PORT`, manteniendo los
+  archivos grandes fuera del repositorio publico.
 - Importa exportaciones autorizadas de targets con manifiesto y cola de rechazos.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para

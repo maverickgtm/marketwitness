@@ -205,6 +205,8 @@ con la frecuencia real de cada fuente.
   con archivo local del XML validado y `User-Agent` obligatorio en vivo.
 - Implementado: backfill desde datasets trimestrales SEC N-PORT extraidos,
   con snapshots historicos, manifiesto y bloqueo de periodos duplicados.
+- Implementado: catalogo y descarga local por trimestre de ZIP SEC N-PORT,
+  con extraccion limitada a tablas necesarias y defensa de rutas inseguras.
 - Presentacion: posiciones nuevas, aumentadas, reducidas, ausentes o con
   cambio solo de peso, fecha efectiva, frecuencia y enlace de evidencia.
 - Regla de lenguaje: una diferencia de holdings se describe como cambio

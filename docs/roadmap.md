@@ -70,8 +70,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
   validado archivado localmente y acceso identificado mediante `User-Agent`.
 - [x] Backfill historico de `N-PORT` mediante datasets trimestrales SEC
   extraidos, con snapshots por periodo y revision obligatoria de enmiendas.
-- [ ] Descarga y actualizacion programada de ZIP trimestrales `N-PORT`
-  reales para series seleccionadas, conservando archivos fuera de Git.
+- [x] Catalogo y descarga manual controlada de ZIP trimestrales `N-PORT`,
+  con extraccion segura y archivos conservados fuera de Git.
+- [ ] Ejecucion programada que consulte nuevos trimestres `N-PORT`, descargue
+  solo releases nuevas y regenere la serie seleccionada.
 
 ## Milestone 5: Operacion Publica (`v1.0`)
 

@@ -398,9 +398,16 @@ trimestrales desde la pagina de datasets SEC, extraerlos fuera de Git y pasar
 cada directorio al backfill:
 
 ```bash
+export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
+PYTHONPATH=src python3 -m targetaudit sec-nport-datasets \
+  --output build/live/nport-dataset-catalog.csv \
+  --report build/live/nport-dataset-catalog.md \
+  --download-quarter 2026q1 \
+  --storage-dir data/raw/etf/nport/datasets
+
 PYTHONPATH=src python3 -m targetaudit sec-nport-backfill \
-  --dataset-dir data/raw/etf/nport/2025q4 \
-  --dataset-dir data/raw/etf/nport/2026q1 \
+  --dataset-dir data/raw/etf/nport/datasets/2025q4/extracted \
+  --dataset-dir data/raw/etf/nport/datasets/2026q1/extracted \
   --series-id S000006411 \
   --fund-symbol XLF \
   --captured-on YYYY-MM-DD \
@@ -409,6 +416,15 @@ PYTHONPATH=src python3 -m targetaudit sec-nport-backfill \
   --manifest build/live/xlf-nport-backfill.csv \
   --report build/live/xlf-nport-backfill.md
 ```
+
+`sec-nport-datasets` lee el catalogo oficial y solo descarga el trimestre
+solicitado. Conserva el ZIP local en
+`data/raw/etf/nport/datasets/YYYYqN/` y extrae cinco tablas necesarias bajo
+`extracted/`; la extraccion rechaza rutas inseguras dentro del ZIP. No usar
+`--force` salvo cuando se quiera reemplazar deliberadamente una copia local.
+La revision en vivo del `2026-05-24` detecto `26` ZIP publicados, desde
+`2019q4` hasta `2026q1`; una ejecucion posterior debe tomar el catalogo
+actual y no asumir que `2026q1` siga siendo el ultimo trimestre disponible.
 
 `sec-nport-backfill` consume `SUBMISSION.tsv`, `REGISTRANT.tsv`,
 `FUND_REPORTED_INFO.tsv`, `FUND_REPORTED_HOLDING.tsv` e `IDENTIFIERS.tsv`.

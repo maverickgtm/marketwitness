@@ -477,6 +477,13 @@ ruta del XML archivado.
 
 ## SEC N-PORT Quarterly Backfill
 
+`sec-nport-datasets` analiza el catalogo HTML oficial y emite
+`quarter,download_url`. Cuando se solicita `--download-quarter`, descarga el
+ZIP publicado a almacenamiento local y extrae con nombres canonicos solo
+`SUBMISSION.tsv`, `REGISTRANT.tsv`, `FUND_REPORTED_INFO.tsv`,
+`FUND_REPORTED_HOLDING.tsv` e `IDENTIFIERS.tsv`. Rechaza rutas de archivo
+inseguras y no reemplaza descargas existentes sin `--force`.
+
 `sec-nport-backfill` procesa directorios extraidos de los ZIP trimestrales
 publicados por SEC. Consume cinco tablas tabuladas oficiales:
 `SUBMISSION.tsv`, `REGISTRANT.tsv`, `FUND_REPORTED_INFO.tsv`,
