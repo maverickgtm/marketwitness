@@ -25,6 +25,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Descubridor SEC para formularios `S-1`, `F-1`, `424B4` y retiros desde
   un indice diario completo.
 - [x] Ejecucion diaria persistente SEC con historial y cola enlazada por CIK.
+- [x] Pagina HTML `SEC IPO Discovery Queue` para la entrada universal, separada
+  del triage y de cualquier cambio de estado del tablero.
 - [x] Triage SEC transparente para coincidencias watchlist, señales SPAC/ETF y prospectos finales.
 - [x] Promocion revisada desde SEC IPO Alerts al tablero IPO Watch mediante decisiones documentadas.
 - [x] Conector LSE `New issues` mediante componente JSON oficial.

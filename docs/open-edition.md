@@ -118,7 +118,7 @@ python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 
 Abrir `http://127.0.0.1:8000/` muestra la portada `Open Edition`.
 Desde ella se abre `/dashboard/reports`, un indice de
-`/dashboard/ipo-watch`, `/dashboard/sec-alerts`, `/dashboard/ipo-reviews`,
+`/dashboard/ipo-watch`, `/dashboard/sec-discovery`, `/dashboard/sec-alerts`, `/dashboard/ipo-reviews`,
 `/dashboard/etf/xlf-demo`, `/dashboard/etf/iyf-demo`,
 `/dashboard/etf/nport-recent`, `/dashboard/etf-regulatory`,
 `/dashboard/etf/nport-catalog`, `/dashboard/etf/nport-sync`,

@@ -49,7 +49,8 @@ demo:
 		--date 2026-05-20 \
 		--index-file data/samples/sec-master-sample.idx \
 		--output build/demo/sec-ipo-discovery.csv \
-		--report build/demo/sec-ipo-discovery.md
+		--report build/demo/sec-ipo-discovery.md \
+		--html build/demo/sec-ipo-discovery.html
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-ipo-alerts \
 		--discovery build/demo/sec-ipo-discovery.csv \
 		--watchlist data/samples/ipo_watch.csv \

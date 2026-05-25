@@ -314,7 +314,8 @@ export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
 PYTHONPATH=src python3 -m targetaudit sec-ipo-discover \
   --date 2026-05-20 \
   --output build/live/sec-ipo-discovery.csv \
-  --report build/live/sec-ipo-discovery.md
+  --report build/live/sec-ipo-discovery.md \
+  --html build/live/sec-ipo-discovery.html
 ```
 
 La cola detecta candidatos para revision; no clasifica automaticamente todo
@@ -854,11 +855,12 @@ reales. La ruta
 `/dashboard/market-context` muestra el benchmark `XLF` en un widget atribuido
 de TradingView que no alimenta el scorecard ni se almacena como evidencia. La
 ruta
-`/dashboard/reports` organiza veinticinco paginas generadas permitidas del
+`/dashboard/reports` organiza veintiseis paginas generadas permitidas del
 bundle semanal de Open Edition y enlaza sus controles de publicacion; no
 expone libremente archivos del directorio de construccion. Entre ellas se
-encuentran `Global Listings Alerts`, que compara señales internacionales para
-revision, e `Issuer Confirmations`, que conserva hitos primarios revisados.
+encuentran `SEC IPO Discovery Queue`, que conserva la entrada universal antes
+del triage; `Global Listings Alerts`, que compara señales internacionales para
+revision; e `Issuer Confirmations`, que conserva hitos primarios revisados.
 Tambien expone cinco reportes fijos `Financials Audit Evidence` para recorrer
 la importacion, precios, acciones corporativas, calidad y decision de release
 del demo sin confundirlo con resultados reales.
@@ -944,6 +946,7 @@ Endpoints iniciales:
 | `/api/v1/extensions/licensed` | Opciones de datos pagados por el usuario, precio visible y restricciones de publicación |
 | `/dashboard/extensions` | Página de extensiones opcionales `bring your own license` |
 | `/dashboard/ipo-watch` | Reporte generado de vigilancia SEC de filings IPO |
+| `/dashboard/sec-discovery` | Entrada universal generada de formularios SEC candidatos, previa al triage y a decisiones manuales |
 | `/dashboard/sec-alerts` | Cola de filings SEC descubiertos que requieren revisión antes de cambiar estados IPO |
 | `/dashboard/ipo-reviews` | Auditoria de decisiones documentadas aplicadas al registro IPO Watch |
 | `/dashboard/etf/xlf-demo` | Diferencias de holdings sintéticas para `XLF-DEMO`, sin afirmar operaciones reales |
@@ -1041,6 +1044,7 @@ build/demo/ipo-watch.md
 build/demo/ipo-watch.html
 build/demo/sec-ipo-discovery.csv
 build/demo/sec-ipo-discovery.md
+build/demo/sec-ipo-discovery.html
 build/demo/sec-alerts.csv
 build/demo/sec-alerts.md
 build/demo/sec-alerts.html

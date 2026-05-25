@@ -46,15 +46,15 @@ comprar datos comerciales.
 Objetivo: volver navegable el bundle semanal de Open Edition sin abrir acceso
 general al directorio de reportes construidos.
 
-- La ruta `/dashboard/reports` agrupa veinticinco paginas HTML ya permitidas:
-  IPO Watch, SEC IPO Alerts, IPO Review Outcomes, ETF Regulatory Holdings,
+- La ruta `/dashboard/reports` agrupa veintiseis paginas HTML ya permitidas:
+  IPO Watch, SEC IPO Discovery Queue, SEC IPO Alerts, IPO Review Outcomes, ETF Regulatory Holdings,
   XLF Holdings Sandbox, IYF Holdings Sandbox, N-PORT Recent Filing, Public
   Document Checks, RWA Watch Sandbox, Global Listings Watch, Global Listings
   Alerts, Issuer Confirmations, N-PORT Dataset Catalog, N-PORT Sync Status,
   cinco reportes de evidencia Financials y seis snapshots de gobernanza.
-- `SEC IPO Alerts` y `IPO Review Outcomes` completan el recorrido auditable
-  desde filing descubierto hasta decisión manual; ninguna alerta cambia el
-  estado de una compañía sin una revisión documentada.
+- `SEC IPO Discovery Queue`, `SEC IPO Alerts` y `IPO Review Outcomes` completan
+  el recorrido auditable desde entrada universal hasta decisión manual;
+  ninguna alerta cambia el estado de una compañía sin una revisión documentada.
 - `Global Listings Alerts` permite consultar la cola comparada de diez
   mercados internacionales sin confundir documentos de oferta con listings
   confirmados; `Issuer Confirmations` conserva hitos oficiales ya revisados.
@@ -356,6 +356,8 @@ La pagina no se limita a las siete companias semilla. Una cola interna
 `SEC Discovery Queue` examina diariamente formularios publicos potencialmente
 relacionados con IPO para cualquier emisor. Los casos nuevos aparecen en un
 panel de revision; solo los confirmados pasan al tablero publico.
+La ruta `/dashboard/sec-discovery` presenta esa entrada universal antes de que
+el triage la convierta en alertas visibles en `/dashboard/sec-alerts`.
 
 ### Revision Manual De SEC
 

@@ -156,6 +156,12 @@ def create_app(
         return _generated_html(reports, "ipo-watch.html")
 
     @application.get(
+        "/dashboard/sec-discovery", response_class=HTMLResponse, include_in_schema=False
+    )
+    def sec_discovery_report() -> str:
+        return _generated_html(reports, "sec-ipo-discovery.html")
+
+    @application.get(
         "/dashboard/sec-alerts", response_class=HTMLResponse, include_in_schema=False
     )
     def sec_alerts_report() -> str:

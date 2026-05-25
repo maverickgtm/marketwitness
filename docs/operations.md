@@ -85,11 +85,13 @@ export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
 PYTHONPATH=src python3 -m targetaudit sec-ipo-discover \
   --date YYYY-MM-DD \
   --output build/live/sec-ipo-discovery.csv \
-  --report build/live/sec-ipo-discovery.md
+  --report build/live/sec-ipo-discovery.md \
+  --html build/live/sec-ipo-discovery.html
 ```
 
-Luego, la salida normalizada se convierte en una cola con historial y enlace
-por `CIK` al tablero:
+La entrada universal generada puede inspeccionarse en
+`/dashboard/sec-discovery`. Luego, la salida normalizada se convierte en una
+cola con historial y enlace por `CIK` al tablero:
 
 ```bash
 PYTHONPATH=src python3 -m targetaudit sec-ipo-alerts \

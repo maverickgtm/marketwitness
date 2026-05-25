@@ -217,6 +217,7 @@ from .providers.sec_ipo import (
     load_master_index,
     parse_ipo_candidate_filings,
     write_discovered_filings,
+    write_discovery_html,
     write_discovery_report,
 )
 from .sec_alerts import (
@@ -381,6 +382,7 @@ def main() -> int:
     discover_parser.add_argument("--date", required=True, help="SEC filing date YYYY-MM-DD.")
     discover_parser.add_argument("--output", required=True, help="Discovery queue CSV path.")
     discover_parser.add_argument("--report", required=True, help="Markdown report path.")
+    discover_parser.add_argument("--html", help="Optional discovery queue HTML page.")
     discover_parser.add_argument(
         "--user-agent",
         help="SEC contact user agent; alternatively set TARGETAUDIT_SEC_USER_AGENT.",
@@ -2005,6 +2007,8 @@ def main() -> int:
             filings = parse_ipo_candidate_filings(index_text)
             write_discovered_filings(args.output, filings)
             write_discovery_report(args.report, filings, filing_date, source_url)
+            if args.html:
+                write_discovery_html(args.html, filings, filing_date, source_url)
         except (SecDataError, ValueError) as exc:
             parser.error(str(exc))
         print(

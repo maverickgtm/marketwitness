@@ -6,6 +6,7 @@ from targetaudit.providers.sec_ipo import (
     daily_master_index_url,
     load_master_index,
     parse_ipo_candidate_filings,
+    render_discovery_html,
     render_discovery_report,
 )
 
@@ -24,6 +25,7 @@ class SecIpoDiscoveryTests(unittest.TestCase):
 
         filings = parse_ipo_candidate_filings(text)
         report = render_discovery_report(filings, date(2026, 5, 20), source)
+        page = render_discovery_html(filings, date(2026, 5, 20), source)
 
         self.assertEqual(len(filings), 4)
         self.assertIn("EXAMPLE INTERNATIONAL LTD.", [filing.company_name for filing in filings])
@@ -31,6 +33,11 @@ class SecIpoDiscoveryTests(unittest.TestCase):
         self.assertIn("SPACE EXPLORATION TECHNOLOGIES CORP.", report)
         self.assertNotIn("APPLE INC.", report)
         self.assertIn("not a confirmed IPO calendar", report)
+        self.assertIn("Universal intake.", page)
+        self.assertIn("not a confirmed IPO calendar", page)
+        self.assertIn("SPACE EXPLORATION TECHNOLOGIES CORP.", page)
+        self.assertIn("Bundled SEC-shaped index fixture", page)
+        self.assertNotIn("file:", page)
 
     def test_accepts_iso_date_from_normalized_import(self) -> None:
         filings = parse_ipo_candidate_filings(
