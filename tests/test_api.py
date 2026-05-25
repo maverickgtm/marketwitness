@@ -219,6 +219,20 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(len(holdings.json()["sources"]), 3)
         self.assertIn("publication_policy", sources.json()["sources"][0])
 
+    def test_serves_public_scorecard_readiness_without_treating_demo_as_production(self) -> None:
+        readiness = self.client.get("/api/v1/readiness/scorecard")
+        page = self.client.get("/dashboard/readiness")
+
+        self.assertEqual(readiness.status_code, 200)
+        self.assertFalse(readiness.json()["public_release_ready"])
+        self.assertEqual(readiness.json()["public_ready_count"], 0)
+        targets = readiness.json()["requirements"][0]
+        self.assertEqual(targets["status"], "integration_pending")
+        self.assertFalse(targets["providers"][0]["production_eligible"])
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Earn the right", page.text)
+        self.assertIn("/api/v1/readiness/scorecard", page.text)
+
     def test_serves_firm_ticker_and_exclusion_audit_views(self) -> None:
         firm = self.client.get("/api/v1/runs/api-demo/firms/Example%20Firm")
         ticker = self.client.get("/api/v1/runs/api-demo/tickers/aaa")

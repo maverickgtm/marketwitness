@@ -84,6 +84,11 @@ demo:
 		--report build/demo/source-registry.md \
 		--html build/demo/source-registry.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit scorecard-readiness \
+		--registry data/samples/source_registry.csv \
+		--report build/demo/scorecard-readiness.md \
+		--html build/demo/scorecard-readiness.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-datasets \
 		--catalog-file data/samples/sec-nport-catalog.html \
 		--output build/demo/nport-dataset-catalog.csv \

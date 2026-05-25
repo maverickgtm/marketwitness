@@ -4,8 +4,9 @@ TargetAudit tendra dos paginas principales. No comparten score: una evalua
 pronosticos ya medibles y la otra sigue eventos de companias que pueden llegar
 al mercado.
 
-Con la expansion internacional, el producto tiene cuatro paginas activas,
-incluida la pagina de actividad publicada de ETF:
+Con la expansion internacional y los controles de publicación, el producto
+tiene páginas operativas adicionales, incluida la página de actividad
+publicada de ETF:
 
 ## API De Aplicacion
 
@@ -62,6 +63,20 @@ Las nuevas corridas guardan `provider_id` junto al enlace de evidencia y la
 vista muestra el control de publicacion enlazado en cada exclusion o pendiente.
 Entradas historicas sin ese linaje permanecen visibles como `unlinked`, sin
 inferir una fuente por la URL.
+
+## Vista De Preparacion: Scorecard Readiness
+
+Objetivo: impedir que un dashboard tecnicamente funcional sea confundido con
+un producto listo para publicar resultados reales.
+
+- La ruta web `/dashboard/readiness` consume `/api/v1/readiness/scorecard`.
+- Evalua los requisitos productivos de `Analyst targets`, `Adjusted price
+  bars` y `Corporate actions` para el enfoque `U.S. Financials`.
+- Excluye expresamente los fixtures del demo como fuentes productivas.
+- Distingue una integración `internal_only` de una fuente
+  `public_ready` con política de publicación aprobada.
+- Conserva el scorecard público deshabilitado mientras cualquiera de sus
+  controles obligatorios no tenga una fuente apta.
 
 ## Vista Operativa: Operations Quality
 

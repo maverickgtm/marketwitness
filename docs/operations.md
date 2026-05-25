@@ -167,6 +167,25 @@ puede funcionar técnicamente y permanecer bloqueada para un producto público
 hasta revisar términos de uso o licencia. `restricted_no_collection` impide
 registrar accidentalmente una fuente como conector implementado.
 
+## Readiness Del Scorecard Publico
+
+Antes de producir una corrida real se debe revisar si existen fuentes
+productivas aprobadas para cada control obligatorio del scorecard financiero:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit scorecard-readiness \
+  --registry data/samples/source_registry.csv \
+  --report build/live/scorecard-readiness.md \
+  --html build/live/scorecard-readiness.html \
+  --as-of YYYY-MM-DD
+```
+
+El reporte diferencia `public_ready`, `internal_only`, `integration_pending`
+y `missing_source`. Los fixtures `synthetic-demo` y `authorized-demo` prueban
+la aplicación, pero nunca habilitan publicación real. La API
+`/api/v1/readiness/scorecard` y la página `/dashboard/readiness` exponen este
+estado antes de correr o distribuir un ranking.
+
 ## Precios Ajustados Alpha Vantage
 
 Para importar un simbolo con clave privada:
@@ -565,9 +584,10 @@ En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
   linea base en su primera corrida y luego descarga solo ZIP nuevos para
   regenerar la serie regulatoria `XLF` cuando existan datos locales validos.
 - `TargetAudit Scorecard Quality diario`: comprueba de lunes a viernes el
-  warehouse `build/live/targetaudit.duckdb`, genera el reporte operativo si
-  existen corridas reales autorizadas y reporta claramente cuando aun no hay
-  una corrida live. Nunca sustituye esa ausencia con el demo.
+  readiness de fuentes para el scorecard y el warehouse
+  `build/live/targetaudit.duckdb`; genera el reporte operativo si existen
+  corridas reales autorizadas y reporta claramente cuando aun no hay una
+  corrida live. Nunca sustituye esa ausencia con el demo.
 
 Las cuatro tareas tratan evidencia operativa o eventos regulatorios para
 investigar, no como instrucciones para tomar posiciones.

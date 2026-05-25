@@ -5,6 +5,7 @@ import io
 import os
 import re
 from collections import Counter, defaultdict
+from datetime import date
 from decimal import Decimal
 from pathlib import Path
 from statistics import median
@@ -17,11 +18,13 @@ from . import METHODOLOGY_VERSION, __version__
 from .dashboard_web import (
     financials_scorecard_html,
     operations_quality_html,
+    scorecard_readiness_html,
     source_governance_html,
 )
 from .models import Evaluation
 from .operations_quality import build_quality_snapshot
 from .reporting import wilson_interval
+from .scorecard_readiness import build_scorecard_readiness
 from .source_registry import SourceProvider, SourceRegistryDataError, load_source_registry
 from .storage import (
     WarehouseError,
@@ -74,6 +77,12 @@ def create_app(
     def operations_quality() -> str:
         return operations_quality_html()
 
+    @application.get(
+        "/dashboard/readiness", response_class=HTMLResponse, include_in_schema=False
+    )
+    def scorecard_readiness() -> str:
+        return scorecard_readiness_html()
+
     @application.get("/api/v1/health")
     def health() -> dict[str, object]:
         return {
@@ -116,6 +125,15 @@ def create_app(
             "data_classes": sorted({item.data_class for item in all_providers}),
             "sources": [_public_source(item) for item in providers],
         }
+
+    @application.get("/api/v1/readiness/scorecard")
+    def readiness_scorecard() -> dict[str, object]:
+        providers = _read_sources(registry)
+        try:
+            as_of = max((item.reviewed_on for item in providers), default=date.today())
+            return build_scorecard_readiness(providers, as_of)
+        except SourceRegistryDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     @application.get("/api/v1/runs")
     def runs() -> list[dict[str, object]]:

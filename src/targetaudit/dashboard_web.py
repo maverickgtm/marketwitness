@@ -83,7 +83,7 @@ def financials_scorecard_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Scorecard / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav>TargetAudit / U.S. Financials / Scorecard / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Price targets,<br>measured in daylight.</h1>
     <p class="lead">Auditable analyst-target research with visible sample size, uncertainty, benchmark context and exclusions. A hit is evidence of a reached target, not investment advice.</p>
     <p class="meta" id="run-meta">Loading latest stored research run...</p>
@@ -386,7 +386,7 @@ def source_governance_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav>TargetAudit / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Open code.<br>Controlled data.</h1>
     <p class="lead">Publication rights are part of the evidence. This page separates sources already usable under documented policy from data that still requires terms, licensing or manual controls.</p>
     <p class="meta" id="reviewed">Loading source registry...</p>
@@ -582,7 +582,7 @@ def operations_quality_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/governance">Source Governance</a></nav>
+    <nav>TargetAudit / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/governance">Source Governance</a></nav>
     <h1>Ship evidence,<br>not surprises.</h1>
     <p class="lead">Operational quality gates for stored evaluation runs: reproducibility stamps, required inputs, provider lineage and anomalous exclusion rates.</p>
     <p class="meta">Refreshable quality view over stored evaluation runs</p>
@@ -662,6 +662,143 @@ def operations_quality_html() -> str:
     }
     $("apply").addEventListener("click", refresh);
     refresh();
+  </script>
+</body>
+</html>"""
+
+
+def scorecard_readiness_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Scorecard Readiness</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --panel2:#14242d; --line:#20343d;
+      --text:#edf1ef; --muted:#98abb0; --mint:#56daac; --gold:#f0bc62;
+      --blue:#62a6ff; --red:#ff7d72;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1240px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(38px,5vw,58px); line-height:1.05; margin:38px 0 14px; }
+    h2 { margin:42px 0 16px; font-size:22px; }
+    h3 { margin:0 0 12px; font-size:16px; }
+    .lead { color:var(--muted); font-size:17px; max-width:880px; }
+    .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold);
+      border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.table-wrap,.detail { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:17px 20px; }
+    .card p { color:var(--muted); margin:0; }
+    .card strong { display:block; font-size:35px; color:var(--mint); margin-top:4px; }
+    .card strong.no { color:var(--red); }
+    .card small { color:var(--muted); }
+    .layout { display:grid; grid-template-columns:minmax(650px,1fr) 370px; gap:18px; }
+    .table-wrap { overflow:hidden; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); text-transform:uppercase; font-size:12px; font-weight:500; }
+    td small { display:block; color:var(--muted); }
+    tr[data-control] { cursor:pointer; }
+    tr[data-control]:hover { background:var(--panel2); }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; white-space:nowrap; }
+    .public_ready { color:var(--mint); background:rgba(86,218,172,.12); }
+    .internal_only { color:var(--blue); background:rgba(98,166,255,.12); }
+    .integration_pending,.missing_source { color:var(--gold); background:rgba(240,188,98,.12); }
+    .usable_with_policy { color:var(--mint); }
+    .license_required,.review_required { color:var(--gold); }
+    .detail { padding:18px; min-height:320px; }
+    .detail p { color:var(--muted); }
+    .provider { background:var(--panel2); border-radius:9px; padding:10px; margin:9px 0; }
+    .provider small { display:block; color:var(--muted); }
+    #error { display:none; border-left-color:var(--red); color:var(--red); }
+    @media(max-width:1000px) {
+      .cards { grid-template-columns:repeat(2,1fr); }
+      .layout { grid-template-columns:1fr; }
+      .table-wrap { overflow-x:auto; }
+      table { min-width:650px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>TargetAudit / U.S. Financials / Readiness / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <h1>Earn the right<br>to publish.</h1>
+    <p class="lead">Readiness for a real public Financials scorecard. Demo fixtures can test the system; only approved production sources can enable release.</p>
+    <p class="meta" id="reviewed">Loading readiness controls...</p>
+    <section class="cards">
+      <article class="card"><p>Required controls</p><strong id="requirements">-</strong><small>Targets, prices, safeguards</small></article>
+      <article class="card"><p>Public ready</p><strong id="public-ready">-</strong><small>Approved controls</small></article>
+      <article class="card"><p>Internal only</p><strong id="internal-only">-</strong><small>Not publishable</small></article>
+      <article class="card"><p>Release enabled</p><strong id="release" class="no">-</strong><small>Public scorecard</small></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice" id="publication-note">Loading publication control...</p>
+    <p id="error" class="notice"></p>
+    <h2>Release Requirements</h2>
+    <section class="layout">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Control</th><th>Status</th><th>Production Sources</th><th>Blocking Reason</th></tr></thead>
+          <tbody id="controls"><tr><td colspan="4">Loading requirements...</td></tr></tbody>
+        </table>
+      </div>
+      <aside id="detail" class="detail">
+        <h3>Provider Candidates</h3>
+        <p>Select a control to inspect candidates, policy state and whether it belongs only to the demo.</p>
+      </aside>
+    </section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let controls = [];
+    function text(value) {
+      return String(value == null || value === "" ? "-" : value)
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    }
+    function href(value) {
+      try {
+        const parsed = new URL(value);
+        return parsed.protocol === "https:" || parsed.protocol === "http:" ? text(value) : "#";
+      } catch (_) { return "#"; }
+    }
+    async function json(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+      return response.json();
+    }
+    function fail(message) {
+      $("error").style.display = "block";
+      $("error").textContent = message;
+    }
+    async function initialize() {
+      try {
+        const data = await json("/api/v1/readiness/scorecard");
+        controls = data.requirements;
+        $("reviewed").textContent = `${data.market_focus} / source controls reviewed as of ${data.as_of}`;
+        $("requirements").textContent = data.requirement_count;
+        $("public-ready").textContent = data.public_ready_count;
+        $("internal-only").textContent = data.internal_only_count;
+        $("release").textContent = data.public_release_ready ? "Yes" : "No";
+        $("release").className = data.public_release_ready ? "" : "no";
+        $("publication-note").textContent = data.publication_note;
+        $("controls").innerHTML = controls.map((item) => `<tr data-control="${text(item.key)}"><td><strong>${text(item.label)}</strong><small>${text(item.purpose)}</small></td><td><span class="pill ${text(item.status)}">${text(item.status)}</span></td><td>${item.production_provider_count}</td><td>${text(item.blocker || "Ready under approved policy.")}</td></tr>`).join("");
+        document.querySelectorAll("tr[data-control]").forEach((row) => row.addEventListener("click", () => showControl(row.dataset.control)));
+        showControl(controls[0].key);
+      } catch (error) { fail(error.message); }
+    }
+    function showControl(key) {
+      const item = controls.find((control) => control.key === key);
+      const providers = item.providers.length ? item.providers.map((provider) => `<div class="provider"><strong>${text(provider.provider_name)}</strong><small>${text(provider.provider_id)} / <span class="${text(provider.deployment_state)}">${text(provider.deployment_state)}</span> / ${provider.production_eligible ? "production candidate" : "demo only"}</small><p>${text(provider.review_note)}</p><a href="${href(provider.official_url)}" target="_blank" rel="noopener">Source</a></div>`).join("") : "<p>No provider is registered for this control.</p>";
+      $("detail").innerHTML = `<h3>${text(item.label)}</h3><p>${text(item.blocker || "Approved source is available under documented policy.")}</p>${providers}`;
+    }
+    initialize();
   </script>
 </body>
 </html>"""

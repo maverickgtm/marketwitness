@@ -49,6 +49,22 @@ conectores de bolsas internacionales quedan pendientes de revisión de términos
 Benzinga y Nasdaq Daily List requieren resolver licencia antes de alimentar
 resultados públicos; TipRanks no se adopta para recolección automatizada.
 
+La vista de preparación del scorecard traduce esas reglas en requisitos de
+publicación para `U.S. Financials`:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit scorecard-readiness \
+  --registry data/samples/source_registry.csv \
+  --report build/live/scorecard-readiness.md \
+  --html build/live/scorecard-readiness.html \
+  --as-of YYYY-MM-DD
+```
+
+El demo prueba el flujo, pero no cuenta como fuente productiva. Mientras no
+existan targets históricos, precios ajustados y cobertura de acciones
+corporativas aprobados para salida pública, el scorecard real permanece
+deshabilitado.
+
 ### Auditoria De Acciones Corporativas
 
 Los splits y cambios de ticker pueden volver incomparable un target nominal
@@ -575,6 +591,9 @@ La ruta `/dashboard/operations` presenta el monitor de calidad de corridas:
 revisa sellos reproducibles, entradas obligatorias, linaje de proveedor y
 tasas altas de exclusion. Pasar este monitor no autoriza publicar fuentes que
 aun requieran licencia o revision de terminos.
+La ruta `/dashboard/readiness` presenta los requisitos del scorecard público
+antes de que exista una corrida: separa fixtures del demo, integraciones de
+uso interno y fuentes productivas con política de publicación aprobada.
 
 Para una actualización automatizada del scorecard, la corrida candidata se
 puede detener antes de publicarla:
@@ -609,6 +628,8 @@ Endpoints iniciales:
 | `/api/v1/runs/{run_id}/export/rankings-firms.csv` | Descarga CSV del ranking con los mismos filtros |
 | `/api/v1/governance/sources` | Registro de fuentes y controles de publicacion, filtrable por estado y clase |
 | `/dashboard/governance` | Pagina de auditoria de fuentes y observaciones excluidas |
+| `/api/v1/readiness/scorecard` | Requisitos de fuentes productivas para publicar el Financials Scorecard |
+| `/dashboard/readiness` | Pagina de preparación y bloqueos de publicación del scorecard |
 | `/api/v1/operations/quality?run_id=RUN-ID` | Monitor de calidad global o de una corrida candidata, con umbral configurable de exclusiones |
 | `/dashboard/operations` | Pagina operativa de corridas aprobadas, en revision o bloqueadas |
 
@@ -642,6 +663,8 @@ build/demo/report-target-revisions.md
 build/demo/evaluations-target-revisions.csv
 build/demo/source-registry.md
 build/demo/source-registry.html
+build/demo/scorecard-readiness.md
+build/demo/scorecard-readiness.html
 build/demo/alpha-vantage-prices.csv
 build/demo/alpha-vantage-prices.md
 build/demo/alpha-vantage-prices.html

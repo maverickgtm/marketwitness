@@ -194,6 +194,11 @@ from .source_registry import (
     write_source_registry_html,
     write_source_registry_report,
 )
+from .scorecard_readiness import (
+    build_scorecard_readiness,
+    write_readiness_html,
+    write_readiness_report,
+)
 from .target_imports import (
     TargetImportDataError,
     import_authorized_targets,
@@ -395,6 +400,18 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Governance review cutoff in YYYY-MM-DD format.",
+    )
+    readiness_parser = subparsers.add_parser(
+        "scorecard-readiness",
+        help="Assess production data readiness for a public Financials scorecard.",
+    )
+    readiness_parser.add_argument("--registry", required=True, help="Provider registry CSV.")
+    readiness_parser.add_argument("--report", required=True, help="Readiness Markdown report path.")
+    readiness_parser.add_argument("--html", help="Optional readiness HTML dashboard output path.")
+    readiness_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Readiness review cutoff in YYYY-MM-DD format.",
     )
     quality_parser = subparsers.add_parser(
         "operations-quality",
@@ -992,6 +1009,23 @@ def main() -> int:
         print(
             f"Wrote source governance for {len(providers)} providers "
             f"to {args.report}."
+        )
+        return 0
+
+    if args.command == "scorecard-readiness":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            providers = load_source_registry(args.registry)
+            snapshot = build_scorecard_readiness(providers, as_of)
+            write_readiness_report(args.report, snapshot)
+            if args.html:
+                write_readiness_html(args.html, snapshot)
+        except (SourceRegistryDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Checked {snapshot['requirement_count']} Financials scorecard controls; "
+            f"{snapshot['public_ready_count']} are public-ready. "
+            f"Report written to {args.report}."
         )
         return 0
 
