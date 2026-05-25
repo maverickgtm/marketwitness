@@ -33,9 +33,12 @@ Un widget oficial de TradingView podria anadirse como contexto visual de
 mercado conservando su atribucion. Ese componente no alimentaria el ranking
 ni reemplazaria una licencia de historial de targets.
 
-Bybit `xStocks` queda como candidato para una expansion futura `RWA Watch`:
-son tokens de acciones y ETF, no analyst targets ni acciones directas. El
-endpoint V5 se evaluaria solo tras documentar permisos de uso publico.
+La investigacion inicial de `RWA Watch` mapea 20 exchanges centralizados y
+Pepperstone. Identifica `xStocks / Backed` como API base publica sin
+autenticacion y `Ondo Global Markets` como segundo emisor a revisar; Bybit,
+Kraken, Gate y Bitget son venues futuros. Ninguna de estas fuentes alimenta
+analyst targets ni se activa antes de revisar permiso de uso publico. Ver
+[RWA Watch: Exchanges Y Fuentes Base](rwa-watch-sources.md).
 
 ## Capacidades Incluidas
 

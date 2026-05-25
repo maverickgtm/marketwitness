@@ -54,11 +54,13 @@ y FMP exige un acuerdo especifico de display/licencia. TradingView puede
 anadirse mas adelante como widget gratuito atribuido para contexto visual, no
 como fuente de historial de analistas.
 
-Bybit aporta una oportunidad diferente: su producto `xStocks` lista tokens de
-acciones y ETF estadounidenses en Spot, respaldados 1:1 por Backed y
-operables 24/7. Su API V5 documenta estos instrumentos, por lo que queda como
-candidato gratuito para un futuro monitor de activos tokenizados (`RWA
-Watch`), no como fuente de ratings, price targets o recomendaciones.
+La investigacion de `RWA Watch` ya cubre 20 exchanges relevantes y
+Pepperstone. Identifica a `xStocks / Backed` como mejor fuente base potencial:
+documenta APIs publicas sin autenticacion para metadatos, precios, documentos
+legales y proof of reserves. `Ondo Global Markets` es la segunda familia a
+validar, mientras Bybit, Kraken, Gate y Bitget son posibles venues
+secundarios. Ver [RWA Watch: Exchanges Y Fuentes Base](docs/rwa-watch-sources.md).
+Esta linea no suministra ratings, price targets ni recomendaciones.
 
 TargetAudit nace de una pregunta sencilla: si una firma publica un precio
 objetivo para una accion, ?ese pronostico se cumplio y una estrategia basada en

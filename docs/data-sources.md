@@ -41,8 +41,8 @@ copias revisadas de ambos registros y su auditoría. El fixture inicial
 documenta que la página premium de Alpha Vantage todavía no demuestra permiso
 de salida pública y por eso conserva el expediente pendiente.
 
-Al `2026-05-24`, el inventario contiene 24 fuentes: 15 conectores o fixtures
-implementados, 17 fuentes que aun exigen revision de terminos/licencia para
+Al `2026-05-24`, el inventario contiene 26 fuentes: 15 conectores o fixtures
+implementados, 19 fuentes que aun exigen revision de terminos/licencia para
 uso público real, 1 integracion limitada a descarga manual y 1 referencia
 bloqueada para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto
@@ -88,25 +88,26 @@ de mercado, no para almacenar o puntuar historial de analistas:
 <https://www.tradingview.com/widget-docs/widgets/charts/> y
 <https://www.tradingview.com/policies/>.
 
-## Activos Tokenizados Y Bybit
+## Activos Tokenizados Y RWA Watch
 
-Bybit sirve para una expansion distinta del scorecard. La revision oficial al
-`2026-05-24` confirma dos productos separados:
+La revision del Top 20 de exchanges centralizados por CoinGecko Trust Score y
+de Pepperstone se conserva en
+[RWA Watch: Exchanges Y Fuentes Base](rwa-watch-sources.md). La conclusion
+tecnica cambia la prioridad: conviene integrar primero la fuente emisora del
+activo y usar exchanges solamente como venues secundarios.
 
-| Producto Bybit | Que Ofrece | Encaje En TargetAudit |
+| Fuente O Grupo | Que Ofrece | Encaje En TargetAudit |
 |---|---|---|
-| `xStocks` en Spot | Tokens de acciones y ETF estadounidenses respaldados 1:1 por Backed; trading 24/7 | Candidato para un futuro `RWA Watch` o comparador de desvio contra el activo subyacente |
-| TradFi (MT5) Stock CFDs | Mas de 150 CFDs de acciones USA; derivados sin propiedad y con apalancamiento hasta `5:1` | Contexto de producto/riesgo solamente; no fuente de targets ni de acciones reales |
+| `xStocks / Backed Public API` | Recursos sin autenticacion para metadatos, precio subyacente/mercado, documentacion legal y proof of reserves | Candidato base preferido para `RWA Watch`, pendiente de terminos de display y retencion |
+| `Ondo Global Markets` | Mas de 200 acciones y ETF tokenizados con ruta API/SDK documentada | Segunda familia candidata, pendiente de acceso y derechos publicos |
+| Bybit, Kraken, Gate y Bitget | Venues oficiales que anuncian xStocks u Ondo tokenizados | Candidatos secundarios para contrastar mercado despues de validar terminos |
+| LBank | Zona xStocks anunciada con activos impulsados por Backed | Referencia de venue hasta confirmar API |
+| Gemini y OKX | Gemini declara que su producto no esta disponible via API; OKX dirige estos activos a DEX/wallet y no a su CEX | Referencia de cobertura, no conectores |
+| Pepperstone | CFDs de acciones y APIs vinculadas a cuenta | Contexto privado de derivados, excluido de la capa emisora |
 
-La API V5 documenta `GET /v5/market/instruments-info` para Spot y el campo
-`xstockMultiplier` cuando `symbolType=xstocks`, lo que demuestra una ruta
-programatica para descubrir instrumentos. Antes de mostrar series o conservar
-datos reales en un release publico se deben revisar terminos de retencion y
-display; por ahora queda como fuente candidata, no conector implementado.
-
-Esta linea tampoco resuelve la pregunta inicial de analistas: Bybit ofrece
-mercado para activos tokenizados o CFDs, no un historial de pronosticos de
-Roth MKM, KBW, UBS, Citi o Barclays.
+Esta linea tampoco resuelve la pregunta inicial de analistas: activos
+tokenizados, CFD y productos de brokerage no entregan un historial de
+pronosticos de Roth MKM, KBW, UBS, Citi o Barclays.
 
 ## Precios Ajustados Y Mercado
 
@@ -403,6 +404,21 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - Bybit V5 instruments info: <https://bybit-exchange.github.io/docs/v5/market/instrument>
 - Bybit TradFi contracts: <https://www.bybitglobal.com/en/help-center/article/Contracts-Available-on-TradFi-MT5-and-Specifications>
 - Bybit restricted jurisdictions: <https://www.bybit.com/en/help-center/article/Service-Restricted-Countries>
+- CoinGecko exchanges: <https://www.coingecko.com/en/exchanges>
+- xStocks API: <https://docs.xstocks.fi/apis/openapi>
+- xStocks overview: <https://docs.xstocks.fi/about-xstocks/welcome-to-xstocks/overview>
+- Ondo Global Markets overview: <https://docs.ondo.finance/ondo-global-markets/overview>
+- Ondo API integration: <https://docs.ondo.finance/ondo-global-markets/minting-and-redemption/minting-and-redemption-through-api>
+- Kraken xStocks: <https://www.kraken.com/xstocks>
+- Gate xStocks: <https://www.gate.com/xstocks>
+- Bitget Ondo announcement: <https://www.bitget.com/support/articles/12560603838361>
+- LBank xStocks announcement: <https://www.lbank.com/support/articles/21431592927001>
+- Gemini tokenized stocks: <https://support.gemini.com/hc/en-us/articles/45788732343963-Tokenized-Stocks-Overview>
+- OKX xStocks help: <https://web3.okx.com/en-eu/help/what-are-xstocks>
+- Coinbase stocks overview: <https://help.coinbase.com/coinbase/trading-and-funding/stocks/overview>
+- Crypto.com stocks and ETF: <https://help.crypto.com/en/articles/10441410-stocks-and-etfs>
+- Pepperstone shares: <https://pepperstone.com/en/markets/shares/>
+- Pepperstone Trading API: <https://pepperstone.com/en/platforms/integrations/trading-api/>
 - Yahoo Finance data providers: <https://help.yahoo.com/kb/SLN2310.html>
 - Investing.com terms: <https://www.investing.com/about-us/terms-and-conditions>
 - LSEG I/B/E/S: <https://www.lseg.com/en/data-analytics/financial-data/company-data/ibes-estimates>

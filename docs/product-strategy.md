@@ -20,7 +20,8 @@ complementarios:
 - `Global Listings Watch`: mapa y futuros conectores de listings fuera de
   Estados Unidos, comenzando por Londres y Hong Kong.
 - `RWA Watch` futuro: monitoreo de acciones y ETF tokenizados, comenzando por
-  evaluar `xStocks` de Bybit sin confundirlos con acciones directas.
+  evaluar APIs de emisores `xStocks / Backed` y `Ondo`, con venues
+  secundarios sin confundirlos con acciones directas.
 
 ## Problema
 
@@ -44,7 +45,7 @@ Competidores observados al `2026-05-24`:
 | Yahoo Finance / Investing.com | Consulta visual de ratings y targets | Referencia manual solamente; sus terminos no sustentan ingestion o redistribucion |
 | Finnhub / FMP | Endpoints programaticos de tendencia o consenso de target | Conectores futuros solo bajo licencia explicita de display/redistribucion |
 | TradingView | Widgets gratuitos con atribucion conservada | Contexto visual publico futuro, separado del motor de targets |
-| Bybit xStocks / TradFi | Tokens spot respaldados 1:1 y CFDs de acciones USA, respectivamente | Futuro `RWA Watch`; no suministra analyst targets ni acciones directas |
+| xStocks / Ondo / venues CEX | Emisores de activos tokenizados y mercados como Bybit, Kraken, Gate y Bitget | Futuro `RWA Watch` con fuente base del emisor y venues de liquidez; no suministra analyst targets |
 | Quiver Quantitative | Desempeno historico de analistas usando datos Benzinga | Examinar firmas especialistas contra generalistas dentro de financials |
 | AnaChart | Charts y hit ratios de price targets publicos | Comparar precision con benchmark sectorial y versionar reglas |
 
@@ -63,6 +64,9 @@ Una expansión posterior de activos tokenizados preguntaria:
 
 > ?Que instrumentos ligados a acciones o ETF aparecen en mercados on-chain,
 > bajo que estructura, y cuanto se desvia su precio de la referencia?
+
+La revision de fuentes y venues para esa expansion se documenta en
+[RWA Watch: Exchanges Y Fuentes Base](rwa-watch-sources.md).
 
 ## Mercado Inicial
 

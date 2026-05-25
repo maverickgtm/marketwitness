@@ -100,8 +100,12 @@ verificables de cotizaciones tecnologicas/estrategicas.
   opciones contractuales pendientes de derechos de output publico.
 - [ ] Widget atribuido de TradingView para contexto visual de mercado, sin
   usarlo como fuente de datos del scorecard.
-- [ ] Diseno de `RWA Watch` para xStocks de Bybit, usando el endpoint V5
-  documentado solo despues de confirmar terminos de display y retencion.
+- [x] Mapa inicial `RWA Watch` de los 20 CEX lideres por Trust Score y
+  Pepperstone, separando emisores, venues y CFD.
+- [ ] Adaptador `RWA Watch` para la API publica `xStocks / Backed`, solo
+  despues de confirmar terminos de display y retencion.
+- [ ] Revision de acceso/API `Ondo Global Markets` y contraste opcional de
+  venues Bybit, Kraken, Gate y Bitget.
 - [ ] Licencia o aportación autorizada opcional para mostrar rankings reales
   de analistas públicamente.
 - [ ] Actualizaciones programadas del scorecard real con fuentes opcionales
