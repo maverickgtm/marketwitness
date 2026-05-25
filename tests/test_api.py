@@ -169,6 +169,16 @@ class ApiTests(unittest.TestCase):
             (self.reports / filename).write_text(
                 f"<html><h1>{title}</h1></html>", encoding="utf-8"
             )
+        for filename, title in (
+            ("open-edition.html", "Open Edition Snapshot generated page"),
+            ("source-registry.html", "Source Registry Snapshot generated page"),
+            ("provider-approvals.html", "Provider Approvals Snapshot generated page"),
+            ("provider-approval-review-outcomes.html", "Approval Review Outcomes generated page"),
+            ("scorecard-readiness.html", "Scorecard Readiness Snapshot generated page"),
+        ):
+            (self.reports / filename).write_text(
+                f"<html><h1>{title}</h1></html>", encoding="utf-8"
+            )
         store_evaluation_run(
             self.database,
             EvaluationRun(
@@ -266,7 +276,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Reproducible reports.", page.text)
         self.assertIn("Known routes only.", page.text)
-        self.assertIn("17 allowlisted pages", page.text)
+        self.assertIn("22 allowlisted pages", page.text)
         self.assertIn("/dashboard/ipo-watch", page.text)
         self.assertIn("/dashboard/sec-alerts", page.text)
         self.assertIn("/dashboard/ipo-reviews", page.text)
@@ -284,6 +294,11 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/audit/corporate-actions", page.text)
         self.assertIn("/dashboard/audit/operations-quality", page.text)
         self.assertIn("/dashboard/audit/release-decision", page.text)
+        self.assertIn("/dashboard/governance-report/open-edition", page.text)
+        self.assertIn("/dashboard/governance-report/source-registry", page.text)
+        self.assertIn("/dashboard/governance-report/provider-approvals", page.text)
+        self.assertIn("/dashboard/governance-report/approval-review", page.text)
+        self.assertIn("/dashboard/governance-report/scorecard-readiness", page.text)
         self.assertIn("not live market alerts", page.text)
 
     def test_serves_attributed_market_context_without_a_data_endpoint(self) -> None:
@@ -400,6 +415,25 @@ class ApiTests(unittest.TestCase):
                 self.assertIn(marker, response.text)
 
         self.assertEqual(self.client.get("/dashboard/audit/not-configured").status_code, 404)
+
+    def test_serves_only_allowlisted_governance_snapshot_pages(self) -> None:
+        pages = {
+            "/dashboard/governance-report/open-edition": "Open Edition Snapshot generated page",
+            "/dashboard/governance-report/source-registry": "Source Registry Snapshot generated page",
+            "/dashboard/governance-report/provider-approvals": "Provider Approvals Snapshot generated page",
+            "/dashboard/governance-report/approval-review": "Approval Review Outcomes generated page",
+            "/dashboard/governance-report/scorecard-readiness": "Scorecard Readiness Snapshot generated page",
+        }
+
+        for route, marker in pages.items():
+            with self.subTest(route=route):
+                response = self.client.get(route)
+                self.assertEqual(response.status_code, 200)
+                self.assertIn(marker, response.text)
+
+        self.assertEqual(
+            self.client.get("/dashboard/governance-report/not-configured").status_code, 404
+        )
 
     def test_compares_run_methodology_and_evidence_fingerprints(self) -> None:
         response = self.client.get(

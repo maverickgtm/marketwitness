@@ -284,6 +284,15 @@ recorrer en el dashboard por rutas fijas: `/dashboard/audit/target-import`,
 `/dashboard/audit/release-decision`. La pagina de decision del demo documenta
 el bloqueo; no autoriza publicar rankings reales.
 
+Para auditar el estado exacto incluido en un bundle, las rutas
+`/dashboard/governance-report/open-edition`,
+`/dashboard/governance-report/source-registry`,
+`/dashboard/governance-report/provider-approvals`,
+`/dashboard/governance-report/approval-review` y
+`/dashboard/governance-report/scorecard-readiness` sirven snapshots HTML
+generados. Las vistas `/dashboard/governance`, `/dashboard/approvals` y
+`/dashboard/readiness` continúan como controles interactivos separados.
+
 ## Readiness Del Scorecard Publico
 
 Antes de producir una corrida real se debe revisar si existen fuentes

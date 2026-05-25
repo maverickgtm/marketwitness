@@ -83,6 +83,13 @@ FINANCIALS_AUDIT_REPORTS = {
     "operations-quality": "operations-quality.html",
     "release-decision": "scorecard-release.html",
 }
+GOVERNANCE_SNAPSHOT_REPORTS = {
+    "open-edition": "open-edition.html",
+    "source-registry": "source-registry.html",
+    "provider-approvals": "provider-approvals.html",
+    "approval-review": "provider-approval-review-outcomes.html",
+    "scorecard-readiness": "scorecard-readiness.html",
+}
 
 
 def create_app(
@@ -223,6 +230,19 @@ def create_app(
         if filename is None:
             raise HTTPException(
                 status_code=404, detail="Financials audit report is not allowlisted."
+            )
+        return _generated_html(reports, filename)
+
+    @application.get(
+        "/dashboard/governance-report/{snapshot}",
+        response_class=HTMLResponse,
+        include_in_schema=False,
+    )
+    def governance_snapshot_report(snapshot: str) -> str:
+        filename = GOVERNANCE_SNAPSHOT_REPORTS.get(snapshot)
+        if filename is None:
+            raise HTTPException(
+                status_code=404, detail="Governance snapshot report is not allowlisted."
             )
         return _generated_html(reports, filename)
 

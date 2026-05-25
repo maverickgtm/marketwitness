@@ -144,7 +144,7 @@ def report_center_html() -> str:
     <p class="lead">A reading room for the report pages included in the tested Open Edition bundle. It exposes approved dashboard routes, never arbitrary files from the generated-report directory.</p>
     <p class="meta">Open Edition bundle / Weekly GitHub Actions build / 30-day artifact retention</p>
     <section class="cards">
-      <article class="card"><p>Generated report routes</p><strong>17 allowlisted pages</strong></article>
+      <article class="card"><p>Generated report routes</p><strong>22 allowlisted pages</strong></article>
       <article class="card"><p>Bundle schedule</p><strong>Weekly + manual</strong></article>
       <article class="card"><p>Required paid data</p><strong>None</strong></article>
     </section>
@@ -173,6 +173,14 @@ def report_center_html() -> str:
       <article class="report"><span class="pill regulatory">scoring guard</span><h3>Corporate Actions Audit</h3><p>Splits and ticker-transition evidence checked before comparable scoring.</p><small>Affected observations are guarded rather than silently counted.</small><a href="/dashboard/audit/corporate-actions">Open report</a></article>
       <article class="report"><span class="pill regulatory">quality gate</span><h3>Operations Quality Snapshot</h3><p>Generated check of required inputs, lineage and exclusion review status.</p><small>Passing quality alone never grants data-publication rights.</small><a href="/dashboard/audit/operations-quality">Open report</a></article>
       <article class="report"><span class="pill regulatory">release gate</span><h3>Release Decision Snapshot</h3><p>Generated decision combining source rights, lineage and run quality.</p><small>The included demo remains blocked from public real-data claims.</small><a href="/dashboard/audit/release-decision">Open report</a></article>
+    </section>
+    <h2>Governance Snapshots</h2>
+    <section class="reports">
+      <article class="report"><span class="pill fixture">edition manifest</span><h3>Open Edition Snapshot</h3><p>Generated statement of zero-cost capabilities and boundaries for this bundle.</p><small>A dated artifact, separated from the application home page.</small><a href="/dashboard/governance-report/open-edition">Open report</a></article>
+      <article class="report"><span class="pill regulatory">source controls</span><h3>Source Registry Snapshot</h3><p>Generated provider registry after documented demonstration decisions are applied.</p><small>Shows permissions and blocked sources as built.</small><a href="/dashboard/governance-report/source-registry">Open report</a></article>
+      <article class="report"><span class="pill regulatory">permission queue</span><h3>Provider Approvals Snapshot</h3><p>Generated queue of source permissions still needed for a real scorecard.</p><small>An open item is not authorization.</small><a href="/dashboard/governance-report/provider-approvals">Open report</a></article>
+      <article class="report"><span class="pill regulatory">decision audit</span><h3>Approval Review Outcomes</h3><p>Generated outcome log for reviewed provider-permission decisions.</p><small>Preserves the audit trail without modifying base governance silently.</small><a href="/dashboard/governance-report/approval-review">Open report</a></article>
+      <article class="report"><span class="pill regulatory">readiness gate</span><h3>Scorecard Readiness Snapshot</h3><p>Generated view of requirements still blocking a public real-data scorecard.</p><small>Fixtures validate workflow; they do not unlock publication.</small><a href="/dashboard/governance-report/scorecard-readiness">Open report</a></article>
     </section>
     <h2>Operational Controls</h2>
     <section class="controls">
