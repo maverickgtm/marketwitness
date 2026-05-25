@@ -423,6 +423,29 @@ las cinco tablas necesarias para el backfill. El backfill las une por
 accession y holding, conserva un snapshot por `REPORT_DATE` y se detiene si
 aparecen periodos duplicados que puedan corresponder a enmiendas.
 
+Para monitorear nuevas publicaciones trimestrales sin volver a descargar
+periodos ya conocidos:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit sec-nport-sync \
+  --state data/raw/etf/nport/sync-state.csv \
+  --storage-dir data/raw/etf/nport/datasets \
+  --report build/live/nport-sync.md \
+  --as-of YYYY-MM-DD \
+  --series-id S000006411 \
+  --fund-symbol XLF \
+  --data-set-label "SEC N-PORT synchronized extracts" \
+  --output-dir data/raw/etf/nport/backfill/xlf \
+  --manifest build/live/xlf-nport-backfill.csv \
+  --backfill-report build/live/xlf-nport-backfill.md
+```
+
+La primera ejecucion de `sec-nport-sync` registra el catalogo como linea base
+y no descarga automaticamente todo el historico. En ejecuciones posteriores,
+solo descarga releases que la SEC publique despues de esa linea base; si se
+incluye una serie, regenera sus periodos a partir de los trimestres disponibles
+localmente.
+
 ## Estado Del Proyecto
 
 El repositorio contiene un motor de investigacion reproducible con adaptadores
@@ -464,6 +487,8 @@ auditados en desarrollo:
   extraidos, con manifiesto de accession y control de enmiendas.
 - Cataloga y descarga por trimestre los ZIP SEC `N-PORT`, manteniendo los
   archivos grandes fuera del repositorio publico.
+- Sincroniza incrementalmente publicaciones trimestrales `N-PORT`, con estado
+  local atomico y regeneracion opcional de una serie ETF.
 - Importa exportaciones autorizadas de targets con manifiesto y cola de rechazos.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para

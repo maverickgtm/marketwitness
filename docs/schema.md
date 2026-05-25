@@ -484,6 +484,14 @@ ZIP publicado a almacenamiento local y extrae con nombres canonicos solo
 `FUND_REPORTED_HOLDING.tsv` e `IDENTIFIERS.tsv`. Rechaza rutas de archivo
 inseguras y no reemplaza descargas existentes sin `--force`.
 
+`sec-nport-sync` conserva un estado CSV con `quarter`, `download_url`,
+`first_seen_on`, `last_seen_on`, `status`, `archive_path` y `extracted_dir`.
+La inicializacion marca releases previas como `baseline_not_downloaded`;
+releases observadas posteriormente pasan a `downloaded_new_release` tras una
+descarga y extraccion validas. Un ZIP ya presente se marca `available_local`.
+El estado se escribe atomicamente y solo sus directorios extraidos completos
+pueden alimentar la regeneracion opcional del backfill.
+
 `sec-nport-backfill` procesa directorios extraidos de los ZIP trimestrales
 publicados por SEC. Consume cinco tablas tabuladas oficiales:
 `SUBMISSION.tsv`, `REGISTRANT.tsv`, `FUND_REPORTED_INFO.tsv`,

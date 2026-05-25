@@ -81,6 +81,19 @@ demo:
 		--catalog-file data/samples/sec-nport-catalog.html \
 		--output build/demo/nport-dataset-catalog.csv \
 		--report build/demo/nport-dataset-catalog.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-sync \
+		--catalog-file data/samples/sec-nport-catalog.html \
+		--state build/demo/nport-sync-state.csv \
+		--storage-dir build/demo/nport-sync-storage \
+		--report build/demo/nport-sync.md \
+		--as-of 2026-05-24 \
+		--series-id S000DEMO01 \
+		--fund-symbol XLF-REG-DEMO \
+		--data-set-label "Synchronized synthetic fixtures" \
+		--output-dir build/demo/nport-sync-backfill \
+		--manifest build/demo/nport-sync-backfill-manifest.csv \
+		--backfill-report build/demo/nport-sync-backfill.md \
+		--synthetic-fixture
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ark-holdings-import \
 		--snapshot data/samples/ark-holdings-previous.csv \
 		--fund-symbol ARKK-DEMO \

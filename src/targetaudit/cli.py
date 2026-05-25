@@ -163,6 +163,7 @@ from .providers.sec_nport_catalog import (
     write_catalog_csv,
     write_catalog_report,
 )
+from .providers.sec_nport_sync import sync_dataset_releases, write_sync_report
 from .providers.sec_ipo import (
     fetch_daily_master_index,
     load_master_index,
@@ -533,6 +534,44 @@ def main() -> int:
         "--force",
         action="store_true",
         help="Replace an existing local dataset for the requested quarter.",
+    )
+    nport_sync_parser = subparsers.add_parser(
+        "sec-nport-sync",
+        help="Track SEC N-PORT catalog updates and download only newly published quarters.",
+    )
+    nport_sync_parser.add_argument("--state", required=True, help="Persistent sync state CSV.")
+    nport_sync_parser.add_argument(
+        "--storage-dir", required=True, help="Private root for ZIP and extracted tables."
+    )
+    nport_sync_parser.add_argument("--report", required=True, help="Synchronization report.")
+    nport_sync_parser.add_argument("--as-of", required=True, help="Observation date in YYYY-MM-DD.")
+    nport_sync_parser.add_argument(
+        "--user-agent",
+        help="SEC contact user agent; alternatively set TARGETAUDIT_SEC_USER_AGENT.",
+    )
+    nport_sync_parser.add_argument(
+        "--catalog-file",
+        help="Read a saved SEC catalog HTML page instead of requesting SEC.",
+    )
+    nport_sync_parser.add_argument("--series-id", help="Optional fund series ID to regenerate.")
+    nport_sync_parser.add_argument("--fund-symbol", help="Optional fund symbol to regenerate.")
+    nport_sync_parser.add_argument(
+        "--data-set-label", help="Optional audit label when regenerating a selected series."
+    )
+    nport_sync_parser.add_argument(
+        "--source-url",
+        default=SEC_NPORT_DATASETS_URL,
+        help="Official SEC dataset source retained in optional backfill output.",
+    )
+    nport_sync_parser.add_argument(
+        "--output-dir", help="Optional output directory for regenerated holdings periods."
+    )
+    nport_sync_parser.add_argument("--manifest", help="Optional regenerated period manifest.")
+    nport_sync_parser.add_argument("--backfill-report", help="Optional regenerated audit report.")
+    nport_sync_parser.add_argument(
+        "--synthetic-fixture",
+        action="store_true",
+        help="Mark optional local test datasets as synthetic evidence.",
     )
     prices_parser = subparsers.add_parser(
         "alpha-vantage-prices",
@@ -1048,6 +1087,64 @@ def main() -> int:
         message = f"Wrote SEC N-PORT catalog for {len(releases)} quarterly releases"
         if downloaded is not None:
             message += f"; downloaded {downloaded.release.quarter}"
+        print(f"{message} to {args.report}.")
+        return 0
+
+    if args.command == "sec-nport-sync":
+        try:
+            observed_on = date.fromisoformat(args.as_of)
+            regeneration = [
+                args.series_id,
+                args.fund_symbol,
+                args.data_set_label,
+                args.output_dir,
+                args.manifest,
+                args.backfill_report,
+            ]
+            if any(regeneration) and not all(regeneration):
+                parser.error(
+                    "--series-id, --fund-symbol, --data-set-label, --output-dir, "
+                    "--manifest and --backfill-report must be used together."
+                )
+            if args.synthetic_fixture and not all(regeneration):
+                parser.error("--synthetic-fixture requires optional backfill parameters.")
+            releases = (
+                load_dataset_catalog(args.catalog_file)
+                if args.catalog_file
+                else fetch_dataset_catalog(args.user_agent)
+            )
+            sync = sync_dataset_releases(
+                releases, args.state, args.storage_dir, observed_on, args.user_agent
+            )
+            write_sync_report(args.report, sync, args.state)
+            outputs = []
+            regeneration_waiting = False
+            if all(regeneration):
+                if sync.available_dirs:
+                    backfill = load_nport_dataset_backfill(
+                        list(sync.available_dirs),
+                        args.series_id,
+                        args.fund_symbol,
+                        observed_on,
+                        args.data_set_label,
+                        args.source_url,
+                        args.synthetic_fixture,
+                    )
+                    outputs = write_backfill_snapshots(args.output_dir, backfill)
+                    write_backfill_manifest(args.manifest, backfill)
+                    write_backfill_report(args.backfill_report, backfill)
+                else:
+                    regeneration_waiting = True
+        except (SecNportDataError, ValueError) as exc:
+            parser.error(str(exc))
+        message = (
+            f"Synchronized {len(sync.entries)} SEC N-PORT quarterly releases; "
+            f"downloaded {len(sync.downloaded)} new ZIPs"
+        )
+        if outputs:
+            message += f"; regenerated {len(outputs)} periods for {backfill.fund_symbol}"
+        elif regeneration_waiting:
+            message += "; regeneration awaiting a locally available quarter"
         print(f"{message} to {args.report}.")
         return 0
 

@@ -207,6 +207,8 @@ con la frecuencia real de cada fuente.
   con snapshots historicos, manifiesto y bloqueo de periodos duplicados.
 - Implementado: catalogo y descarga local por trimestre de ZIP SEC N-PORT,
   con extraccion limitada a tablas necesarias y defensa de rutas inseguras.
+- Implementado: sincronizacion incremental N-PORT con linea base persistente,
+  descarga exclusiva de releases nuevas y regeneracion opcional de una serie.
 - Presentacion: posiciones nuevas, aumentadas, reducidas, ausentes o con
   cambio solo de peso, fecha efectiva, frecuencia y enlace de evidencia.
 - Regla de lenguaje: una diferencia de holdings se describe como cambio

@@ -204,7 +204,7 @@ sus holdings reales. Las fuentes reales se separan en dos capas:
 
 | Fuente | Frecuencia Publica Util | Uso Previsto |
 |---|---|---|
-| SEC `N-PORT` | Registro regulatorio publico; submissions recientes por CIK y datasets actualizados trimestralmente, no intradia | Catalogo/descarga local de ZIP, importador XML, colector EDGAR y backfill tabular implementados para posiciones en acciones |
+| SEC `N-PORT` | Registro regulatorio publico; submissions recientes por CIK y datasets actualizados trimestralmente, no intradia | Catalogo/descarga local de ZIP, sincronizacion incremental, importador XML, colector EDGAR y backfill tabular implementados para posiciones en acciones |
 | ARK ETF holdings | ARK declara actualizacion diaria de holdings en su sitio | Importador CSV local implementado; publicacion real pendiente de permiso |
 | State Street SPDR holdings | La pagina oficial `XLF` indica `Download All Holdings: Daily` | Importador local `XLF` implementado; publicacion real pendiente de consentimiento escrito |
 | iShares holdings | Paginas oficiales exponen `Download Holdings` con fecha de observacion | Conector por emisor tras verificar terminos y formato estable |
@@ -250,6 +250,10 @@ El comando `sec-nport-datasets` obtiene del catalogo oficial las URL de cada
 ZIP trimestral, descarga un trimestre solicitado con `User-Agent` SEC y
 extrae unicamente las cinco tablas requeridas por el backfill. Los ZIP y TSV
 reales permanecen en `data/raw/` y no se versionan.
+El comando `sec-nport-sync` inicializa un estado local sin descargar el
+historico existente y, en revisiones posteriores, descarga unicamente ZIP
+publicados por primera vez desde esa linea base. Puede regenerar la serie
+N-PORT de un fondo con los trimestres ya disponibles localmente.
 En la verificacion del `2026-05-24`, el catalogo oficial publico `26`
 releases, desde `2019q4` hasta `2026q1`.
 

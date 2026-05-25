@@ -72,8 +72,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   extraidos, con snapshots por periodo y revision obligatoria de enmiendas.
 - [x] Catalogo y descarga manual controlada de ZIP trimestrales `N-PORT`,
   con extraccion segura y archivos conservados fuera de Git.
-- [ ] Ejecucion programada que consulte nuevos trimestres `N-PORT`, descargue
-  solo releases nuevas y regenere la serie seleccionada.
+- [x] Ejecucion programada que consulta nuevos trimestres `N-PORT`, descarga
+  solo releases nuevas y regenera la serie `XLF` cuando hay evidencia local.
 
 ## Milestone 5: Operacion Publica (`v1.0`)
 

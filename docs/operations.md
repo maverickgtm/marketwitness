@@ -432,6 +432,32 @@ Cada ZIP se une internamente para evitar asumir que `HOLDING_ID` es global
 entre trimestres. Si dos entradas producen el mismo `REPORT_DATE`, la
 ejecucion se detiene para revisar la enmienda antes de publicar una serie.
 
+Para una tarea recurrente, inicializar una linea base y luego procesar solo
+ZIP trimestrales nuevos:
+
+```bash
+export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
+PYTHONPATH=src python3 -m targetaudit sec-nport-sync \
+  --state data/raw/etf/nport/sync-state.csv \
+  --storage-dir data/raw/etf/nport/datasets \
+  --report build/live/nport-sync.md \
+  --as-of YYYY-MM-DD \
+  --series-id S000006411 \
+  --fund-symbol XLF \
+  --data-set-label "SEC N-PORT synchronized extracts" \
+  --output-dir data/raw/etf/nport/backfill/xlf \
+  --manifest build/live/xlf-nport-backfill.csv \
+  --backfill-report build/live/xlf-nport-backfill.md
+```
+
+La primera corrida conserva los releases publicados en
+`data/raw/etf/nport/sync-state.csv` como referencia, sin iniciar una descarga
+historica masiva. Desde la segunda, un trimestre que aparezca por primera vez
+se descarga, valida y extrae; luego la serie solicitada se regenera usando
+todos los trimestres disponibles localmente. El estado se reemplaza
+atomicamente y rechaza estados desconocidos, para que una interrupcion o
+edicion accidental no sea tomada como evidencia ya procesada.
+
 Para el benchmark financiero inicial, un filing oficial `NPORT-P` de
 `SELECT SECTOR SPDR TRUST` confirma `XLF` como serie `S000006411` del
 registrante `CIK 0001064641`.
@@ -463,8 +489,7 @@ admisión o cotización completada.
 
 ## Automatizaciones Locales Activas
 
-En la aplicacion Codex se configuraron dos ejecuciones recurrentes locales en
-dias habiles:
+En la aplicacion Codex se configuraron tres ejecuciones recurrentes locales:
 
 - `TargetAudit IPO Watch diario`: consulta el indice SEC, conserva snapshots,
   genera `SEC IPO Alerts` y resume posibles registros, prospectos o retiros
@@ -476,8 +501,12 @@ dias habiles:
   cambios HKEX, emisiones previstas en Londres, coincidencias documentales,
   solicitudes/retiradas australianas, cotizaciones confirmadas en Canadá y
   prospectos SGX. También preserva snapshots y genera `Global Listings Alerts`.
+- `TargetAudit N-PORT trimestral`: consulta el catalogo oficial SEC cada lunes
+  a las `21:50` hora de Guatemala, comenzando el `2026-05-25`; establece una
+  linea base en su primera corrida y luego descarga solo ZIP nuevos para
+  regenerar la serie regulatoria `XLF` cuando existan datos locales validos.
 
-Ambas tareas tratan los eventos como informacion regulatoria para investigar,
+Las tres tareas tratan los eventos como informacion regulatoria para investigar,
 no como instrucciones para tomar posiciones.
 
 El contraste FCA NSM distingue entre un emisor sin documento encontrado y
