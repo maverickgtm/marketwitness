@@ -51,6 +51,16 @@ CAPABILITIES = (
         "limitation": "Document confirmation does not predict or recommend an IPO position.",
     },
     {
+        "key": "rwa_watch_sandbox",
+        "title": "RWA Watch Sandbox",
+        "status": "bundled_offline_demo",
+        "cost": "No cost",
+        "provider_ids": ("synthetic-demo",),
+        "output": "Synthetic issuer-reference versus token-venue deviation monitoring",
+        "route": "/dashboard/rwa-watch",
+        "limitation": "No live token data is collected; real issuer or venue feeds require written rights.",
+    },
+    {
         "key": "real_analyst_rankings",
         "title": "Real Analyst Rankings",
         "status": "bring_authorized_data",

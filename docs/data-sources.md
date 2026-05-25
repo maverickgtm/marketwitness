@@ -42,9 +42,9 @@ documenta que la página premium de Alpha Vantage todavía no demuestra permiso
 de salida pública y por eso conserva el expediente pendiente.
 
 Al `2026-05-24`, el inventario contiene 26 fuentes: 15 conectores o fixtures
-implementados, 19 fuentes que aun exigen revision de terminos/licencia para
-uso público real, 1 integracion limitada a descarga manual y 1 referencia
-bloqueada para colección automatizada. Esta separación evita confundir "el
+implementados, 18 fuentes que aun exigen revision de terminos/licencia para
+uso público real, 1 integracion limitada a descarga manual y 2 referencias
+bloqueadas para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto
 público".
 
@@ -98,7 +98,8 @@ activo y usar exchanges solamente como venues secundarios.
 
 | Fuente O Grupo | Que Ofrece | Encaje En TargetAudit |
 |---|---|---|
-| `xStocks / Backed Public API` | Recursos sin autenticacion para metadatos, precio subyacente/mercado, documentacion legal y proof of reserves | Candidato base preferido para `RWA Watch`, pendiente de terminos de display y retencion |
+| `RWA Watch Sandbox` | Observaciones de precio de referencia y token/venue creadas por TargetAudit | Modulo funcional sin costo; demuestra desviaciones y controles sin datos reales |
+| `xStocks / Backed Public API` | Recursos sin autenticacion para metadatos, precio subyacente/mercado, documentacion legal y proof of reserves | Referencia tecnica bloqueada: los terminos revisados no autorizan recoleccion/republicacion publica automatizada |
 | `Ondo Global Markets` | Mas de 200 acciones y ETF tokenizados con ruta API/SDK documentada | Segunda familia candidata, pendiente de acceso y derechos publicos |
 | Bybit, Kraken, Gate y Bitget | Venues oficiales que anuncian xStocks u Ondo tokenizados | Candidatos secundarios para contrastar mercado despues de validar terminos |
 | LBank | Zona xStocks anunciada con activos impulsados por Backed | Referencia de venue hasta confirmar API |
@@ -108,6 +109,11 @@ activo y usar exchanges solamente como venues secundarios.
 Esta linea tampoco resuelve la pregunta inicial de analistas: activos
 tokenizados, CFD y productos de brokerage no entregan un historial de
 pronosticos de Roth MKM, KBW, UBS, Citi o Barclays.
+
+Los terminos oficiales de xStocks/Backed revisados el `2026-05-24` son
+determinantes: acceso publico a endpoints no equivale a derechos de producto
+publico. La edicion GitHub no realiza llamadas xStocks ni conserva sus precios;
+solo muestra un sandbox sintetico mientras no exista autorizacion escrita.
 
 ## Precios Ajustados Y Mercado
 
@@ -407,6 +413,8 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - CoinGecko exchanges: <https://www.coingecko.com/en/exchanges>
 - xStocks API: <https://docs.xstocks.fi/apis/openapi>
 - xStocks overview: <https://docs.xstocks.fi/about-xstocks/welcome-to-xstocks/overview>
+- xStocks terms of service: <https://xstocks.fi/documents/xstocks-terms-of-service.pdf>
+- Backed Assets terms of service: <https://assets.backed.fi/terms-of-service>
 - Ondo Global Markets overview: <https://docs.ondo.finance/ondo-global-markets/overview>
 - Ondo API integration: <https://docs.ondo.finance/ondo-global-markets/minting-and-redemption/minting-and-redemption-through-api>
 - Kraken xStocks: <https://www.kraken.com/xstocks>

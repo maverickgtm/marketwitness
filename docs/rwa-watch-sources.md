@@ -2,8 +2,9 @@
 
 Revision: `2026-05-24`.
 
-`RWA Watch` es una expansion futura de TargetAudit para observar instrumentos
-ligados a acciones o ETF mediante tokenizacion. No es parte de `Financials
+`RWA Watch` es un sandbox incluido en TargetAudit para demostrar como observar
+instrumentos ligados a acciones o ETF mediante tokenizacion. Usa solamente
+observaciones sinteticas redistribuibles. No es parte de `Financials
 Scorecard`: un token negociable o un CFD no proporciona historial de `price
 targets` de analistas.
 
@@ -28,7 +29,7 @@ conectores duplicados para productos basados en la misma emision.
 
 | Fuente Base | Evidencia Oficial Encontrada | Decision |
 |---|---|---|
-| xStocks / Backed Public API | Documenta APIs sin autenticacion para metadatos, documentacion legal, NAV, datos de mercado y proof of reserves; describe valor subyacente y precio de mercado | Primer candidato de prototipo, pendiente de confirmar display y retencion publica |
+| xStocks / Backed Public API | Documenta APIs sin autenticacion para metadatos, documentacion legal, NAV, datos de mercado y proof of reserves; sus terminos limitan servicios a fines informativos/internos y restringen retrieval o republicacion automatizados | Referencia tecnica bloqueada; no recolectar ni publicar datos reales sin autorizacion escrita |
 | Ondo Global Markets | Documenta mas de 200 acciones y ETF de EE. UU. tokenizados, con integracion API/SDK | Segundo candidato; confirmar acceso, elegibilidad y derechos de output |
 | Exchanges compatibles | Pueden exponer mercado spot, disponibilidad o liquidez del instrumento | Capa secundaria solamente, tras validar terminos propios |
 
@@ -71,12 +72,14 @@ cuenta:
 
 ## Prioridad Tecnica
 
-1. Confirmar terminos de display y retencion de la API publica
-   `xStocks / Backed` antes de construir un adaptador de datos reales.
-2. Confirmar acceso y derechos de salida de `Ondo Global Markets`.
-3. Despues, evaluar disponibilidad y precios en Bybit, Kraken, Gate y Bitget
+1. Mantener operativo el `RWA Watch Sandbox` con fixtures propios y sin
+   llamadas a proveedores externos.
+2. Solicitar autorizacion escrita de display, retencion y output derivado
+   antes de construir un adaptador real `xStocks / Backed`.
+3. Confirmar acceso y derechos de salida de `Ondo Global Markets`.
+4. Despues, evaluar disponibilidad y precios en Bybit, Kraken, Gate y Bitget
    como venues secundarios; LBank queda pendiente de confirmar API.
-4. Mantener CFDs y productos de brokerage fuera de cualquier comparacion que
+5. Mantener CFDs y productos de brokerage fuera de cualquier comparacion que
    sugiera propiedad de acciones o historial de analistas.
 
 ## Fuentes Oficiales
@@ -84,6 +87,7 @@ cuenta:
 - CoinGecko exchanges: <https://www.coingecko.com/en/exchanges>
 - xStocks API: <https://docs.xstocks.fi/apis/openapi>
 - xStocks overview: <https://docs.xstocks.fi/about-xstocks/welcome-to-xstocks/overview>
+- xStocks Terms of Service: <https://xstocks.fi/documents/xstocks-terms-of-service.pdf>
 - Ondo Global Markets overview: <https://docs.ondo.finance/ondo-global-markets/overview>
 - Ondo API integration: <https://docs.ondo.finance/ondo-global-markets/minting-and-redemption/minting-and-redemption-through-api>
 - Bybit xStocks: <https://www.bybit.com/en/help-center/article/FAQ-xStocks-on-Bybit>

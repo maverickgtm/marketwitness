@@ -103,6 +103,11 @@ demo:
 		--report build/demo/open-edition.md \
 		--html build/demo/open-edition.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit rwa-watch \
+		--snapshot data/samples/rwa-watch-synthetic.csv \
+		--report build/demo/rwa-watch.md \
+		--html build/demo/rwa-watch.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit licensed-extensions \
 		--catalog data/samples/licensed_extensions.csv \
 		--report build/demo/licensed-extensions.md \

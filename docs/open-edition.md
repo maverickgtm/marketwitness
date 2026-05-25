@@ -9,7 +9,7 @@ datos ni contratar APIs comerciales.
 
 | Modo | Datos | Costo De Datos | Uso |
 |---|---|---:|---|
-| Offline showcase | Fixtures creados por el proyecto | Ninguno | Probar Financials Scorecard, auditoria y dashboard completo |
+| Offline showcase | Fixtures creados por el proyecto | Ninguno | Probar Financials Scorecard, RWA Watch Sandbox, auditoria y dashboard completo |
 | Public monitors | SEC EDGAR, SEC N-PORT y FCA NSM bajo sus reglas publicas | Ninguno | Seguir filings IPO y evidencia regulatoria ETF/documental |
 | Authorized extension | Archivos aportados por el usuario con derechos documentados | No requerido por TargetAudit | Ejecutar rankings propios sin que el repositorio distribuya datos restringidos |
 
@@ -34,10 +34,11 @@ mercado conservando su atribucion. Ese componente no alimentaria el ranking
 ni reemplazaria una licencia de historial de targets.
 
 La investigacion inicial de `RWA Watch` mapea 20 exchanges centralizados y
-Pepperstone. Identifica `xStocks / Backed` como API base publica sin
-autenticacion y `Ondo Global Markets` como segundo emisor a revisar; Bybit,
-Kraken, Gate y Bitget son venues futuros. Ninguna de estas fuentes alimenta
-analyst targets ni se activa antes de revisar permiso de uso publico. Ver
+Pepperstone. Los terminos revisados bloquean la recoleccion/republicacion
+publica automatizada de `xStocks / Backed`, aunque existan endpoints visibles;
+`Ondo Global Markets` permanece bajo revision. La Open Edition incluye en su
+lugar un sandbox sintetico que no realiza llamadas reales. Ninguna de estas
+fuentes alimenta analyst targets. Ver
 [RWA Watch: Exchanges Y Fuentes Base](rwa-watch-sources.md).
 
 ## Capacidades Incluidas
@@ -69,6 +70,15 @@ analyst targets ni se activa antes de revisar permiso de uso publico. Ver
   emisores seguidos.
 - No sustituye monitores de bolsas cuya reutilización requiera revisar
   términos.
+
+### RWA Watch Sandbox
+
+- Compara precios sinteticos de referencia y de token/venue en una pagina
+  separada del scorecard.
+- Marca desviaciones para revision metodologica, nunca como senal de compra o
+  venta.
+- No recolecta datos de xStocks, Ondo o exchanges mientras sus derechos de
+  output publico no esten documentados.
 
 ## Ejecutar Sin Costos
 

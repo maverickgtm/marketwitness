@@ -218,6 +218,13 @@ from .open_edition import (
     write_open_edition_html,
     write_open_edition_report,
 )
+from .rwa_watch import (
+    RwaWatchDataError,
+    build_rwa_snapshot,
+    load_rwa_observations,
+    write_rwa_html,
+    write_rwa_report,
+)
 from .licensed_extensions import (
     LicensedExtensionDataError,
     build_licensed_extensions_snapshot,
@@ -461,6 +468,18 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Open Edition review cutoff in YYYY-MM-DD format.",
+    )
+    rwa_parser = subparsers.add_parser(
+        "rwa-watch",
+        help="Render the synthetic tokenized-asset monitoring sandbox.",
+    )
+    rwa_parser.add_argument("--snapshot", required=True, help="Synthetic RWA observations CSV.")
+    rwa_parser.add_argument("--report", required=True, help="Markdown RWA Watch report path.")
+    rwa_parser.add_argument("--html", help="Optional RWA Watch HTML dashboard output path.")
+    rwa_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Observation cutoff in YYYY-MM-DD format.",
     )
     extensions_parser = subparsers.add_parser(
         "licensed-extensions",
@@ -1162,6 +1181,22 @@ def main() -> int:
         print(
             f"Wrote Open Edition report with {snapshot['zero_cost_available_count']} "
             f"no-cost capabilities to {args.report}."
+        )
+        return 0
+
+    if args.command == "rwa-watch":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            observations = load_rwa_observations(args.snapshot, as_of)
+            snapshot = build_rwa_snapshot(observations, as_of)
+            write_rwa_report(args.report, snapshot)
+            if args.html:
+                write_rwa_html(args.html, snapshot)
+        except (RwaWatchDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote RWA Watch Sandbox for {snapshot['observation_count']} synthetic "
+            f"observations to {args.report}."
         )
         return 0
 

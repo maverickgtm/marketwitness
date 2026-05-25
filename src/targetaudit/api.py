@@ -124,6 +124,12 @@ def create_app(
         return _generated_html(reports, "lse-fca-check.html")
 
     @application.get(
+        "/dashboard/rwa-watch", response_class=HTMLResponse, include_in_schema=False
+    )
+    def rwa_watch_report() -> str:
+        return _generated_html(reports, "rwa-watch.html")
+
+    @application.get(
         "/dashboard/financials", response_class=HTMLResponse, include_in_schema=False
     )
     def scorecard() -> str:

@@ -102,8 +102,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
   usarlo como fuente de datos del scorecard.
 - [x] Mapa inicial `RWA Watch` de los 20 CEX lideres por Trust Score y
   Pepperstone, separando emisores, venues y CFD.
-- [ ] Adaptador `RWA Watch` para la API publica `xStocks / Backed`, solo
-  despues de confirmar terminos de display y retencion.
+- [x] `RWA Watch Sandbox` ejecutable y visible en dashboard con observaciones
+  sinteticas, desviacion de precio y bloqueo explicito de datos live.
+- [ ] Adaptador real `RWA Watch` para `xStocks / Backed`, solo si se obtiene
+  autorizacion escrita de display, retencion y output derivado.
 - [ ] Revision de acceso/API `Ondo Global Markets` y contraste opcional de
   venues Bybit, Kraken, Gate y Bitget.
 - [ ] Licencia o aportación autorizada opcional para mostrar rankings reales

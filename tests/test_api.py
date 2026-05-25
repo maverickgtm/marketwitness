@@ -116,6 +116,10 @@ class ApiTests(unittest.TestCase):
             "<html><h1>Public Document Checks generated page</h1></html>",
             encoding="utf-8",
         )
+        (self.reports / "rwa-watch.html").write_text(
+            "<html><h1>RWA Watch Sandbox generated page</h1></html>",
+            encoding="utf-8",
+        )
         store_evaluation_run(
             self.database,
             EvaluationRun(
@@ -198,7 +202,8 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("/api/v1/open-edition", page.text)
         self.assertEqual(snapshot.status_code, 200)
-        self.assertEqual(snapshot.json()["zero_cost_available_count"], 4)
+        self.assertEqual(snapshot.json()["zero_cost_available_count"], 5)
+        self.assertEqual(snapshot.json()["offline_ready_count"], 2)
         self.assertEqual(snapshot.json()["public_data_ready_count"], 3)
         self.assertEqual(snapshot.json()["optional_extension_count"], 1)
 
@@ -221,10 +226,12 @@ class ApiTests(unittest.TestCase):
         ipo = self.client.get("/dashboard/ipo-watch")
         etf = self.client.get("/dashboard/etf-regulatory")
         documents = self.client.get("/dashboard/document-checks")
+        rwa = self.client.get("/dashboard/rwa-watch")
 
         self.assertIn("IPO Watch generated page", ipo.text)
         self.assertIn("ETF Regulatory Holdings generated page", etf.text)
         self.assertIn("Public Document Checks generated page", documents.text)
+        self.assertIn("RWA Watch Sandbox generated page", rwa.text)
 
     def test_compares_run_methodology_and_evidence_fingerprints(self) -> None:
         response = self.client.get(
@@ -281,7 +288,11 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Provider Control", page.text)
         self.assertEqual(sources.json()["provider_count"], 26)
         self.assertGreater(sources.json()["open_review_count"], 0)
-        self.assertEqual(blocked.json()["sources"][0]["provider_id"], "tipranks-reference")
+        self.assertEqual(sources.json()["blocked_count"], 2)
+        self.assertEqual(
+            {item["provider_id"] for item in blocked.json()["sources"]},
+            {"tipranks-reference", "xstocks-backing-api"},
+        )
         self.assertEqual(len(holdings.json()["sources"]), 3)
         self.assertIn("publication_policy", sources.json()["sources"][0])
 

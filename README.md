@@ -55,12 +55,14 @@ anadirse mas adelante como widget gratuito atribuido para contexto visual, no
 como fuente de historial de analistas.
 
 La investigacion de `RWA Watch` ya cubre 20 exchanges relevantes y
-Pepperstone. Identifica a `xStocks / Backed` como mejor fuente base potencial:
-documenta APIs publicas sin autenticacion para metadatos, precios, documentos
-legales y proof of reserves. `Ondo Global Markets` es la segunda familia a
-validar, mientras Bybit, Kraken, Gate y Bitget son posibles venues
-secundarios. Ver [RWA Watch: Exchanges Y Fuentes Base](docs/rwa-watch-sources.md).
-Esta linea no suministra ratings, price targets ni recomendaciones.
+Pepperstone. `xStocks / Backed` documenta APIs sin autenticacion para
+metadatos, precios, documentos legales y proof of reserves, pero sus terminos
+revisados no sustentan recoleccion/republicacion automatizada en un producto
+publico. Por eso TargetAudit incorpora un `RWA Watch Sandbox` con datos
+sinteticos y mantiene xStocks bloqueado hasta autorizacion escrita; `Ondo
+Global Markets` permanece en revision. Ver
+[RWA Watch: Exchanges Y Fuentes Base](docs/rwa-watch-sources.md). Esta linea
+no suministra ratings, price targets ni recomendaciones.
 
 TargetAudit nace de una pregunta sencilla: si una firma publica un precio
 objetivo para una accion, ?ese pronostico se cumplio y una estrategia basada en

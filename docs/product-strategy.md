@@ -19,9 +19,9 @@ complementarios:
   tecnologicas/estrategicas.
 - `Global Listings Watch`: mapa y futuros conectores de listings fuera de
   Estados Unidos, comenzando por Londres y Hong Kong.
-- `RWA Watch` futuro: monitoreo de acciones y ETF tokenizados, comenzando por
-  evaluar APIs de emisores `xStocks / Backed` y `Ondo`, con venues
-  secundarios sin confundirlos con acciones directas.
+- `RWA Watch Sandbox`: pagina funcional con evidencia sintetica sobre acciones
+  y ETF tokenizados; los conectores reales de `xStocks / Backed`, `Ondo` y
+  venues quedan condicionados a derechos escritos de uso publico.
 
 ## Problema
 
@@ -45,7 +45,7 @@ Competidores observados al `2026-05-24`:
 | Yahoo Finance / Investing.com | Consulta visual de ratings y targets | Referencia manual solamente; sus terminos no sustentan ingestion o redistribucion |
 | Finnhub / FMP | Endpoints programaticos de tendencia o consenso de target | Conectores futuros solo bajo licencia explicita de display/redistribucion |
 | TradingView | Widgets gratuitos con atribucion conservada | Contexto visual publico futuro, separado del motor de targets |
-| xStocks / Ondo / venues CEX | Emisores de activos tokenizados y mercados como Bybit, Kraken, Gate y Bitget | Futuro `RWA Watch` con fuente base del emisor y venues de liquidez; no suministra analyst targets |
+| xStocks / Ondo / venues CEX | Emisores de activos tokenizados y mercados como Bybit, Kraken, Gate y Bitget | `RWA Watch Sandbox` ya demuestra el modelo; xStocks queda bloqueado por terminos y ningun venue suministra analyst targets |
 | Quiver Quantitative | Desempeno historico de analistas usando datos Benzinga | Examinar firmas especialistas contra generalistas dentro de financials |
 | AnaChart | Charts y hit ratios de price targets publicos | Comparar precision con benchmark sectorial y versionar reglas |
 

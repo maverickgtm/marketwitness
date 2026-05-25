@@ -16,8 +16,8 @@ class OpenEditionTests(unittest.TestCase):
 
         snapshot = build_open_edition_snapshot(providers, date(2026, 5, 24))
 
-        self.assertEqual(snapshot["zero_cost_available_count"], 4)
-        self.assertEqual(snapshot["offline_ready_count"], 1)
+        self.assertEqual(snapshot["zero_cost_available_count"], 5)
+        self.assertEqual(snapshot["offline_ready_count"], 2)
         self.assertEqual(snapshot["public_data_ready_count"], 3)
         self.assertEqual(snapshot["optional_extension_count"], 1)
         rankings = next(
@@ -27,7 +27,12 @@ class OpenEditionTests(unittest.TestCase):
         self.assertEqual(rankings["route"], "/dashboard/extensions")
         self.assertIn("no licensed target dataset", rankings["limitation"])
         self.assertIn("No paid data required", render_open_edition_html(snapshot))
-        self.assertIn("Available without paid data subscriptions: `4`", render_open_edition_report(snapshot))
+        rwa = next(
+            item for item in snapshot["capabilities"] if item["key"] == "rwa_watch_sandbox"
+        )
+        self.assertEqual(rwa["route"], "/dashboard/rwa-watch")
+        self.assertIn("No live token data", rwa["limitation"])
+        self.assertIn("Available without paid data subscriptions: `5`", render_open_edition_report(snapshot))
 
     def test_rejects_a_public_capability_if_its_free_source_becomes_unavailable(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))

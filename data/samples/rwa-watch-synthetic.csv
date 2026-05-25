@@ -1,0 +1,5 @@
+token_symbol,reference_symbol,reference_name,issuer_model,network,venue,observed_on,backing_status,reference_price,token_price,source_layer,source_url
+BNKX-DEMO,BNK,Beacon National Bank,Synthetic collateral certificate,Solana,Example Spot Alpha,2026-05-23,synthetic_1_to_1,100.00,100.42,synthetic_demo,https://example.invalid/rwa-watch/bnkx-demo
+TECHX-DEMO,TECH,Technology Basket,Synthetic collateral certificate,Ethereum,Example DEX Pool,2026-05-23,synthetic_1_to_1,250.00,254.50,synthetic_demo,https://example.invalid/rwa-watch/techx-demo
+DIVX-DEMO,DIV,Dividend Equity Fund,Synthetic collateral certificate,Mantle,Example Spot Beta,2026-05-23,synthetic_1_to_1,75.00,73.65,synthetic_demo,https://example.invalid/rwa-watch/divx-demo
+SPX-DEMO,SPX,Broad Equity Index Fund,Synthetic collateral certificate,Solana,Example Spot Alpha,2026-05-23,synthetic_1_to_1,520.00,519.10,synthetic_demo,https://example.invalid/rwa-watch/spx-demo

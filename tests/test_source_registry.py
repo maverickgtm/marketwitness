@@ -35,6 +35,7 @@ class SourceRegistryTests(unittest.TestCase):
         self.assertIn("xStocks / Backed Public API", report)
         self.assertIn("Ondo Global Markets", report)
         self.assertIn("Bybit xStocks V5 Market Data", report)
+        self.assertIn("Blocked from automated collection: `2`", report)
         self.assertIn("Public accessibility is not a license", page)
         self.assertIn("blocked", page)
 

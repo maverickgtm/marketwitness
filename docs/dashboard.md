@@ -8,6 +8,19 @@ Con la expansion internacional y los controles de publicación, el producto
 tiene páginas operativas adicionales, incluida la página de actividad
 publicada de ETF:
 
+## Pagina: RWA Watch Sandbox
+
+Objetivo: demostrar gratis como se auditarian activos tokenizados sin
+recolectar ni republicar un feed cuya licencia no este aprobada.
+
+- La ruta `/dashboard/rwa-watch` presenta observaciones sinteticas creadas por
+  TargetAudit, comparando precio de referencia contra precio token/venue.
+- Muestra red, venue, modelo emisor, estado de respaldo y desviaciones que
+  ameritarian revision.
+- Explica que `xStocks / Backed` queda bloqueado para ingestion publica por
+  sus terminos revisados, pese a documentar endpoints sin autenticacion.
+- No emite posiciones recomendadas ni mezcla el modulo con analyst targets.
+
 ## Portada: Open Edition
 
 Objetivo: mostrar desde el primer acceso que la versión GitHub funciona sin
