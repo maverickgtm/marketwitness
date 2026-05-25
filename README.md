@@ -923,6 +923,8 @@ tests/                  Pruebas unitarias
 data/samples/           Dataset sintetico para demostrar el flujo
 docs/                   Metodologia, estrategia, dashboard, fuentes y roadmap
 .github/workflows/      Integracion continua
+.github/ISSUE_TEMPLATE/ Formularios para bugs y nuevas fuentes con permisos documentados
+SECURITY.md              Reporte privado y manejo de credenciales/datos locales
 ```
 
 ## Siguientes Versiones
@@ -940,7 +942,8 @@ Consulta [la metodologia](docs/methodology.md),
 [la estrategia de producto](docs/product-strategy.md), junto con el alcance
 [Open Edition](docs/open-edition.md). El progreso tecnico se
 mantiene en [el roadmap](docs/roadmap.md) y la ejecucion continua en
-[operations.md](docs/operations.md).
+[operations.md](docs/operations.md). Para colaborar, consulta
+[CONTRIBUTING.md](CONTRIBUTING.md) y la politica de [seguridad](SECURITY.md).
 
 ## Aviso
 

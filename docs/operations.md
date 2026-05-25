@@ -751,6 +751,9 @@ comunicado oficial revisado.
 
 En un repositorio GitHub publico, `TARGETAUDIT_SEC_USER_AGENT` se configurara
 como `Actions secret`, nunca escrito en el codigo ni en los reportes.
+Antes de abrir contribuciones, habilita `Private vulnerability reporting` en
+GitHub para que los reportes descritos en `SECURITY.md` no expongan secretos ni
+fallas explotables en issues publicos.
 
 ## Limites
 

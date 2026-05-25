@@ -1,0 +1,80 @@
+name: Propuesta de fuente de datos
+description: Evaluar una fuente nueva sin asumir derechos de uso o publicacion.
+title: "[Fuente] "
+labels: ["data-source-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        TargetAudit no activa una fuente real hasta documentar procedencia, costo y derechos de output publico.
+  - type: input
+    id: provider
+    attributes:
+      label: Proveedor y producto
+      placeholder: SEC EDGAR, Ondo Global Markets, proveedor autorizado de targets...
+    validations:
+      required: true
+  - type: input
+    id: official_url
+    attributes:
+      label: URL oficial de datos o documentacion
+      placeholder: https://...
+    validations:
+      required: true
+  - type: input
+    id: terms_url
+    attributes:
+      label: URL de terminos, licencia o reglas de acceso
+      placeholder: https://...
+    validations:
+      required: true
+  - type: dropdown
+    id: data_class
+    attributes:
+      label: Clase de datos
+      options:
+        - Analyst targets / ratings
+        - Adjusted prices
+        - IPO filings / listings
+        - ETF holdings
+        - Tokenized equities / RWA
+        - News or market context
+        - Otra
+    validations:
+      required: true
+  - type: textarea
+    id: coverage
+    attributes:
+      label: Cobertura, campos y frecuencia
+      description: Describe universo, historico disponible, campos y limites tecnicos.
+    validations:
+      required: true
+  - type: dropdown
+    id: cost
+    attributes:
+      label: Costo conocido
+      options:
+        - Gratuito sin clave
+        - Gratuito con clave o registro
+        - Freemium con limites
+        - Pago
+        - Desconocido
+    validations:
+      required: true
+  - type: textarea
+    id: rights
+    attributes:
+      label: Derechos de recoleccion y publicacion
+      description: Cita o resume la regla que autoriza o limita automatizacion, almacenamiento, display y output derivado.
+    validations:
+      required: true
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Verificaciones
+      options:
+        - label: No adjunto credenciales ni datos privados en este issue.
+          required: true
+        - label: Entiendo que una URL publica no equivale a permiso de republicacion.
+          required: true
+

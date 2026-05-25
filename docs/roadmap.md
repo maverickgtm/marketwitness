@@ -129,6 +129,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   promoción de los candidatos críticos sin autoautorizar publicación.
 - [x] Flujo de decisión manual que genera registros promovidos o pendientes
   con evidencia, sin editar la gobernanza base en silencio.
+- [x] Preparacion de colaboracion publica en GitHub con politica de seguridad
+  y plantillas que exigen derechos y procedencia para fuentes propuestas.
 - [ ] Revision legal del producto y de sus disclaimers.
 
 ## Decisiones Pendientes
