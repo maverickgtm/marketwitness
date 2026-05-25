@@ -114,8 +114,9 @@ python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 Abrir `http://127.0.0.1:8000/` muestra la portada `Open Edition`.
 Desde ella se abre `/dashboard/reports`, un indice de
 `/dashboard/ipo-watch`, `/dashboard/etf-regulatory`,
-`/dashboard/document-checks` y `/dashboard/rwa-watch`; estas rutas solo
-sirven artefactos HTML conocidos producidos por `make demo`.
+`/dashboard/document-checks`, `/dashboard/rwa-watch`,
+`/dashboard/global-alerts` y `/dashboard/issuer-confirmations`; estas rutas
+solo sirven artefactos HTML conocidos producidos por `make demo`.
 La portada tambien enlaza `/dashboard/policy`, que debe revisarse antes de
 habilitar datos live o publicar resultados.
 Tambien enlaza `/dashboard/market-context`, cuya carga de TradingView requiere

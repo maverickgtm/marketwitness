@@ -120,6 +120,14 @@ class ApiTests(unittest.TestCase):
             "<html><h1>RWA Watch Sandbox generated page</h1></html>",
             encoding="utf-8",
         )
+        (self.reports / "global-alerts.html").write_text(
+            "<html><h1>Global Listings Alerts generated page</h1></html>",
+            encoding="utf-8",
+        )
+        (self.reports / "issuer-confirmations.html").write_text(
+            "<html><h1>Issuer Confirmations generated page</h1></html>",
+            encoding="utf-8",
+        )
         store_evaluation_run(
             self.database,
             EvaluationRun(
@@ -217,11 +225,13 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Reproducible reports.", page.text)
         self.assertIn("Known routes only.", page.text)
-        self.assertIn("4 allowlisted pages", page.text)
+        self.assertIn("6 allowlisted pages", page.text)
         self.assertIn("/dashboard/ipo-watch", page.text)
         self.assertIn("/dashboard/etf-regulatory", page.text)
         self.assertIn("/dashboard/document-checks", page.text)
         self.assertIn("/dashboard/rwa-watch", page.text)
+        self.assertIn("/dashboard/global-alerts", page.text)
+        self.assertIn("/dashboard/issuer-confirmations", page.text)
         self.assertIn("not live market alerts", page.text)
 
     def test_serves_attributed_market_context_without_a_data_endpoint(self) -> None:
@@ -270,11 +280,15 @@ class ApiTests(unittest.TestCase):
         etf = self.client.get("/dashboard/etf-regulatory")
         documents = self.client.get("/dashboard/document-checks")
         rwa = self.client.get("/dashboard/rwa-watch")
+        global_alerts = self.client.get("/dashboard/global-alerts")
+        issuer_confirmations = self.client.get("/dashboard/issuer-confirmations")
 
         self.assertIn("IPO Watch generated page", ipo.text)
         self.assertIn("ETF Regulatory Holdings generated page", etf.text)
         self.assertIn("Public Document Checks generated page", documents.text)
         self.assertIn("RWA Watch Sandbox generated page", rwa.text)
+        self.assertIn("Global Listings Alerts generated page", global_alerts.text)
+        self.assertIn("Issuer Confirmations generated page", issuer_confirmations.text)
 
     def test_compares_run_methodology_and_evidence_fingerprints(self) -> None:
         response = self.client.get(

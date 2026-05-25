@@ -140,6 +140,18 @@ def create_app(
         return _generated_html(reports, "rwa-watch.html")
 
     @application.get(
+        "/dashboard/global-alerts", response_class=HTMLResponse, include_in_schema=False
+    )
+    def global_listing_alerts_report() -> str:
+        return _generated_html(reports, "global-alerts.html")
+
+    @application.get(
+        "/dashboard/issuer-confirmations", response_class=HTMLResponse, include_in_schema=False
+    )
+    def issuer_confirmations_report() -> str:
+        return _generated_html(reports, "issuer-confirmations.html")
+
+    @application.get(
         "/dashboard/market-context", response_class=HTMLResponse, include_in_schema=False
     )
     def market_context_page() -> str:

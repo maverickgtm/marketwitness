@@ -45,9 +45,12 @@ comprar datos comerciales.
 Objetivo: volver navegable el bundle semanal de Open Edition sin abrir acceso
 general al directorio de reportes construidos.
 
-- La ruta `/dashboard/reports` agrupa las cuatro paginas HTML ya permitidas:
-  IPO Watch, ETF Regulatory Holdings, Public Document Checks y RWA Watch
-  Sandbox.
+- La ruta `/dashboard/reports` agrupa las seis paginas HTML ya permitidas:
+  IPO Watch, ETF Regulatory Holdings, Public Document Checks, RWA Watch
+  Sandbox, Global Listings Alerts e Issuer Confirmations.
+- `Global Listings Alerts` permite consultar la cola comparada de diez
+  mercados internacionales sin confundir documentos de oferta con listings
+  confirmados; `Issuer Confirmations` conserva hitos oficiales ya revisados.
 - Explica que el artefacto periodico generado en GitHub Actions usa fixtures
   redistribuibles, no consultas live ni rankings reales.
 - Enlaza controles operativos de politica, gobernanza y Release Center para
