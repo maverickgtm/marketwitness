@@ -25,6 +25,7 @@ demo:
 		--report build/demo/report.md \
 		--database build/demo/targetaudit.duckdb \
 		--run-id demo-financials-2025-01-01 \
+		--dataset-label "Authorized target export + synthetic Financials prices" \
 		--minimum-sample 1 \
 		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
@@ -36,6 +37,7 @@ demo:
 		--report build/demo/report-target-revisions.md \
 		--database build/demo/targetaudit.duckdb \
 		--run-id demo-target-revisions-2025-01-01 \
+		--dataset-label "Synthetic target revision audit" \
 		--minimum-sample 1 \
 		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
@@ -235,6 +237,7 @@ demo:
 		--report build/demo/report-actions-guarded.md \
 		--database build/demo/targetaudit.duckdb \
 		--run-id demo-actions-guarded-2025-01-01 \
+		--dataset-label "Synthetic corporate-action guarded evaluation" \
 		--minimum-sample 1 \
 		--transaction-cost-bps 10 \
 		--as-of 2025-01-01

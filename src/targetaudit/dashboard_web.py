@@ -25,7 +25,7 @@ def financials_scorecard_html() -> str:
     .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold);
       border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
     .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
-    .card,.filters,.table-wrap,.side-panel,.empty { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card,.filters,.table-wrap,.side-panel,.empty,.compare { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
     .card { padding:17px 20px; }
     .card p { color:var(--muted); margin:0; }
     .card strong { display:block; font-size:35px; color:var(--mint); margin-top:4px; }
@@ -36,6 +36,10 @@ def financials_scorecard_html() -> str:
     button { height:43px; border:0; border-radius:9px; color:#061117; background:var(--mint); padding:0 20px; font-weight:600; cursor:pointer; }
     .actions { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:15px 0 32px; color:var(--muted); }
     .action-link { background:var(--panel2); border:1px solid var(--line); border-radius:9px; padding:10px 14px; font-size:14px; }
+    .compare { padding:18px; margin:0 0 34px; }
+    .compare-controls { display:grid; grid-template-columns:1fr 1fr auto; gap:12px; align-items:end; }
+    .compare-result { margin-top:15px; padding:13px; background:var(--panel2); border-radius:9px; color:var(--muted); }
+    .compare-result strong { color:var(--mint); }
     .layout { display:grid; grid-template-columns:minmax(580px,1fr) 355px; gap:18px; }
     .table-wrap { overflow:hidden; }
     table { width:100%; border-collapse:collapse; }
@@ -71,7 +75,7 @@ def financials_scorecard_html() -> str:
     #error { display:none; border-left-color:var(--red); color:var(--red); }
     @media(max-width:980px) {
       .cards { grid-template-columns:repeat(2,1fr); }
-      .filters,.layout,.audit-grid { grid-template-columns:1fr; }
+      .filters,.compare-controls,.layout,.audit-grid { grid-template-columns:1fr; }
       .table-wrap { overflow-x:auto; }
       table { min-width:680px; }
     }
@@ -104,6 +108,15 @@ def financials_scorecard_html() -> str:
       <span>Download auditable results:</span>
       <a id="export-ranking" class="action-link" href="#">Export filtered ranking CSV</a>
       <a id="export-evaluations" class="action-link" href="#">Export observations CSV</a>
+    </section>
+    <h2>Compare Stored Runs</h2>
+    <section class="compare" aria-label="Run comparison">
+      <div class="compare-controls">
+        <div><label for="compare-left">Baseline run</label><select id="compare-left"></select></div>
+        <div><label for="compare-right">Comparison run</label><select id="compare-right"></select></div>
+        <button id="compare">Compare</button>
+      </div>
+      <div id="compare-result" class="compare-result">Choose two stored runs to check whether evidence and methodology are comparable.</div>
     </section>
     <h2>Firm Ranking</h2>
     <section class="layout">
@@ -163,11 +176,17 @@ def financials_scorecard_html() -> str:
       try {
         const runs = await json(`${base}/runs`);
         if (!runs.length) { fail("No stored evaluation runs are available yet."); return; }
-        $("run").innerHTML = runs.map((run) => `<option value="${text(run.run_id)}">${text(run.run_id)} / ${text(run.as_of)}</option>`).join("");
+        const options = runs.map((run) => `<option value="${text(run.run_id)}">${text(run.run_id)} / ${text(run.as_of)}</option>`).join("");
+        $("run").innerHTML = options;
+        $("compare-left").innerHTML = options;
+        $("compare-right").innerHTML = options;
         const preferred = runs.find((run) => run.run_id === "demo-financials-2025-01-01");
         currentRun = preferred ? preferred.run_id : runs[0].run_id;
         $("run").value = currentRun;
+        $("compare-left").value = currentRun;
+        $("compare-right").value = (runs.find((run) => run.run_id !== currentRun) || runs[0]).run_id;
         await loadRun();
+        await compareRuns();
       } catch (error) { fail(error.message); }
     }
     async function loadRun() {
@@ -176,11 +195,13 @@ def financials_scorecard_html() -> str:
         json(`${base}/runs/${encodeURIComponent(currentRun)}`),
         json(`${base}/runs/${encodeURIComponent(currentRun)}/facets`)
       ]);
-      $("run-meta").textContent = `Calculated as of ${run.as_of} / Universe ${run.universe_id || "not supplied"} / Costs ${run.transaction_cost_bps_per_side} bps per side`;
+      const method = run.methodology_version || "legacy / unstamped";
+      const evidence = run.dataset_fingerprint ? run.dataset_fingerprint.slice(0, 12) : "legacy / unstamped";
+      $("run-meta").textContent = `Calculated as of ${run.as_of} / Universe ${run.universe_id || "not supplied"} / Methodology ${method} / Evidence ${evidence} / Costs ${run.transaction_cost_bps_per_side} bps per side`;
       $("evaluated").textContent = run.evaluated_count;
       $("excluded").textContent = run.excluded_count;
       $("pending").textContent = run.pending_count;
-      $("methodology").textContent = facets.methodology_version;
+      $("methodology").textContent = facets.methodology_version || "legacy";
       $("sample").value = run.minimum_sample;
       $("sector").innerHTML = '<option value="">All sectors</option>' + facets.sectors.map((sector) => `<option value="${text(sector)}">${text(sector)}</option>`).join("");
       await refresh();
@@ -200,6 +221,22 @@ def financials_scorecard_html() -> str:
         renderRanking(result.ranking);
         resetDetail();
         renderAudit(audit);
+      } catch (error) { fail(error.message); }
+    }
+    async function compareRuns() {
+      try {
+        const params = new URLSearchParams({
+          left_run_id: $("compare-left").value,
+          right_run_id: $("compare-right").value
+        });
+        const result = await json(`${base}/runs/compare?${params}`);
+        const descriptions = {
+          same_evidence_and_methodology: "Comparable: same evidence and methodology.",
+          same_methodology_different_dataset: "Same methodology, different evidence dataset.",
+          methodology_changed: "Methodology changed: compare results with caution."
+        };
+        const left = result.left, right = result.right, delta = result.deltas;
+        $("compare-result").innerHTML = `<strong>${text(descriptions[result.comparability])}</strong> ${text(left.dataset_label || left.run_id)} to ${text(right.dataset_label || right.run_id)} / Method ${text(left.methodology_version || "unstamped")} to ${text(right.methodology_version || "unstamped")} / Evaluated delta ${delta.evaluated_count >= 0 ? "+" : ""}${delta.evaluated_count} / Excluded delta ${delta.excluded_count >= 0 ? "+" : ""}${delta.excluded_count}.`;
       } catch (error) { fail(error.message); }
     }
     function resetDetail() {
@@ -274,6 +311,7 @@ def financials_scorecard_html() -> str:
     }
     $("run").addEventListener("change", loadRun);
     $("apply").addEventListener("click", refresh);
+    $("compare").addEventListener("click", compareRuns);
     initialize();
   </script>
 </body>

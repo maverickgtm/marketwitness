@@ -95,6 +95,22 @@ class ApiTests(unittest.TestCase):
                 transaction_cost_bps_per_side=Decimal("10"),
                 universe_id="financials-demo",
                 asset_paths={"targets": asset},
+                dataset_label="API fixture",
+            ),
+            evaluations,
+        )
+        alternate_asset = root / "targets-alternate.csv"
+        alternate_asset.write_text("alternate auditable input\n", encoding="utf-8")
+        store_evaluation_run(
+            self.database,
+            EvaluationRun(
+                run_id="api-alternate",
+                as_of=date(2025, 1, 1),
+                minimum_sample=1,
+                transaction_cost_bps_per_side=Decimal("10"),
+                universe_id="financials-demo",
+                asset_paths={"targets": alternate_asset},
+                dataset_label="Alternate API fixture",
             ),
             evaluations,
         )
@@ -114,6 +130,9 @@ class ApiTests(unittest.TestCase):
         self.assertTrue(health.json()["source_registry_available"])
         self.assertEqual(run.status_code, 200)
         self.assertEqual(run.json()["evaluated_count"], 2)
+        self.assertEqual(run.json()["methodology_version"], "0.3.3")
+        self.assertEqual(run.json()["dataset_label"], "API fixture")
+        self.assertEqual(len(run.json()["dataset_fingerprint"]), 64)
         self.assertEqual(run.json()["assets"][0]["asset_role"], "targets")
         self.assertNotIn("asset_path", run.json()["assets"][0])
 
@@ -137,9 +156,24 @@ class ApiTests(unittest.TestCase):
         self.assertIn("evidenceHref", page.text)
         self.assertIn("Export observations CSV", page.text)
         self.assertIn("renderTimeline", page.text)
+        self.assertIn("Compare Stored Runs", page.text)
         self.assertEqual(facets.status_code, 200)
         self.assertEqual(facets.json()["sectors"], ["Financials"])
         self.assertEqual(facets.json()["tickers"], ["AAA", "BBB"])
+
+    def test_compares_run_methodology_and_evidence_fingerprints(self) -> None:
+        response = self.client.get(
+            "/api/v1/runs/compare?left_run_id=api-demo&right_run_id=api-alternate"
+        )
+
+        self.assertEqual(response.status_code, 200)
+        comparison = response.json()
+        self.assertTrue(comparison["same_methodology"])
+        self.assertFalse(comparison["same_dataset"])
+        self.assertEqual(
+            comparison["comparability"], "same_methodology_different_dataset"
+        )
+        self.assertEqual(comparison["deltas"]["evaluated_count"], 0)
 
     def test_serves_governance_dashboard_and_filtered_source_controls(self) -> None:
         page = self.client.get("/dashboard/governance")

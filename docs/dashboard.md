@@ -31,11 +31,18 @@ La ruta web inicial `/dashboard/financials` consume esta API y presenta:
 - Linea temporal visual de los hitos retenidos por observacion; no se presenta
   como una serie diaria de precios.
 - Exportacion CSV de observaciones y del ranking filtrado.
+- Comparacion de corridas almacenadas con version metodologica, huella de
+  entradas y diferencias de conteos antes de interpretar resultados.
 - Tabla de exclusiones y pendientes por motivo.
 
 El demo genera `build/demo/targetaudit.duckdb` con corridas sinteticas del
 scorecard, revisiones y guardas de acciones corporativas para probar ranking y
 exclusiones sin publicar datos comerciales.
+
+La API expone `/api/v1/runs/compare?left_run_id=...&right_run_id=...`. Una
+comparacion solo se identifica como la misma evidencia y metodologia cuando
+coinciden ambos sellos; corridas heredadas sin sello permanecen visibles pero
+no se marcan como equivalentes.
 
 ## Vista Transversal: Source Governance
 

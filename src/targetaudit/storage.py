@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
+from . import METHODOLOGY_VERSION
 from .models import Evaluation
 
 
@@ -23,6 +24,8 @@ class EvaluationRun:
     transaction_cost_bps_per_side: Decimal
     universe_id: str
     asset_paths: dict[str, str | Path]
+    methodology_version: str = METHODOLOGY_VERSION
+    dataset_label: str = ""
 
 
 def generated_run_id(as_of: date) -> str:
@@ -38,6 +41,8 @@ def store_evaluation_run(
         raise WarehouseError("No evaluations were provided for warehouse storage.")
     if not run.run_id.strip():
         raise WarehouseError("Warehouse run ID cannot be blank.")
+    if not run.methodology_version.strip():
+        raise WarehouseError("Warehouse methodology version cannot be blank.")
     connection = _connect(database_path)
     try:
         _initialize_schema(connection)
@@ -46,6 +51,7 @@ def store_evaluation_run(
         ).fetchone():
             raise WarehouseError(f"Warehouse run already exists: {run.run_id}")
         assets = [_asset_row(run.run_id, role, path) for role, path in run.asset_paths.items()]
+        dataset_fingerprint = _dataset_fingerprint(assets)
         status_counts = {
             status: sum(item.status == status for item in evaluations)
             for status in ("evaluated", "excluded", "pending")
@@ -56,8 +62,9 @@ def store_evaluation_run(
             INSERT INTO evaluation_runs (
                 run_id, created_at_utc, as_of, minimum_sample,
                 transaction_cost_bps_per_side, universe_id, observation_count,
-                evaluated_count, excluded_count, pending_count
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                evaluated_count, excluded_count, pending_count, methodology_version,
+                dataset_label, dataset_fingerprint
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             [
                 run.run_id,
@@ -70,6 +77,9 @@ def store_evaluation_run(
                 status_counts["evaluated"],
                 status_counts["excluded"],
                 status_counts["pending"],
+                run.methodology_version,
+                run.dataset_label,
+                dataset_fingerprint,
             ],
         )
         if assets:
@@ -104,13 +114,8 @@ def read_run_summary(database_path: str | Path, run_id: str) -> dict[str, Any]:
     connection = _connect_reader(database_path)
     try:
         row = connection.execute(
-            """
-            SELECT run_id, created_at_utc, as_of, minimum_sample,
-                   transaction_cost_bps_per_side, universe_id, observation_count,
-                   evaluated_count, excluded_count, pending_count
-            FROM evaluation_runs
-            WHERE run_id = ?
-            """,
+            f"SELECT {', '.join(_run_select_columns(connection))} "
+            "FROM evaluation_runs WHERE run_id = ?",
             [run_id],
         ).fetchone()
         if row is None:
@@ -124,13 +129,8 @@ def list_run_summaries(database_path: str | Path) -> list[dict[str, Any]]:
     connection = _connect_reader(database_path)
     try:
         rows = connection.execute(
-            """
-            SELECT run_id, created_at_utc, as_of, minimum_sample,
-                   transaction_cost_bps_per_side, universe_id, observation_count,
-                   evaluated_count, excluded_count, pending_count
-            FROM evaluation_runs
-            ORDER BY created_at_utc DESC, run_id DESC
-            """
+            f"SELECT {', '.join(_run_select_columns(connection))} "
+            "FROM evaluation_runs ORDER BY created_at_utc DESC, run_id DESC"
         ).fetchall()
         return [_run_summary(row) for row in rows]
     finally:
@@ -242,7 +242,10 @@ def _initialize_schema(connection: Any) -> None:
             observation_count INTEGER NOT NULL,
             evaluated_count INTEGER NOT NULL,
             excluded_count INTEGER NOT NULL,
-            pending_count INTEGER NOT NULL
+            pending_count INTEGER NOT NULL,
+            methodology_version VARCHAR NOT NULL,
+            dataset_label VARCHAR NOT NULL,
+            dataset_fingerprint VARCHAR NOT NULL
         )
         """
     )
@@ -308,6 +311,15 @@ def _initialize_schema(connection: Any) -> None:
     connection.execute(
         "ALTER TABLE evaluations ADD COLUMN IF NOT EXISTS provider_id VARCHAR DEFAULT ''"
     )
+    connection.execute(
+        "ALTER TABLE evaluation_runs ADD COLUMN IF NOT EXISTS methodology_version VARCHAR DEFAULT ''"
+    )
+    connection.execute(
+        "ALTER TABLE evaluation_runs ADD COLUMN IF NOT EXISTS dataset_label VARCHAR DEFAULT ''"
+    )
+    connection.execute(
+        "ALTER TABLE evaluation_runs ADD COLUMN IF NOT EXISTS dataset_fingerprint VARCHAR DEFAULT ''"
+    )
 
 
 def _asset_row(run_id: str, role: str, asset_path: str | Path) -> list[Any]:
@@ -316,6 +328,16 @@ def _asset_row(run_id: str, role: str, asset_path: str | Path) -> list[Any]:
         raise WarehouseError(f"Warehouse asset is not a readable file: {path}")
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     return [run_id, role, str(path), digest, path.stat().st_size]
+
+
+def _dataset_fingerprint(assets: list[list[Any]]) -> str:
+    input_assets = sorted(
+        (asset[1], asset[3], asset[4])
+        for asset in assets
+        if asset[1] not in _DERIVED_ASSET_ROLES
+    )
+    manifest = "\n".join(f"{role}\t{digest}\t{size}" for role, digest, size in input_assets)
+    return hashlib.sha256(manifest.encode("utf-8")).hexdigest()
 
 
 def _optional_date(raw: str) -> date | None:
@@ -368,19 +390,19 @@ def _evaluation_row(run_id: str, row_number: int, item: Evaluation) -> list[Any]
 
 
 def _run_summary(row: tuple[Any, ...]) -> dict[str, Any]:
-    keys = [
-        "run_id",
-        "created_at_utc",
-        "as_of",
-        "minimum_sample",
-        "transaction_cost_bps_per_side",
-        "universe_id",
-        "observation_count",
-        "evaluated_count",
-        "excluded_count",
-        "pending_count",
+    return dict(zip(_RUN_COLUMNS, row))
+
+
+def _run_select_columns(connection: Any) -> list[str]:
+    columns = {
+        row[1]
+        for row in connection.execute("PRAGMA table_info('evaluation_runs')").fetchall()
+    }
+    optional = {"methodology_version", "dataset_label", "dataset_fingerprint"}
+    return [
+        f"'' AS {column}" if column in optional and column not in columns else column
+        for column in _RUN_COLUMNS
     ]
-    return dict(zip(keys, row))
 
 
 def _evaluation_from_row(row: tuple[Any, ...]) -> Evaluation:
@@ -441,3 +463,21 @@ _EVALUATION_COLUMNS = [
     "benchmark_strategy_net_return_pct",
     "strategy_net_excess_return_pct",
 ]
+
+_RUN_COLUMNS = [
+    "run_id",
+    "created_at_utc",
+    "as_of",
+    "minimum_sample",
+    "transaction_cost_bps_per_side",
+    "universe_id",
+    "observation_count",
+    "evaluated_count",
+    "excluded_count",
+    "pending_count",
+    "methodology_version",
+    "dataset_label",
+    "dataset_fingerprint",
+]
+
+_DERIVED_ASSET_ROLES = {"evaluations_csv", "report_markdown"}

@@ -110,6 +110,36 @@ def create_app(
     def runs() -> list[dict[str, object]]:
         return _warehouse_call(list_run_summaries, database)
 
+    @application.get("/api/v1/runs/compare")
+    def compare_runs(left_run_id: str, right_run_id: str) -> dict[str, object]:
+        left = _read_run(database, left_run_id)
+        right = _read_run(database, right_run_id)
+        same_methodology = bool(
+            left["methodology_version"]
+            and left["methodology_version"] == right["methodology_version"]
+        )
+        same_dataset = bool(
+            left["dataset_fingerprint"]
+            and left["dataset_fingerprint"] == right["dataset_fingerprint"]
+        )
+        if same_methodology and same_dataset:
+            comparability = "same_evidence_and_methodology"
+        elif same_methodology:
+            comparability = "same_methodology_different_dataset"
+        else:
+            comparability = "methodology_changed"
+        return {
+            "left": left,
+            "right": right,
+            "same_methodology": same_methodology,
+            "same_dataset": same_dataset,
+            "comparability": comparability,
+            "deltas": {
+                key: right[key] - left[key]
+                for key in ("observation_count", "evaluated_count", "excluded_count", "pending_count")
+            },
+        }
+
     @application.get("/api/v1/runs/{run_id}")
     def run_detail(run_id: str) -> dict[str, object]:
         run = _read_run(database, run_id)
@@ -171,11 +201,11 @@ def create_app(
 
     @application.get("/api/v1/runs/{run_id}/facets")
     def facets(run_id: str) -> dict[str, object]:
-        _read_run(database, run_id)
+        run = _read_run(database, run_id)
         rows = _warehouse_call(read_evaluations, database, run_id)
         return {
             "run_id": run_id,
-            "methodology_version": METHODOLOGY_VERSION,
+            "methodology_version": run["methodology_version"],
             "sectors": sorted({item.sector or "Unclassified" for item in rows}),
             "directions": sorted({item.direction for item in rows if item.direction}),
             "firms": sorted({item.firm for item in rows}),
@@ -192,7 +222,7 @@ def create_app(
         return {
             "run_id": run_id,
             "firm": firm,
-            "methodology_version": METHODOLOGY_VERSION,
+            "methodology_version": run["methodology_version"],
             "summary": _ranking_row(firm, evaluated) if evaluated else None,
             "statuses": dict(Counter(item.status for item in rows)),
             "observations": [_public_evaluation(item) for item in rows],
@@ -201,7 +231,7 @@ def create_app(
 
     @application.get("/api/v1/runs/{run_id}/tickers/{ticker}")
     def ticker_detail(run_id: str, ticker: str) -> dict[str, object]:
-        _read_run(database, run_id)
+        run = _read_run(database, run_id)
         symbol = ticker.upper()
         rows = _warehouse_call(read_evaluations, database, run_id, ticker=symbol)
         if not rows:
@@ -209,14 +239,14 @@ def create_app(
         return {
             "run_id": run_id,
             "ticker": symbol,
-            "methodology_version": METHODOLOGY_VERSION,
+            "methodology_version": run["methodology_version"],
             "statuses": dict(Counter(item.status for item in rows)),
             "observations": [_public_evaluation(item) for item in rows],
         }
 
     @application.get("/api/v1/runs/{run_id}/tickers/{ticker}/timeline")
     def ticker_timeline(run_id: str, ticker: str) -> dict[str, object]:
-        _read_run(database, run_id)
+        run = _read_run(database, run_id)
         symbol = ticker.upper()
         rows = _warehouse_call(read_evaluations, database, run_id, ticker=symbol)
         if not rows:
@@ -224,7 +254,7 @@ def create_app(
         return {
             "run_id": run_id,
             "ticker": symbol,
-            "methodology_version": METHODOLOGY_VERSION,
+            "methodology_version": run["methodology_version"],
             "series_type": "evaluation_evidence_points",
             "limitation": (
                 "Retained evaluation milestones only; this is not a daily "
@@ -235,12 +265,12 @@ def create_app(
 
     @application.get("/api/v1/runs/{run_id}/audit/exclusions")
     def exclusions(run_id: str) -> dict[str, object]:
-        _read_run(database, run_id)
+        run = _read_run(database, run_id)
         rows = _warehouse_call(read_evaluations, database, run_id)
         omitted = [item for item in rows if item.status != "evaluated"]
         return {
             "run_id": run_id,
-            "methodology_version": METHODOLOGY_VERSION,
+            "methodology_version": run["methodology_version"],
             "counts_by_reason": dict(Counter(item.reason for item in omitted)),
             "observations": [_public_evaluation(item) for item in omitted],
         }
@@ -313,7 +343,7 @@ def _firm_ranking_payload(
     ranking.sort(key=lambda row: (-row["hit_rate"], -row["observations"], row["firm"].lower()))
     return {
         "run_id": run_id,
-        "methodology_version": METHODOLOGY_VERSION,
+        "methodology_version": run["methodology_version"],
         "minimum_sample": threshold,
         "sector": sector or None,
         "direction": direction or None,

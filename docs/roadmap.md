@@ -91,7 +91,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 
 - [ ] Licencia de datos apta para mostrar resultados publicamente.
 - [ ] Actualizaciones programadas y monitoreo de calidad.
-- [ ] Versionado de datasets y metodologia.
+- [x] Versionado de datasets y metodologia por corrida, con huella estable de
+  entradas y comparacion visible en API/dashboard.
 - [ ] Informes periodicos reproducibles.
 - [ ] Revision legal del producto y de sus disclaimers.
 

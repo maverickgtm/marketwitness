@@ -531,13 +531,17 @@ PYTHONPATH=src python3 -m targetaudit evaluate \
   --report build/demo/report-warehouse.md \
   --database build/demo/targetaudit.duckdb \
   --run-id demo-financials-2025-01-01 \
+  --dataset-label "Synthetic Financials evaluation" \
   --minimum-sample 1 \
   --as-of 2025-01-01
 ```
 
-La base registra parametros de la corrida, resultados tipados y hashes
-SHA-256 de los archivos de entrada y salida. Un `run-id` existente se rechaza
-para evitar que una evidencia anterior sea reemplazada silenciosamente.
+La base registra parametros de la corrida, version metodologica, resultados
+tipados y hashes SHA-256 de los archivos de entrada y salida. Tambien deriva
+una `dataset_fingerprint` estable solo a partir de las entradas, para comparar
+corridas sin confundir evidencia con reportes regenerados. Un `run-id`
+existente se rechaza para evitar que una evidencia anterior sea reemplazada
+silenciosamente.
 
 ## API De Lectura
 
@@ -560,6 +564,9 @@ exclusiones. La ficha de ticker incluye una linea temporal de hitos retenidos
 (referencia, entrada, target y salida/terminal) y deja visible que no representa
 una serie diaria de mercado. El demo almacena corridas separadas para el
 scorecard principal, targets revisados y guardas por acciones corporativas.
+El panel `Compare Stored Runs` contrasta corridas con su version de metodologia
+y huella de entradas; una diferencia de evidencia se muestra antes de comparar
+los conteos. La API ofrece el mismo control en `/api/v1/runs/compare`.
 La ruta `/dashboard/governance` presenta controles de fuente y observaciones
 excluidas o pendientes por corrida. Las nuevas evaluaciones conservan
 `provider_id` y enlazan su control de publicacion; resultados historicos sin

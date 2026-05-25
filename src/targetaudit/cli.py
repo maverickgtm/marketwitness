@@ -237,6 +237,11 @@ def main() -> int:
         help="Stable warehouse run identifier; valid only when --database is supplied.",
     )
     evaluate_parser.add_argument(
+        "--dataset-label",
+        default="",
+        help="Human-readable input dataset label stored with a warehouse run.",
+    )
+    evaluate_parser.add_argument(
         "--minimum-sample",
         type=int,
         default=50,
@@ -1371,6 +1376,8 @@ def main() -> int:
             parser.error("--minimum-sample must be positive.")
         if args.run_id and not args.database:
             parser.error("--run-id requires --database.")
+        if args.dataset_label and not args.database:
+            parser.error("--dataset-label requires --database.")
         targets = load_targets(args.targets)
         prices = load_prices(args.prices)
         actions = (
@@ -1417,6 +1424,7 @@ def main() -> int:
                     transaction_cost_bps_per_side=args.transaction_cost_bps,
                     universe_id=universe[0].universe_id if universe else "",
                     asset_paths=asset_paths,
+                    dataset_label=args.dataset_label,
                 ),
                 evaluations,
             )

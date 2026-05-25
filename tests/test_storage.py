@@ -66,6 +66,7 @@ class StorageTests(unittest.TestCase):
                     transaction_cost_bps_per_side=Decimal("10"),
                     universe_id="financials-demo",
                     asset_paths={"targets": target_file},
+                    dataset_label="Auditable fixture",
                 ),
                 evaluations,
             )
@@ -74,6 +75,9 @@ class StorageTests(unittest.TestCase):
             self.assertEqual(summary["observation_count"], 2)
             self.assertEqual(summary["evaluated_count"], 1)
             self.assertEqual(summary["excluded_count"], 1)
+            self.assertEqual(summary["methodology_version"], "0.3.3")
+            self.assertEqual(summary["dataset_label"], "Auditable fixture")
+            self.assertEqual(len(summary["dataset_fingerprint"]), 64)
 
             import duckdb
 
@@ -123,6 +127,46 @@ class StorageTests(unittest.TestCase):
             with self.assertRaisesRegex(WarehouseError, "already exists"):
                 store_evaluation_run(database, run, evaluations)
 
+    def test_dataset_fingerprint_excludes_generated_outputs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            targets = root / "targets.csv"
+            first_output = root / "first-output.csv"
+            second_output = root / "second-output.csv"
+            targets.write_text("same input\n", encoding="utf-8")
+            first_output.write_text("result one\n", encoding="utf-8")
+            second_output.write_text("result two\n", encoding="utf-8")
+            database = root / "targetaudit.duckdb"
+            evaluation = Evaluation(
+                observation_id="one",
+                ticker="AAA",
+                firm="Firm",
+                sector="",
+                published_date="",
+                price_target=None,
+                source_url="",
+                status="excluded",
+                reason="invalid",
+            )
+            for run_id, output in (("first", first_output), ("second", second_output)):
+                store_evaluation_run(
+                    database,
+                    EvaluationRun(
+                        run_id=run_id,
+                        as_of=date(2025, 1, 1),
+                        minimum_sample=1,
+                        transaction_cost_bps_per_side=Decimal("10"),
+                        universe_id="",
+                        asset_paths={"targets": targets, "evaluations_csv": output},
+                    ),
+                    [evaluation],
+                )
+
+            self.assertEqual(
+                read_run_summary(database, "first")["dataset_fingerprint"],
+                read_run_summary(database, "second")["dataset_fingerprint"],
+            )
+
     def test_reads_existing_database_created_before_provider_lineage_column(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             database = Path(directory) / "targetaudit.duckdb"
@@ -157,11 +201,17 @@ class StorageTests(unittest.TestCase):
             connection = duckdb.connect(str(database))
             try:
                 connection.execute("ALTER TABLE evaluations DROP COLUMN provider_id")
+                connection.execute("ALTER TABLE evaluation_runs DROP COLUMN methodology_version")
+                connection.execute("ALTER TABLE evaluation_runs DROP COLUMN dataset_label")
+                connection.execute("ALTER TABLE evaluation_runs DROP COLUMN dataset_fingerprint")
             finally:
                 connection.close()
 
             legacy = read_evaluations(database, "old-schema")[0]
             self.assertEqual(legacy.provider_id, "")
+            legacy_run = read_run_summary(database, "old-schema")
+            self.assertEqual(legacy_run["methodology_version"], "")
+            self.assertEqual(legacy_run["dataset_fingerprint"], "")
 
 
 if __name__ == "__main__":
