@@ -288,8 +288,8 @@ def render_ipo_watch_html(items: list[IpoWatchItem], as_of: date) -> str:
   </header>
   <main>
     <p class="notice">Research dashboard only. This page does not recommend buying, selling, or sizing a position.</p>
-    <p class="notice"><a href="sec-alerts.html">Open SEC filing review queue</a> to inspect newly discovered public filing evidence before changing any company status.</p>
-    <p class="notice"><a href="sec-review-outcomes.html">Open documented review audit</a> to verify which manual SEC decisions produced this generated registry.</p>
+    <p class="notice"><a href="/dashboard/sec-alerts">Open SEC filing review queue</a> to inspect newly discovered public filing evidence before changing any company status.</p>
+    <p class="notice"><a href="/dashboard/ipo-reviews">Open documented review audit</a> to verify which manual SEC decisions produced this generated registry.</p>
     <h2>Status board</h2>
     <div class="table-wrap">
       <table>

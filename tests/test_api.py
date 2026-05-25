@@ -108,6 +108,13 @@ class ApiTests(unittest.TestCase):
         (self.reports / "ipo-watch.html").write_text(
             "<html><h1>IPO Watch generated page</h1></html>", encoding="utf-8"
         )
+        (self.reports / "sec-alerts.html").write_text(
+            "<html><h1>SEC IPO Alerts generated page</h1></html>", encoding="utf-8"
+        )
+        (self.reports / "sec-review-outcomes.html").write_text(
+            "<html><h1>IPO Review Outcomes generated page</h1></html>",
+            encoding="utf-8",
+        )
         (self.reports / "etf-holdings-regulatory-history.html").write_text(
             "<html><h1>ETF Regulatory Holdings generated page</h1></html>",
             encoding="utf-8",
@@ -241,8 +248,10 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Reproducible reports.", page.text)
         self.assertIn("Known routes only.", page.text)
-        self.assertIn("7 allowlisted pages", page.text)
+        self.assertIn("9 allowlisted pages", page.text)
         self.assertIn("/dashboard/ipo-watch", page.text)
+        self.assertIn("/dashboard/sec-alerts", page.text)
+        self.assertIn("/dashboard/ipo-reviews", page.text)
         self.assertIn("/dashboard/etf-regulatory", page.text)
         self.assertIn("/dashboard/document-checks", page.text)
         self.assertIn("/dashboard/rwa-watch", page.text)
@@ -294,6 +303,8 @@ class ApiTests(unittest.TestCase):
 
     def test_serves_generated_open_edition_monitor_pages(self) -> None:
         ipo = self.client.get("/dashboard/ipo-watch")
+        sec_alerts = self.client.get("/dashboard/sec-alerts")
+        ipo_reviews = self.client.get("/dashboard/ipo-reviews")
         etf = self.client.get("/dashboard/etf-regulatory")
         documents = self.client.get("/dashboard/document-checks")
         rwa = self.client.get("/dashboard/rwa-watch")
@@ -301,6 +312,8 @@ class ApiTests(unittest.TestCase):
         issuer_confirmations = self.client.get("/dashboard/issuer-confirmations")
 
         self.assertIn("IPO Watch generated page", ipo.text)
+        self.assertIn("SEC IPO Alerts generated page", sec_alerts.text)
+        self.assertIn("IPO Review Outcomes generated page", ipo_reviews.text)
         self.assertIn("ETF Regulatory Holdings generated page", etf.text)
         self.assertIn("Public Document Checks generated page", documents.text)
         self.assertIn("RWA Watch Sandbox generated page", rwa.text)

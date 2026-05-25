@@ -34,9 +34,10 @@ comprar datos comerciales.
   visibles, incluida la identificación `User-Agent` exigida para solicitudes
   SEC live.
 - Enlaza `/dashboard/reports` como indice de los reportes generados permitidos
-  y desde alli expone `/dashboard/ipo-watch`, `/dashboard/etf-regulatory` y
-  `/dashboard/document-checks`; la API no expone archivos arbitrarios de la
-  carpeta de construccion.
+  y desde alli expone la cadena `/dashboard/sec-alerts`,
+  `/dashboard/ipo-reviews`, `/dashboard/ipo-watch`, junto con las vistas ETF
+  e internacionales; la API no expone archivos arbitrarios de la carpeta de
+  construccion.
 - El ranking real de analistas permanece como ampliación voluntaria y nunca
   como condición para usar la edición pública.
 
@@ -45,10 +46,13 @@ comprar datos comerciales.
 Objetivo: volver navegable el bundle semanal de Open Edition sin abrir acceso
 general al directorio de reportes construidos.
 
-- La ruta `/dashboard/reports` agrupa las siete paginas HTML ya permitidas:
-  IPO Watch, ETF Regulatory Holdings, Public Document Checks, RWA Watch
-  Sandbox, Global Listings Watch, Global Listings Alerts e Issuer
-  Confirmations.
+- La ruta `/dashboard/reports` agrupa las nueve paginas HTML ya permitidas:
+  IPO Watch, SEC IPO Alerts, IPO Review Outcomes, ETF Regulatory Holdings,
+  Public Document Checks, RWA Watch Sandbox, Global Listings Watch, Global
+  Listings Alerts e Issuer Confirmations.
+- `SEC IPO Alerts` y `IPO Review Outcomes` completan el recorrido auditable
+  desde filing descubierto hasta decisión manual; ninguna alerta cambia el
+  estado de una compañía sin una revisión documentada.
 - `Global Listings Alerts` permite consultar la cola comparada de diez
   mercados internacionales sin confundir documentos de oferta con listings
   confirmados; `Issuer Confirmations` conserva hitos oficiales ya revisados.
