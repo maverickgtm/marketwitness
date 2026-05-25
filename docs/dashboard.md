@@ -7,6 +7,18 @@ al mercado.
 Con la expansion internacional, el producto tiene cuatro paginas activas,
 incluida la pagina de actividad publicada de ETF:
 
+## API De Aplicacion
+
+La capa inicial FastAPI consulta exclusivamente corridas guardadas en DuckDB.
+Expone salud metodologica, inventario/detalle de corridas, ranking de firmas,
+ficha de firma, ficha de ticker y auditoria de observaciones excluidas o
+pendientes. Las respuestas de evidencia incluyen hashes de artefactos, no
+rutas privadas del operador.
+
+Esta API puede alimentar el dashboard web con datos sinteticos o autorizados.
+Una base que contenga datos reales no debe exponerse publicamente hasta
+resolver los permisos de targets, precios y cualquier fuente redistribuida.
+
 ## Vista Transversal: Source Governance
 
 Objetivo: hacer visible qué datos pueden alimentar un producto público y qué

@@ -52,7 +52,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 
 - [x] DuckDB inicial para conservar corridas de evaluacion, hashes de evidencia
   y resultados tipados, con esquema relacional portable a PostgreSQL.
-- [ ] API FastAPI con endpoints de rankings, firmas y acciones.
+- [x] API FastAPI inicial de solo lectura con endpoints de corridas, ranking
+  de firmas, acciones y auditoria de exclusiones.
 - [ ] Dashboard web con filtros, series de targets y exportaciones.
 - [ ] Pagina de auditoria de fuente y observaciones excluidas.
 - [x] Pagina `ETF Holdings Activity` con comparador de snapshots, diferencias

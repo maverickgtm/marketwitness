@@ -101,13 +101,13 @@ def store_evaluation_run(
 
 
 def read_run_summary(database_path: str | Path, run_id: str) -> dict[str, Any]:
-    connection = _connect(database_path)
+    connection = _connect_reader(database_path)
     try:
-        _initialize_schema(connection)
         row = connection.execute(
             """
-            SELECT run_id, as_of, observation_count, evaluated_count,
-                   excluded_count, pending_count
+            SELECT run_id, created_at_utc, as_of, minimum_sample,
+                   transaction_cost_bps_per_side, universe_id, observation_count,
+                   evaluated_count, excluded_count, pending_count
             FROM evaluation_runs
             WHERE run_id = ?
             """,
@@ -115,15 +115,76 @@ def read_run_summary(database_path: str | Path, run_id: str) -> dict[str, Any]:
         ).fetchone()
         if row is None:
             raise WarehouseError(f"Warehouse run not found: {run_id}")
-        keys = [
-            "run_id",
-            "as_of",
-            "observation_count",
-            "evaluated_count",
-            "excluded_count",
-            "pending_count",
+        return _run_summary(row)
+    finally:
+        connection.close()
+
+
+def list_run_summaries(database_path: str | Path) -> list[dict[str, Any]]:
+    connection = _connect_reader(database_path)
+    try:
+        rows = connection.execute(
+            """
+            SELECT run_id, created_at_utc, as_of, minimum_sample,
+                   transaction_cost_bps_per_side, universe_id, observation_count,
+                   evaluated_count, excluded_count, pending_count
+            FROM evaluation_runs
+            ORDER BY created_at_utc DESC, run_id DESC
+            """
+        ).fetchall()
+        return [_run_summary(row) for row in rows]
+    finally:
+        connection.close()
+
+
+def read_run_assets(database_path: str | Path, run_id: str) -> list[dict[str, Any]]:
+    connection = _connect_reader(database_path)
+    try:
+        rows = connection.execute(
+            """
+            SELECT asset_role, asset_path, sha256, byte_size
+            FROM run_assets
+            WHERE run_id = ?
+            ORDER BY asset_role
+            """,
+            [run_id],
+        ).fetchall()
+        return [
+            dict(zip(("asset_role", "asset_path", "sha256", "byte_size"), row))
+            for row in rows
         ]
-        return dict(zip(keys, row))
+    finally:
+        connection.close()
+
+
+def read_evaluations(
+    database_path: str | Path,
+    run_id: str,
+    *,
+    firm: str = "",
+    ticker: str = "",
+    status: str = "",
+) -> list[Evaluation]:
+    connection = _connect_reader(database_path)
+    try:
+        query = f"""
+            SELECT {', '.join(_EVALUATION_COLUMNS[2:])}
+            FROM evaluations
+            WHERE run_id = ?
+        """
+        parameters = [run_id]
+        if firm:
+            query += " AND firm = ?"
+            parameters.append(firm)
+        if ticker:
+            query += " AND ticker = ?"
+            parameters.append(ticker.upper())
+        if status:
+            query += " AND status = ?"
+            parameters.append(status)
+        query += " ORDER BY row_number"
+        rows = connection.execute(query, parameters).fetchall()
+        return [_evaluation_from_row(row) for row in rows]
     finally:
         connection.close()
 
@@ -139,6 +200,23 @@ def _connect(database_path: str | Path) -> Any:
     destination = Path(database_path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     return duckdb.connect(str(destination))
+
+
+def _connect_reader(database_path: str | Path) -> Any:
+    try:
+        import duckdb
+    except ImportError as exc:
+        raise WarehouseError(
+            "DuckDB support is not installed. Install the optional dependency "
+            "with: python3 -m pip install -e '.[warehouse]'"
+        ) from exc
+    source = Path(database_path)
+    if not source.is_file():
+        raise WarehouseError(f"Warehouse database not found: {source}")
+    try:
+        return duckdb.connect(str(source), read_only=True)
+    except Exception as exc:
+        raise WarehouseError(f"Unable to open warehouse database: {source}") from exc
 
 
 def _initialize_schema(connection: Any) -> None:
@@ -272,6 +350,38 @@ def _evaluation_row(run_id: str, row_number: int, item: Evaluation) -> list[Any]
         item.benchmark_strategy_net_return_pct,
         item.strategy_net_excess_return_pct,
     ]
+
+
+def _run_summary(row: tuple[Any, ...]) -> dict[str, Any]:
+    keys = [
+        "run_id",
+        "created_at_utc",
+        "as_of",
+        "minimum_sample",
+        "transaction_cost_bps_per_side",
+        "universe_id",
+        "observation_count",
+        "evaluated_count",
+        "excluded_count",
+        "pending_count",
+    ]
+    return dict(zip(keys, row))
+
+
+def _evaluation_from_row(row: tuple[Any, ...]) -> Evaluation:
+    values = dict(zip(_EVALUATION_COLUMNS[2:], row))
+    for name in (
+        "published_date",
+        "reference_date",
+        "entry_date",
+        "expiry_date",
+        "terminal_date",
+        "hit_date",
+        "superseded_on",
+        "strategy_exit_date",
+    ):
+        values[name] = values[name].isoformat() if values[name] is not None else ""
+    return Evaluation(**values)
 
 
 _EVALUATION_COLUMNS = [

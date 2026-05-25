@@ -14,6 +14,7 @@ keywords = ["finance", "price-targets", "analysts", "backtesting", "research"]
 
 [project.optional-dependencies]
 warehouse = ["duckdb>=1.2,<2"]
+application = ["duckdb>=1.2,<2", "fastapi>=0.110,<1", "httpx>=0.27,<1", "uvicorn>=0.29,<1"]
 
 [project.scripts]
 targetaudit = "targetaudit.cli:main"

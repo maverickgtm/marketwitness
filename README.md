@@ -539,6 +539,33 @@ La base registra parametros de la corrida, resultados tipados y hashes
 SHA-256 de los archivos de entrada y salida. Un `run-id` existente se rechaza
 para evitar que una evidencia anterior sea reemplazada silenciosamente.
 
+## API De Lectura
+
+La primera API FastAPI sirve únicamente resultados ya almacenados en DuckDB.
+No recolecta datos ni habilita la publicación de fuentes pendientes de licencia.
+
+```bash
+python3 -m pip install -e ".[application]"
+export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
+python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
+```
+
+Endpoints iniciales:
+
+| Ruta | Uso |
+|---|---|
+| `/api/v1/health` | Estado y versión metodológica |
+| `/api/v1/runs` | Corridas almacenadas |
+| `/api/v1/runs/{run_id}` | Parámetros y hashes de evidencia de una corrida |
+| `/api/v1/runs/{run_id}/rankings/firms` | Ranking, con filtros `sector`, `direction` y `minimum_sample` |
+| `/api/v1/runs/{run_id}/firms/{firm}` | Observaciones y resumen de una firma |
+| `/api/v1/runs/{run_id}/tickers/{ticker}` | Historial evaluado de una acción |
+| `/api/v1/runs/{run_id}/audit/exclusions` | Excluidos y pendientes con motivo |
+
+La documentación interactiva local queda disponible en `/docs` al iniciar el
+servidor. La API omite las rutas locales de los archivos originales y presenta
+únicamente sus hashes y tamaños como evidencia reproducible.
+
 ## Inicio Rapido
 
 Requiere Python 3.9 o superior. No requiere instalar paquetes para ejecutar el
@@ -659,8 +686,8 @@ docs/                   Metodologia, estrategia, dashboard, fuentes y roadmap
 
 - `v0.3`: rigor cuantitativo, incluyendo intervalos, segmentos y control de
   integrantes historicos del universo.
-- `v0.4`: base DuckDB para corridas auditables, seguida por API FastAPI y
-  dashboard web.
+- `v0.4`: base DuckDB y API FastAPI de solo lectura para corridas auditables,
+  seguidas por el dashboard web.
 - `v0.5`: dashboard web, filtros por sector y paginas de firma/accion.
 - `v1.0`: pipeline actualizado periodicamente con una fuente de targets cuya
   licencia permita el producto publico.
