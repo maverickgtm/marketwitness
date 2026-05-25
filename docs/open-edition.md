@@ -29,6 +29,11 @@ Finnhub y Financial Modeling Prep quedan registrados como futuras rutas
 programaticas, pero sus planes gratuitos no conceden por si solos derechos de
 mostrar o redistribuir datos en un producto publico.
 
+La ruta `/dashboard/policy` presenta la politica de uso publico: explica que
+los monitores son evidencia para investigacion y no recomendaciones de
+inversion, muestra las fuentes bloqueadas desde el registro validado y declara
+que la revision legal externa continua pendiente.
+
 Un widget oficial de TradingView podria anadirse como contexto visual de
 mercado conservando su atribucion. Ese componente no alimentaria el ranking
 ni reemplazaria una licencia de historial de targets.
@@ -102,6 +107,8 @@ Abrir `http://127.0.0.1:8000/` muestra la portada `Open Edition`.
 Desde ella se abren `/dashboard/ipo-watch`, `/dashboard/etf-regulatory` y
 `/dashboard/document-checks`, que solo sirven artefactos HTML conocidos
 producidos por `make demo`.
+La portada tambien enlaza `/dashboard/policy`, que debe revisarse antes de
+habilitar datos live o publicar resultados.
 
 Para recolectar datos SEC públicos en vez de utilizar fixtures:
 
@@ -120,3 +127,5 @@ los módulos públicos gratuitos de TargetAudit.
 
 Ver [Extensiones Licenciadas Opcionales](licensed-extensions.md) para precios
 visibles, condiciones revisadas y el flujo `bring your own license`.
+Ver [Politica De Uso Publico Y Derechos De Datos](public-use-policy.md) para
+los limites visibles de interpretacion, recoleccion y output.

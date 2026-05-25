@@ -833,6 +833,10 @@ python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 
 Al abrir `http://127.0.0.1:8000/` se muestra la portada `Open Edition`, que
 distingue capacidades gratuitas y extensiones opcionales. La ruta
+`/dashboard/policy` muestra limites de uso y derechos de datos: los reportes
+son investigacion y no recomendaciones de inversion, y la revision legal
+externa aun es un pendiente antes de operar un servicio publico con datos
+reales. La ruta
 `/dashboard/extensions` presenta proveedores que un usuario puede contratar
 por su cuenta, sus precios visibles y los derechos que aun bloquean la
 publicacion de rankings reales. La ruta
@@ -904,6 +908,8 @@ Endpoints iniciales:
 | `/api/v1/health` | Estado y versión metodológica |
 | `/api/v1/open-edition` | Capacidades ejecutables sin suscripciones pagadas y límites declarados |
 | `/dashboard/open` | Portada de la edición gratuita de GitHub |
+| `/api/v1/policy/public-use` | Politica estructurada de uso responsable, capas de datos y fuentes bloqueadas |
+| `/dashboard/policy` | Pagina publica de no-recomendacion y derechos de datos pendientes |
 | `/api/v1/extensions/licensed` | Opciones de datos pagados por el usuario, precio visible y restricciones de publicación |
 | `/dashboard/extensions` | Página de extensiones opcionales `bring your own license` |
 | `/dashboard/ipo-watch` | Reporte generado de vigilancia SEC de filings IPO |
@@ -1104,6 +1110,8 @@ Consulta [la metodologia](docs/methodology.md),
 mantiene en [el roadmap](docs/roadmap.md) y la ejecucion continua en
 [operations.md](docs/operations.md). Para colaborar, consulta
 [CONTRIBUTING.md](CONTRIBUTING.md) y la politica de [seguridad](SECURITY.md).
+Los limites de interpretacion y publicacion se detallan en
+[Politica De Uso Publico Y Derechos De Datos](docs/public-use-policy.md).
 La investigacion de nuevas fuentes internacionales se conserva en
 [international-data-search.md](docs/international-data-search.md) y
 [international-data-search-round-2.md](docs/international-data-search-round-2.md).

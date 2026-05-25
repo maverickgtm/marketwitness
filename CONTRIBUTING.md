@@ -31,6 +31,11 @@ se prefieren fuentes regulatorias publicas, fixtures redistribuibles y
 contribuciones de datos cuyos derechos estén documentados. Un conector
 comercial puede añadirse como extensión opcional, no como requisito de uso.
 
+Antes de proponer una salida publica o un collector nuevo, revisa
+[Politica De Uso Publico Y Derechos De Datos](docs/public-use-policy.md): una
+fuente marcada como bloqueada o manual no debe automatizarse desde una
+contribucion.
+
 ## Seguridad Y Privacidad
 
 No incluyas claves API, `.env`, descargas en `data/raw/`, evidencia privada ni

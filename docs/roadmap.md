@@ -158,7 +158,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
   `C001`/`C006` con clave gratuita, e integrar su diff sin afirmar listing.
 - [x] Revisar `KRX OPEN API` y excluir su output del dashboard público porque
   sus términos prohíben entregar los datos provistos por KRX a terceros.
-- [ ] Revision legal del producto y de sus disclaimers.
+- [x] Politica publica visible de no-recomendacion, capas de datos y fuentes
+  bloqueadas en `/dashboard/policy`, declarada como control interno.
+- [ ] Revision legal externa del producto y de sus disclaimers antes de
+  ofrecer datos reales o un servicio publico operado.
 - [ ] Mantener Rusia sin ingesta automatica salvo autorizacion legal
   documentada sobre sanciones y licencia de datos.
 

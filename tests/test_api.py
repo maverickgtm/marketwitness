@@ -206,6 +206,23 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(snapshot.json()["offline_ready_count"], 2)
         self.assertEqual(snapshot.json()["public_data_ready_count"], 3)
         self.assertEqual(snapshot.json()["optional_extension_count"], 1)
+        self.assertIn("/dashboard/policy", page.text)
+
+    def test_serves_public_use_policy_with_blocked_source_boundaries(self) -> None:
+        page = self.client.get("/dashboard/policy")
+        policy = self.client.get("/api/v1/policy/public-use")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Research evidence.", page.text)
+        self.assertIn("/api/v1/policy/public-use", page.text)
+        self.assertEqual(policy.status_code, 200)
+        self.assertEqual(policy.json()["review_status"], "pending_external_legal_review")
+        self.assertEqual(policy.json()["tracked_source_count"], 35)
+        self.assertEqual(policy.json()["blocked_source_count"], 5)
+        self.assertIn(
+            "mas-opera-reference",
+            {item["provider_id"] for item in policy.json()["blocked_sources"]},
+        )
 
     def test_serves_optional_licensed_extensions_without_enabling_public_rankings(self) -> None:
         page = self.client.get("/dashboard/extensions")

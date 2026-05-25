@@ -47,7 +47,7 @@ def open_edition_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Open Edition / <a href="/dashboard/extensions">Licensed Extensions</a> / <a href="/dashboard/financials">Financials Sandbox</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Governance</a></nav>
+    <nav>TargetAudit / Open Edition / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/extensions">Licensed Extensions</a> / <a href="/dashboard/financials">Financials Sandbox</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Governance</a></nav>
     <h1>Market research.<br>No paid data required.</h1>
     <p class="lead" id="promise">Loading the zero-cost product profile...</p>
     <p class="meta" id="reviewed">Loading source controls...</p>
@@ -224,6 +224,118 @@ def licensed_extensions_html() -> str:
     function showExtension(extensionId) {
       const item = extensions.find((candidate) => candidate.extension_id === extensionId);
       $("detail").innerHTML = `<h3>${text(item.extension_name)}</h3><p>${text(item.coverage)}</p><div class="fact"><small>Listed price</small>${text(item.price_display)}<br>${text(item.price_basis)}</div><div class="fact"><small>Allowed integration mode</small>${text(item.allowed_mode)}</div><div class="fact"><small>Public output status</small>${text(item.public_output_status)}</div><p>${text(item.review_note)}</p><p><a href="${href(item.official_url)}" target="_blank" rel="noopener">Product</a> / <a href="${href(item.pricing_url)}" target="_blank" rel="noopener">Pricing</a> / <a href="${href(item.terms_url)}" target="_blank" rel="noopener">Terms</a></p>`;
+    }
+    initialize();
+  </script>
+</body>
+</html>"""
+
+
+def public_use_policy_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Public Use Policy</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --panel2:#14242d; --line:#20343d;
+      --text:#edf1ef; --muted:#98abb0; --mint:#56daac; --gold:#f0bc62;
+      --blue:#62a6ff; --red:#ff7d72;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1240px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(38px,5vw,60px); line-height:1.04; margin:38px 0 14px; }
+    h2 { margin:42px 0 16px; font-size:22px; }
+    h3 { margin:0 0 10px; font-size:17px; }
+    .lead { color:var(--muted); font-size:18px; max-width:940px; }
+    .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold);
+      border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.layer,.panel,.blocked { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:17px 20px; }
+    .card p { color:var(--muted); margin:0; }
+    .card strong { display:block; font-size:35px; color:var(--mint); margin-top:4px; }
+    .layers { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .layer { padding:18px; }
+    .layer p,.panel li,.blocked p { color:var(--muted); }
+    .pill { display:inline-block; border-radius:999px; padding:5px 9px; font-size:12px; margin-bottom:12px; }
+    .redistributable_demo { color:var(--blue); background:rgba(98,166,255,.12); }
+    .evidence_only { color:var(--mint); background:rgba(86,218,172,.12); }
+    .permission_required { color:var(--gold); background:rgba(240,188,98,.12); }
+    .layout { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .panel { padding:18px; }
+    .panel ul { margin:0; padding-left:20px; }
+    .panel li { margin:10px 0; }
+    .blocked-list { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+    .blocked { padding:16px; }
+    .blocked small { display:block; color:var(--muted); margin:5px 0 11px; }
+    .blocked strong { color:var(--red); }
+    #error { display:none; border-left-color:var(--red); color:var(--red); }
+    @media(max-width:960px) { .cards,.layers,.layout,.blocked-list { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav><a href="/dashboard/open">Open Edition</a> / Public Use Policy / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/release">Release Center</a></nav>
+    <h1>Research evidence.<br>Not investment advice.</h1>
+    <p class="lead" id="summary">Loading public-use boundaries...</p>
+    <p class="meta" id="reviewed">Loading policy status...</p>
+    <section class="cards">
+      <article class="card"><p>Tracked sources</p><strong id="tracked">-</strong></article>
+      <article class="card"><p>Blocked sources</p><strong id="blocked-count">-</strong></article>
+      <article class="card"><p>Reviews pending</p><strong id="review-count">-</strong></article>
+      <article class="card"><p>Manual only</p><strong id="manual-count">-</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice"><strong>Important:</strong> This page is an internal product safeguard pending external legal review. It is not legal, tax or investment advice.</p>
+    <p id="error" class="notice"></p>
+    <h2>Data Layers</h2>
+    <section class="layers" id="layers"></section>
+    <h2>Publication Controls</h2>
+    <section class="layout">
+      <article class="panel"><h3>Before public output</h3><ul id="rules"></ul></article>
+      <article class="panel"><h3>Operator responsibilities</h3><ul id="responsibilities"></ul></article>
+    </section>
+    <h2>Blocked From Automated Collection</h2>
+    <section class="blocked-list" id="blocked-sources"></section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    function text(value) {
+      return String(value == null || value === "" ? "-" : value)
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    }
+    function href(value) {
+      try {
+        const parsed = new URL(value);
+        return parsed.protocol === "https:" ? text(value) : "#";
+      } catch (_) { return "#"; }
+    }
+    async function initialize() {
+      try {
+        const response = await fetch("/api/v1/policy/public-use");
+        if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+        const data = await response.json();
+        $("summary").textContent = data.summary;
+        $("reviewed").textContent = `Policy ${data.policy_version} / ${data.review_status} / sources reviewed as of ${data.as_of}`;
+        $("tracked").textContent = data.tracked_source_count;
+        $("blocked-count").textContent = data.blocked_source_count;
+        $("review-count").textContent = data.review_required_count;
+        $("manual-count").textContent = data.manual_only_count;
+        $("layers").innerHTML = data.data_layers.map((item) => `<article class="layer"><span class="pill ${text(item.status)}">${text(item.status)}</span><h3>${text(item.title)}</h3><p>${text(item.description)}</p></article>`).join("");
+        $("rules").innerHTML = data.publication_rules.map((item) => `<li>${text(item)}</li>`).join("");
+        $("responsibilities").innerHTML = data.operator_responsibilities.map((item) => `<li>${text(item)}</li>`).join("");
+        $("blocked-sources").innerHTML = data.blocked_sources.map((item) => `<article class="blocked"><strong>${text(item.provider_name)}</strong><small>${text(item.data_class)}</small><p>${text(item.restriction)}</p><a href="${href(item.reference_url)}" target="_blank" rel="noopener">Terms / reference</a></article>`).join("");
+      } catch (error) {
+        $("error").style.display = "block";
+        $("error").textContent = error.message;
+      }
     }
     initialize();
   </script>
@@ -616,7 +728,7 @@ def source_governance_html() -> str:
 </head>
 <body>
   <header>
-    <nav><a href="/dashboard/open">Open Edition</a> / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / Governance / Sources / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Open code.<br>Controlled data.</h1>
     <p class="lead">Publication rights are part of the evidence. This page separates sources already usable under documented policy from data that still requires terms, licensing or manual controls.</p>
     <p class="meta" id="reviewed">Loading source registry...</p>

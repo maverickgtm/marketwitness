@@ -21,6 +21,7 @@ from .dashboard_web import (
     open_edition_html,
     operations_quality_html,
     provider_approvals_html,
+    public_use_policy_html,
     release_center_html,
     scorecard_readiness_html,
     source_governance_html,
@@ -38,6 +39,7 @@ from .provider_approvals import (
     build_approval_queue,
     load_provider_approvals,
 )
+from .public_policy import build_public_use_policy
 from .release_center import build_release_decision
 from .reporting import wilson_interval
 from .scorecard_readiness import build_scorecard_readiness
@@ -165,6 +167,12 @@ def create_app(
     def provider_approval_page() -> str:
         return provider_approvals_html()
 
+    @application.get(
+        "/dashboard/policy", response_class=HTMLResponse, include_in_schema=False
+    )
+    def public_policy_page() -> str:
+        return public_use_policy_html()
+
     @application.get("/api/v1/health")
     def health() -> dict[str, object]:
         return {
@@ -226,6 +234,15 @@ def create_app(
         try:
             as_of = max((item.reviewed_on for item in providers), default=date.today())
             return build_open_edition_snapshot(providers, as_of)
+        except SourceRegistryDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @application.get("/api/v1/policy/public-use")
+    def public_use_policy_snapshot() -> dict[str, object]:
+        providers = _read_sources(registry)
+        try:
+            as_of = max((item.reviewed_on for item in providers), default=date.today())
+            return build_public_use_policy(providers, as_of)
         except SourceRegistryDataError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 

@@ -39,6 +39,21 @@ comprar datos comerciales.
 - El ranking real de analistas permanece como ampliación voluntaria y nunca
   como condición para usar la edición pública.
 
+## Pagina: Public Use Policy
+
+Objetivo: presentar en el propio dashboard los limites de interpretacion y
+derechos de datos antes de que un usuario consulte reportes o active fuentes.
+
+- La ruta `/dashboard/policy` consume `/api/v1/policy/public-use`.
+- Declara que los rankings, monitores regulatorios y observaciones RWA son
+  investigacion auditable y no recomendaciones de inversion.
+- Diferencia fixtures redistribuibles, evidencia regulatoria y extensiones
+  aportadas por usuarios con derechos documentados.
+- Deriva del registro de fuentes los proveedores bloqueados o pendientes para
+  que decisiones como `MAS OPERA` permanezcan visibles en la interfaz.
+- Se presenta como control interno pendiente de revision legal externa, no
+  como dictamen profesional.
+
 ## Pagina: Licensed Extensions
 
 Objetivo: permitir que el usuario decida si desea contratar datos reales, sin
