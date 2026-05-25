@@ -123,6 +123,13 @@ BMV Mexico publica prospectos, pero su aviso legal prohibe reproduccion y
 `parsing` sin autorizacion escrita; no se conecta. Ver el expediente en
 [Busqueda Internacional Gratuita: Ronda 2](international-data-search-round-2.md).
 
+El deep dive del `2026-05-25` en Tokio, Toronto y Frankfurt refino tres
+decisiones. `JPX New Listings` se combina con `EDINET` para que Japon tenga
+confirmacion oficial de listing; `SEDAR+` no se automatiza porque sus
+terminos prohiben scraping y bases de datos; Frankfurt permanece cubierto por
+`ESMA`, con `BaFin` como corroboracion documental. Ver
+[Deep Dive: Tokio, Toronto Y Frankfurt](market-deep-dive-tokyo-toronto-frankfurt.md).
+
 ## Activos Tokenizados Y RWA Watch
 
 La revision del Top 20 de exchanges centralizados por CoinGecko Trust Score y
@@ -284,9 +291,9 @@ Revision inicial al `2026-05-24`; ampliaciones internacionales al `2026-05-25`:
 | Reino Unido | FCA National Storage Mechanism | Prospectos y documentos regulatorios aprobados/publicados | Consulta pública implementada para contraste LSE |
 | Hong Kong | HKEX/HKEXnews New Listings - AP & PHIP | JSON oficiales de Active AP, Active PHIP, Inactive, Listed y Returned | Feed oficial implementado |
 | Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida, fecha anticipada y retiros | Feed HTML oficial implementado |
-| Canada | TSX New Company Listings | Nuevas companias ya listadas | Feed HTML oficial implementado como confirmación |
+| Canada | TSX New Company Listings | Nuevas companias ya listadas | Feed HTML oficial implementado como confirmación; `SEDAR+` bloqueado para automatizacion publica |
 | Singapur | SGX IPO Prospectus API | Prospectos IPO publicados | Feed JSON oficial implementado |
-| Japon | FSA `EDINET` Documents API | Securities registration statements y documentos regulatorios | Conector prioritario pendiente de implementacion con API key y atribucion |
+| Japon / Tokio | FSA `EDINET` Documents API y JPX `New Listings` | Documentos de ofertas mas fechas oficiales de aprobacion/listing TSE | Conector prioritario pendiente de collector combinado y atribucion |
 | Brasil | CVM `Portal Dados Abertos` | Registros estructurados de ofertas publicas de distribucion | Conector prioritario pendiente para API/dataset oficial |
 | UE: Alemania, Paises Bajos e Italia | ESMA `Prospectus III` | Prospectos y documentos relacionados notificados por autoridades nacionales | Conector prioritario pendiente; reproduccion permitida con fuente y rotulo de transformacion |
 
@@ -297,8 +304,9 @@ una fecha anticipada.
 
 El API oficial `EDINET` de la Financial Services Agency japonesa permite
 buscar y descargar documentos regulatorios. Un securities registration
-statement abre revision de una posible oferta; no confirma admision ni inicio
-de negociacion y no aporta targets de analistas.
+statement abre revision de una posible oferta; `JPX New Listings` puede
+confirmar aprobacion o fecha de listing en Tokio. Ninguno aporta targets de
+analistas.
 
 El portal abierto de `CVM` permite construir una cola brasileña de ofertas
 publicas. El registro `Prospectus III` de `ESMA` permite una cola europea

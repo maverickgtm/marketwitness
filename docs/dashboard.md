@@ -313,9 +313,9 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | London Stock Exchange | LSE `New issues` JSON y FCA National Storage Mechanism | Feed y clasificación FCA de prospectus/admission/intention implementados; admision requiere revision |
 | Hong Kong HKEX | HKEX/HKEXnews AP/PHIP JSON feeds | Feed oficial implementado |
 | Australian Securities Exchange | ASX `Upcoming floats and listings` | Feed HTML oficial implementado |
-| Toronto Stock Exchange | TSX `New Company Listings` | Feed HTML oficial implementado para listings completados |
+| Toronto Stock Exchange | TSX `New Company Listings` | Feed HTML oficial implementado para listings completados; `SEDAR+` no automatizable sin permiso |
 | Singapore Exchange | SGX `IPO Prospectus` | Feed JSON oficial implementado para prospectos publicados |
-| Japon | FSA `EDINET` Documents API | Conector prioritario pendiente para documentos regulatorios de ofertas |
+| Tokio / Japon | FSA `EDINET` Documents API y JPX `New Listings` | Conector prioritario pendiente para deteccion documental y confirmacion de listing |
 | Brasil | CVM `Portal Dados Abertos` | Conector prioritario pendiente para ofertas publicas estructuradas |
 | Union Europea | ESMA `Prospectus III` | Conector prioritario pendiente para prospectos de Alemania, Paises Bajos e Italia |
 
@@ -329,16 +329,18 @@ Cada jurisdiccion conserva sus propias etapas:
   aprobacion en principio, no trading completado.
 - Australia: ASX informa que sus upcoming listings tienen solicitud formal
   recibida, pero las fechas de primera cotizacion siguen siendo anticipadas.
-- Canada: el feed implementado documenta listings completados y requiere una
-  fuente adicional para alertas prospectivas.
+- Canada: el feed implementado documenta listings completados; `SEDAR+`
+  restringe scraping y almacenamiento en bases para el monitor público.
 - Singapur: el feed implementado documenta prospectos publicados; cada
   documento debe revisarse antes de afirmar admision o inicio de negociacion.
-- Japon: un securities registration statement de `EDINET` inicia revision
-  documental; el collector con clave y atribucion aun esta pendiente.
+- Tokio: un securities registration statement de `EDINET` inicia revision
+  documental y `JPX New Listings` confirma hitos de listing; los collectors
+  atribuidos aun estan pendientes.
 - Brasil: un registro de oferta en `CVM` inicia revision; no confirma listado
   o trading en B3.
 - Alemania, Paises Bajos e Italia: un prospecto `ESMA` es evidencia
   regulatoria; el output transformado debe declarar fuente y transformacion.
+  Para Frankfurt, `BaFin` servira como corroboracion nacional del prospecto.
 
 ### Salidas Operativas
 

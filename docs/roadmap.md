@@ -135,9 +135,11 @@ verificables de cotizaciones tecnologicas/estrategicas.
   Unido, Japon, Australia, Hong Kong, Singapur y China continental.
 - [x] Segunda ronda internacional en India, Mexico, Brasil, Argentina,
   Alemania, Suiza, Paises Bajos e Italia, con clasificacion de derechos.
+- [x] Deep dive en Tokio, Toronto y Frankfurt para combinar `EDINET`/`JPX`,
+  bloquear automatizacion `SEDAR+` y validar cobertura `ESMA`/`BaFin`.
 - [ ] Implementar un monitor regulatorio japones sobre el API oficial
-  `EDINET` y validar un conector adicional de ofertas de Singapur sobre
-  datasets/API de `MAS OPERA`.
+  `EDINET` con confirmacion `JPX New Listings`, y validar un conector adicional
+  de ofertas de Singapur sobre datasets/API de `MAS OPERA`.
 - [ ] Implementar collectors de ofertas de Brasil (`CVM Dados Abertos`) y
   prospectos europeos (`ESMA Prospectus III`) con atribucion visible.
 - [ ] Revision legal del producto y de sus disclaimers.

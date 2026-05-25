@@ -74,6 +74,13 @@ se conecta porque sus terminos prohiben parsing y reproduccion sin permiso
 escrito. Ver
 [Busqueda Internacional Gratuita: Ronda 2](docs/international-data-search-round-2.md).
 
+El deep dive de Tokio, Toronto y Frankfurt mejoro las reglas de evidencia:
+Japon combinara documentos `EDINET` con confirmacion de listings de
+`JPX New Listings`; Toronto conserva el feed `TSX` de cotizaciones completadas
+pero no automatiza `SEDAR+` por sus restricciones; Frankfurt queda cubierto
+por `ESMA` con `BaFin` como corroboracion nacional. Ver
+[Deep Dive: Tokio, Toronto Y Frankfurt](docs/market-deep-dive-tokyo-toronto-frankfurt.md).
+
 La investigacion de `RWA Watch` ya cubre 20 exchanges relevantes y
 Pepperstone. `xStocks / Backed` documenta APIs sin autenticacion para
 metadatos, precios, documentos legales y proof of reserves, pero sus terminos
@@ -343,7 +350,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `ASX` / Australia: monitor HTML oficial de upcoming floats and listings.
 - `TSX` / Canada: monitor HTML oficial de nuevas companias ya listadas.
 - `SGX` / Singapur: catalogo oficial de prospectos IPO.
-- `JPX` / Japon: API oficial `EDINET` de documentos regulatorios, en cola de implementacion.
+- `JPX` / Japon: `EDINET` para documentos y `JPX New Listings` para confirmacion de Tokio, en cola de implementacion.
 - `CVM` / Brasil: portal oficial abierto de ofertas publicas, en cola de implementacion.
 - `ESMA` / Union Europea: prospectos regulatorios para Alemania, Paises Bajos e Italia, en cola de implementacion.
 
@@ -355,14 +362,15 @@ queda para revisión: no se convierte automáticamente en admisión confirmada.
 Australia ya lee la tabla oficial ASX de solicitudes formales y separa
 listados anticipados de retiros publicados.
 Canada ya lee `TSX New Company Listings` como comprobación de cotizaciones
-completadas; no lo usa para predecir solicitudes futuras.
+completadas; no lo usa para predecir solicitudes futuras ni automatiza
+`SEDAR+`, cuyos terminos prohíben scraping y bases de datos públicas.
 Singapur ya consulta el catálogo JSON oficial `SGX IPO Prospectus`; registra
 documentos publicados para revisión y no confirma automáticamente una
 cotización completada.
 Japon se incorpora como prioridad pendiente: el API oficial `EDINET` permite
-buscar securities registration statements y otros documentos regulatorios,
-pero aun falta implementar el collector con clave, atribucion y controles de
-acceso responsable.
+buscar securities registration statements y `JPX New Listings` permite
+confirmar fechas de aprobacion o listing en Tokio. Aun faltan los collectors
+con atribucion y controles de acceso responsable.
 Brasil y la Union Europea se incorporan como prioridades pendientes:
 `CVM Dados Abertos` ofrece ofertas publicas estructuradas y `ESMA Prospectus
 III` permite recuperar prospectos europeos con reproduccion atribuida. Ambos
@@ -978,6 +986,8 @@ mantiene en [el roadmap](docs/roadmap.md) y la ejecucion continua en
 La investigacion de nuevas fuentes internacionales se conserva en
 [international-data-search.md](docs/international-data-search.md) y
 [international-data-search-round-2.md](docs/international-data-search-round-2.md).
+El refinamiento de mercados ya mapeados esta en
+[market-deep-dive-tokyo-toronto-frankfurt.md](docs/market-deep-dive-tokyo-toronto-frankfurt.md).
 
 ## Aviso
 
