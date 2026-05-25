@@ -218,6 +218,13 @@ from .open_edition import (
     write_open_edition_html,
     write_open_edition_report,
 )
+from .licensed_extensions import (
+    LicensedExtensionDataError,
+    build_licensed_extensions_snapshot,
+    load_licensed_extensions,
+    write_licensed_extensions_html,
+    write_licensed_extensions_report,
+)
 from .release_center import (
     build_release_decision,
     write_release_html,
@@ -454,6 +461,18 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Open Edition review cutoff in YYYY-MM-DD format.",
+    )
+    extensions_parser = subparsers.add_parser(
+        "licensed-extensions",
+        help="Render optional paid-source choices and publication restrictions.",
+    )
+    extensions_parser.add_argument("--catalog", required=True, help="Licensed extension catalog CSV.")
+    extensions_parser.add_argument("--report", required=True, help="Markdown licensed extension report path.")
+    extensions_parser.add_argument("--html", help="Optional licensed extension HTML output path.")
+    extensions_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Licensed extension review cutoff in YYYY-MM-DD format.",
     )
     approval_parser = subparsers.add_parser(
         "provider-approvals",
@@ -1143,6 +1162,22 @@ def main() -> int:
         print(
             f"Wrote Open Edition report with {snapshot['zero_cost_available_count']} "
             f"no-cost capabilities to {args.report}."
+        )
+        return 0
+
+    if args.command == "licensed-extensions":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            extensions = load_licensed_extensions(args.catalog)
+            snapshot = build_licensed_extensions_snapshot(extensions, as_of)
+            write_licensed_extensions_report(args.report, snapshot)
+            if args.html:
+                write_licensed_extensions_html(args.html, snapshot)
+        except (LicensedExtensionDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote licensed extension catalog for {snapshot['extension_count']} "
+            f"optional providers to {args.report}."
         )
         return 0
 

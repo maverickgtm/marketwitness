@@ -32,6 +32,13 @@ PYTHONPATH=src python3 -m targetaudit open-edition \
 Ver [Open Edition](docs/open-edition.md) para el alcance gratuito y sus
 límites metodológicos.
 
+Quien decida pagar por datos reales puede revisar
+[Extensiones Licenciadas Opcionales](docs/licensed-extensions.md). La opcion
+con precio publico encontrada es Massive / Benzinga Analyst Ratings Expansion,
+publicada a `USD 99/month` para uso individual. Ese acceso puede servir para
+investigacion privada autorizada, pero no concede por si solo permiso para
+publicar un ranking real compartido.
+
 TargetAudit nace de una pregunta sencilla: si una firma publica un precio
 objetivo para una accion, ?ese pronostico se cumplio y una estrategia basada en
 el habria superado una alternativa pasiva?
@@ -645,11 +652,15 @@ export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
 export TARGETAUDIT_SOURCE_REGISTRY="data/samples/source_registry.csv"
 export TARGETAUDIT_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
 export TARGETAUDIT_GENERATED_REPORTS="build/demo"
+export TARGETAUDIT_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
 python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 ```
 
 Al abrir `http://127.0.0.1:8000/` se muestra la portada `Open Edition`, que
 distingue capacidades gratuitas y extensiones opcionales. La ruta
+`/dashboard/extensions` presenta proveedores que un usuario puede contratar
+por su cuenta, sus precios visibles y los derechos que aun bloquean la
+publicacion de rankings reales. La ruta
 `/dashboard/financials` muestra `Financials Scorecard`, conectado a las
 corridas almacenadas. Incluye filtros
 de sector, direccion y muestra minima, detalle por firma/ticker y auditoria de
@@ -718,6 +729,8 @@ Endpoints iniciales:
 | `/api/v1/health` | Estado y versión metodológica |
 | `/api/v1/open-edition` | Capacidades ejecutables sin suscripciones pagadas y límites declarados |
 | `/dashboard/open` | Portada de la edición gratuita de GitHub |
+| `/api/v1/extensions/licensed` | Opciones de datos pagados por el usuario, precio visible y restricciones de publicación |
+| `/dashboard/extensions` | Página de extensiones opcionales `bring your own license` |
 | `/dashboard/ipo-watch` | Reporte generado de vigilancia SEC de filings IPO |
 | `/dashboard/etf-regulatory` | Actividad regulatoria ETF basada en periodos N-PORT |
 | `/dashboard/document-checks` | Verificaciones documentales regulatorias generadas |
@@ -774,6 +787,8 @@ build/demo/source-registry.md
 build/demo/source-registry.html
 build/demo/open-edition.md
 build/demo/open-edition.html
+build/demo/licensed-extensions.md
+build/demo/licensed-extensions.html
 build/demo/provider-approvals.md
 build/demo/provider-approvals.html
 build/demo/provider-reviewed-source-registry.csv

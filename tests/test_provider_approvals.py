@@ -27,7 +27,7 @@ class ProviderApprovalTests(unittest.TestCase):
         self.assertTrue(
             all(control["status"] == "pending_approval" for control in snapshot["controls"])
         )
-        self.assertIn("Benzinga Analyst Ratings API", render_approval_report(snapshot))
+        self.assertIn("Benzinga Analyst Ratings API via Massive", render_approval_report(snapshot))
         self.assertIn("Permission before", render_approval_html(snapshot))
 
     def test_approves_activation_only_when_governance_and_dossiers_both_pass(self) -> None:

@@ -26,6 +26,20 @@ comprar datos comerciales.
 - El ranking real de analistas permanece como ampliación voluntaria y nunca
   como condición para usar la edición pública.
 
+## Pagina: Licensed Extensions
+
+Objetivo: permitir que el usuario decida si desea contratar datos reales, sin
+confundir un precio disponible con derechos de publicacion publica.
+
+- La ruta `/dashboard/extensions` consume `/api/v1/extensions/licensed`.
+- Muestra la expansion Massive / Benzinga con el precio publicado
+  `USD 99/month` y dos rutas sujetas a cotizacion.
+- Expone enlaces oficiales a producto, precio y terminos.
+- Mantiene el contador de proveedores aprobados para output publico en cero
+  mientras no exista permiso escrito.
+- Permite planificar una importacion local autorizada, pero no recolecta datos
+  comprados ni habilita un leaderboard publico.
+
 ## API De Aplicacion
 
 La capa inicial FastAPI consulta exclusivamente corridas guardadas en DuckDB.

@@ -103,6 +103,11 @@ demo:
 		--report build/demo/open-edition.md \
 		--html build/demo/open-edition.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit licensed-extensions \
+		--catalog data/samples/licensed_extensions.csv \
+		--report build/demo/licensed-extensions.md \
+		--html build/demo/licensed-extensions.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit provider-approvals \
 		--registry build/demo/provider-reviewed-source-registry.csv \
 		--approvals build/demo/provider-reviewed-approval-queue.csv \

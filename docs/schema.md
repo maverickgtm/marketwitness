@@ -252,6 +252,25 @@ fuente con `public_access_rules_documented` y
 `source_link_and_derived_output`. Todavía debe pasar
 `scorecard-readiness` y, para una corrida concreta, `scorecard-release`.
 
+## `licensed_extensions.csv`
+
+Catalogo informativo de opciones pagadas por el usuario para aportar targets
+reales bajo su propia licencia. No es una tabla de ingestion ni constituye
+aprobacion para publicar resultados.
+
+| Columna | Requerida | Descripcion |
+|---|---:|---|
+| `extension_id` | Si | Identificador estable de opcion comercial |
+| `extension_name`, `provider`, `data_class` | Si | Opcion y dato que podria aportar |
+| `access_model` | Si | `paid_user_subscription`, `sales_contact_required` o `marketplace_subscription` |
+| `price_display`, `price_basis` | Si | Precio encontrado o necesidad de cotizacion, con alcance verificable |
+| `coverage` | Si | Cobertura historica declarada por la fuente oficial |
+| `status` | Si | `available_byol` o `quote_required` |
+| `allowed_mode` | Si | `individual_user_license` o `negotiated_license` |
+| `public_output_status` | Si | Permiso pendiente o aprobado para resultados publicos |
+| `official_url`, `pricing_url`, `terms_url` | Si | Evidencia HTTPS revisada |
+| `reviewed_on`, `review_note` | Si | Fecha y conclusion de la revision |
+
 ## `ipo_watch.csv`
 
 Registro auditable para la pagina `IPO Watch`. A diferencia de los targets, no

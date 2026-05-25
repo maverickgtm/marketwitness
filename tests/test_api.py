@@ -150,6 +150,7 @@ class ApiTests(unittest.TestCase):
         self.assertTrue(health.json()["source_registry_available"])
         self.assertTrue(health.json()["provider_approvals_available"])
         self.assertTrue(health.json()["generated_reports_available"])
+        self.assertTrue(health.json()["licensed_extensions_available"])
         self.assertEqual(run.status_code, 200)
         self.assertEqual(run.json()["evaluated_count"], 2)
         self.assertEqual(run.json()["methodology_version"], "0.3.3")
@@ -200,6 +201,19 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(snapshot.json()["zero_cost_available_count"], 4)
         self.assertEqual(snapshot.json()["public_data_ready_count"], 3)
         self.assertEqual(snapshot.json()["optional_extension_count"], 1)
+
+    def test_serves_optional_licensed_extensions_without_enabling_public_rankings(self) -> None:
+        page = self.client.get("/dashboard/extensions")
+        snapshot = self.client.get("/api/v1/extensions/licensed")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Bring your own", page.text)
+        self.assertIn("/api/v1/extensions/licensed", page.text)
+        self.assertEqual(snapshot.status_code, 200)
+        self.assertEqual(snapshot.json()["extension_count"], 3)
+        self.assertEqual(snapshot.json()["listed_price_count"], 1)
+        self.assertEqual(snapshot.json()["public_output_approved_count"], 0)
+        self.assertEqual(snapshot.json()["items"][0]["price_display"], "USD 99/month")
 
     def test_serves_generated_open_edition_monitor_pages(self) -> None:
         ipo = self.client.get("/dashboard/ipo-watch")

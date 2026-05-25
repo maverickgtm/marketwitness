@@ -47,7 +47,7 @@ def open_edition_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Open Edition / <a href="/dashboard/financials">Financials Sandbox</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Governance</a></nav>
+    <nav>TargetAudit / Open Edition / <a href="/dashboard/extensions">Licensed Extensions</a> / <a href="/dashboard/financials">Financials Sandbox</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Governance</a></nav>
     <h1>Market research.<br>No paid data required.</h1>
     <p class="lead" id="promise">Loading the zero-cost product profile...</p>
     <p class="meta" id="reviewed">Loading source controls...</p>
@@ -92,6 +92,136 @@ def open_edition_html() -> str:
         $("error").style.display = "block";
         $("error").textContent = error.message;
       }
+    }
+    initialize();
+  </script>
+</body>
+</html>"""
+
+
+def licensed_extensions_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Licensed Extensions</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --panel2:#14242d; --line:#20343d;
+      --text:#edf1ef; --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --red:#ff7d72;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header, main { max-width:1220px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(39px,5vw,60px); line-height:1.04; margin:38px 0 14px; }
+    h2 { margin:43px 0 16px; font-size:22px; }
+    .lead { color:var(--muted); font-size:18px; max-width:920px; }
+    .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold);
+      border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.table-wrap,.detail { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:18px 20px; }
+    .card p { margin:0; color:var(--muted); }
+    .card strong { display:block; font-size:36px; color:var(--mint); }
+    .layout { display:grid; grid-template-columns:minmax(620px,1fr) 370px; gap:18px; }
+    .table-wrap { overflow:hidden; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); text-transform:uppercase; font-size:12px; font-weight:500; }
+    td small { display:block; color:var(--muted); }
+    tr[data-extension] { cursor:pointer; }
+    tr[data-extension]:hover { background:var(--panel2); }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; white-space:nowrap; }
+    .available_byol { color:var(--mint); background:rgba(86,218,172,.12); }
+    .quote_required,.requires_separate_written_rights,.requires_negotiated_public_output_rights {
+      color:var(--gold); background:rgba(240,188,98,.12);
+    }
+    .detail { padding:18px; min-height:355px; }
+    .detail p { color:var(--muted); }
+    .fact { background:var(--panel2); border-radius:9px; padding:11px; margin:10px 0; }
+    .fact small { display:block; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px; }
+    #error { display:none; border-left-color:var(--red); color:var(--red); }
+    @media(max-width:980px) {
+      .cards,.layout { grid-template-columns:1fr; }
+      .table-wrap { background:transparent; border:0; overflow:visible; }
+      thead { display:none; }
+      table,tbody,tr,td { display:block; width:100%; }
+      tr { background:var(--panel); border:1px solid var(--line); border-radius:14px; margin-bottom:14px; padding:11px 15px; }
+      td { border:0; padding:9px 0 9px 126px; min-height:40px; position:relative; }
+      td::before { content:attr(data-label); position:absolute; left:0; top:10px; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.06em; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav><a href="/dashboard/open">Open Edition</a> / Licensed Extensions / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/readiness">Readiness</a></nav>
+    <h1>Bring your own<br>licensed data.</h1>
+    <p class="lead">Optional paid sources for users who choose private, licensed analyst-target research. Open Edition remains useful at no data cost.</p>
+    <p class="meta" id="reviewed">Loading licensed-source research...</p>
+    <section class="cards">
+      <article class="card"><p>Optional providers</p><strong id="tracked">-</strong></article>
+      <article class="card"><p>Listed prices</p><strong id="listed">-</strong></article>
+      <article class="card"><p>Individual paths</p><strong id="individual">-</strong></article>
+      <article class="card"><p>Public-output approved</p><strong id="public">-</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice" id="policy">Loading licensing boundary...</p>
+    <p class="notice">The displayed <strong>USD 99/month</strong> Massive price is for its individual Benzinga Analyst Ratings expansion. Confirm any required base Stocks plan at checkout. Individual terms do not enable a shared public ranking.</p>
+    <p id="error" class="notice"></p>
+    <h2>Optional Providers</h2>
+    <section class="layout">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Provider</th><th>Listed Price</th><th>Availability</th><th>Output Rights</th></tr></thead>
+          <tbody id="extensions"><tr><td colspan="4">Loading candidates...</td></tr></tbody>
+        </table>
+      </div>
+      <aside class="detail" id="detail">
+        <h3>License Review</h3>
+        <p>Select an option to inspect official price, terms and permitted TargetAudit use.</p>
+      </aside>
+    </section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let extensions = [];
+    function text(value) {
+      return String(value == null || value === "" ? "-" : value)
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    }
+    function href(value) {
+      try {
+        const parsed = new URL(value);
+        return parsed.protocol === "https:" ? text(value) : "#";
+      } catch (_) { return "#"; }
+    }
+    async function initialize() {
+      try {
+        const response = await fetch("/api/v1/extensions/licensed");
+        if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+        const data = await response.json();
+        extensions = data.items;
+        $("reviewed").textContent = `${data.market_focus} / reviewed as of ${data.as_of}`;
+        $("tracked").textContent = data.extension_count;
+        $("listed").textContent = data.listed_price_count;
+        $("individual").textContent = data.individual_option_count;
+        $("public").textContent = data.public_output_approved_count;
+        $("policy").textContent = data.policy_note;
+        $("extensions").innerHTML = extensions.map((item) => `<tr data-extension="${text(item.extension_id)}"><td data-label="Provider"><strong>${text(item.extension_name)}</strong><small>${text(item.provider)}</small></td><td data-label="Listed price">${text(item.price_display)}<small>${text(item.price_basis)}</small></td><td data-label="Availability"><span class="pill ${text(item.status)}">${text(item.status)}</span></td><td data-label="Output rights"><span class="pill ${text(item.public_output_status)}">${text(item.public_output_status)}</span></td></tr>`).join("");
+        document.querySelectorAll("tr[data-extension]").forEach((row) => row.addEventListener("click", () => showExtension(row.dataset.extension)));
+        if (extensions.length) showExtension(extensions[0].extension_id);
+      } catch (error) {
+        $("error").style.display = "block";
+        $("error").textContent = error.message;
+      }
+    }
+    function showExtension(extensionId) {
+      const item = extensions.find((candidate) => candidate.extension_id === extensionId);
+      $("detail").innerHTML = `<h3>${text(item.extension_name)}</h3><p>${text(item.coverage)}</p><div class="fact"><small>Listed price</small>${text(item.price_display)}<br>${text(item.price_basis)}</div><div class="fact"><small>Allowed integration mode</small>${text(item.allowed_mode)}</div><div class="fact"><small>Public output status</small>${text(item.public_output_status)}</div><p>${text(item.review_note)}</p><p><a href="${href(item.official_url)}" target="_blank" rel="noopener">Product</a> / <a href="${href(item.pricing_url)}" target="_blank" rel="noopener">Pricing</a> / <a href="${href(item.terms_url)}" target="_blank" rel="noopener">Terms</a></p>`;
     }
     initialize();
   </script>

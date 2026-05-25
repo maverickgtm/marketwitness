@@ -17,12 +17,18 @@ from fastapi.responses import HTMLResponse, Response
 from . import METHODOLOGY_VERSION, __version__
 from .dashboard_web import (
     financials_scorecard_html,
+    licensed_extensions_html,
     open_edition_html,
     operations_quality_html,
     provider_approvals_html,
     release_center_html,
     scorecard_readiness_html,
     source_governance_html,
+)
+from .licensed_extensions import (
+    LicensedExtensionDataError,
+    build_licensed_extensions_snapshot,
+    load_licensed_extensions,
 )
 from .models import Evaluation
 from .open_edition import build_open_edition_snapshot
@@ -48,6 +54,7 @@ DEFAULT_DATABASE_PATH = "build/live/targetaudit.duckdb"
 DEFAULT_SOURCE_REGISTRY_PATH = "data/samples/source_registry.csv"
 DEFAULT_PROVIDER_APPROVALS_PATH = "data/samples/provider_approval_queue.csv"
 DEFAULT_GENERATED_REPORTS_PATH = "build/demo"
+DEFAULT_LICENSED_EXTENSIONS_PATH = "data/samples/licensed_extensions.csv"
 
 
 def create_app(
@@ -55,6 +62,7 @@ def create_app(
     source_registry_path: str | Path | None = None,
     provider_approvals_path: str | Path | None = None,
     generated_reports_path: str | Path | None = None,
+    licensed_extensions_path: str | Path | None = None,
 ) -> FastAPI:
     database = Path(
         database_path or os.environ.get("TARGETAUDIT_DATABASE", DEFAULT_DATABASE_PATH)
@@ -71,6 +79,10 @@ def create_app(
         generated_reports_path
         or os.environ.get("TARGETAUDIT_GENERATED_REPORTS", DEFAULT_GENERATED_REPORTS_PATH)
     )
+    licensed_extensions = Path(
+        licensed_extensions_path
+        or os.environ.get("TARGETAUDIT_LICENSED_EXTENSIONS", DEFAULT_LICENSED_EXTENSIONS_PATH)
+    )
     application = FastAPI(
         title="TargetAudit API",
         version=__version__,
@@ -86,6 +98,12 @@ def create_app(
     )
     def open_edition() -> str:
         return open_edition_html()
+
+    @application.get(
+        "/dashboard/extensions", response_class=HTMLResponse, include_in_schema=False
+    )
+    def licensed_extension_page() -> str:
+        return licensed_extensions_html()
 
     @application.get(
         "/dashboard/ipo-watch", response_class=HTMLResponse, include_in_schema=False
@@ -151,6 +169,7 @@ def create_app(
             "source_registry_available": registry.is_file(),
             "provider_approvals_available": approval_queue.is_file(),
             "generated_reports_available": reports.is_dir(),
+            "licensed_extensions_available": licensed_extensions.is_file(),
         }
 
     @application.get("/api/v1/governance/sources")
@@ -202,6 +221,17 @@ def create_app(
             as_of = max((item.reviewed_on for item in providers), default=date.today())
             return build_open_edition_snapshot(providers, as_of)
         except SourceRegistryDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @application.get("/api/v1/extensions/licensed")
+    def licensed_extension_snapshot() -> dict[str, object]:
+        try:
+            extensions = load_licensed_extensions(licensed_extensions)
+            as_of = max(
+                (extension.reviewed_on for extension in extensions), default=date.today()
+            )
+            return build_licensed_extensions_snapshot(extensions, as_of)
+        except (LicensedExtensionDataError, OSError) as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     @application.get("/api/v1/governance/approvals")

@@ -18,6 +18,11 @@ dataset comercial. Ese módulo continúa disponible como motor y formato de
 investigación, pero la utilidad de la edición pública no depende de Benzinga,
 Alpha Vantage, Nasdaq, NYSE ni S&P DJI.
 
+La ruta `/dashboard/extensions` documenta proveedores opcionales que un
+usuario podria contratar por cuenta propia. Incluye la expansion individual
+Massive / Benzinga publicada a `USD 99/month`, sin presentarla como permiso
+para publicar rankings compartidos.
+
 ## Capacidades Incluidas
 
 ### Financials Scorecard Sandbox
@@ -78,3 +83,6 @@ Los expedientes de aprobación de proveedores comerciales se conservan como
 arquitectura preparada para quien, en el futuro, decida aportar datos con
 derechos suficientes. No son requisito para instalar, demostrar o utilizar
 los módulos públicos gratuitos de TargetAudit.
+
+Ver [Extensiones Licenciadas Opcionales](licensed-extensions.md) para precios
+visibles, condiciones revisadas y el flujo `bring your own license`.

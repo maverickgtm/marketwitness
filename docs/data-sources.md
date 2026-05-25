@@ -19,6 +19,10 @@ regulatorias registradas como aptas: SEC EDGAR, SEC N-PORT y FCA NSM. Las
 fuentes de targets, precios o universo comercial quedan listadas como caminos
 opcionales para usuarios que posean derechos suficientes.
 
+El catalogo `data/samples/licensed_extensions.csv` registra esas rutas
+voluntarias con precios publicos encontrados y limites de publicacion. No es
+una fuente de ingestion ni contiene credenciales o datasets adquiridos.
+
 ## Registro Formal De Gobernanza
 
 La clasificación legible por máquina vive en
@@ -48,8 +52,8 @@ público".
 
 | Fuente | Cobertura Declarada | Utilidad | Estado Para TargetAudit |
 |---|---|---|---|
-| Benzinga Analyst Ratings API | Acciones USA, historial desde 2013; firma, analista, rating y targets anterior/actual | Candidato principal para un pipeline real | Requiere revisar plan/licencia antes de almacenar o mostrar datos |
-| Polygon / Benzinga endpoints | Ratings e insights historicos estructurados | Integracion moderna en una API de mercado | Expansion comercial; no asumida como gratuita |
+| Benzinga Analyst Ratings API | Acciones USA, historial desde 2013; firma, analista, rating y targets anterior/actual | Candidato principal para un pipeline real | Cotizacion/licencia directa requerida |
+| Massive / Benzinga Analyst Ratings Expansion | Ratings y targets estructurados; documentacion desde 2011-12-08 | Ruta voluntaria para un usuario con licencia propia | `USD 99/month` individual visible; no autoriza ranking publico compartido |
 | LSEG I/B/E/S | Historial institucional de estimaciones y recomendaciones | Fuente de investigacion de alta calidad | Candidata futura, probablemente costosa |
 | Financial Modeling Prep | APIs de price-target summary/consensus e historical grades | Puede complementar o validar cobertura | Confirmar si entrega targets individuales historicos y limites del plan |
 | MarketBeat | Historial, screener y ranking propios | Referencia metodologica y verificacion manual | Herramientas/exportaciones sujetas a suscripcion y terminos |
@@ -65,6 +69,8 @@ exportaciones suministradas legalmente mediante un manifiesto que declara
 proveedor, mapeo, referencia contractual y uso autorizado; toda fila sin
 evidencia URL o campos evaluables queda rechazada antes del scorecard. El
 fixture incluido es sintetico y no representa una licencia comercial real.
+Las alternativas pagadas y sus limites se documentan en
+`docs/licensed-extensions.md`.
 
 ## Precios Ajustados Y Mercado
 
@@ -333,7 +339,9 @@ primer fondo regulatorio configurado para ejecucion operativa.
 ## Enlaces De Referencia
 
 - Benzinga: <https://www.benzinga.com/apis/analyst-ratings-api/>
-- Polygon/Benzinga: <https://polygon.io/docs/rest/partners/benzinga/analyst-ratings>
+- Massive/Benzinga: <https://massive.com/docs/rest/stocks/benzinga/analyst-ratings>
+- Massive pricing: <https://massive.com/pricing>
+- Massive individual market-data terms: <https://massive.com/legal/market_data_terms_individual>
 - LSEG I/B/E/S: <https://www.lseg.com/en/data-analytics/financial-data/company-data/ibes-estimates>
 - Financial Modeling Prep: <https://site.financialmodelingprep.com/datasets/analyst-estimates-targets>
 - SEC Developer Resources: <https://www.sec.gov/about/developer-resources>

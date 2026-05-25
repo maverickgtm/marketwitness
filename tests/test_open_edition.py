@@ -24,7 +24,8 @@ class OpenEditionTests(unittest.TestCase):
             item for item in snapshot["capabilities"] if item["key"] == "real_analyst_rankings"
         )
         self.assertEqual(rankings["status"], "bring_authorized_data")
-        self.assertIn("No commercial target dataset", rankings["limitation"])
+        self.assertEqual(rankings["route"], "/dashboard/extensions")
+        self.assertIn("no licensed target dataset", rankings["limitation"])
         self.assertIn("No paid data required", render_open_edition_html(snapshot))
         self.assertIn("Available without paid data subscriptions: `4`", render_open_edition_report(snapshot))
 

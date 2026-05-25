@@ -57,8 +57,8 @@ CAPABILITIES = (
         "cost": "Optional only",
         "provider_ids": (),
         "output": "Rankings from user-supplied observations with documented usage rights",
-        "route": "/dashboard/readiness",
-        "limitation": "No commercial target dataset is bundled or required for the Open Edition.",
+        "route": "/dashboard/extensions",
+        "limitation": "Optional paid paths are cataloged, but no licensed target dataset is bundled or required.",
     },
 )
 

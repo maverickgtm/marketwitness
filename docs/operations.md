@@ -232,6 +232,22 @@ abiertas. Una fila aprobada que contradiga `source_registry.csv` hace fallar
 el reporte: la evidencia de permiso y la gobernanza deben coincidir antes de
 activar una fuente. La vista web está disponible en `/dashboard/approvals`.
 
+Para mostrar alternativas que el usuario podria pagar voluntariamente, sin
+activar ingestion ni publicacion:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit licensed-extensions \
+  --catalog data/samples/licensed_extensions.csv \
+  --report build/live/licensed-extensions.md \
+  --html build/live/licensed-extensions.html \
+  --as-of YYYY-MM-DD
+```
+
+La pagina `/dashboard/extensions` presenta el precio publicado y los terminos
+revisados. La opcion individual Massive / Benzinga (`USD 99/month`) continua
+marcada como uso privado sujeto a licencia; no satisface por si sola el
+requisito de output publico de `/dashboard/readiness`.
+
 Cuando se reciba o revise evidencia de licencia, aplicarla mediante una
 decisión manual a salidas generadas, no editando el registro original:
 

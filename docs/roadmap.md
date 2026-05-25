@@ -94,6 +94,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 
 - [x] Open Edition ejecutable sin suscripciones de datos, con sandbox
   redistribuible y monitores regulatorios públicos claramente separados.
+- [x] Catalogo `bring your own license` para que el usuario compare opciones
+  pagadas sin volverlas requisito ni confundirlas con permiso de publicacion.
 - [ ] Licencia o aportación autorizada opcional para mostrar rankings reales
   de analistas públicamente.
 - [ ] Actualizaciones programadas del scorecard real con fuentes opcionales
