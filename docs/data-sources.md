@@ -42,8 +42,8 @@ documenta que la página premium de Alpha Vantage todavía no demuestra permiso
 de salida pública y por eso conserva el expediente pendiente.
 
 Al `2026-05-24`, el inventario contiene 26 fuentes: 15 conectores o fixtures
-implementados, 18 fuentes que aun exigen revision de terminos/licencia para
-uso público real, 1 integracion limitada a descarga manual y 2 referencias
+implementados, 17 fuentes que aun exigen revision de terminos/licencia para
+uso público real, 1 integracion limitada a descarga manual y 3 referencias
 bloqueadas para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto
 público".
@@ -101,7 +101,8 @@ activo y usar exchanges solamente como venues secundarios.
 | `RWA Watch Sandbox` | Observaciones de precio de referencia y token/venue creadas por TargetAudit | Modulo funcional sin costo; demuestra desviaciones y controles sin datos reales |
 | `xStocks / Backed Public API` | Recursos sin autenticacion para metadatos, precio subyacente/mercado, documentacion legal y proof of reserves | Referencia tecnica bloqueada: los terminos revisados no autorizan recoleccion/republicacion publica automatizada |
 | `Ondo Global Markets` | API autenticada para datos de mercado orientados a aplicaciones; requiere onboarding y `x-api-key` | Candidato autorizado, no fuente gratis abierta; pendiente de derechos publicos |
-| Bybit, Kraken, Gate y Bitget | Venues oficiales que anuncian xStocks u Ondo tokenizados | Candidatos secundarios para contrastar mercado despues de validar terminos |
+| Bybit | Venue xStocks y campos V5 documentados; sus terminos excluyen Estados Unidos y otras jurisdicciones | Referencia bloqueada para el dashboard GitHub publico |
+| Kraken, Gate y Bitget | Venues oficiales que anuncian xStocks u Ondo tokenizados | Referencias secundarias pendientes de revision propia |
 | LBank | Zona xStocks anunciada con activos impulsados por Backed | Referencia de venue hasta confirmar API |
 | Gemini y OKX | Gemini declara que su producto no esta disponible via API; OKX dirige estos activos a DEX/wallet y no a su CEX | Referencia de cobertura, no conectores |
 | Pepperstone | CFDs de acciones y APIs vinculadas a cuenta | Contexto privado de derivados, excluido de la capa emisora |
@@ -118,6 +119,9 @@ En Ondo, la documentacion permite identificar una via contractual mas viable:
 sus endpoints de precios se describen para display en aplicaciones, pero solo
 despues de onboarding y API key. No se activa como fuente gratis ni publicable
 hasta recibir condiciones suficientes para este uso.
+Bybit tambien queda fuera de la ingestion publica: aunque su API V5 documenta
+campos xStocks, los terminos del producto excluyen jurisdicciones como Estados
+Unidos y no habilitan un dashboard mundial redistribuible.
 
 ## Precios Ajustados Y Mercado
 
@@ -414,6 +418,7 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - Bybit V5 instruments info: <https://bybit-exchange.github.io/docs/v5/market/instrument>
 - Bybit TradFi contracts: <https://www.bybitglobal.com/en/help-center/article/Contracts-Available-on-TradFi-MT5-and-Specifications>
 - Bybit restricted jurisdictions: <https://www.bybit.com/en/help-center/article/Service-Restricted-Countries>
+- Bybit xStocks terms: <https://www.bybit.com/en/help-center/article/Terms-and-Conditions-xStocks>
 - CoinGecko exchanges: <https://www.coingecko.com/en/exchanges>
 - xStocks API: <https://docs.xstocks.fi/apis/openapi>
 - xStocks overview: <https://docs.xstocks.fi/about-xstocks/welcome-to-xstocks/overview>

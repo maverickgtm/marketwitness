@@ -31,7 +31,7 @@ conectores duplicados para productos basados en la misma emision.
 |---|---|---|
 | xStocks / Backed Public API | Documenta APIs sin autenticacion para metadatos, documentacion legal, NAV, datos de mercado y proof of reserves; sus terminos limitan servicios a fines informativos/internos y restringen retrieval o republicacion automatizados | Referencia tecnica bloqueada; no recolectar ni publicar datos reales sin autorizacion escrita |
 | Ondo Global Markets | Documenta datos de mercado para aplicaciones y APIs autenticadas; la integracion exige onboarding y `x-api-key` | Segundo candidato autorizado, no fuente gratuita abierta; confirmar acceso, elegibilidad y derechos de output |
-| Exchanges compatibles | Pueden exponer mercado spot, disponibilidad o liquidez del instrumento | Capa secundaria solamente, tras validar terminos propios |
+| Exchanges compatibles | Pueden exponer mercado spot, disponibilidad o liquidez del instrumento | Capa secundaria solamente; Bybit queda bloqueado por sus restricciones de producto y otros venues requieren revision propia |
 
 ## Top 20 CEX Revisados
 
@@ -45,7 +45,7 @@ conectores duplicados para productos basados en la misma emision.
 | 6 | Gate | Publica `xStocks` y `Ondo Stocks` | Venue secundario candidato, pendiente de terminos |
 | 7 | Bitget | Publica activos tokenizados Ondo de acciones y ETF de EE. UU. | Venue secundario candidato, pendiente de terminos |
 | 8 | Bitvavo | No se confirmo ruta oficial de acciones tokenizadas en la revision focalizada | Sin conector ahora |
-| 9 | Bybit | `xStocks` Spot y API V5 con `symbolType=xstocks` y `xstockMultiplier` | Venue candidato ya registrado |
+| 9 | Bybit | `xStocks` Spot y API V5 con `symbolType=xstocks` y `xstockMultiplier`; sus terminos excluyen Estados Unidos y otras jurisdicciones | Referencia secundaria bloqueada para dashboard publico |
 | 10 | BingX | Publica material sobre activos RWA, sin feed de acciones confirmado | Referencia solamente |
 | 11 | MEXC | No se confirmo producto programatico oficial de acciones tokenizadas | Sin conector ahora |
 | 12 | Crypto.com Exchange | App ofrece acciones y ETF a usuarios elegibles de EE. UU. | Referencia de brokerage; no feed publico confirmado |
@@ -79,8 +79,9 @@ cuenta:
 3. Confirmar contrato/onboarding y derechos de salida de `Ondo Global Markets`;
    sus endpoints de precios estan documentados para display, pero requieren
    API key.
-4. Despues, evaluar disponibilidad y precios en Bybit, Kraken, Gate y Bitget
-   como venues secundarios; LBank queda pendiente de confirmar API.
+4. Investigar derechos especificos de Kraken, Gate y Bitget como venues
+   secundarios; Bybit ya queda bloqueado para la edicion publica y LBank esta
+   pendiente de confirmar API.
 5. Mantener CFDs y productos de brokerage fuera de cualquier comparacion que
    sugiera propiedad de acciones o historial de analistas.
 
@@ -97,6 +98,7 @@ cuenta:
 - Ondo important notes: <https://docs.ondo.finance/ondo-global-markets/important-notes>
 - Bybit xStocks: <https://www.bybit.com/en/help-center/article/FAQ-xStocks-on-Bybit>
 - Bybit V5 instruments: <https://bybit-exchange.github.io/docs/v5/market/instrument>
+- Bybit xStocks terms: <https://www.bybit.com/en/help-center/article/Terms-and-Conditions-xStocks>
 - Kraken xStocks: <https://www.kraken.com/xstocks>
 - Gate xStocks: <https://www.gate.com/xstocks>
 - Bitget Ondo announcement: <https://www.bitget.com/support/articles/12560603838361>

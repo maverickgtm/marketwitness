@@ -41,6 +41,9 @@ API key y revision de derechos de output. La Open Edition incluye en su lugar
 un sandbox sintetico que no realiza llamadas reales. Ninguna de estas fuentes
 alimenta analyst targets. Ver
 [RWA Watch: Exchanges Y Fuentes Base](rwa-watch-sources.md).
+Bybit tambien permanece como referencia bloqueada: su producto xStocks tiene
+restricciones jurisdiccionales incompatibles con tratarlo como feed publico
+global del repositorio.
 
 ## Capacidades Incluidas
 

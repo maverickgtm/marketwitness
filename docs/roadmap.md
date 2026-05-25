@@ -107,7 +107,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [ ] Adaptador real `RWA Watch` para `xStocks / Backed`, solo si se obtiene
   autorizacion escrita de display, retencion y output derivado.
 - [ ] Revision de acceso/API `Ondo Global Markets` y contraste opcional de
-  venues Bybit, Kraken, Gate y Bitget.
+  venues Kraken, Gate y Bitget; Bybit ya fue bloqueado por sus terminos.
 - [ ] Licencia o aportación autorizada opcional para mostrar rankings reales
   de analistas públicamente.
 - [ ] Actualizaciones programadas del scorecard real con fuentes opcionales
