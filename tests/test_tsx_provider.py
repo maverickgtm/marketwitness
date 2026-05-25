@@ -25,6 +25,7 @@ class TsxProviderTests(unittest.TestCase):
         self.assertEqual(listings[0].status, "listed")
         self.assertIn("confirm listed companies", report)
         self.assertIn("Canada", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
     def test_rejects_invalid_listing_date(self) -> None:
         page = (

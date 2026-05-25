@@ -41,6 +41,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Conector SGX `IPO Prospectus` mediante API JSON oficial.
 - [x] Monitor JPX `New Listings` para aprobaciones y fechas de listing de Tokio.
 - [x] Historial y diff diario de diez monitores globales, incluidos JPX, EDINET, CVM, ESMA y OpenDART, con cola de revision.
+- [x] Navegacion de retorno desde monitores globales, alertas y confirmaciones
+  hacia `Global Listings Watch` para conservar contexto jurisdiccional.
 - [x] Ingesta de comunicados oficiales para confirmar listings.
 - [x] Validacion de splits y cambios de ticker.
 - [x] Validacion de barras de precios duplicadas o incoherentes.

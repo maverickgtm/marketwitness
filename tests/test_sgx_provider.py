@@ -28,6 +28,7 @@ class SgxProviderTests(unittest.TestCase):
         self.assertEqual(prospectuses[1].closing_date, "-")
         self.assertIn("prospectus_published", report)
         self.assertIn("Singapore", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
     def test_rejects_invalid_closing_date(self) -> None:
         record = {

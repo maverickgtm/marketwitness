@@ -36,6 +36,7 @@ class OpenDartProviderTests(unittest.TestCase):
         self.assertIn("not official filing evidence", page)
         self.assertIn("does not confirm an IPO", page)
         self.assertIn("Equity securities registration review", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
     @patch.dict("os.environ", {}, clear=True)
     def test_live_collection_requires_user_api_key(self) -> None:

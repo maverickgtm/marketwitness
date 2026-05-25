@@ -25,6 +25,7 @@ class HkexProviderTests(unittest.TestCase):
         self.assertIn("Official listing signals", page)
         self.assertIn("EnjoyGo Technology Limited", page)
         self.assertIn("Active / PHIP", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
     def test_maps_returned_date_and_rejects_invalid_update_date(self) -> None:
         listings, updated = parse_hkex_payload(

@@ -39,6 +39,7 @@ class EsmaProviderTests(unittest.TestCase):
         self.assertIn("Secondary issuance review", page)
         self.assertNotIn("secondary_issuance_review", page)
         self.assertIn("official ESMA legal notice", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
     def test_rejects_future_share_prospectus(self) -> None:
         payload = {

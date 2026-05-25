@@ -31,6 +31,7 @@ class EdinetProviderTests(unittest.TestCase):
         self.assertIn("not public filing evidence", page)
         self.assertIn("Synthetic identifier", page)
         self.assertIn("Amendment", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
         self.assertNotIn("api.edinet-fsa.go.jp/api/v2/documents/SYNTH", page)
 
     @patch.dict("os.environ", {}, clear=True)

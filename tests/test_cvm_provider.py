@@ -33,6 +33,7 @@ class CvmProviderTests(unittest.TestCase):
         self.assertIn("not official offering evidence", page)
         self.assertIn("does not confirm B3 listing", page)
         self.assertIn("Offering closed", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
         self.assertNotIn("offering_closed", page)
 
     def test_supports_resolution_160_schema_and_equity_filter(self) -> None:

@@ -465,6 +465,9 @@ Cada jurisdiccion conserva sus propias etapas:
 - La portada `/dashboard/global-listings` enlaza estas vistas mediante rutas
   fijas para diez monitores internacionales; `/dashboard/global/{monitor}`
   rechaza cualquier reporte fuera de la lista permitida.
+- Cada monitor, la cola de alertas y las confirmaciones de emisor enlazan de
+  regreso a `/dashboard/global-listings` para conservar la regla de evidencia
+  de la jurisdiccion mientras se recorre el módulo.
 - `Global Listings Watch` permite navegar entre
   cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,
   TSX, JPX, EDINET, CVM, ESMA, OpenDART, SGX, confirmaciones del emisor, actividad ETF y gobernanza de fuentes.

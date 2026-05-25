@@ -726,6 +726,10 @@ revision, no primera negociacion. En Corea, un filing OpenDART permanece como
 evidencia regulatoria y no como IPO o listing confirmado. Una remoción nunca se promueve
 automáticamente a retirada, admisión o cotización completada.
 
+La portada `/dashboard/global-listings` es el índice operativo de estas
+salidas; cada HTML generado enlaza de regreso a ella para consultar la regla
+de confirmación aplicable a su mercado.
+
 ## Confirmacion JPX De Tokio
 
 El monitor JPX adicional lee la pagina oficial `New Listings` y genera

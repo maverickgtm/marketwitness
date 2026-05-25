@@ -23,6 +23,7 @@ class AsxProviderTests(unittest.TestCase):
         self.assertEqual(listings[2].status, "withdrawn")
         self.assertIn("formal application", report)
         self.assertIn("Australia", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
     def test_rejects_missing_required_listing_field(self) -> None:
         with self.assertRaisesRegex(AsxDataError, "missing company, date or code"):

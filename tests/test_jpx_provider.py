@@ -26,6 +26,7 @@ class JpxProviderTests(unittest.TestCase):
         self.assertEqual(listings[0].status, "approved_pending_listing")
         self.assertIn("EDINET offering-document review", report)
         self.assertIn("Tokyo", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
     def test_changes_state_after_listing_date(self) -> None:
         listings = load_jpx_snapshot(

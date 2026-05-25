@@ -39,6 +39,7 @@ class ListingAlertsTests(unittest.TestCase):
         self.assertIn("not automatically a withdrawal", report)
         self.assertIn("What changed", page)
         self.assertIn("JUSTCO HOLDINGS LIMITED", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
     def test_loads_all_previous_market_snapshots(self) -> None:
         signals = load_snapshot_directory(Path("data/samples/global-alerts-previous"))

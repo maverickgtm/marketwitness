@@ -27,6 +27,7 @@ class IssuerConfirmationTests(unittest.TestCase):
         self.assertIn("Issuer release", page)
         self.assertIn("not an investment recommendation", page)
         self.assertIn('href="/dashboard/ipo">IPO Watch Center</a>', page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
     def test_rejects_confirmation_without_market_or_ticker(self) -> None:
         path = _csv(

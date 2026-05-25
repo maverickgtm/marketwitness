@@ -25,6 +25,7 @@ class LseUpcomingTests(unittest.TestCase):
         self.assertIn("LSE Upcoming Issues Snapshot", report)
         self.assertIn("London", page)
         self.assertIn("Snapshot mode", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
     def test_rejects_snapshot_after_report_date(self) -> None:
         issues = load_lse_upcoming(Path("data/samples/lse_upcoming_issues.csv"))

@@ -264,7 +264,7 @@ nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font
 .card,.notice,.table-wrap{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{margin:35px 0;padding:18px 20px;width:260px}}.card p{{margin:0;color:var(--muted)}}.card strong{{font-size:38px;color:var(--mint);display:block}}
 .notice{{border-left:3px solid var(--gold);color:var(--muted);padding:15px 18px}}h2{{margin-top:42px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left}}th{{text-transform:uppercase;font-size:12px;color:var(--muted);font-weight:500}}a{{color:var(--mint);text-decoration:none}}
 @media(max-width:800px){{.table-wrap{{overflow-x:auto}}table{{min-width:700px}}}}
-</style></head><body><header><nav>TargetAudit / Global Listings Watch / LSE</nav><h1>London.<br>Upcoming issues.</h1>
+</style></head><body><header><nav><a href="/dashboard/global-listings">Global Listings Watch</a> / LSE</nav><h1>London.<br>Upcoming issues.</h1>
 <p class="lead">{"A live reading of upcoming equity listings from the official London Stock Exchange page data." if live else "A documented snapshot of upcoming equity listings visible on the official London Stock Exchange page."}</p>
 <p class="meta">Observed as of {escape(as_of.isoformat())}</p><article class="card"><p>Upcoming records</p><strong>{len(issues)}</strong><small>{"Official JSON feed" if live else "Official-page snapshot"}</small></article></header>
 <main><p class="notice">{"Live official feed." if live else "Snapshot mode."} Dates are expected dates from LSE and still require prospectus or admission verification.</p>

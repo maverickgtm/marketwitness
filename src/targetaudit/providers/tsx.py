@@ -204,7 +204,7 @@ nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font
 .card,.notice,.table-wrap{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{padding:18px 20px;min-width:220px;display:inline-block;margin:35px 0}}.card p{{margin:0;color:var(--muted)}}.card strong{{font-size:38px;color:var(--mint);display:block}}
 .notice{{border-left:3px solid var(--gold);color:var(--muted);padding:15px 18px}}h2{{margin-top:42px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}th{{text-transform:uppercase;font-size:12px;color:var(--muted);font-weight:500}}a{{color:var(--mint);text-decoration:none}}.badge{{color:var(--mint);background:rgba(86,218,172,.12);border-radius:999px;padding:5px 9px;font-size:12px}}
 @media(max-width:800px){{.table-wrap{{overflow-x:auto}}table{{min-width:700px}}}}
-</style></head><body><header><nav>TargetAudit / Global Listings Watch / TSX</nav>
+</style></head><body><header><nav><a href="/dashboard/global-listings">Global Listings Watch</a> / TSX</nav>
 <h1>Canada.<br>New listings.</h1><p class="lead">Companies observed in the official Toronto Stock Exchange New Company Listings table.</p>
 <p class="meta">Observed as of {escape(as_of.isoformat())}</p><article class="card"><p>Listed records</p><strong>{len(listings)}</strong></article></header>
 <main><p class="notice">This is confirmation of completed listings published by TSX, not a forward-looking IPO signal or a trading instruction.</p>

@@ -585,6 +585,10 @@ temprana; JPX confirma hitos japoneses de listing, B3 requerira evidencia
 separada para Brasil y ESMA no confirma primera negociacion europea. Una
 remoción no confirma retiro, admisión ni inicio de negociación.
 
+La ruta `/dashboard/global-listings` funciona como indice internacional: las
+vistas de cada mercado, la cola global y las confirmaciones oficiales enlazan
+de regreso a ese mapa de cobertura y reglas de confirmacion.
+
 ## ETF Holdings Activity
 
 La primera pagina ETF ya es ejecutable con snapshots normalizados y una demo

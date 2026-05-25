@@ -63,6 +63,7 @@ class FcaNsmProviderTests(unittest.TestCase):
         self.assertIn("Intention-to-float notices: `1`", report)
         self.assertIn("NSM evidence is not real-time", page)
         self.assertIn("intention_to_float_notice", page)
+        self.assertIn('href="/dashboard/global-listings">Global Listings Watch</a>', page)
 
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / "checks.csv"

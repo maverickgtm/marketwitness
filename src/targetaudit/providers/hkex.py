@@ -242,7 +242,7 @@ h1{{font-size:clamp(34px,5vw,54px);line-height:1.06;margin:38px 0 14px}}.lead{{m
 table{{width:100%;border-collapse:collapse}}th,td{{padding:14px 15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}th{{font-size:12px;text-transform:uppercase;color:var(--muted);font-weight:500}}
 a{{color:var(--mint);text-decoration:none}}.badge{{border-radius:999px;padding:5px 9px;font-size:12px}}.active,.active_phip{{color:var(--gold)}}.listed{{color:var(--mint)}}.inactive,.returned{{color:var(--blue)}}
 @media(max-width:820px){{.cards{{grid-template-columns:1fr 1fr}}.table-wrap{{overflow-x:auto}}table{{min-width:720px}}}}
-</style></head><body><header><nav>TargetAudit / Global Listings Watch / HKEX</nav>
+</style></head><body><header><nav><a href="/dashboard/global-listings">Global Listings Watch</a> / HKEX</nav>
 <h1>Hong Kong.<br>Official listing signals.</h1>
 <p class="lead">Application Proof, PHIP and lifecycle status observations read from official HKEXnews JSON feeds.</p>
 <p class="meta">Generated as of {escape(as_of.isoformat())}</p><section class="cards">{cards}</section></header>
