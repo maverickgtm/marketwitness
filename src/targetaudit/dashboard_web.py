@@ -144,7 +144,7 @@ def report_center_html() -> str:
     <p class="lead">A reading room for the report pages included in the tested Open Edition bundle. It exposes approved dashboard routes, never arbitrary files from the generated-report directory.</p>
     <p class="meta">Open Edition bundle / Weekly GitHub Actions build / 30-day artifact retention</p>
     <section class="cards">
-      <article class="card"><p>Generated report routes</p><strong>22 allowlisted pages</strong></article>
+      <article class="card"><p>Generated report routes</p><strong>23 allowlisted pages</strong></article>
       <article class="card"><p>Bundle schedule</p><strong>Weekly + manual</strong></article>
       <article class="card"><p>Required paid data</p><strong>None</strong></article>
     </section>
@@ -177,6 +177,7 @@ def report_center_html() -> str:
     <h2>Governance Snapshots</h2>
     <section class="reports">
       <article class="report"><span class="pill fixture">edition manifest</span><h3>Open Edition Snapshot</h3><p>Generated statement of zero-cost capabilities and boundaries for this bundle.</p><small>A dated artifact, separated from the application home page.</small><a href="/dashboard/governance-report/open-edition">Open report</a></article>
+      <article class="report"><span class="pill regulatory">optional licenses</span><h3>Licensed Extensions Snapshot</h3><p>Generated catalog of optional paid routes, listed prices and public-output restrictions.</p><small>A priced option is not permission to publish a shared ranking.</small><a href="/dashboard/governance-report/licensed-extensions">Open report</a></article>
       <article class="report"><span class="pill regulatory">source controls</span><h3>Source Registry Snapshot</h3><p>Generated provider registry after documented demonstration decisions are applied.</p><small>Shows permissions and blocked sources as built.</small><a href="/dashboard/governance-report/source-registry">Open report</a></article>
       <article class="report"><span class="pill regulatory">permission queue</span><h3>Provider Approvals Snapshot</h3><p>Generated queue of source permissions still needed for a real scorecard.</p><small>An open item is not authorization.</small><a href="/dashboard/governance-report/provider-approvals">Open report</a></article>
       <article class="report"><span class="pill regulatory">decision audit</span><h3>Approval Review Outcomes</h3><p>Generated outcome log for reviewed provider-permission decisions.</p><small>Preserves the audit trail without modifying base governance silently.</small><a href="/dashboard/governance-report/approval-review">Open report</a></article>

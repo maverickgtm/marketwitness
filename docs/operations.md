@@ -286,6 +286,7 @@ el bloqueo; no autoriza publicar rankings reales.
 
 Para auditar el estado exacto incluido en un bundle, las rutas
 `/dashboard/governance-report/open-edition`,
+`/dashboard/governance-report/licensed-extensions`,
 `/dashboard/governance-report/source-registry`,
 `/dashboard/governance-report/provider-approvals`,
 `/dashboard/governance-report/approval-review` y

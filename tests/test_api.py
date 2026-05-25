@@ -171,6 +171,7 @@ class ApiTests(unittest.TestCase):
             )
         for filename, title in (
             ("open-edition.html", "Open Edition Snapshot generated page"),
+            ("licensed-extensions.html", "Licensed Extensions Snapshot generated page"),
             ("source-registry.html", "Source Registry Snapshot generated page"),
             ("provider-approvals.html", "Provider Approvals Snapshot generated page"),
             ("provider-approval-review-outcomes.html", "Approval Review Outcomes generated page"),
@@ -276,7 +277,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Reproducible reports.", page.text)
         self.assertIn("Known routes only.", page.text)
-        self.assertIn("22 allowlisted pages", page.text)
+        self.assertIn("23 allowlisted pages", page.text)
         self.assertIn("/dashboard/ipo-watch", page.text)
         self.assertIn("/dashboard/sec-alerts", page.text)
         self.assertIn("/dashboard/ipo-reviews", page.text)
@@ -295,6 +296,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/audit/operations-quality", page.text)
         self.assertIn("/dashboard/audit/release-decision", page.text)
         self.assertIn("/dashboard/governance-report/open-edition", page.text)
+        self.assertIn("/dashboard/governance-report/licensed-extensions", page.text)
         self.assertIn("/dashboard/governance-report/source-registry", page.text)
         self.assertIn("/dashboard/governance-report/provider-approvals", page.text)
         self.assertIn("/dashboard/governance-report/approval-review", page.text)
@@ -419,6 +421,7 @@ class ApiTests(unittest.TestCase):
     def test_serves_only_allowlisted_governance_snapshot_pages(self) -> None:
         pages = {
             "/dashboard/governance-report/open-edition": "Open Edition Snapshot generated page",
+            "/dashboard/governance-report/licensed-extensions": "Licensed Extensions Snapshot generated page",
             "/dashboard/governance-report/source-registry": "Source Registry Snapshot generated page",
             "/dashboard/governance-report/provider-approvals": "Provider Approvals Snapshot generated page",
             "/dashboard/governance-report/approval-review": "Approval Review Outcomes generated page",

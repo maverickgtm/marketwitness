@@ -46,7 +46,7 @@ comprar datos comerciales.
 Objetivo: volver navegable el bundle semanal de Open Edition sin abrir acceso
 general al directorio de reportes construidos.
 
-- La ruta `/dashboard/reports` agrupa veintidos paginas HTML ya permitidas:
+- La ruta `/dashboard/reports` agrupa veintitres paginas HTML ya permitidas:
   IPO Watch, SEC IPO Alerts, IPO Review Outcomes, ETF Regulatory Holdings,
   XLF Holdings Sandbox, IYF Holdings Sandbox, N-PORT Recent Filing, Public
   Document Checks, RWA Watch Sandbox, Global Listings Watch, Global Listings
@@ -63,7 +63,8 @@ general al directorio de reportes construidos.
   generadas por el demo; el reporte final permanece bloqueado para claims
   publicos de datos reales.
 - `Governance Snapshots` conserva las paginas generadas de Open Edition,
-  registro de fuentes, cola de permisos, resultados de revision y readiness;
+  extensiones licenciadas opcionales, registro de fuentes, cola de permisos,
+  resultados de revision y readiness;
   estas capturan el bundle construido, mientras `/dashboard/governance`,
   `/dashboard/approvals` y `/dashboard/readiness` son controles interactivos.
 - Explica que el artefacto periodico generado en GitHub Actions usa fixtures

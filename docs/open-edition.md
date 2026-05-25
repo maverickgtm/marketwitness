@@ -124,7 +124,8 @@ Desde ella se abre `/dashboard/reports`, un indice de
 `/dashboard/audit/{report}` para evidencia Financials del demo; estas rutas
 solo sirven artefactos HTML conocidos producidos por `make demo`. El paquete
 `/dashboard/governance-report/{snapshot}` expone exclusivamente los snapshots
-generados de manifiesto, fuentes, permisos, revisiones y readiness, separado
+generados de manifiesto, extensiones licenciadas, fuentes, permisos,
+revisiones y readiness, separado
 de las pantallas interactivas. La portada global abre exclusivamente
 los diez monitores internacionales incluidos en la lista permitida
 `/dashboard/global/{monitor}`, no un explorador de archivos generados.

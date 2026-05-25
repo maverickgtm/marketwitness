@@ -85,6 +85,7 @@ FINANCIALS_AUDIT_REPORTS = {
 }
 GOVERNANCE_SNAPSHOT_REPORTS = {
     "open-edition": "open-edition.html",
+    "licensed-extensions": "licensed-extensions.html",
     "source-registry": "source-registry.html",
     "provider-approvals": "provider-approvals.html",
     "approval-review": "provider-approval-review-outcomes.html",
