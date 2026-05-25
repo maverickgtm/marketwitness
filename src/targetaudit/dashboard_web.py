@@ -133,7 +133,7 @@ def report_center_html() -> str:
     .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; }
     .fixture { color:var(--blue); background:rgba(98,166,255,.12); }
     .regulatory { color:var(--mint); background:rgba(86,218,172,.12); }
-    .controls { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .controls { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
     @media(max-width:900px) { .cards,.reports,.controls { grid-template-columns:1fr; } }
   </style>
 </head>
@@ -189,9 +189,77 @@ def report_center_html() -> str:
     </section>
     <h2>Operational Controls</h2>
     <section class="controls">
+      <article class="control"><h3>ETF Evidence Center</h3><p>Separate synthetic comparisons from periodic SEC N-PORT evidence before reading changes.</p><a href="/dashboard/etf">Open ETF evidence</a></article>
       <article class="control"><h3>Public Use Policy</h3><p>See data boundaries, blocked sources and no-recommendation rules.</p><a href="/dashboard/policy">Open policy</a></article>
       <article class="control"><h3>Source Governance</h3><p>Inspect provider states, rights review and excluded observations.</p><a href="/dashboard/governance">Open governance</a></article>
       <article class="control"><h3>Release Center</h3><p>Review why demo evidence cannot become a public real-data scorecard.</p><a href="/dashboard/release">Open release controls</a></article>
+    </section>
+  </main>
+</body>
+</html>"""
+
+
+def etf_evidence_center_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | ETF Evidence Center</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --line:#20343d; --text:#edf1ef;
+      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1220px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(40px,5vw,62px); line-height:1.04; margin:38px 0 14px; }
+    h2 { margin:42px 0 16px; font-size:22px; }
+    h3 { margin:10px 0 8px; }
+    .lead { color:var(--muted); font-size:18px; max-width:920px; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.view,.notice { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:18px 20px; }
+    .card p,.view p,.view small { color:var(--muted); margin:0; display:block; }
+    .card strong { color:var(--mint); display:block; font-size:28px; margin-top:5px; }
+    .notice { border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); }
+    .views { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+    .view { padding:18px; }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; }
+    .fixture { color:var(--blue); background:rgba(98,166,255,.12); }
+    .regulatory { color:var(--mint); background:rgba(86,218,172,.12); }
+    @media(max-width:880px) { .cards,.views { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav><a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/reports">Report Center</a> / ETF Evidence Center</nav>
+    <h1>ETF evidence.<br>Frequency first.</h1>
+    <p class="lead">A single entry point for holdings research that keeps synthetic daily-shaped comparisons separate from official periodic SEC N-PORT evidence.</p>
+    <section class="cards">
+      <article class="card"><p>Synthetic sandboxes</p><strong>3</strong></article>
+      <article class="card"><p>Regulatory comparisons</p><strong>2</strong></article>
+      <article class="card"><p>N-PORT controls</p><strong>2</strong></article>
+      <article class="card"><p>Required paid data</p><strong>None</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice"><strong>Reading rule:</strong> observed position differences are not confirmed manager trades. The included sandboxes do not redistribute real issuer holdings, and N-PORT periods are regulatory evidence rather than daily or real-time activity.</p>
+    <h2>Synthetic Snapshot Sandboxes</h2>
+    <section class="views">
+      <article class="view"><span class="pill fixture">daily-shaped fixture</span><h3>ARKK Holdings Sandbox</h3><p>Exercise normalized ARK-format position changes without publishing ARK holdings.</p><small>Project-authored fixtures only.</small><a href="/dashboard/etf/arkk-demo">Open view</a></article>
+      <article class="view"><span class="pill fixture">daily-shaped fixture</span><h3>XLF Holdings Sandbox</h3><p>Test the financial-sector benchmark workflow with synthetic snapshots.</p><small>Not confirmed manager trades.</small><a href="/dashboard/etf/xlf-demo">Open view</a></article>
+      <article class="view"><span class="pill fixture">daily-shaped fixture</span><h3>IYF Holdings Sandbox</h3><p>Test a second financial ETF without automated iShares collection.</p><small>Project-authored fixtures only.</small><a href="/dashboard/etf/iyf-demo">Open view</a></article>
+    </section>
+    <h2>SEC N-PORT Evidence</h2>
+    <section class="views">
+      <article class="view"><span class="pill regulatory">regulatory periodic</span><h3>N-PORT Recent Filing</h3><p>Compare a recent filing period through the regulatory workflow.</p><small>Periodic evidence, not daily activity.</small><a href="/dashboard/etf/nport-recent">Open view</a></article>
+      <article class="view"><span class="pill regulatory">regulatory periodic</span><h3>ETF Regulatory Holdings</h3><p>Read historical N-PORT position comparisons in their own layer.</p><small>Does not claim real-time trading.</small><a href="/dashboard/etf-regulatory">Open view</a></article>
+      <article class="view"><span class="pill regulatory">official catalog</span><h3>N-PORT Dataset Catalog</h3><p>Inspect published SEC ZIP releases available for historical backfill.</p><small>Official public source; quarterly cadence.</small><a href="/dashboard/etf/nport-catalog">Open view</a></article>
+      <article class="view"><span class="pill regulatory">sync control</span><h3>N-PORT Sync Status</h3><p>Track newly observed SEC quarters and controlled local downloads.</p><small>Operational state, not a signal.</small><a href="/dashboard/etf/nport-sync">Open view</a></article>
     </section>
   </main>
 </body>

@@ -685,7 +685,9 @@ archivo ya descargado sigue disponible `sec-nport-import`.
 Los identificadores `XLF` anteriores fueron confirmados en un filing
 `NPORT-P` oficial de `SELECT SECTOR SPDR TRUST`.
 
-El dashboard publica únicamente vistas conocidas para esta sección:
+El dashboard publica `/dashboard/etf` como portada de evidencia, separando
+explícitamente fixtures diarios de evidencia periódica oficial. Desde ella
+sirve únicamente vistas conocidas para esta sección:
 `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo` y
 `/dashboard/etf/iyf-demo` para fixtures sintéticos;
 `/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory`
@@ -953,6 +955,7 @@ Endpoints iniciales:
 | `/dashboard/sec-discovery` | Entrada universal generada de formularios SEC candidatos, previa al triage y a decisiones manuales |
 | `/dashboard/sec-alerts` | Cola de filings SEC descubiertos que requieren revisión antes de cambiar estados IPO |
 | `/dashboard/ipo-reviews` | Auditoria de decisiones documentadas aplicadas al registro IPO Watch |
+| `/dashboard/etf` | Centro ETF que separa sandboxes sintéticos de evidencia regulatoria periódica SEC N-PORT |
 | `/dashboard/etf/arkk-demo` | Diferencias de holdings sintéticas en formato `ARKK-DEMO`, sin redistribuir holdings ARK reales |
 | `/dashboard/etf/xlf-demo` | Diferencias de holdings sintéticas para `XLF-DEMO`, sin afirmar operaciones reales |
 | `/dashboard/etf/iyf-demo` | Diferencias de holdings sintéticas para `IYF-DEMO`, sin recolección automatizada |

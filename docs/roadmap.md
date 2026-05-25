@@ -76,6 +76,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   politica de no redistribucion de holdings reales pendiente de permiso.
 - [x] Vista `ARKK-DEMO` de variaciones entre fixtures ARK-shaped, visible en
   el dashboard sin redistribuir holdings oficiales.
+- [x] Centro navegable `ETF Evidence Center` que separa sandboxes sintéticos
+  de evidencia SEC N-PORT periódica y sus controles operativos.
 - [x] Importador local State Street SPDR/XLF para holdings diarios y demo
   `XLF-DEMO` alineado a Financials.
 - [x] Importador local iShares/IYF para un segundo ETF financiero, con demo

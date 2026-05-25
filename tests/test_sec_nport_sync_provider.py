@@ -40,6 +40,7 @@ class SecNportSyncProviderTests(unittest.TestCase):
         self.assertIn("New quarters.", page)
         self.assertIn("not daily ETF portfolio activity", page)
         self.assertIn("baseline_not_downloaded", page)
+        self.assertIn('href="/dashboard/etf">ETF Evidence Center</a>', page)
 
     def test_downloads_only_release_first_observed_after_baseline(self) -> None:
         downloads = []

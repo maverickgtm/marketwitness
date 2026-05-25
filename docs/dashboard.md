@@ -71,7 +71,7 @@ general al directorio de reportes construidos.
   bundle desde su manifiesto generado, no solo desde la portada interactiva.
 - Explica que el artefacto periodico generado en GitHub Actions usa fixtures
   redistribuibles, no consultas live ni rankings reales.
-- Enlaza controles operativos de politica, gobernanza y Release Center para
+- Enlaza controles operativos de ETF Evidence Center, politica, gobernanza y Release Center para
   que los limites de cada reporte queden visibles durante su lectura.
 - No agrega un endpoint de archivos: cada enlace corresponde a una ruta fija
   servida por la API.
@@ -473,6 +473,8 @@ con la frecuencia real de cada fuente.
 
 - Implementado: comparador de snapshots normalizados, CSV de diferencias,
   reporte Markdown y pagina HTML con fixture sintetico reproducible.
+- Centro de lectura: `/dashboard/etf` explica las dos frecuencias de
+  evidencia antes de abrir cualquier comparación de holdings.
 - Navegacion publica: `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo`
   y `/dashboard/etf/iyf-demo` sirven exclusivamente comparaciones sinteticas;
   `/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory` muestran la

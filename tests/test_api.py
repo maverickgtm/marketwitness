@@ -296,6 +296,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/etf-regulatory", page.text)
         self.assertIn("/dashboard/etf/nport-catalog", page.text)
         self.assertIn("/dashboard/etf/nport-sync", page.text)
+        self.assertIn('href="/dashboard/etf"', page.text)
+        self.assertIn("ETF Evidence Center", page.text)
         self.assertIn("/dashboard/document-checks", page.text)
         self.assertIn("/dashboard/rwa-watch", page.text)
         self.assertIn("/dashboard/global-listings", page.text)
@@ -313,6 +315,21 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/governance-report/approval-review", page.text)
         self.assertIn("/dashboard/governance-report/scorecard-readiness", page.text)
         self.assertIn("not live market alerts", page.text)
+
+    def test_serves_etf_evidence_center_with_separated_frequency_layers(self) -> None:
+        page = self.client.get("/dashboard/etf")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Frequency first.", page.text)
+        self.assertIn("/dashboard/etf/arkk-demo", page.text)
+        self.assertIn("/dashboard/etf/xlf-demo", page.text)
+        self.assertIn("/dashboard/etf/iyf-demo", page.text)
+        self.assertIn("/dashboard/etf/nport-recent", page.text)
+        self.assertIn("/dashboard/etf-regulatory", page.text)
+        self.assertIn("/dashboard/etf/nport-catalog", page.text)
+        self.assertIn("/dashboard/etf/nport-sync", page.text)
+        self.assertIn("not confirmed manager trades", page.text)
+        self.assertIn("Required paid data", page.text)
 
     def test_serves_attributed_market_context_without_a_data_endpoint(self) -> None:
         page = self.client.get("/dashboard/market-context")

@@ -491,7 +491,8 @@ publicada. No se etiquetara automaticamente como compra o venta: puede estar
 afectada por creaciones/redenciones del fondo, derivados o acciones
 corporativas.
 
-En la aplicacion, `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo` y
+En la aplicacion, `/dashboard/etf` es el índice que explica las frecuencias
+y límites de esta evidencia. `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo` y
 `/dashboard/etf/iyf-demo` presentan solamente fixtures sinteticos. La
 evidencia SEC queda separada en
 `/dashboard/etf/nport-recent`, `/dashboard/etf-regulatory`,

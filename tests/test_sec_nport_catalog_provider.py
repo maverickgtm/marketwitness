@@ -30,6 +30,7 @@ class SecNportCatalogProviderTests(unittest.TestCase):
         self.assertIn("Quarterly holdings.", page)
         self.assertIn("not daily portfolio updates", page)
         self.assertIn("2026Q1", page)
+        self.assertIn('href="/dashboard/etf">ETF Evidence Center</a>', page)
 
     def test_selects_requested_published_quarter(self) -> None:
         releases = load_dataset_catalog(Path("data/samples/sec-nport-catalog.html"))

@@ -76,6 +76,8 @@ permiso explicito de output publico.
 - Consume filings y datasets públicos SEC N-PORT.
 - Permite comparar periodos reportados y mantener una evidencia auditable.
 - No se etiqueta como información diaria ni en tiempo real.
+- La portada `/dashboard/etf` separa las capas sintética y regulatoria antes
+  de navegar a sus evidencias.
 - Las vistas `/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory`
   permanecen separadas de los sandboxes sintéticos `ARKK-DEMO`, `XLF-DEMO`
   e `IYF-DEMO`.
@@ -120,7 +122,7 @@ python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 Abrir `http://127.0.0.1:8000/` muestra la portada `Open Edition`.
 Desde ella se abre `/dashboard/reports`, un indice de
 `/dashboard/ipo-watch`, `/dashboard/sec-discovery`, `/dashboard/sec-alerts`, `/dashboard/ipo-reviews`,
-`/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo`, `/dashboard/etf/iyf-demo`,
+`/dashboard/etf`, `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo`, `/dashboard/etf/iyf-demo`,
 `/dashboard/etf/nport-recent`, `/dashboard/etf-regulatory`,
 `/dashboard/etf/nport-catalog`, `/dashboard/etf/nport-sync`,
 `/dashboard/document-checks`, `/dashboard/rwa-watch`,
