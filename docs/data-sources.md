@@ -130,6 +130,14 @@ terminos prohiben scraping y bases de datos; Frankfurt permanece cubierto por
 `ESMA`, con `BaFin` como corroboracion documental. Ver
 [Deep Dive: Tokio, Toronto Y Frankfurt](market-deep-dive-tokyo-toronto-frankfurt.md).
 
+La revision final de brechas del `2026-05-25` encontro un nuevo candidato
+fuerte: `OpenDART` de Corea permite obtener disclosures y datos de securities
+registration statements mediante API, mientras `KRX OPEN API` esta concebida
+para aplicaciones y servicios sobre estadisticas oficiales. Arabia Saudita,
+Emiratos y Sudafrica se mantienen en observacion porque no se confirmo una API
+gratuita reutilizable equivalente. Ver
+[Market Gap Review: Corea, Golfo Y Africa](market-gap-review-korea-gulf-africa.md).
+
 ## Activos Tokenizados Y RWA Watch
 
 La revision del Top 20 de exchanges centralizados por CoinGecko Trust Score y
@@ -296,6 +304,7 @@ Revision inicial al `2026-05-24`; ampliaciones internacionales al `2026-05-25`:
 | Japon / Tokio | FSA `EDINET` Documents API y JPX `New Listings` | Documentos de ofertas mas fechas oficiales de aprobacion/listing TSE | Conector prioritario pendiente de collector combinado y atribucion |
 | Brasil | CVM `Portal Dados Abertos` | Registros estructurados de ofertas publicas de distribucion | Conector prioritario pendiente para API/dataset oficial |
 | UE: Alemania, Paises Bajos e Italia | ESMA `Prospectus III` | Prospectos y documentos relacionados notificados por autoridades nacionales | Conector prioritario pendiente; reproduccion permitida con fuente y rotulo de transformacion |
+| Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Securities registration statements/ofertas mas estadisticas oficiales de mercado | Conector prioritario pendiente; validar output KRX del endpoint usado |
 
 Las etapas no son intercambiables entre jurisdicciones. Por ejemplo, un
 `PHIP` de HKEX indica aprobacion en principio, mientras una aparicion en ASX
@@ -312,6 +321,10 @@ El portal abierto de `CVM` permite construir una cola brasileña de ofertas
 publicas. El registro `Prospectus III` de `ESMA` permite una cola europea
 atribuida para Alemania, Paises Bajos e Italia; la aprobacion de un prospecto
 tampoco confirma el inicio de negociacion.
+
+`OpenDART` permite construir una cola coreana de securities registration
+statements y disclosures de ofertas. `KRX OPEN API` complementaria la
+confirmacion de mercado una vez validado el uso publico del output elegido.
 
 El conector HKEX consulta los endpoints JSON usados por la propia pagina
 oficial, incluyendo:

@@ -81,6 +81,14 @@ pero no automatiza `SEDAR+` por sus restricciones; Frankfurt queda cubierto
 por `ESMA` con `BaFin` como corroboracion nacional. Ver
 [Deep Dive: Tokio, Toronto Y Frankfurt](docs/market-deep-dive-tokyo-toronto-frankfurt.md).
 
+La revision final de brechas del `2026-05-25` encontro una nueva ruta
+defendible en Corea del Sur: `OpenDART` permite obtener disclosures y
+securities registration statements mediante Open API, y `KRX OPEN API`
+ofrece datos oficiales para aplicaciones con clave/aprobacion. Arabia
+Saudita, Emiratos y Sudafrica quedaron en observacion por falta de un camino
+gratuito reutilizable confirmado. Ver
+[Market Gap Review: Corea, Golfo Y Africa](docs/market-gap-review-korea-gulf-africa.md).
+
 La investigacion de `RWA Watch` ya cubre 20 exchanges relevantes y
 Pepperstone. `xStocks / Backed` documenta APIs sin autenticacion para
 metadatos, precios, documentos legales y proof of reserves, pero sus terminos
@@ -353,6 +361,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `JPX` / Japon: `EDINET` para documentos y `JPX New Listings` para confirmacion de Tokio, en cola de implementacion.
 - `CVM` / Brasil: portal oficial abierto de ofertas publicas, en cola de implementacion.
 - `ESMA` / Union Europea: prospectos regulatorios para Alemania, Paises Bajos e Italia, en cola de implementacion.
+- `KRX` / Corea del Sur: `OpenDART` para registros de oferta y `KRX OPEN API` para evidencia de mercado a validar, en cola de implementacion.
 
 Hong Kong ya incluye un conector a los JSON oficiales de HKEXnews para
 solicitudes activas, activas con `PHIP`, inactivas, listadas y devueltas.
@@ -375,6 +384,9 @@ Brasil y la Union Europea se incorporan como prioridades pendientes:
 `CVM Dados Abertos` ofrece ofertas publicas estructuradas y `ESMA Prospectus
 III` permite recuperar prospectos europeos con reproduccion atribuida. Ambos
 requieren collectors y confirmacion posterior de cotizacion.
+Corea del Sur tambien entra como prioridad pendiente: `OpenDART` aporta
+registros de valores y disclosures en XML/API; `KRX OPEN API` se evaluara para
+confirmacion de mercado sin publicar outputs fuera de sus terminos.
 
 Para leer HKEX en vivo:
 
@@ -988,6 +1000,8 @@ La investigacion de nuevas fuentes internacionales se conserva en
 [international-data-search-round-2.md](docs/international-data-search-round-2.md).
 El refinamiento de mercados ya mapeados esta en
 [market-deep-dive-tokyo-toronto-frankfurt.md](docs/market-deep-dive-tokyo-toronto-frankfurt.md).
+La ultima revision de brechas se conserva en
+[market-gap-review-korea-gulf-africa.md](docs/market-gap-review-korea-gulf-africa.md).
 
 ## Aviso
 

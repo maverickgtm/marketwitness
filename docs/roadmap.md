@@ -137,11 +137,15 @@ verificables de cotizaciones tecnologicas/estrategicas.
   Alemania, Suiza, Paises Bajos e Italia, con clasificacion de derechos.
 - [x] Deep dive en Tokio, Toronto y Frankfurt para combinar `EDINET`/`JPX`,
   bloquear automatizacion `SEDAR+` y validar cobertura `ESMA`/`BaFin`.
+- [x] Revision final de brechas en Corea, Golfo y Sudafrica, incorporando
+  `OpenDART`/`KRX` y dejando los mercados sin API confirmada en observacion.
 - [ ] Implementar un monitor regulatorio japones sobre el API oficial
   `EDINET` con confirmacion `JPX New Listings`, y validar un conector adicional
   de ofertas de Singapur sobre datasets/API de `MAS OPERA`.
 - [ ] Implementar collectors de ofertas de Brasil (`CVM Dados Abertos`) y
   prospectos europeos (`ESMA Prospectus III`) con atribucion visible.
+- [ ] Implementar collector coreano de securities registration statements
+  sobre `OpenDART` y validar confirmacion de mercado `KRX`.
 - [ ] Revision legal del producto y de sus disclaimers.
 
 ## Decisiones Pendientes

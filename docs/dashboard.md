@@ -318,6 +318,7 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | Tokio / Japon | FSA `EDINET` Documents API y JPX `New Listings` | Conector prioritario pendiente para deteccion documental y confirmacion de listing |
 | Brasil | CVM `Portal Dados Abertos` | Conector prioritario pendiente para ofertas publicas estructuradas |
 | Union Europea | ESMA `Prospectus III` | Conector prioritario pendiente para prospectos de Alemania, Paises Bajos e Italia |
+| Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Conector prioritario pendiente para ofertas regulatorias y confirmacion de mercado |
 
 ### Regla De Evidencia
 
@@ -341,6 +342,8 @@ Cada jurisdiccion conserva sus propias etapas:
 - Alemania, Paises Bajos e Italia: un prospecto `ESMA` es evidencia
   regulatoria; el output transformado debe declarar fuente y transformacion.
   Para Frankfurt, `BaFin` servira como corroboracion nacional del prospecto.
+- Corea del Sur: un securities registration statement de `OpenDART` inicia
+  revision; `KRX` solo confirmara mercado tras validar derechos del output.
 
 ### Salidas Operativas
 

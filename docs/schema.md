@@ -356,7 +356,7 @@ Registro de fuentes oficiales y conectores internacionales para la pagina
 
 | Columna | Requerida | Descripcion |
 |---|---:|---|
-| `market_code` | Si | Codigo unico: `LSE`, `HKEX`, `ASX`, `TSX`, `SGX`, `JPX`, `CVM`, `ESMA` |
+| `market_code` | Si | Codigo unico: `LSE`, `HKEX`, `ASX`, `TSX`, `SGX`, `JPX`, `CVM`, `ESMA`, `KRX` |
 | `market_name` | Si | Mercado o bolsa |
 | `jurisdiction` | Si | Pais o jurisdiccion |
 | `connector_status` | Si | `live_official_feed`, `verified_snapshot`, `priority_connector` o `planned_connector` |
