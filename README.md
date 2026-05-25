@@ -39,6 +39,14 @@ publicada a `USD 99/month` para uso individual. Ese acceso puede servir para
 investigacion privada autorizada, pero no concede por si solo permiso para
 publicar un ranking real compartido.
 
+Tambien se evaluaron opciones mas economicas: MarketBeat All Access publica
+`USD 249/year` o `USD 29/month` y WallStreetZen Premium publica
+`USD 19.50/month` facturado anualmente. MarketBeat puede servir para un piloto
+privado, pero anuncia exportacion de ratings de hasta seis meses recientes,
+insuficiente para el ranking de targets con mas de un ano de antiguedad.
+WallStreetZen es referencia de metodologia/rendimiento, no un feed historico
+de targets confirmado para el motor.
+
 TargetAudit nace de una pregunta sencilla: si una firma publica un precio
 objetivo para una accion, ?ese pronostico se cumplio y una estrategia basada en
 el habria superado una alternativa pasiva?

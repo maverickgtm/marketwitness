@@ -210,10 +210,11 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Bring your own", page.text)
         self.assertIn("/api/v1/extensions/licensed", page.text)
         self.assertEqual(snapshot.status_code, 200)
-        self.assertEqual(snapshot.json()["extension_count"], 3)
-        self.assertEqual(snapshot.json()["listed_price_count"], 1)
+        self.assertEqual(snapshot.json()["extension_count"], 6)
+        self.assertEqual(snapshot.json()["listed_price_count"], 3)
         self.assertEqual(snapshot.json()["public_output_approved_count"], 0)
         self.assertEqual(snapshot.json()["items"][0]["price_display"], "USD 99/month")
+        self.assertEqual(snapshot.json()["items"][1]["extension_id"], "marketbeat-all-access")
 
     def test_serves_generated_open_edition_monitor_pages(self) -> None:
         ipo = self.client.get("/dashboard/ipo-watch")

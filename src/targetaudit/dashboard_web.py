@@ -171,6 +171,7 @@ def licensed_extensions_html() -> str:
   <main>
     <p class="notice" id="policy">Loading licensing boundary...</p>
     <p class="notice">The displayed <strong>USD 99/month</strong> Massive price is for its individual Benzinga Analyst Ratings expansion. Confirm any required base Stocks plan at checkout. Individual terms do not enable a shared public ranking.</p>
+    <p class="notice"><strong>MarketBeat All Access</strong> is a cheaper private-pilot candidate at <strong>USD 249/year or USD 29/month</strong>, but its advertised ratings export covers only up to six recent months. That is not enough for the one-year target audit unless separate historical access is licensed.</p>
     <p id="error" class="notice"></p>
     <h2>Optional Providers</h2>
     <section class="layout">

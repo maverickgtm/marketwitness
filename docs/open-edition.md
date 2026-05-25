@@ -22,6 +22,9 @@ La ruta `/dashboard/extensions` documenta proveedores opcionales que un
 usuario podria contratar por cuenta propia. Incluye la expansion individual
 Massive / Benzinga publicada a `USD 99/month`, sin presentarla como permiso
 para publicar rankings compartidos.
+Tambien registra MarketBeat como piloto privado potencial de bajo costo y
+WallStreetZen como referencia metodologica; ninguno habilita un ranking
+publico real ni es requisito de esta edicion.
 
 ## Capacidades Incluidas
 

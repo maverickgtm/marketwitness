@@ -54,11 +54,16 @@ público".
 |---|---|---|---|
 | Benzinga Analyst Ratings API | Acciones USA, historial desde 2013; firma, analista, rating y targets anterior/actual | Candidato principal para un pipeline real | Cotizacion/licencia directa requerida |
 | Massive / Benzinga Analyst Ratings Expansion | Ratings y targets estructurados; documentacion desde 2011-12-08 | Ruta voluntaria para un usuario con licencia propia | `USD 99/month` individual visible; no autoriza ranking publico compartido |
+| MarketBeat All Access | Mas de un millon de recomendaciones y export CSV para hasta seis meses recientes | Piloto privado economico y verificacion de cobertura | `USD 249/year` o `USD 29/month`; no cubre por si solo evaluacion a un ano ni redistribucion |
+| WallStreetZen Premium | Rankings propios sobre mas de 4,000 analistas | Benchmark privado para contrastar metodologia | `USD 19.50/month` anual; exportaciones solo para investigacion interna, no redistribucion |
+| GuruFocus | Analyst estimates de Refinitiv/Morningstar segun FAQ | Candidato para revision de cobertura | No confirmar como feed de targets individuales; licencia comercial para redistribuir |
 | LSEG I/B/E/S | Historial institucional de estimaciones y recomendaciones | Fuente de investigacion de alta calidad | Candidata futura, probablemente costosa |
 | Financial Modeling Prep | APIs de price-target summary/consensus e historical grades | Puede complementar o validar cobertura | Confirmar si entrega targets individuales historicos y limites del plan |
 | MarketBeat | Historial, screener y ranking propios | Referencia metodologica y verificacion manual | Herramientas/exportaciones sujetas a suscripcion y terminos |
 | TipRanks | Rankings y targets visibles en su producto | Referencia conceptual | No usar scraping; sus terminos restringen extraccion/copia |
 | Finviz | Eventos visibles en paginas de acciones | Verificacion manual puntual | No adoptado como colector hasta revisar permisos de automatizacion |
+| Yahoo Finance | Recomendaciones/targets visibles con proveedores declarados | Verificacion visual puntual | No redistribuir informacion de Yahoo Finance; no integrar scraper |
+| Investing.com | Ratings visibles en interfaz | Verificacion visual puntual | Sus terminos prohiben almacenamiento/redistribucion sin permiso escrito |
 
 ### Conclusion Inicial
 
@@ -342,6 +347,14 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - Massive/Benzinga: <https://massive.com/docs/rest/stocks/benzinga/analyst-ratings>
 - Massive pricing: <https://massive.com/pricing>
 - Massive individual market-data terms: <https://massive.com/legal/market_data_terms_individual>
+- MarketBeat FAQ: <https://www.marketbeat.com/faq/>
+- MarketBeat terms: <https://www.marketbeat.com/terms/>
+- WallStreetZen plans: <https://www.wallstreetzen.com/plans>
+- WallStreetZen terms: <https://www.wallstreetzen.com/terms-of-service>
+- GuruFocus FAQ: <https://www.gurufocus.com/faq>
+- GuruFocus term of use: <https://www.gurufocus.com/term-of-use>
+- Yahoo Finance data providers: <https://help.yahoo.com/kb/SLN2310.html>
+- Investing.com terms: <https://www.investing.com/about-us/terms-and-conditions>
 - LSEG I/B/E/S: <https://www.lseg.com/en/data-analytics/financial-data/company-data/ibes-estimates>
 - Financial Modeling Prep: <https://site.financialmodelingprep.com/datasets/analyst-estimates-targets>
 - SEC Developer Resources: <https://www.sec.gov/about/developer-resources>

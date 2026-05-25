@@ -33,7 +33,14 @@ confundir un precio disponible con derechos de publicacion publica.
 
 - La ruta `/dashboard/extensions` consume `/api/v1/extensions/licensed`.
 - Muestra la expansion Massive / Benzinga con el precio publicado
-  `USD 99/month` y dos rutas sujetas a cotizacion.
+  `USD 99/month`, MarketBeat `USD 249/year` o `USD 29/month`,
+  WallStreetZen `USD 19.50/month` facturado anualmente y rutas sujetas a
+  cotizacion.
+- Identifica a MarketBeat como posible piloto privado de bajo costo, pero
+  muestra que sus exportaciones anunciadas de hasta seis meses no bastan para
+  evaluar targets vencidos a un ano.
+- Identifica a WallStreetZen como benchmark privado de rankings existentes,
+  no como feed historico confirmado para ingestion.
 - Expone enlaces oficiales a producto, precio y terminos.
 - Mantiene el contador de proveedores aprobados para output publico en cero
   mientras no exista permiso escrito.
