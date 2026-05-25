@@ -29,7 +29,7 @@ class ReleaseCenterTests(unittest.TestCase):
             providers = load_source_registry(Path("data/samples/source_registry.csv"))
 
             snapshot = build_release_decision(
-                providers, database, "candidate", date(2026, 5, 24)
+                providers, database, "candidate", date(2026, 5, 25)
             )
 
             self.assertFalse(snapshot["release_ready"])
@@ -72,7 +72,7 @@ class ReleaseCenterTests(unittest.TestCase):
                 str(report),
                 "--require-release-ready",
                 "--as-of",
-                "2026-05-24",
+                "2026-05-25",
             ]
 
             with patch("sys.argv", argv), redirect_stdout(io.StringIO()) as output:

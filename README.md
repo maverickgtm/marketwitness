@@ -58,7 +58,8 @@ Tambien se realizo un barrido internacional en Reino Unido, Japon, Australia,
 Hong Kong, Singapur y China continental. No aparecio un historial gratuito
 publicable de targets individuales de firmas estadounidenses; si surgieron
 rutas prometedoras para ampliar monitores regulatorios: el API oficial
-gratuito de documentos de Japon (`EDINET`) queda como conector prioritario, y
+gratuito de documentos de Japon (`EDINET`) ya cuenta con collector de ofertas
+autenticado por clave gratuita, y
 Singapur (`MAS OPERA`) requiere confirmar un endpoint abierto concreto. Tambien
 surgio un laboratorio de precios japoneses
 mediante el plan gratis de JPX `J-Quants`, sujeto a confirmar derechos de
@@ -358,7 +359,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `ASX` / Australia: monitor HTML oficial de upcoming floats and listings.
 - `TSX` / Canada: monitor HTML oficial de nuevas companias ya listadas.
 - `SGX` / Singapur: catalogo oficial de prospectos IPO.
-- `JPX` / Japon: monitor `JPX New Listings` y diff diario implementados para confirmacion de Tokio; `EDINET` en cola.
+- `JPX` / Japon: monitor `JPX New Listings` y diff diario para confirmacion de Tokio; monitor `EDINET` implementado para filings de oferta con clave gratuita.
 - `CVM` / Brasil: portal oficial abierto de ofertas publicas, en cola de implementacion.
 - `ESMA` / Union Europea: prospectos regulatorios para Alemania, Paises Bajos e Italia, en cola de implementacion.
 - `KRX` / Corea del Sur: `OpenDART` para registros de oferta y `KRX OPEN API` para evidencia de mercado a validar, en cola de implementacion.
@@ -377,9 +378,10 @@ completadas; no lo usa para predecir solicitudes futuras ni automatiza
 Singapur ya consulta el catálogo JSON oficial `SGX IPO Prospectus`; registra
 documentos publicados para revisión y no confirma automáticamente una
 cotización completada.
-Japon ya tiene monitor y diff diario: `JPX New Listings` confirma fechas de
-aprobacion o listing en Tokio. Aun falta el collector `EDINET` para securities
-registration statements como señal documental anterior.
+Japon ya tiene dos capas: `EDINET` filtra securities registration statements,
+enmiendas y retiros desde el API oficial, mientras `JPX New Listings` confirma
+fechas de aprobacion o listing en Tokio. Falta integrar EDINET al historial
+comparativo diario.
 Brasil y la Union Europea se incorporan como prioridades pendientes:
 `CVM Dados Abertos` ofrece ofertas publicas estructuradas y `ESMA Prospectus
 III` permite recuperar prospectos europeos con reproduccion atribuida. Ambos
@@ -450,6 +452,19 @@ PYTHONPATH=src python3 -m targetaudit jpx-monitor \
   --output data/raw/global/jpx-monitor.csv \
   --report build/live/jpx-monitor.md \
   --html build/live/jpx-monitor.html
+```
+
+Para leer filings de oferta EDINET en vivo se necesita una clave gratuita
+emitida por la FSA, guardada fuera de Git:
+
+```bash
+export TARGETAUDIT_EDINET_API_KEY="tu-clave-privada"
+PYTHONPATH=src python3 -m targetaudit edinet-monitor \
+  --filing-date YYYY-MM-DD \
+  --output data/raw/global/edinet-monitor.csv \
+  --report build/live/edinet-monitor.md \
+  --html build/live/edinet-monitor.html \
+  --as-of YYYY-MM-DD
 ```
 
 Para leer prospectos SGX en vivo:
@@ -940,6 +955,9 @@ build/demo/tsx-monitor.html
 build/demo/jpx-monitor.csv
 build/demo/jpx-monitor.md
 build/demo/jpx-monitor.html
+build/demo/edinet-monitor.csv
+build/demo/edinet-monitor.md
+build/demo/edinet-monitor.html
 build/demo/sgx-monitor.csv
 build/demo/sgx-monitor.md
 build/demo/sgx-monitor.html

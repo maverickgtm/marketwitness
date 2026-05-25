@@ -92,17 +92,17 @@ demo:
 		--output build/demo/provider-approval-review-outcomes.csv \
 		--report build/demo/provider-approval-review-outcomes.md \
 		--html build/demo/provider-approval-review-outcomes.html \
-		--as-of 2026-05-24
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit source-registry \
 		--registry build/demo/provider-reviewed-source-registry.csv \
 		--report build/demo/source-registry.md \
 		--html build/demo/source-registry.html \
-		--as-of 2026-05-24
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit open-edition \
 		--registry build/demo/provider-reviewed-source-registry.csv \
 		--report build/demo/open-edition.md \
 		--html build/demo/open-edition.html \
-		--as-of 2026-05-24
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit rwa-watch \
 		--snapshot data/samples/rwa-watch-synthetic.csv \
 		--report build/demo/rwa-watch.md \
@@ -118,12 +118,12 @@ demo:
 		--approvals build/demo/provider-reviewed-approval-queue.csv \
 		--report build/demo/provider-approvals.md \
 		--html build/demo/provider-approvals.html \
-		--as-of 2026-05-24
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit scorecard-readiness \
 		--registry build/demo/provider-reviewed-source-registry.csv \
 		--report build/demo/scorecard-readiness.md \
 		--html build/demo/scorecard-readiness.html \
-		--as-of 2026-05-24
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-datasets \
 		--catalog-file data/samples/sec-nport-catalog.html \
 		--output build/demo/nport-dataset-catalog.csv \
@@ -297,7 +297,7 @@ demo:
 		--report build/demo/scorecard-release.md \
 		--html build/demo/scorecard-release.html \
 		--maximum-excluded-rate 0.80 \
-		--as-of 2026-05-24
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-upcoming \
 		--page-file data/samples/lse-new-issues-page.json \
 		--output build/demo/lse-upcoming.csv \
@@ -334,6 +334,12 @@ demo:
 		--output build/demo/jpx-monitor.csv \
 		--report build/demo/jpx-monitor.md \
 		--html build/demo/jpx-monitor.html \
+		--as-of 2026-05-25
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit edinet-monitor \
+		--snapshot data/samples/edinet-offering-filings-synthetic.json \
+		--output build/demo/edinet-monitor.csv \
+		--report build/demo/edinet-monitor.md \
+		--html build/demo/edinet-monitor.html \
 		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sgx-monitor \
 		--snapshot data/samples/sgx-ipo-prospectus.json \

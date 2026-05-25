@@ -315,7 +315,7 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | Australian Securities Exchange | ASX `Upcoming floats and listings` | Feed HTML oficial implementado |
 | Toronto Stock Exchange | TSX `New Company Listings` | Feed HTML oficial implementado para listings completados; `SEDAR+` no automatizable sin permiso |
 | Singapore Exchange | SGX `IPO Prospectus` | Feed JSON oficial implementado para prospectos publicados |
-| Tokio / Japon | FSA `EDINET` Documents API y JPX `New Listings` | Monitor JPX y diff diario implementados; EDINET pendiente para deteccion documental previa |
+| Tokio / Japon | FSA `EDINET` Documents API y JPX `New Listings` | Monitor EDINET para filings y monitor/diff JPX implementados; historial EDINET pendiente |
 | Brasil | CVM `Portal Dados Abertos` | Conector prioritario pendiente para ofertas publicas estructuradas |
 | Union Europea | ESMA `Prospectus III` | Conector prioritario pendiente para prospectos de Alemania, Paises Bajos e Italia |
 | Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Conector prioritario pendiente para ofertas regulatorias y confirmacion de mercado |
@@ -335,8 +335,9 @@ Cada jurisdiccion conserva sus propias etapas:
   restringe scraping y almacenamiento en bases para el monitor público.
 - Singapur: el feed implementado documenta prospectos publicados; cada
   documento debe revisarse antes de afirmar admision o inicio de negociacion.
-- Tokio: `JPX New Listings` ya confirma hitos de aprobacion/listing mediante
-  pagina y CSV; un futuro collector `EDINET` iniciara revision documental.
+- Tokio: `EDINET` ya captura filings de oferta mediante API oficial con clave
+  gratuita, y `JPX New Listings` confirma hitos de aprobacion/listing mediante
+  pagina y CSV.
 - Brasil: un registro de oferta en `CVM` inicia revision; no confirma listado
   o trading en B3.
 - Alemania, Paises Bajos e Italia: un prospecto `ESMA` es evidencia
@@ -366,6 +367,9 @@ Cada jurisdiccion conserva sus propias etapas:
   compañías ya listadas; no funciona como señal prospectiva.
 - `JPX New Listings Monitor`: pagina de aprobaciones y fechas de listing
   publicadas para Tokio, con enlace al outline oficial.
+- `EDINET Offering Filing Watch`: pagina documental japonesa que filtra
+  securities registration statements, enmiendas y retiros; la demo es
+  sintética y el modo en vivo exige clave gratuita personal.
 - `SGX IPO Prospectus Monitor`: pagina de documentos publicados en el
   catalogo oficial SGX; funciona como señal documental para revision.
 - `Issuer Listing Confirmations`: pagina de hitos posteriores documentados

@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "title": "EDINET API synthetic fixture for TargetAudit tests",
+    "status": "200",
+    "parameter": {
+      "date": "2026-05-25",
+      "type": "2"
+    }
+  },
+  "results": [
+    {
+      "docID": "SYNTHJP0001",
+      "edinetCode": "E9DEMO1",
+      "secCode": "0001",
+      "filerName": "Tokyo Growth Demo Holdings Co., Ltd.",
+      "docTypeCode": "030",
+      "submitDateTime": "2026-05-25 09:10",
+      "docDescription": "Synthetic securities registration statement"
+    },
+    {
+      "docID": "SYNTHJP0002",
+      "edinetCode": "E9DEMO2",
+      "secCode": "0002",
+      "filerName": "Osaka Systems Demo Co., Ltd.",
+      "docTypeCode": "040",
+      "submitDateTime": "2026-05-25 13:20",
+      "docDescription": "Synthetic amended securities registration statement"
+    },
+    {
+      "docID": "SYNTHJPANNUAL",
+      "edinetCode": "E9DEMO3",
+      "secCode": "0003",
+      "filerName": "Ignored Annual Filing Demo Co., Ltd.",
+      "docTypeCode": "120",
+      "submitDateTime": "2026-05-25 14:30",
+      "docDescription": "Synthetic annual securities report"
+    }
+  ]
+}

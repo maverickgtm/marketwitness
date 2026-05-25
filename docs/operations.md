@@ -686,8 +686,28 @@ PYTHONPATH=src python3 -m targetaudit jpx-monitor \
   --html build/live/jpx-monitor.html
 ```
 
-Su CSV ya entra en el diff global diario; `EDINET` se implementara como señal
-documental anterior. Una aprobacion JPX no es una instruccion de inversion.
+Su CSV ya entra en el diff global diario; `EDINET` aporta ahora una señal
+documental anterior por separado. Una aprobacion JPX no es una instruccion de
+inversion.
+
+## Filings EDINET De Japon
+
+El API oficial EDINET requiere una clave gratuita emitida por la FSA. La clave
+se mantiene fuera de Git y se pasa por variable de entorno:
+
+```bash
+export TARGETAUDIT_EDINET_API_KEY="tu-clave-privada"
+PYTHONPATH=src python3 -m targetaudit edinet-monitor \
+  --filing-date YYYY-MM-DD \
+  --output data/raw/global/edinet-monitor.csv \
+  --report build/live/edinet-monitor.md \
+  --html build/live/edinet-monitor.html \
+  --as-of YYYY-MM-DD
+```
+
+El collector conserva únicamente los documentos `030`, `040` y `050`
+definidos en la especificación oficial EDINET. Su resultado abre revisión de
+la oferta; la confirmación de listing sigue correspondiendo a JPX.
 
 ## Automatizaciones Locales Activas
 

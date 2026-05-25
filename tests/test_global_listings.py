@@ -42,6 +42,7 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertIn('href="asx-monitor.html"', page)
         self.assertIn('href="tsx-monitor.html"', page)
         self.assertIn('href="jpx-monitor.html"', page)
+        self.assertIn('href="edinet-monitor.html"', page)
         self.assertIn('href="sgx-monitor.html"', page)
         self.assertIn('href="issuer-confirmations.html"', page)
         self.assertIn('href="etf-holdings-activity.html"', page)

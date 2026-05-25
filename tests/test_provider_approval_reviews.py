@@ -24,7 +24,7 @@ class ProviderApprovalReviewTests(unittest.TestCase):
         )
 
         reviewed_providers, reviewed_approvals, outcomes = apply_provider_approval_decisions(
-            providers, approvals, decisions, date(2026, 5, 24)
+            providers, approvals, decisions, date(2026, 5, 25)
         )
         alpha = next(item for item in reviewed_approvals if item.provider_id == "alpha-vantage-prices")
 
@@ -48,12 +48,12 @@ class ProviderApprovalReviewTests(unittest.TestCase):
         )
 
         reviewed_providers, reviewed_approvals, outcomes = apply_provider_approval_decisions(
-            providers, approvals, [decision], date(2026, 5, 24)
+            providers, approvals, [decision], date(2026, 5, 25)
         )
         alpha = next(
             item for item in reviewed_providers if item.provider_id == "alpha-vantage-prices"
         )
-        queue = build_approval_queue(reviewed_providers, reviewed_approvals, date(2026, 5, 24))
+        queue = build_approval_queue(reviewed_providers, reviewed_approvals, date(2026, 5, 25))
         price_control = next(
             item for item in queue["controls"] if item["data_class"] == "Adjusted price bars"
         )
@@ -88,7 +88,7 @@ class ProviderApprovalReviewTests(unittest.TestCase):
         )
 
         with self.assertRaisesRegex(ProviderApprovalReviewDataError, "without one approval"):
-            apply_provider_approval_decisions(providers, approvals, [decision], date(2026, 5, 24))
+            apply_provider_approval_decisions(providers, approvals, [decision], date(2026, 5, 25))
 
 
 def _csv(content: str) -> Path:

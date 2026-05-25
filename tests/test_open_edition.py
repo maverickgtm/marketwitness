@@ -14,7 +14,7 @@ class OpenEditionTests(unittest.TestCase):
     def test_exposes_a_useful_no_paid_subscription_product(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))
 
-        snapshot = build_open_edition_snapshot(providers, date(2026, 5, 24))
+        snapshot = build_open_edition_snapshot(providers, date(2026, 5, 25))
 
         self.assertEqual(snapshot["zero_cost_available_count"], 5)
         self.assertEqual(snapshot["offline_ready_count"], 2)
@@ -49,7 +49,7 @@ class OpenEditionTests(unittest.TestCase):
         ]
 
         with self.assertRaisesRegex(SourceRegistryDataError, "unavailable source"):
-            build_open_edition_snapshot(modified, date(2026, 5, 24))
+            build_open_edition_snapshot(modified, date(2026, 5, 25))
 
 
 if __name__ == "__main__":

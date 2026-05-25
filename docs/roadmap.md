@@ -142,8 +142,9 @@ verificables de cotizaciones tecnologicas/estrategicas.
   `OpenDART`/`KRX` y dejando los mercados sin API confirmada en observacion.
 - [x] Revision de Rusia, documentando `Bank of Russia`/`MOEX ISS` como
   `restricted_research_only` por la designacion OFAC de `MOEX`.
-- [ ] Implementar un monitor regulatorio japones sobre el API oficial
-  `EDINET` y validar un conector adicional
+- [x] Implementar un monitor regulatorio japones sobre el API oficial
+  `EDINET` para filings de oferta con clave gratuita.
+- [ ] Integrar filings `EDINET` al historial diario y validar un conector adicional
   de ofertas de Singapur sobre datasets/API de `MAS OPERA`.
 - [ ] Implementar collectors de ofertas de Brasil (`CVM Dados Abertos`) y
   prospectos europeos (`ESMA Prospectus III`) con atribucion visible.

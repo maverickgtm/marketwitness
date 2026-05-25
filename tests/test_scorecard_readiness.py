@@ -14,7 +14,7 @@ class ScorecardReadinessTests(unittest.TestCase):
     def test_blocks_public_release_until_production_sources_are_approved(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))
 
-        snapshot = build_scorecard_readiness(providers, date(2026, 5, 24))
+        snapshot = build_scorecard_readiness(providers, date(2026, 5, 25))
 
         self.assertFalse(snapshot["public_release_ready"])
         self.assertFalse(snapshot["internal_research_ready"])

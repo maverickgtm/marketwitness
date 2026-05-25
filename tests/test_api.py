@@ -286,7 +286,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Open code.", page.text)
         self.assertIn("Run Exclusions And Pending", page.text)
         self.assertIn("Provider Control", page.text)
-        self.assertEqual(sources.json()["provider_count"], 29)
+        self.assertEqual(sources.json()["provider_count"], 31)
         self.assertGreater(sources.json()["open_review_count"], 0)
         self.assertEqual(sources.json()["blocked_count"], 4)
         self.assertEqual(
@@ -300,6 +300,10 @@ class ApiTests(unittest.TestCase):
         )
         self.assertEqual(len(holdings.json()["sources"]), 3)
         self.assertIn("publication_policy", sources.json()["sources"][0])
+        self.assertIn(
+            "edinet-offerings",
+            {item["provider_id"] for item in sources.json()["sources"]},
+        )
 
     def test_serves_public_scorecard_readiness_without_treating_demo_as_production(self) -> None:
         readiness = self.client.get("/api/v1/readiness/scorecard")

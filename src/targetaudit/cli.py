@@ -141,6 +141,14 @@ from .providers.jpx import (
     write_jpx_html,
     write_jpx_report,
 )
+from .providers.edinet import (
+    EdinetDataError,
+    fetch_edinet_offering_filings,
+    load_edinet_snapshot,
+    write_edinet_csv,
+    write_edinet_html,
+    write_edinet_report,
+)
 from .providers.sgx import (
     SgxDataError,
     fetch_sgx_prospectuses,
@@ -976,6 +984,27 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Report cutoff in YYYY-MM-DD format.",
     )
+    edinet_parser = subparsers.add_parser(
+        "edinet-monitor", help="Read Japan FSA EDINET offering-document metadata."
+    )
+    edinet_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    edinet_parser.add_argument("--report", required=True, help="Markdown report path.")
+    edinet_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    edinet_parser.add_argument(
+        "--snapshot", help="Read a saved EDINET JSON fixture instead of requesting the API."
+    )
+    edinet_parser.add_argument(
+        "--api-key", help="EDINET subscription key; defaults to TARGETAUDIT_EDINET_API_KEY."
+    )
+    edinet_parser.add_argument(
+        "--filing-date",
+        help="EDINET submission date to request in YYYY-MM-DD format; defaults to --as-of.",
+    )
+    edinet_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Report cutoff in YYYY-MM-DD format.",
+    )
     sgx_parser = subparsers.add_parser(
         "sgx-monitor", help="Read official SGX IPO Prospectus records."
     )
@@ -1126,6 +1155,30 @@ def main() -> int:
         except (JpxDataError, ValueError) as exc:
             parser.error(str(exc))
         print(f"Wrote JPX monitor for {len(listings)} official records to {args.report}.")
+        return 0
+
+    if args.command == "edinet-monitor":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            filing_date = date.fromisoformat(args.filing_date or args.as_of)
+            if filing_date > as_of:
+                raise EdinetDataError("EDINET filing date cannot be after report cutoff.")
+            if args.snapshot:
+                filings = load_edinet_snapshot(args.snapshot, as_of)
+                source_mode = "synthetic_fixture"
+            else:
+                filings = fetch_edinet_offering_filings(filing_date, args.api_key)
+                source_mode = "live"
+            write_edinet_csv(args.output, filings)
+            write_edinet_report(args.report, filings, as_of, source_mode)
+            if args.html:
+                write_edinet_html(args.html, filings, as_of, source_mode)
+        except (EdinetDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote EDINET offering watch for {len(filings)} filtered document "
+            f"records to {args.report}."
+        )
         return 0
 
     if args.command == "sgx-monitor":

@@ -458,6 +458,19 @@ pero la fecha de listing aun es futura, y `listed` cuando la fecha publicada
 ya fue alcanzada. Este monitor confirma hitos JPX; no sustituye el futuro
 collector de documentos de oferta `EDINET`.
 
+## EDINET Offering Documents JSON Feed
+
+`edinet-monitor` consulta el API oficial FSA EDINET v2 o lee una fixture
+declarada sintética para la demo. Produce: `company_name`, `edinet_code`,
+`security_code`, `document_id`, `document_type_code`, `status`,
+`submitted_at`, `observed_on`, `source_url` y `document_url`.
+
+Solo se incorporan los códigos oficiales de documento `030`
+(`securities_registration_statement`), `040`
+(`amended_securities_registration_statement`) y `050`
+(`registration_withdrawal_request`). Un registro EDINET abre revisión
+documental; no confirma admisión ni negociación en JPX.
+
 ## SGX IPO Prospectus JSON Feed
 
 `sgx-monitor` consulta el API usado por la página oficial `IPO Prospectus` y

@@ -15,10 +15,10 @@ class SourceRegistryTests(unittest.TestCase):
     def test_renders_provider_controls_and_blocks_restricted_collection(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))
 
-        report = render_source_registry_report(providers, date(2026, 5, 24))
-        page = render_source_registry_html(providers, date(2026, 5, 24))
+        report = render_source_registry_report(providers, date(2026, 5, 25))
+        page = render_source_registry_html(providers, date(2026, 5, 25))
 
-        self.assertEqual(len(providers), 29)
+        self.assertEqual(len(providers), 31)
         self.assertIn("Authorized Demo Export", report)
         self.assertIn("Alpha Vantage Daily Adjusted", report)
         self.assertIn("S&P DJI Constituent Data", report)
@@ -27,6 +27,8 @@ class SourceRegistryTests(unittest.TestCase):
         self.assertIn("iShares IYF U.S. Financials holdings", report)
         self.assertIn("SEC Form N-PORT public filings", report)
         self.assertIn("SEC EDGAR daily indexes", report)
+        self.assertIn("JPX New Listings", report)
+        self.assertIn("FSA EDINET Documents API", report)
         self.assertIn("`license_required`", report)
         self.assertIn("`manual_only`", report)
         self.assertIn("TipRanks", report)

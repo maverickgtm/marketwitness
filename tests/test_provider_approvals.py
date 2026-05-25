@@ -18,7 +18,7 @@ class ProviderApprovalTests(unittest.TestCase):
         providers = load_source_registry(Path("data/samples/source_registry.csv"))
         approvals = load_provider_approvals(Path("data/samples/provider_approval_queue.csv"))
 
-        snapshot = build_approval_queue(providers, approvals, date(2026, 5, 24))
+        snapshot = build_approval_queue(providers, approvals, date(2026, 5, 25))
 
         self.assertEqual(snapshot["queue_count"], 7)
         self.assertEqual(snapshot["critical_open_count"], 4)
@@ -53,7 +53,7 @@ class ProviderApprovalTests(unittest.TestCase):
             build_approval_queue(
                 providers,
                 [_approved("alpha-vantage-prices")],
-                date(2026, 5, 24),
+                date(2026, 5, 25),
             )
 
     def test_rejects_public_permission_for_a_source_without_verified_integration(self) -> None:
@@ -83,7 +83,7 @@ class ProviderApprovalTests(unittest.TestCase):
             build_approval_queue(
                 providers,
                 [_approved("synthetic-demo")],
-                date(2026, 5, 24),
+                date(2026, 5, 25),
             )
 
 
