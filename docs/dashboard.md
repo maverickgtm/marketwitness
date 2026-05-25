@@ -203,6 +203,8 @@ con la frecuencia real de cada fuente.
   es auditable pero no equivale a datos intradia ni a un feed diario.
 - Implementado: colector EDGAR de filings recientes por `CIK`/`seriesId`,
   con archivo local del XML validado y `User-Agent` obligatorio en vivo.
+- Implementado: backfill desde datasets trimestrales SEC N-PORT extraidos,
+  con snapshots historicos, manifiesto y bloqueo de periodos duplicados.
 - Presentacion: posiciones nuevas, aumentadas, reducidas, ausentes o con
   cambio solo de peso, fecha efectiva, frecuencia y enlace de evidencia.
 - Regla de lenguaje: una diferencia de holdings se describe como cambio

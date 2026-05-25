@@ -395,6 +395,26 @@ archivo ya descargado sigue disponible `sec-nport-import`.
 Los identificadores `XLF` anteriores fueron confirmados en un filing
 `NPORT-P` oficial de `SELECT SECTOR SPDR TRUST`.
 
+Para reconstruir varios periodos desde ZIP trimestrales SEC extraidos
+localmente, se puede repetir `--dataset-dir` por trimestre:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit sec-nport-backfill \
+  --dataset-dir data/raw/etf/nport/2025q4 \
+  --dataset-dir data/raw/etf/nport/2026q1 \
+  --series-id S000006411 \
+  --fund-symbol XLF \
+  --captured-on YYYY-MM-DD \
+  --data-set-label "SEC N-PORT quarterly extracts" \
+  --output-dir data/raw/etf/nport/backfill/xlf \
+  --manifest build/live/xlf-nport-backfill.csv \
+  --report build/live/xlf-nport-backfill.md
+```
+
+El backfill une las tablas oficiales por accession y holding, conserva un
+snapshot por `REPORT_DATE` y se detiene si aparecen periodos duplicados que
+puedan corresponder a enmiendas.
+
 ## Estado Del Proyecto
 
 El repositorio contiene un motor de investigacion reproducible con adaptadores
@@ -432,6 +452,8 @@ auditados en desarrollo:
 - Normaliza filings publicos `SEC NPORT-P` en una salida regulatoria ETF
   separada, los recolecta por `CIK`/`seriesId` desde EDGAR y omite
   instrumentos aun no modelados de forma visible.
+- Reconstruye periodos historicos ETF desde datasets trimestrales SEC
+  extraidos, con manifiesto de accession y control de enmiendas.
 - Importa exportaciones autorizadas de targets con manifiesto y cola de rechazos.
 
 Todavia no es un ranking de mercado listo para decisiones de inversion. Para

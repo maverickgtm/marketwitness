@@ -68,8 +68,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
   posiciones en acciones.
 - [x] Recoleccion SEC `N-PORT` reciente por `CIK`/`seriesId`, con XML
   validado archivado localmente y acceso identificado mediante `User-Agent`.
-- [ ] Backfill historico amplio de `N-PORT` mediante datasets trimestrales o
-  archivos adicionales de submissions SEC.
+- [x] Backfill historico de `N-PORT` mediante datasets trimestrales SEC
+  extraidos, con snapshots por periodo y revision obligatoria de enmiendas.
+- [ ] Descarga y actualizacion programada de ZIP trimestrales `N-PORT`
+  reales para series seleccionadas, conservando archivos fuera de Git.
 
 ## Milestone 5: Operacion Publica (`v1.0`)
 

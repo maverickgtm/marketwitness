@@ -393,9 +393,28 @@ PYTHONPATH=src python3 -m targetaudit sec-nport-import \
   --report build/live/xlf-nport-import.md
 ```
 
-La recoleccion masiva de periodos anteriores a la ventana reciente se
-implementara aparte mediante archivos adicionales de submissions o los
-datasets trimestrales de la SEC.
+Para periodos anteriores a la ventana reciente, descargar los ZIP
+trimestrales desde la pagina de datasets SEC, extraerlos fuera de Git y pasar
+cada directorio al backfill:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit sec-nport-backfill \
+  --dataset-dir data/raw/etf/nport/2025q4 \
+  --dataset-dir data/raw/etf/nport/2026q1 \
+  --series-id S000006411 \
+  --fund-symbol XLF \
+  --captured-on YYYY-MM-DD \
+  --data-set-label "SEC N-PORT quarterly extracts" \
+  --output-dir data/raw/etf/nport/backfill/xlf \
+  --manifest build/live/xlf-nport-backfill.csv \
+  --report build/live/xlf-nport-backfill.md
+```
+
+`sec-nport-backfill` consume `SUBMISSION.tsv`, `REGISTRANT.tsv`,
+`FUND_REPORTED_INFO.tsv`, `FUND_REPORTED_HOLDING.tsv` e `IDENTIFIERS.tsv`.
+Cada ZIP se une internamente para evitar asumir que `HOLDING_ID` es global
+entre trimestres. Si dos entradas producen el mismo `REPORT_DATE`, la
+ejecucion se detiene para revisar la enmienda antes de publicar una serie.
 
 Para el benchmark financiero inicial, un filing oficial `NPORT-P` de
 `SELECT SECTOR SPDR TRUST` confirma `XLF` como serie `S000006411` del

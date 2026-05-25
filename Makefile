@@ -146,6 +146,25 @@ demo:
 		--report build/demo/etf-holdings-regulatory-activity.md \
 		--html build/demo/etf-holdings-regulatory-activity.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-backfill \
+		--dataset-dir data/samples/nport-dataset/2025q4 \
+		--dataset-dir data/samples/nport-dataset/2026q1 \
+		--series-id S000DEMO01 \
+		--fund-symbol XLF-REG-DEMO \
+		--captured-on 2026-05-24 \
+		--data-set-label "2025-Q4 to 2026-Q1 synthetic fixtures" \
+		--source-url https://example.invalid/sec/nport-data-sets \
+		--synthetic-fixture \
+		--output-dir build/demo/nport-backfill \
+		--manifest build/demo/nport-backfill-manifest.csv \
+		--report build/demo/nport-backfill.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
+		--previous build/demo/nport-backfill/xlf-reg-demo-2025-12-31.csv \
+		--current build/demo/nport-backfill/xlf-reg-demo-2026-03-31.csv \
+		--output build/demo/etf-holdings-regulatory-history.csv \
+		--report build/demo/etf-holdings-regulatory-history.md \
+		--html build/demo/etf-holdings-regulatory-history.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit alpha-vantage-prices \
 		--ticker ACBK \
 		--snapshot data/samples/alpha-vantage-daily-adjusted.json \

@@ -474,3 +474,21 @@ Cuando submissions publica una ruta de visualizacion
 Un XML solo se archiva y normaliza cuando su campo `seriesId` coincide con
 la serie solicitada. El reporte agrega `CIK`, accession, fecha de filing y
 ruta del XML archivado.
+
+## SEC N-PORT Quarterly Backfill
+
+`sec-nport-backfill` procesa directorios extraidos de los ZIP trimestrales
+publicados por SEC. Consume cinco tablas tabuladas oficiales:
+`SUBMISSION.tsv`, `REGISTRANT.tsv`, `FUND_REPORTED_INFO.tsv`,
+`FUND_REPORTED_HOLDING.tsv` e `IDENTIFIERS.tsv`.
+
+El acceso a un periodo se identifica por `ACCESSION_NUMBER`;
+`FUND_REPORTED_HOLDING` se une a `IDENTIFIERS` por `HOLDING_ID` dentro de
+cada directorio trimestral. `REPORT_DATE` se conserva como `effective_date`,
+`UNIT` limita la normalizacion inicial a acciones, `BALANCE` se convierte en
+`shares` y `PERCENTAGE` en `weight_pct`.
+
+La salida incluye un CSV de holdings por periodo y un manifiesto con dataset,
+serie, accession, filing date, report date, posiciones incluidas y omitidas.
+Multiples `--dataset-dir` forman una serie historica, pero el comando rechaza
+fechas efectivas duplicadas para exigir revision explicita de enmiendas.

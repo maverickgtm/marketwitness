@@ -204,7 +204,7 @@ sus holdings reales. Las fuentes reales se separan en dos capas:
 
 | Fuente | Frecuencia Publica Util | Uso Previsto |
 |---|---|---|
-| SEC `N-PORT` | Registro regulatorio publico; submissions recientes por CIK y datasets actualizados trimestralmente, no intradia | Importador XML y colector EDGAR por serie implementados para posiciones en acciones |
+| SEC `N-PORT` | Registro regulatorio publico; submissions recientes por CIK y datasets actualizados trimestralmente, no intradia | Importador XML, colector EDGAR y backfill tabular trimestral implementados para posiciones en acciones |
 | ARK ETF holdings | ARK declara actualizacion diaria de holdings en su sitio | Importador CSV local implementado; publicacion real pendiente de permiso |
 | State Street SPDR holdings | La pagina oficial `XLF` indica `Download All Holdings: Daily` | Importador local `XLF` implementado; publicacion real pendiente de consentimiento escrito |
 | iShares holdings | Paginas oficiales exponen `Download Holdings` con fecha de observacion | Conector por emisor tras verificar terminos y formato estable |
@@ -240,8 +240,11 @@ El colector `sec-nport-collect` obtiene la lista reciente de filings del
 registrante desde la API publica SEC submissions, descarga documentos
 `NPORT-P` candidatos y solo conserva el XML que confirma la `seriesId`
 solicitada. La ventana reciente es adecuada para monitoreo continuo; un
-backfill historico amplio requerira los archivos adicionales o datasets
-trimestrales publicados por la SEC.
+backfill historico amplio usa los datasets trimestrales publicados por la SEC.
+El comando `sec-nport-backfill` consume las tablas oficiales extraidas,
+permite agregar varios trimestres y produce snapshots por `REPORT_DATE` mas
+un manifiesto de accesiones. No selecciona automaticamente entre periodos
+duplicados o enmiendas.
 
 El filing oficial `NPORT-P` de `SELECT SECTOR SPDR TRUST` consultado para
 esta integracion identifica a `The Financial Select Sector SPDR Fund`
@@ -288,6 +291,8 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - TSX New Company Listings: <https://www.tsx.com/en/news/new-company-listings>
 - SGX IPO Prospectus: <https://www.sgx.com/securities/ipo-prospectus>
 - SEC Form N-PORT: <https://www.sec.gov/files/formn-port.pdf>
+- SEC Form N-PORT Data Sets: <https://www.sec.gov/data-research/sec-markets-data/form-n-port-data-sets>
+- SEC N-PORT dataset readme: <https://www.sec.gov/files/nport_readme.pdf>
 - ARK ETF holdings update policy: <https://helpcenter.ark-funds.com/can-you-explain-the-date-listed-on-the-ark-etf-holdings-documents>
 - State Street SPDR XLF holdings page: <https://www.ssga.com/us/en/intermediary/etfs/state-street-financial-select-sector-spdr-etf-xlf>
 - State Street SPDR SPYM holdings: <https://www.ssga.com/us/en/individual/etfs/state-street-spdr-portfolio-sp-500-etf-spym>

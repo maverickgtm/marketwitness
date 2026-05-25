@@ -149,6 +149,12 @@ from .providers.sec_nport import (
     write_import_report as write_nport_import_report,
     write_normalized_holdings as write_nport_normalized_holdings,
 )
+from .providers.sec_nport_dataset import (
+    load_nport_dataset_backfill,
+    write_backfill_manifest,
+    write_backfill_report,
+    write_backfill_snapshots,
+)
 from .providers.sec_ipo import (
     fetch_daily_master_index,
     load_master_index,
@@ -460,6 +466,39 @@ def main() -> int:
         action="store_true",
         help="Mark project-authored submissions/documents as synthetic evidence.",
     )
+    nport_backfill_parser = subparsers.add_parser(
+        "sec-nport-backfill",
+        help="Normalize historical periods from an extracted SEC N-PORT quarterly dataset.",
+    )
+    nport_backfill_parser.add_argument(
+        "--dataset-dir",
+        required=True,
+        action="append",
+        help="Directory containing extracted SEC TSV tables; repeat for additional quarters.",
+    )
+    nport_backfill_parser.add_argument("--series-id", required=True, help="SEC fund series ID.")
+    nport_backfill_parser.add_argument("--fund-symbol", required=True, help="Fund symbol.")
+    nport_backfill_parser.add_argument(
+        "--captured-on", required=True, help="Collection cutoff in YYYY-MM-DD."
+    )
+    nport_backfill_parser.add_argument(
+        "--data-set-label", required=True, help="Quarterly dataset label retained in audit output."
+    )
+    nport_backfill_parser.add_argument(
+        "--source-url",
+        default=SEC_NPORT_DATASETS_URL,
+        help="Official SEC dataset page or ZIP evidence URL.",
+    )
+    nport_backfill_parser.add_argument(
+        "--synthetic-fixture",
+        action="store_true",
+        help="Mark project-authored TSV fixtures as synthetic evidence.",
+    )
+    nport_backfill_parser.add_argument(
+        "--output-dir", required=True, help="Output directory for per-period holdings CSVs."
+    )
+    nport_backfill_parser.add_argument("--manifest", required=True, help="Output period manifest.")
+    nport_backfill_parser.add_argument("--report", required=True, help="Backfill audit report.")
     prices_parser = subparsers.add_parser(
         "alpha-vantage-prices",
         help="Normalize adjusted daily price evidence through a cache-first adapter.",
@@ -926,6 +965,29 @@ def main() -> int:
         print(
             f"Collected SEC N-PORT filing {collection.filing.accession_number} "
             f"for {collection.imported.fund_symbol} to {args.output}."
+        )
+        return 0
+
+    if args.command == "sec-nport-backfill":
+        try:
+            captured_on = date.fromisoformat(args.captured_on)
+            backfill = load_nport_dataset_backfill(
+                args.dataset_dir,
+                args.series_id,
+                args.fund_symbol,
+                captured_on,
+                args.data_set_label,
+                args.source_url,
+                args.synthetic_fixture,
+            )
+            outputs = write_backfill_snapshots(args.output_dir, backfill)
+            write_backfill_manifest(args.manifest, backfill)
+            write_backfill_report(args.report, backfill)
+        except (SecNportDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Backfilled {len(outputs)} SEC N-PORT periods for "
+            f"{backfill.fund_symbol} to {args.output_dir}."
         )
         return 0
 
