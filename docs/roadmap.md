@@ -133,9 +133,13 @@ verificables de cotizaciones tecnologicas/estrategicas.
   y plantillas que exigen derechos y procedencia para fuentes propuestas.
 - [x] Barrido internacional inicial de fuentes gratuitas o abiertas en Reino
   Unido, Japon, Australia, Hong Kong, Singapur y China continental.
+- [x] Segunda ronda internacional en India, Mexico, Brasil, Argentina,
+  Alemania, Suiza, Paises Bajos e Italia, con clasificacion de derechos.
 - [ ] Implementar un monitor regulatorio japones sobre el API oficial
   `EDINET` y validar un conector adicional de ofertas de Singapur sobre
   datasets/API de `MAS OPERA`.
+- [ ] Implementar collectors de ofertas de Brasil (`CVM Dados Abertos`) y
+  prospectos europeos (`ESMA Prospectus III`) con atribucion visible.
 - [ ] Revision legal del producto y de sus disclaimers.
 
 ## Decisiones Pendientes

@@ -109,6 +109,20 @@ suscripciones, trials, uso personal o servicios sujetos a licencia; no
 habilitan la edicion publica gratis. Ver el expediente completo en
 [Busqueda Internacional De Datos Gratuitos](international-data-search.md).
 
+Una segunda revision del `2026-05-25` en India, Mexico, Brasil, Argentina,
+Alemania, Suiza, Paises Bajos e Italia agrego dos rutas de expansion:
+
+| Fuente | Aporte Potencial | Limite Actual |
+|---|---|---|
+| CVM `Portal Dados Abertos` (Brasil) | Ofertas publicas en datasets estructurados y API oficial | Implementar collector y verificar atribucion del dataset antes de publicar alertas derivadas |
+| ESMA `Prospectus III` (UE) | Prospectos de autoridades nacionales, con A2A y permiso de reproduccion atribuido; cubre Alemania, Paises Bajos e Italia | Implementar collector y confirmar trading mediante evidencia posterior |
+| AFM (Paises Bajos) | Registro publico de prospectos aprobados desde 2007, exportable como CSV/XML | Usar como corroboracion nacional del conector ESMA |
+| BYMA API `EOD` (Argentina) | Precios de cierre anunciados sin costo | Revisar derechos de display/output antes de construir laboratorio |
+
+BMV Mexico publica prospectos, pero su aviso legal prohibe reproduccion y
+`parsing` sin autorizacion escrita; no se conecta. Ver el expediente en
+[Busqueda Internacional Gratuita: Ronda 2](international-data-search-round-2.md).
+
 ## Activos Tokenizados Y RWA Watch
 
 La revision del Top 20 de exchanges centralizados por CoinGecko Trust Score y
@@ -262,7 +276,7 @@ no una IPO confirmada, hasta revisar el documento.
 
 ## Global Listings Watch: Fuentes Oficiales Identificadas
 
-Revision inicial al `2026-05-24`; ampliacion EDINET al `2026-05-25`:
+Revision inicial al `2026-05-24`; ampliaciones internacionales al `2026-05-25`:
 
 | Mercado | Fuente Oficial | Senal Disponible | Estado TargetAudit |
 |---|---|---|---|
@@ -273,6 +287,8 @@ Revision inicial al `2026-05-24`; ampliacion EDINET al `2026-05-25`:
 | Canada | TSX New Company Listings | Nuevas companias ya listadas | Feed HTML oficial implementado como confirmación |
 | Singapur | SGX IPO Prospectus API | Prospectos IPO publicados | Feed JSON oficial implementado |
 | Japon | FSA `EDINET` Documents API | Securities registration statements y documentos regulatorios | Conector prioritario pendiente de implementacion con API key y atribucion |
+| Brasil | CVM `Portal Dados Abertos` | Registros estructurados de ofertas publicas de distribucion | Conector prioritario pendiente para API/dataset oficial |
+| UE: Alemania, Paises Bajos e Italia | ESMA `Prospectus III` | Prospectos y documentos relacionados notificados por autoridades nacionales | Conector prioritario pendiente; reproduccion permitida con fuente y rotulo de transformacion |
 
 Las etapas no son intercambiables entre jurisdicciones. Por ejemplo, un
 `PHIP` de HKEX indica aprobacion en principio, mientras una aparicion en ASX
@@ -283,6 +299,11 @@ El API oficial `EDINET` de la Financial Services Agency japonesa permite
 buscar y descargar documentos regulatorios. Un securities registration
 statement abre revision de una posible oferta; no confirma admision ni inicio
 de negociacion y no aporta targets de analistas.
+
+El portal abierto de `CVM` permite construir una cola brasileña de ofertas
+publicas. El registro `Prospectus III` de `ESMA` permite una cola europea
+atribuida para Alemania, Paises Bajos e Italia; la aprobacion de un prospecto
+tampoco confirma el inicio de negociacion.
 
 El conector HKEX consulta los endpoints JSON usados por la propia pagina
 oficial, incluyendo:

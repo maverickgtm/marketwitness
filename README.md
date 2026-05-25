@@ -65,6 +65,15 @@ mediante el plan gratis de JPX `J-Quants`, sujeto a confirmar derechos de
 output. Ver
 [Busqueda Internacional De Datos Gratuitos](docs/international-data-search.md).
 
+La segunda ronda, concluida el `2026-05-25`, reviso India, Mexico, Brasil,
+Argentina, Alemania, Suiza, Paises Bajos e Italia. Brasil `CVM Dados Abertos`
+y el registro europeo `ESMA Prospectus III` se incorporan como conectores
+prioritarios para documentos de ofertas/prospectos. `ESMA` puede cubrir
+Alemania, Paises Bajos e Italia bajo reproduccion atribuida; `BMV` Mexico no
+se conecta porque sus terminos prohiben parsing y reproduccion sin permiso
+escrito. Ver
+[Busqueda Internacional Gratuita: Ronda 2](docs/international-data-search-round-2.md).
+
 La investigacion de `RWA Watch` ya cubre 20 exchanges relevantes y
 Pepperstone. `xStocks / Backed` documenta APIs sin autenticacion para
 metadatos, precios, documentos legales y proof of reserves, pero sus terminos
@@ -335,6 +344,8 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `TSX` / Canada: monitor HTML oficial de nuevas companias ya listadas.
 - `SGX` / Singapur: catalogo oficial de prospectos IPO.
 - `JPX` / Japon: API oficial `EDINET` de documentos regulatorios, en cola de implementacion.
+- `CVM` / Brasil: portal oficial abierto de ofertas publicas, en cola de implementacion.
+- `ESMA` / Union Europea: prospectos regulatorios para Alemania, Paises Bajos e Italia, en cola de implementacion.
 
 Hong Kong ya incluye un conector a los JSON oficiales de HKEXnews para
 solicitudes activas, activas con `PHIP`, inactivas, listadas y devueltas.
@@ -352,6 +363,10 @@ Japon se incorpora como prioridad pendiente: el API oficial `EDINET` permite
 buscar securities registration statements y otros documentos regulatorios,
 pero aun falta implementar el collector con clave, atribucion y controles de
 acceso responsable.
+Brasil y la Union Europea se incorporan como prioridades pendientes:
+`CVM Dados Abertos` ofrece ofertas publicas estructuradas y `ESMA Prospectus
+III` permite recuperar prospectos europeos con reproduccion atribuida. Ambos
+requieren collectors y confirmacion posterior de cotizacion.
 
 Para leer HKEX en vivo:
 
@@ -961,7 +976,8 @@ mantiene en [el roadmap](docs/roadmap.md) y la ejecucion continua en
 [operations.md](docs/operations.md). Para colaborar, consulta
 [CONTRIBUTING.md](CONTRIBUTING.md) y la politica de [seguridad](SECURITY.md).
 La investigacion de nuevas fuentes internacionales se conserva en
-[international-data-search.md](docs/international-data-search.md).
+[international-data-search.md](docs/international-data-search.md) y
+[international-data-search-round-2.md](docs/international-data-search-round-2.md).
 
 ## Aviso
 

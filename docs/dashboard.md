@@ -316,6 +316,8 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | Toronto Stock Exchange | TSX `New Company Listings` | Feed HTML oficial implementado para listings completados |
 | Singapore Exchange | SGX `IPO Prospectus` | Feed JSON oficial implementado para prospectos publicados |
 | Japon | FSA `EDINET` Documents API | Conector prioritario pendiente para documentos regulatorios de ofertas |
+| Brasil | CVM `Portal Dados Abertos` | Conector prioritario pendiente para ofertas publicas estructuradas |
+| Union Europea | ESMA `Prospectus III` | Conector prioritario pendiente para prospectos de Alemania, Paises Bajos e Italia |
 
 ### Regla De Evidencia
 
@@ -333,6 +335,10 @@ Cada jurisdiccion conserva sus propias etapas:
   documento debe revisarse antes de afirmar admision o inicio de negociacion.
 - Japon: un securities registration statement de `EDINET` inicia revision
   documental; el collector con clave y atribucion aun esta pendiente.
+- Brasil: un registro de oferta en `CVM` inicia revision; no confirma listado
+  o trading en B3.
+- Alemania, Paises Bajos e Italia: un prospecto `ESMA` es evidencia
+  regulatoria; el output transformado debe declarar fuente y transformacion.
 
 ### Salidas Operativas
 
