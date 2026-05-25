@@ -346,12 +346,13 @@ demo:
 		--lse build/demo/lse-upcoming.csv \
 		--asx build/demo/asx-monitor.csv \
 		--tsx build/demo/tsx-monitor.csv \
+		--jpx build/demo/jpx-monitor.csv \
 		--sgx build/demo/sgx-monitor.csv \
 		--previous-dir data/samples/global-alerts-previous \
 		--output build/demo/global-alerts.csv \
 		--report build/demo/global-alerts.md \
 		--html build/demo/global-alerts.html \
-		--as-of 2026-05-24
+		--as-of 2026-05-25
 
 package:
 	mkdir -p build/dist

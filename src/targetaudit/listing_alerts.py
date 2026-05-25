@@ -8,12 +8,13 @@ from datetime import date
 from html import escape
 from pathlib import Path
 
-MARKETS = ("HKEX", "LSE", "ASX", "TSX", "SGX")
+MARKETS = ("HKEX", "LSE", "ASX", "TSX", "JPX", "SGX")
 SNAPSHOT_FILENAMES = {
     "HKEX": "hkex-monitor.csv",
     "LSE": "lse-upcoming.csv",
     "ASX": "asx-monitor.csv",
     "TSX": "tsx-monitor.csv",
+    "JPX": "jpx-monitor.csv",
     "SGX": "sgx-monitor.csv",
 }
 
@@ -301,6 +302,15 @@ def _normalize_row(market: str, row: dict[str, str]) -> ListingSignal:
         detail = f"{row.get('listing_date', '').strip()} / {row.get('symbols', '').strip()}"
         source = row.get("detail_url", "").strip() or row.get("source_url", "").strip()
         key = company.casefold()
+    elif market == "JPX":
+        status = row.get("status", "").strip()
+        security_code = row.get("security_code", "").strip()
+        detail = (
+            f"{row.get('listing_date', '').strip()} / approved "
+            f"{row.get('approval_date', '').strip()} / {row.get('market_segment', '').strip()}"
+        )
+        source = row.get("outline_url", "").strip() or row.get("source_url", "").strip()
+        key = security_code
     elif market == "SGX":
         status = row.get("status", "").strip()
         document_id = row.get("document_id", "").strip()

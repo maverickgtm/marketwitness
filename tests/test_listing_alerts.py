@@ -43,8 +43,8 @@ class ListingAlertsTests(unittest.TestCase):
     def test_loads_all_previous_market_snapshots(self) -> None:
         signals = load_snapshot_directory(Path("data/samples/global-alerts-previous"))
 
-        self.assertEqual(len(signals), 15)
-        self.assertEqual({signal.market for signal in signals}, {"HKEX", "LSE", "ASX", "TSX", "SGX"})
+        self.assertEqual(len(signals), 17)
+        self.assertEqual({signal.market for signal in signals}, {"HKEX", "LSE", "ASX", "TSX", "JPX", "SGX"})
 
     def test_hkex_allows_same_issuer_at_distinct_lifecycle_events(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -64,6 +64,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "LSE": current / "lse-upcoming.csv",
                     "ASX": current / "asx-monitor.csv",
                     "TSX": current / "tsx-monitor.csv",
+                    "JPX": current / "jpx-monitor.csv",
                     "SGX": current / "sgx-monitor.csv",
                 }
             )
@@ -84,6 +85,7 @@ class ListingAlertsTests(unittest.TestCase):
                 "LSE": "lse-upcoming.csv",
                 "ASX": "asx-monitor.csv",
                 "TSX": "tsx-monitor.csv",
+                "JPX": "jpx-monitor.csv",
                 "SGX": "sgx-monitor.csv",
             }.items():
                 item = source / filename
@@ -98,6 +100,7 @@ class ListingAlertsTests(unittest.TestCase):
 
             self.assertEqual(previous.name, "2026-05-23")
             self.assertTrue((root / "history" / "2026-05-24" / "sgx-monitor.csv").exists())
+            self.assertTrue((root / "history" / "2026-05-24" / "jpx-monitor.csv").exists())
 
 
 def _signal(

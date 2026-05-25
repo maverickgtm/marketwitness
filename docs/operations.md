@@ -650,7 +650,7 @@ registrante `CIK 0001064641`.
 
 ## Historial De Mercados Globales
 
-Los cinco conectores internacionales generan CSV normalizados. Después de
+Los seis conectores internacionales generan CSV normalizados. Después de
 obtenerlos, `global-alerts` copia la lectura del día a
 `data/raw/global/history/YYYY-MM-DD/`, selecciona la última captura anterior
 y genera una bandeja común:
@@ -661,6 +661,7 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
   --lse data/raw/global/lse-upcoming-live.csv \
   --asx data/raw/global/asx-monitor-live.csv \
   --tsx data/raw/global/tsx-monitor-live.csv \
+  --jpx data/raw/global/jpx-monitor.csv \
   --sgx data/raw/global/sgx-monitor-live.csv \
   --history-dir data/raw/global/history \
   --output build/live/global-alerts.csv \
@@ -685,9 +686,8 @@ PYTHONPATH=src python3 -m targetaudit jpx-monitor \
   --html build/live/jpx-monitor.html
 ```
 
-Se ejecuta independientemente mientras se implementan `EDINET` y la
-integracion al diff global diario. Una aprobacion JPX no es una instruccion de
-inversion.
+Su CSV ya entra en el diff global diario; `EDINET` se implementara como señal
+documental anterior. Una aprobacion JPX no es una instruccion de inversion.
 
 ## Automatizaciones Locales Activas
 
@@ -697,12 +697,13 @@ En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
   genera `SEC IPO Alerts` y resume posibles registros, prospectos o retiros
   nuevos, incluyendo coincidencias exactas de `CIK` con la watchlist y triage
   heuristico visible para SPAC/ETF.
-- `TargetAudit Global Listings diario`: consulta los cinco feeds JSON
+- `TargetAudit Global Listings diario`: consulta los seis feeds oficiales
   oficiales o páginas estructuradas, el componente JSON oficial LSE `Upcoming issues` y el
   contraste público FCA NSM, además de las tablas oficiales ASX y TSX; resume
   cambios HKEX, emisiones previstas en Londres, coincidencias documentales,
-  solicitudes/retiradas australianas, cotizaciones confirmadas en Canadá y
-  prospectos SGX. También preserva snapshots y genera `Global Listings Alerts`.
+  solicitudes/retiradas australianas, cotizaciones confirmadas en Canada,
+  aprobaciones/listings JPX y prospectos SGX. También preserva snapshots y
+  genera `Global Listings Alerts`.
 - `TargetAudit N-PORT trimestral`: consulta el catalogo oficial SEC cada lunes
   a las `21:50` hora de Guatemala, comenzando el `2026-05-25`; establece una
   linea base en su primera corrida y luego descarga solo ZIP nuevos para

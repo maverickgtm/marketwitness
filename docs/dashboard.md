@@ -315,7 +315,7 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | Australian Securities Exchange | ASX `Upcoming floats and listings` | Feed HTML oficial implementado |
 | Toronto Stock Exchange | TSX `New Company Listings` | Feed HTML oficial implementado para listings completados; `SEDAR+` no automatizable sin permiso |
 | Singapore Exchange | SGX `IPO Prospectus` | Feed JSON oficial implementado para prospectos publicados |
-| Tokio / Japon | FSA `EDINET` Documents API y JPX `New Listings` | Monitor JPX de aprobaciones/listings implementado; EDINET y diff diario pendientes |
+| Tokio / Japon | FSA `EDINET` Documents API y JPX `New Listings` | Monitor JPX y diff diario implementados; EDINET pendiente para deteccion documental previa |
 | Brasil | CVM `Portal Dados Abertos` | Conector prioritario pendiente para ofertas publicas estructuradas |
 | Union Europea | ESMA `Prospectus III` | Conector prioritario pendiente para prospectos de Alemania, Paises Bajos e Italia |
 | Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Conector prioritario pendiente para ofertas regulatorias y confirmacion de mercado |
@@ -369,7 +369,7 @@ Cada jurisdiccion conserva sus propias etapas:
 - `ETF Holdings Activity`: pagina de diferencias entre snapshots de posiciones
   con fixtures sinteticos e importadores locales; la automatizacion autorizada
   de fuentes diarias aun esta pendiente.
-- `Global Listings Alerts`: bandeja diaria que compara snapshots de los cinco
+- `Global Listings Alerts`: bandeja diaria que compara snapshots de los seis
   mercados y marca registros nuevos, modificados o ausentes para revisión.
 - La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
   cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,

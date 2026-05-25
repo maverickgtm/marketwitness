@@ -358,7 +358,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `ASX` / Australia: monitor HTML oficial de upcoming floats and listings.
 - `TSX` / Canada: monitor HTML oficial de nuevas companias ya listadas.
 - `SGX` / Singapur: catalogo oficial de prospectos IPO.
-- `JPX` / Japon: monitor `JPX New Listings` implementado para confirmacion de Tokio; `EDINET` y diff diario en cola.
+- `JPX` / Japon: monitor `JPX New Listings` y diff diario implementados para confirmacion de Tokio; `EDINET` en cola.
 - `CVM` / Brasil: portal oficial abierto de ofertas publicas, en cola de implementacion.
 - `ESMA` / Union Europea: prospectos regulatorios para Alemania, Paises Bajos e Italia, en cola de implementacion.
 - `KRX` / Corea del Sur: `OpenDART` para registros de oferta y `KRX OPEN API` para evidencia de mercado a validar, en cola de implementacion.
@@ -376,10 +376,9 @@ completadas; no lo usa para predecir solicitudes futuras ni automatiza
 Singapur ya consulta el catálogo JSON oficial `SGX IPO Prospectus`; registra
 documentos publicados para revisión y no confirma automáticamente una
 cotización completada.
-Japon sigue como prioridad combinada: el monitor implementado `JPX New
-Listings` confirma fechas de aprobacion o listing en Tokio. Aun falta el
-collector `EDINET` para securities registration statements y su integracion
-al diff diario.
+Japon ya tiene monitor y diff diario: `JPX New Listings` confirma fechas de
+aprobacion o listing en Tokio. Aun falta el collector `EDINET` para securities
+registration statements como señal documental anterior.
 Brasil y la Union Europea se incorporan como prioridades pendientes:
 `CVM Dados Abertos` ofrece ofertas publicas estructuradas y `ESMA Prospectus
 III` permite recuperar prospectos europeos con reproduccion atribuida. Ambos
@@ -479,6 +478,7 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
   --lse data/raw/global/lse-upcoming.csv \
   --asx data/raw/global/asx-monitor.csv \
   --tsx data/raw/global/tsx-monitor.csv \
+  --jpx data/raw/global/jpx-monitor.csv \
   --sgx data/raw/global/sgx-monitor.csv \
   --history-dir data/raw/global/history \
   --output build/live/global-alerts.csv \

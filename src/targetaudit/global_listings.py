@@ -145,7 +145,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     expansion_count = counts["priority_connector"] + counts["planned_connector"]
     cards = [
         ("Mapped markets", len(markets), "Official sources identified"),
-        ("Live feeds", counts["live_official_feed"], "LSE, HKEX, ASX, TSX and SGX implemented"),
+        ("Live feeds", counts["live_official_feed"], "LSE, HKEX, ASX, TSX, JPX and SGX implemented"),
         ("Verified snapshots", counts["verified_snapshot"], "Official capture, not continuous"),
         (
             "Expansion queue",
@@ -231,7 +231,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     <section class="cards">{cards_html}</section>
   </header>
   <main>
-    <p class="notice">HKEX, LSE, ASX, TSX and SGX have official ingestion paths. A separate issuer-release registry preserves confirmed milestones without turning them into investment conclusions.</p>
+    <p class="notice">HKEX, LSE, ASX, TSX, JPX and SGX have official ingestion paths. A separate issuer-release registry preserves confirmed milestones without turning them into investment conclusions.</p>
     <section class="monitor-links" aria-label="Monitoring pages">
       <a href="global-alerts.html">Open daily change review</a>
       <a href="hkex-monitor.html">Open HKEX live monitor</a>

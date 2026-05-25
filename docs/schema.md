@@ -470,8 +470,9 @@ inicio de negociación o una decisión de inversión.
 
 ## Global Listings Alerts
 
-`global-alerts` normaliza los CSV actuales de `HKEX`, `LSE`, `ASX`, `TSX` y
-`SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa `--history-dir` y
+`global-alerts` normaliza los CSV actuales de `HKEX`, `LSE`, `ASX`, `TSX`,
+`JPX` y `SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa
+`--history-dir` y
 compara contra la última captura anterior. Produce un CSV con:
 `market`, `change_type`, `company_name`, `previous_status`, `current_status`,
 `previous_detail`, `current_detail`, `review_action` y `source_url`.

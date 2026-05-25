@@ -883,6 +883,7 @@ def main() -> int:
     alerts_parser.add_argument("--lse", required=True, help="Current LSE upcoming CSV.")
     alerts_parser.add_argument("--asx", required=True, help="Current ASX monitor CSV.")
     alerts_parser.add_argument("--tsx", required=True, help="Current TSX monitor CSV.")
+    alerts_parser.add_argument("--jpx", required=True, help="Current JPX monitor CSV.")
     alerts_parser.add_argument("--sgx", required=True, help="Current SGX monitor CSV.")
     alerts_parser.add_argument(
         "--previous-dir",
@@ -1676,6 +1677,7 @@ def main() -> int:
                 "LSE": args.lse,
                 "ASX": args.asx,
                 "TSX": args.tsx,
+                "JPX": args.jpx,
                 "SGX": args.sgx,
             }
             current = load_current_signals(paths)
