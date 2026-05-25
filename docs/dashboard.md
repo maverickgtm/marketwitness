@@ -97,6 +97,20 @@ incompleta sin hacer visible el problema.
 - Un estado `quality_pass` es solo un control tecnico; la autorizacion de
   publicacion permanece bajo `Source Governance`.
 
+## Vista De Publicacion: Release Center
+
+Objetivo: resolver en una sola decisión si una corrida candidata puede
+alimentar un scorecard público.
+
+- La ruta `/dashboard/release` consume
+  `/api/v1/releases/scorecard?run_id=RUN-ID`.
+- Combina `Scorecard Readiness` con `Operations Quality` en alcance
+  `public_release`.
+- Bloquea una corrida si sus observaciones declaran un `provider_id` que no
+  corresponde a un proveedor de targets aprobado para salida pública.
+- Mantiene separados los estados de derechos de fuente, linaje usado por la
+  corrida y calidad de evidencia.
+
 ## Pagina 1: Financials Scorecard
 
 Objetivo: auditar `price targets` sobre financials de Estados Unidos.

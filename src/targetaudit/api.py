@@ -18,11 +18,13 @@ from . import METHODOLOGY_VERSION, __version__
 from .dashboard_web import (
     financials_scorecard_html,
     operations_quality_html,
+    release_center_html,
     scorecard_readiness_html,
     source_governance_html,
 )
 from .models import Evaluation
 from .operations_quality import build_quality_snapshot
+from .release_center import build_release_decision
 from .reporting import wilson_interval
 from .scorecard_readiness import build_scorecard_readiness
 from .source_registry import SourceProvider, SourceRegistryDataError, load_source_registry
@@ -82,6 +84,12 @@ def create_app(
     )
     def scorecard_readiness() -> str:
         return scorecard_readiness_html()
+
+    @application.get(
+        "/dashboard/release", response_class=HTMLResponse, include_in_schema=False
+    )
+    def release_center() -> str:
+        return release_center_html()
 
     @application.get("/api/v1/health")
     def health() -> dict[str, object]:
@@ -150,6 +158,26 @@ def create_app(
         return _warehouse_call(
             build_quality_snapshot, database, maximum_excluded_rate, run_id, public_release
         )
+
+    @application.get("/api/v1/releases/scorecard")
+    def release_scorecard(
+        run_id: str,
+        maximum_excluded_rate: Decimal = Query(default=Decimal("0.50"), ge=0, le=1),
+    ) -> dict[str, object]:
+        _read_run(database, run_id)
+        providers = _read_sources(registry)
+        try:
+            as_of = max((item.reviewed_on for item in providers), default=date.today())
+            return _warehouse_call(
+                build_release_decision,
+                providers,
+                database,
+                run_id,
+                as_of,
+                maximum_excluded_rate,
+            )
+        except SourceRegistryDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     @application.get("/api/v1/runs/compare")
     def compare_runs(left_run_id: str, right_run_id: str) -> dict[str, object]:

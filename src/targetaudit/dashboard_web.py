@@ -83,7 +83,7 @@ def financials_scorecard_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Scorecard / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav>TargetAudit / U.S. Financials / Scorecard / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Price targets,<br>measured in daylight.</h1>
     <p class="lead">Auditable analyst-target research with visible sample size, uncertainty, benchmark context and exclusions. A hit is evidence of a reached target, not investment advice.</p>
     <p class="meta" id="run-meta">Loading latest stored research run...</p>
@@ -386,7 +386,7 @@ def source_governance_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav>TargetAudit / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Open code.<br>Controlled data.</h1>
     <p class="lead">Publication rights are part of the evidence. This page separates sources already usable under documented policy from data that still requires terms, licensing or manual controls.</p>
     <p class="meta" id="reviewed">Loading source registry...</p>
@@ -584,7 +584,7 @@ def operations_quality_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/governance">Source Governance</a></nav>
+    <nav>TargetAudit / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/governance">Source Governance</a></nav>
     <h1>Ship evidence,<br>not surprises.</h1>
     <p class="lead">Operational quality gates for stored evaluation runs: reproducibility stamps, required inputs, provider lineage and anomalous exclusion rates.</p>
     <p class="meta" id="scope">Refreshable quality view over stored evaluation runs</p>
@@ -732,7 +732,7 @@ def scorecard_readiness_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Readiness / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav>TargetAudit / U.S. Financials / Readiness / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Earn the right<br>to publish.</h1>
     <p class="lead">Readiness for a real public Financials scorecard. Demo fixtures can test the system; only approved production sources can enable release.</p>
     <p class="meta" id="reviewed">Loading readiness controls...</p>
@@ -803,6 +803,152 @@ def scorecard_readiness_html() -> str:
       const providers = item.providers.length ? item.providers.map((provider) => `<div class="provider"><strong>${text(provider.provider_name)}</strong><small>${text(provider.provider_id)} / <span class="${text(provider.deployment_state)}">${text(provider.deployment_state)}</span> / ${provider.production_eligible ? "production candidate" : "demo only"}</small><p>${text(provider.review_note)}</p><a href="${href(provider.official_url)}" target="_blank" rel="noopener">Source</a></div>`).join("") : "<p>No provider is registered for this control.</p>";
       $("detail").innerHTML = `<h3>${text(item.label)}</h3><p>${text(item.blocker || "Approved source is available under documented policy.")}</p>${providers}`;
     }
+    initialize();
+  </script>
+</body>
+</html>"""
+
+
+def release_center_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Release Center</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --panel2:#14242d; --line:#20343d;
+      --text:#edf1ef; --muted:#98abb0; --mint:#56daac; --gold:#f0bc62;
+      --blue:#62a6ff; --red:#ff7d72;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1240px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(38px,5vw,58px); line-height:1.05; margin:38px 0 14px; }
+    h2 { margin:40px 0 16px; font-size:22px; }
+    .lead { color:var(--muted); font-size:17px; max-width:890px; }
+    .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold);
+      border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.controls,.panel,.table-wrap { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:17px 20px; }
+    .card p { color:var(--muted); margin:0; }
+    .card strong { display:block; font-size:35px; color:var(--mint); margin-top:4px; text-transform:uppercase; }
+    .card strong.blocked { color:var(--red); }
+    .controls { padding:17px; display:grid; grid-template-columns:2fr 1fr auto; gap:12px; align-items:end; }
+    label { display:block; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+    select,input { width:100%; height:43px; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:9px; padding:0 11px; }
+    button { height:43px; border:0; border-radius:9px; color:#061117; background:var(--mint); padding:0 20px; font-weight:600; cursor:pointer; }
+    .layout { display:grid; grid-template-columns:minmax(620px,1fr) 370px; gap:18px; }
+    .table-wrap { overflow:hidden; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); text-transform:uppercase; font-size:12px; font-weight:500; }
+    td small { display:block; color:var(--muted); }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; white-space:nowrap; }
+    .public_ready { color:var(--mint); background:rgba(86,218,172,.12); }
+    .internal_only { color:var(--blue); background:rgba(98,166,255,.12); }
+    .integration_pending,.missing_source { color:var(--gold); background:rgba(240,188,98,.12); }
+    .panel { padding:18px; min-height:300px; }
+    .panel p,.panel li { color:var(--muted); }
+    .panel ul { padding-left:18px; }
+    .evidence { background:var(--panel2); border-radius:9px; padding:10px; margin-top:15px; }
+    .evidence small { display:block; color:var(--muted); }
+    #error { display:none; border-left-color:var(--red); color:var(--red); }
+    @media(max-width:1000px) {
+      .cards,.controls,.layout { grid-template-columns:1fr; }
+      .table-wrap { overflow-x:auto; }
+      table { min-width:640px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>TargetAudit / U.S. Financials / Release Center / <a href="/dashboard/financials">Scorecard</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/operations">Operations Quality</a> / <a href="/dashboard/governance">Governance</a></nav>
+    <h1>Release only<br>what is defensible.</h1>
+    <p class="lead">One publication decision for one candidate run. Approved source rights and complete run evidence must both pass before a real scorecard can be released.</p>
+    <p class="meta" id="reviewed">Select a candidate run to review...</p>
+    <section class="cards">
+      <article class="card"><p>Release decision</p><strong id="release" class="blocked">-</strong></article>
+      <article class="card"><p>Source rights</p><strong id="source" class="blocked">-</strong></article>
+      <article class="card"><p>Provider lineage</p><strong id="lineage" class="blocked">-</strong></article>
+      <article class="card"><p>Run quality</p><strong id="quality" class="blocked">-</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice" id="publication-note">A release decision needs a stored candidate run.</p>
+    <p id="error" class="notice"></p>
+    <section class="controls" aria-label="Release decision controls">
+      <div><label for="run">Candidate run</label><select id="run"></select></div>
+      <div><label for="threshold">Maximum excluded rate</label><input id="threshold" type="number" min="0" max="1" step="0.05" value="0.50"></div>
+      <button id="apply">Evaluate Release</button>
+    </section>
+    <section class="layout">
+      <div>
+        <h2>Required Source Controls</h2>
+        <div class="table-wrap">
+          <table><thead><tr><th>Control</th><th>Status</th><th>Blocking Reason</th></tr></thead>
+            <tbody id="controls"><tr><td colspan="3">Loading candidate decision...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="panel">
+        <h2>Decision Blockers</h2>
+        <ul id="blockers"><li>Select a candidate run.</li></ul>
+        <div id="evidence" class="evidence"><small>Candidate evidence</small>-</div>
+      </aside>
+    </section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    function text(value) {
+      return String(value == null || value === "" ? "-" : value)
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    }
+    async function json(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+      return response.json();
+    }
+    function fail(message) {
+      $("error").style.display = "block";
+      $("error").textContent = message;
+    }
+    function state(id, value, passed) {
+      $(id).textContent = value;
+      $(id).className = passed ? "" : "blocked";
+    }
+    async function refresh() {
+      $("error").style.display = "none";
+      const runId = $("run").value;
+      if (!runId) return;
+      try {
+        const threshold = $("threshold").value || "0.50";
+        const data = await json(`/api/v1/releases/scorecard?run_id=${encodeURIComponent(runId)}&maximum_excluded_rate=${encodeURIComponent(threshold)}`);
+        state("release", data.release_status, data.release_ready);
+        state("source", data.source_gate_status, data.source_gate_status === "pass");
+        state("lineage", data.lineage_gate_status, data.lineage_gate_status === "pass");
+        state("quality", data.quality_gate_status, data.quality_gate_status === "pass");
+        $("reviewed").textContent = `${data.market_focus} / Candidate ${data.run_id} / Reviewed as of ${data.as_of}`;
+        $("publication-note").textContent = data.publication_note;
+        $("blockers").innerHTML = data.blockers.length ? data.blockers.map((item) => `<li>${text(item)}</li>`).join("") : "<li>No release blockers remain.</li>";
+        $("controls").innerHTML = data.readiness.requirements.map((item) => `<tr><td><strong>${text(item.label)}</strong></td><td><span class="pill ${text(item.status)}">${text(item.status)}</span></td><td>${text(item.blocker || "Ready under approved policy.")}</td></tr>`).join("");
+        const run = data.candidate_run;
+        $("evidence").innerHTML = `<small>Candidate evidence</small><strong>${text(run.dataset_label)}</strong><p>Methodology ${text(run.methodology_version)} / Assets: ${text(run.asset_roles.join(", "))}</p><p>Provider lineage: ${text(data.candidate_provider_ids.join(", "))}</p><p>Evaluated ${run.evaluated_count} / Excluded ${(run.excluded_rate * 100).toFixed(2)}%</p>`;
+      } catch (error) { fail(error.message); }
+    }
+    async function initialize() {
+      try {
+        const runs = await json("/api/v1/runs");
+        $("run").innerHTML = runs.map((run) => `<option value="${text(run.run_id)}">${text(run.run_id)} / ${text(run.dataset_label)}</option>`).join("");
+        await refresh();
+      } catch (error) { fail(error.message); }
+    }
+    $("apply").addEventListener("click", refresh);
+    $("run").addEventListener("change", refresh);
     initialize();
   </script>
 </body>

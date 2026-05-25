@@ -154,6 +154,30 @@ La API sirve el mismo cálculo en
 `/dashboard/operations` permite activar `Public release inputs` para ver el
 bloqueo antes de una distribución.
 
+## Decision Combinada De Publicacion
+
+Una liberación del scorecard debe comprobar en el mismo expediente que las
+fuentes son publicables y que la corrida candidata utilizó ese linaje:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit scorecard-release \
+  --registry data/samples/source_registry.csv \
+  --database build/live/targetaudit.duckdb \
+  --run-id RUN-ID \
+  --report build/live/scorecard-release.md \
+  --html build/live/scorecard-release.html \
+  --maximum-excluded-rate 0.50 \
+  --require-release-ready \
+  --as-of YYYY-MM-DD
+```
+
+El reporte conserva tres compuertas separadas: derechos productivos para los
+cuatro controles del scorecard, `provider_id` de targets realmente utilizado
+por la corrida y calidad de publicación con sus cuatro activos. Un bloqueo
+devuelve código `2`, por lo que puede detener un despliegue automatizado sin
+ocultar la evidencia generada. La misma decisión está disponible en
+`/dashboard/release` y `/api/v1/releases/scorecard?run_id=RUN-ID`.
+
 ## Registro De Fuentes Y Licencias
 
 Antes de habilitar un nuevo proveedor o mostrar resultados reales, generar la
@@ -593,7 +617,8 @@ En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
   readiness de fuentes para el scorecard y el warehouse
   `build/live/targetaudit.duckdb`; genera el reporte operativo si existen
   corridas reales autorizadas y reporta claramente cuando aun no hay una
-  corrida live. Nunca sustituye esa ausencia con el demo.
+  corrida live. Nunca sustituye esa ausencia con el demo y exige
+  `scorecard-release` antes de distribuir una corrida candidata.
 
 Las cuatro tareas tratan evidencia operativa o eventos regulatorios para
 investigar, no como instrucciones para tomar posiciones.

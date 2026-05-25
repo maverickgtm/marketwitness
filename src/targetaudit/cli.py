@@ -213,6 +213,11 @@ from .operations_quality import (
     write_quality_html,
     write_quality_report,
 )
+from .release_center import (
+    build_release_decision,
+    write_release_html,
+    write_release_report,
+)
 from .reporting import write_markdown_report
 from .storage import EvaluationRun, WarehouseError, generated_run_id, store_evaluation_run
 
@@ -445,6 +450,31 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Quality report cutoff in YYYY-MM-DD format.",
+    )
+    release_parser = subparsers.add_parser(
+        "scorecard-release",
+        help="Decide whether one Financials scorecard run is publishable.",
+    )
+    release_parser.add_argument("--registry", required=True, help="Provider registry CSV.")
+    release_parser.add_argument("--database", required=True, help="DuckDB warehouse path.")
+    release_parser.add_argument("--run-id", required=True, help="Candidate stored run identifier.")
+    release_parser.add_argument("--report", required=True, help="Markdown release-decision path.")
+    release_parser.add_argument("--html", help="Optional release-decision HTML output path.")
+    release_parser.add_argument(
+        "--maximum-excluded-rate",
+        type=Decimal,
+        default=Decimal("0.50"),
+        help="Review threshold for excluded share of observations (default: 0.50).",
+    )
+    release_parser.add_argument(
+        "--require-release-ready",
+        action="store_true",
+        help="Return exit status 2 unless both source and run-quality gates pass.",
+    )
+    release_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Release-decision cutoff in YYYY-MM-DD format.",
     )
     etf_parser = subparsers.add_parser(
         "etf-holdings-activity",
@@ -1064,6 +1094,31 @@ def main() -> int:
             snapshot["blocked_count"] or snapshot["review_required_count"]
         ):
             print("Release gate failed: all checked runs must have quality_pass status.")
+            return 2
+        return 0
+
+    if args.command == "scorecard-release":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            providers = load_source_registry(args.registry)
+            snapshot = build_release_decision(
+                providers,
+                args.database,
+                args.run_id,
+                as_of,
+                args.maximum_excluded_rate,
+            )
+            write_release_report(args.report, snapshot)
+            if args.html:
+                write_release_html(args.html, snapshot)
+        except (SourceRegistryDataError, WarehouseError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Release decision for {snapshot['run_id']}: "
+            f"{snapshot['release_status']}. Report written to {args.report}."
+        )
+        if args.require_release_ready and not snapshot["release_ready"]:
+            print("Release gate failed: source rights and run quality must both pass.")
             return 2
         return 0
 

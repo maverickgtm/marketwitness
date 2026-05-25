@@ -252,6 +252,14 @@ demo:
 		--html build/demo/operations-quality.html \
 		--maximum-excluded-rate 0.50 \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit scorecard-release \
+		--registry data/samples/source_registry.csv \
+		--database build/demo/targetaudit.duckdb \
+		--run-id demo-actions-guarded-2025-01-01 \
+		--report build/demo/scorecard-release.md \
+		--html build/demo/scorecard-release.html \
+		--maximum-excluded-rate 0.80 \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-upcoming \
 		--page-file data/samples/lse-new-issues-page.json \
 		--output build/demo/lse-upcoming.csv \

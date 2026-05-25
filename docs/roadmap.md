@@ -102,6 +102,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [ ] Informes periodicos reproducibles.
 - [x] Informe operativo reproducible de calidad, disponible por CLI, dashboard
   y monitor local recurrente del warehouse live.
+- [x] Release Center que combina derechos de fuentes, linaje usado en la
+  corrida y calidad pública en una decisión reproducible.
 - [ ] Revision legal del producto y de sus disclaimers.
 
 ## Decisiones Pendientes

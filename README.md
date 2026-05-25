@@ -615,6 +615,22 @@ El modo `--public-release` exige que la corrida conserve `targets`, `prices`,
 `corporate_actions` y `universe_membership`; pasarla tampoco reemplaza la
 aprobación de fuentes en `Scorecard Readiness`.
 
+Para una decisión final única, `Release Center` combina fuentes, linaje de la
+corrida y calidad de publicación. Una observación enlazada a un fixture demo
+o a un proveedor no aprobado bloquea la salida aunque existan fuentes
+candidatas en el registro:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit scorecard-release \
+  --registry data/samples/source_registry.csv \
+  --database build/live/targetaudit.duckdb \
+  --run-id RUN-ID \
+  --report build/live/scorecard-release.md \
+  --html build/live/scorecard-release.html \
+  --require-release-ready \
+  --as-of YYYY-MM-DD
+```
+
 Endpoints iniciales:
 
 | Ruta | Uso |
@@ -636,6 +652,8 @@ Endpoints iniciales:
 | `/dashboard/readiness` | Pagina de preparación y bloqueos de publicación del scorecard |
 | `/api/v1/operations/quality?run_id=RUN-ID&public_release=true` | Monitor operativo o compuerta de publicación de una corrida candidata, con umbral configurable de exclusiones |
 | `/dashboard/operations` | Pagina operativa de corridas aprobadas, en revision o bloqueadas |
+| `/api/v1/releases/scorecard?run_id=RUN-ID` | Decisión combinada de publicación: fuentes, linaje y calidad de corrida |
+| `/dashboard/release` | Release Center para inspeccionar una corrida candidata antes de distribuirla |
 
 La documentación interactiva local queda disponible en `/docs` al iniciar el
 servidor. La API omite las rutas locales de los archivos originales y presenta
@@ -669,6 +687,8 @@ build/demo/source-registry.md
 build/demo/source-registry.html
 build/demo/scorecard-readiness.md
 build/demo/scorecard-readiness.html
+build/demo/scorecard-release.md
+build/demo/scorecard-release.html
 build/demo/alpha-vantage-prices.csv
 build/demo/alpha-vantage-prices.md
 build/demo/alpha-vantage-prices.html

@@ -240,6 +240,22 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Earn the right", page.text)
         self.assertIn("/api/v1/readiness/scorecard", page.text)
 
+    def test_serves_combined_release_decision_and_release_center(self) -> None:
+        decision = self.client.get("/api/v1/releases/scorecard?run_id=api-demo")
+        missing = self.client.get("/api/v1/releases/scorecard?run_id=not-present")
+        page = self.client.get("/dashboard/release")
+
+        self.assertEqual(decision.status_code, 200)
+        self.assertFalse(decision.json()["release_ready"])
+        self.assertEqual(decision.json()["release_status"], "blocked")
+        self.assertEqual(decision.json()["source_gate_status"], "blocked")
+        self.assertEqual(decision.json()["quality_gate_status"], "blocked")
+        self.assertEqual(decision.json()["lineage_gate_status"], "blocked")
+        self.assertEqual(missing.status_code, 404)
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Release only", page.text)
+        self.assertIn("/api/v1/releases/scorecard", page.text)
+
     def test_serves_firm_ticker_and_exclusion_audit_views(self) -> None:
         firm = self.client.get("/api/v1/runs/api-demo/firms/Example%20Firm")
         ticker = self.client.get("/api/v1/runs/api-demo/tickers/aaa")
