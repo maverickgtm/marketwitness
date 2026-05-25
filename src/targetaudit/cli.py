@@ -165,6 +165,14 @@ from .providers.esma import (
     write_esma_html,
     write_esma_report,
 )
+from .providers.opendart import (
+    OpenDartDataError,
+    fetch_opendart_equity_filings,
+    load_opendart_snapshot,
+    write_opendart_csv,
+    write_opendart_html,
+    write_opendart_report,
+)
 from .providers.sgx import (
     SgxDataError,
     fetch_sgx_prospectuses,
@@ -911,6 +919,7 @@ def main() -> int:
     alerts_parser.add_argument("--edinet", required=True, help="Current EDINET offering monitor CSV.")
     alerts_parser.add_argument("--cvm", required=True, help="Current CVM equity-offering monitor CSV.")
     alerts_parser.add_argument("--esma", required=True, help="Current ESMA equity-prospectus monitor CSV.")
+    alerts_parser.add_argument("--opendart", required=True, help="Current OpenDART equity-offering monitor CSV.")
     alerts_parser.add_argument("--sgx", required=True, help="Current SGX monitor CSV.")
     alerts_parser.add_argument(
         "--previous-dir",
@@ -1058,6 +1067,28 @@ def main() -> int:
         help="Earliest prospectus filing date to include in YYYY-MM-DD format.",
     )
     esma_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Report cutoff in YYYY-MM-DD format.",
+    )
+    opendart_parser = subparsers.add_parser(
+        "opendart-monitor", help="Read South Korea OpenDART equity-offering filings."
+    )
+    opendart_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    opendart_parser.add_argument("--report", required=True, help="Markdown report path.")
+    opendart_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    opendart_parser.add_argument(
+        "--snapshot", help="Read a saved OpenDART-shaped JSON fixture instead of requesting the official API."
+    )
+    opendart_parser.add_argument(
+        "--api-key", help="OpenDART authentication key; defaults to TARGETAUDIT_OPENDART_API_KEY."
+    )
+    opendart_parser.add_argument(
+        "--since",
+        required=True,
+        help="Earliest offering filing date to include in YYYY-MM-DD format.",
+    )
+    opendart_parser.add_argument(
         "--as-of",
         default=date.today().isoformat(),
         help="Report cutoff in YYYY-MM-DD format.",
@@ -1282,6 +1313,32 @@ def main() -> int:
             parser.error(str(exc))
         print(
             f"Wrote ESMA equity prospectus watch for {len(prospectuses)} filtered "
+            f"records to {args.report}."
+        )
+        return 0
+
+    if args.command == "opendart-monitor":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            since = date.fromisoformat(args.since)
+            if since > as_of:
+                raise OpenDartDataError(
+                    "OpenDART filing window cannot start after report cutoff."
+                )
+            if args.snapshot:
+                filings = load_opendart_snapshot(args.snapshot, as_of, since)
+                source_mode = "synthetic_fixture"
+            else:
+                filings = fetch_opendart_equity_filings(since, as_of, args.api_key)
+                source_mode = "live"
+            write_opendart_csv(args.output, filings)
+            write_opendart_report(args.report, filings, as_of, since, source_mode)
+            if args.html:
+                write_opendart_html(args.html, filings, as_of, since, source_mode)
+        except (OpenDartDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote OpenDART equity offering watch for {len(filings)} filtered "
             f"records to {args.report}."
         )
         return 0
@@ -1839,6 +1896,7 @@ def main() -> int:
                 "EDINET": args.edinet,
                 "CVM": args.cvm,
                 "ESMA": args.esma,
+                "OPENDART": args.opendart,
                 "SGX": args.sgx,
             }
             current = load_current_signals(paths)

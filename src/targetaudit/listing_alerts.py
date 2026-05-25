@@ -8,7 +8,7 @@ from datetime import date
 from html import escape
 from pathlib import Path
 
-MARKETS = ("HKEX", "LSE", "ASX", "TSX", "JPX", "EDINET", "CVM", "ESMA", "SGX")
+MARKETS = ("HKEX", "LSE", "ASX", "TSX", "JPX", "EDINET", "CVM", "ESMA", "OPENDART", "SGX")
 SNAPSHOT_FILENAMES = {
     "HKEX": "hkex-monitor.csv",
     "LSE": "lse-upcoming.csv",
@@ -18,6 +18,7 @@ SNAPSHOT_FILENAMES = {
     "EDINET": "edinet-monitor.csv",
     "CVM": "cvm-monitor.csv",
     "ESMA": "esma-monitor.csv",
+    "OPENDART": "opendart-monitor.csv",
     "SGX": "sgx-monitor.csv",
 }
 EDINET_STATUS_LABELS = {
@@ -37,6 +38,10 @@ ESMA_STATUS_LABELS = {
     "secondary_issuance_review": "Secondary issuance review",
     "secondary_offer_without_admission_review": "Secondary offer review",
     "equity_prospectus_review": "Equity prospectus review",
+}
+OPENDART_STATUS_LABELS = {
+    "equity_securities_registration_review": "Equity securities registration review",
+    "small_equity_public_offering_review": "Small equity public offering review",
 }
 
 
@@ -268,7 +273,7 @@ nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font
 <h1>What changed.<br>What needs review.</h1><p class="lead">Daily differences across listing and regulatory-document evidence feeds, preserved as an auditable research queue.</p>
 <p class="meta">Observed {escape(as_of.isoformat())} / baseline {escape(baseline_label)}</p><section class="cards">{cards}</section>
 <section class="coverage">{coverage}</section></header>
-<main><p class="notice">Disappearance from a feed does not prove withdrawal, admission or trading. EDINET filings, CVM offerings and ESMA prospectuses open review; only corresponding exchange evidence confirms listing milestones. Synthetic demo evidence is not a public filing.</p>
+<main><p class="notice">Disappearance from a feed does not prove withdrawal, admission or trading. EDINET and OpenDART filings, CVM offerings and ESMA prospectuses open review; only corresponding exchange evidence confirms listing milestones. Synthetic demo evidence is not a public filing.</p>
 <h2>Review queue</h2><div class="table-wrap"><table><thead><tr><th>Market</th><th>Change</th><th>Issuer</th><th>Previous</th><th>Current</th><th>Next step</th><th>Evidence</th></tr></thead><tbody>{rows}</tbody></table></div></main></body></html>"""
 
 
@@ -362,6 +367,15 @@ def _normalize_row(market: str, row: dict[str, str]) -> ListingSignal:
         )
         source = row.get("source_url", "").strip()
         key = f"{document_id}|{isin}"
+    elif market == "OPENDART":
+        status = row.get("status", "").strip()
+        filing_id = row.get("filing_id", "").strip()
+        detail = (
+            f"{row.get('filing_date', '').strip()} / {row.get('market_hint', '').strip()} / "
+            f"{row.get('filing_type', '').strip()}"
+        )
+        source = row.get("source_url", "").strip()
+        key = filing_id
     elif market == "SGX":
         status = row.get("status", "").strip()
         document_id = row.get("document_id", "").strip()
@@ -419,4 +433,6 @@ def _display_status(market: str, status: str) -> str:
         return CVM_STATUS_LABELS.get(status, status)
     if market == "ESMA":
         return ESMA_STATUS_LABELS.get(status, status)
+    if market == "OPENDART":
+        return OPENDART_STATUS_LABELS.get(status, status)
     return status

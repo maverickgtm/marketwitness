@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "title": "OpenDART synthetic fixture for TargetAudit tests",
+    "filing_window": "2026-05-01 to 2026-05-25"
+  },
+  "responses": [
+    {
+      "filing_type": "C001",
+      "payload": {
+        "status": "000",
+        "message": "Synthetic normal response",
+        "page_no": 1,
+        "page_count": 100,
+        "total_count": 1,
+        "total_page": 1,
+        "list": [
+          {
+            "corp_cls": "K",
+            "corp_name": "Seoul Robotics Demo Co., Ltd.",
+            "corp_code": "01000001",
+            "stock_code": "900001",
+            "report_nm": "Synthetic Equity Securities Registration Statement",
+            "rcept_no": "20260521000001",
+            "flr_nm": "Seoul Robotics Demo Co., Ltd.",
+            "rcept_dt": "20260521",
+            "rm": "KOSDAQ"
+          }
+        ]
+      }
+    },
+    {
+      "filing_type": "C006",
+      "payload": {
+        "status": "000",
+        "message": "Synthetic normal response",
+        "page_no": 1,
+        "page_count": 100,
+        "total_count": 1,
+        "total_page": 1,
+        "list": [
+          {
+            "corp_cls": "E",
+            "corp_name": "Busan Battery Demo Inc.",
+            "corp_code": "01000002",
+            "stock_code": "",
+            "report_nm": "Synthetic Small Equity Public Offering",
+            "rcept_no": "20260522000002",
+            "flr_nm": "Busan Battery Demo Inc.",
+            "rcept_dt": "20260522",
+            "rm": ""
+          }
+        ]
+      }
+    },
+    {
+      "filing_type": "C002",
+      "payload": {
+        "status": "000",
+        "message": "Synthetic excluded debt response",
+        "page_no": 1,
+        "page_count": 100,
+        "total_count": 1,
+        "total_page": 1,
+        "list": [
+          {
+            "corp_cls": "Y",
+            "corp_name": "Excluded Debt Demo Corp.",
+            "corp_code": "01000003",
+            "stock_code": "900003",
+            "report_nm": "Synthetic Debt Securities Registration Statement",
+            "rcept_no": "20260523000003",
+            "flr_nm": "Excluded Debt Demo Corp.",
+            "rcept_dt": "20260523",
+            "rm": "KOSPI"
+          }
+        ]
+      }
+    }
+  ]
+}

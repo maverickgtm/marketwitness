@@ -36,7 +36,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Conector TSX `New Company Listings` como confirmacion de listings.
 - [x] Conector SGX `IPO Prospectus` mediante API JSON oficial.
 - [x] Monitor JPX `New Listings` para aprobaciones y fechas de listing de Tokio.
-- [x] Historial y diff diario de nueve monitores globales, incluidos JPX, EDINET, CVM y ESMA, con cola de revision.
+- [x] Historial y diff diario de diez monitores globales, incluidos JPX, EDINET, CVM, ESMA y OpenDART, con cola de revision.
 - [x] Ingesta de comunicados oficiales para confirmar listings.
 - [x] Validacion de splits y cambios de ticker.
 - [x] Validacion de barras de precios duplicadas o incoherentes.
@@ -152,8 +152,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
   Alemania, Paises Bajos e Italia con atribucion y sin afirmar trading.
 - [ ] Validar un conector adicional de ofertas de Singapur sobre datasets/API
   de `MAS OPERA`.
-- [ ] Implementar collector coreano de securities registration statements
-  sobre `OpenDART` y validar confirmacion de mercado `KRX`.
+- [x] Implementar `Korea OpenDART Equity Offering Watch` para emisiones
+  `C001`/`C006` con clave gratuita, e integrar su diff sin afirmar listing.
+- [x] Revisar `KRX OPEN API` y excluir su output del dashboard público porque
+  sus términos prohíben entregar los datos provistos por KRX a terceros.
 - [ ] Revision legal del producto y de sus disclaimers.
 - [ ] Mantener Rusia sin ingesta automatica salvo autorizacion legal
   documentada sobre sanciones y licencia de datos.

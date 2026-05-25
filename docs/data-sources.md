@@ -130,10 +130,11 @@ terminos prohiben scraping y bases de datos; Frankfurt permanece cubierto por
 `ESMA`, con `BaFin` como corroboracion documental. Ver
 [Deep Dive: Tokio, Toronto Y Frankfurt](market-deep-dive-tokyo-toronto-frankfurt.md).
 
-La revision final de brechas del `2026-05-25` encontro un nuevo candidato
-fuerte: `OpenDART` de Corea permite obtener disclosures y datos de securities
-registration statements mediante API, mientras `KRX OPEN API` esta concebida
-para aplicaciones y servicios sobre estadisticas oficiales. Arabia Saudita,
+La revision final de brechas del `2026-05-25` encontro una ruta implementable:
+`OpenDART` de Corea permite obtener filings de capital `C001` y `C006`
+mediante API con clave gratuita. La revision de `KRX OPEN API` confirmó
+restricciones de entrega de datos a terceros, por lo que se excluye del
+dashboard público. Arabia Saudita,
 Emiratos y Sudafrica se mantienen en observacion porque no se confirmo una API
 gratuita reutilizable equivalente. Ver
 [Market Gap Review: Corea, Golfo Y Africa](market-gap-review-korea-gulf-africa.md).
@@ -304,7 +305,7 @@ Revision inicial al `2026-05-24`; ampliaciones internacionales al `2026-05-25`:
 | Japon / Tokio | FSA `EDINET` Documents API y JPX `New Listings` | Documentos de ofertas mas fechas oficiales de aprobacion/listing TSE | EDINET filing watch, JPX y diff diario conjunto implementados |
 | Brasil | CVM `Ofertas Públicas de Distribuição` | Ofertas de acciones en ZIP diario abierto | Feed oficial implementado con atribucion ODbL; requiere B3 para confirmar cotizacion |
 | UE: Alemania, Paises Bajos e Italia | ESMA `Prospectus III Securities` | Prospectos y eventos oferta/admisión de valores `SHRS` | Feed oficial implementado con atribucion; no confirma primera negociacion |
-| Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Securities registration statements/ofertas mas estadisticas oficiales de mercado | Conector prioritario pendiente; validar output KRX del endpoint usado |
+| Corea del Sur | FSS `OpenDART` Disclosure Search API | Filings oficiales `C001` de valores de capital y `C006` de pequeñas ofertas de capital | Monitor y diff implementados con clave gratuita; KRX queda fuera del output público por sus restricciones a terceros |
 | Rusia | Bank of Russia `Register of Russian Securities` y MOEX `ISS` | Registro oficial de securities y datos de mercado disponibles tecnicamente | Solo investigacion restringida: MOEX designada por OFAC; sin collector ni señales |
 
 Las etapas no son intercambiables entre jurisdicciones. Por ejemplo, un
@@ -328,9 +329,11 @@ europea atribuida para Alemania, Paises Bajos e Italia, seleccionando
 solamente `SHRS`; la aprobacion o admision registrada tampoco confirma el
 inicio de negociacion.
 
-`OpenDART` permite construir una cola coreana de securities registration
-statements y disclosures de ofertas. `KRX OPEN API` complementaria la
-confirmacion de mercado una vez validado el uso publico del output elegido.
+`Korea OpenDART Equity Offering Watch` ya construye una cola coreana de
+filings `C001` y `C006` mediante la API oficial con clave gratuita. Un filing
+inicia revision regulatoria y no declara IPO, listado ni primera negociacion.
+La revisión de términos de `KRX OPEN API` encontró que su output no puede
+proporcionarse a terceros, por lo que KRX queda fuera del dashboard público.
 
 Rusia se documenta pero no se automatiza. El Banco de Rusia publico el
 `2025-09-03` la existencia de su registro de securities, mientras `MOEX ISS`

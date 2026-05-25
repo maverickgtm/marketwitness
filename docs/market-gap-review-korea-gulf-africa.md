@@ -10,7 +10,7 @@ examinaron Corea del Sur, Arabia Saudita, Emiratos Arabes Unidos y Sudafrica.
 
 | Mercado | Hallazgo | Decision |
 |---|---|---|
-| Corea del Sur | `OpenDART` ofrece Open API para disclosures originales XML y datos de securities registration statements; `KRX OPEN API` permite crear aplicaciones/servicios con estadisticas oficiales desde 2010 | Agregar como conector prioritario para `Korea Offering Watch` |
+| Corea del Sur | `OpenDART` ofrece Open API para disclosures originales XML y búsqueda de emisiones `C001`/`C006`; `KRX OPEN API` limita sus resultados a uso no comercial y prohíbe entregar datos a terceros | `Korea Offering Watch` implementado con OpenDART; KRX excluido del output público |
 | Arabia Saudita | Saudi Exchange/CMA publican informacion de IPO y prospectos visibles | No se confirmo API gratuita ni permiso de republicacion automatizada; mantener en observacion |
 | Emiratos Arabes Unidos | DFM/ADX/SCA muestran IPOs, listings y divulgaciones | No se confirmo feed programatico reutilizable gratuito; mantener en observacion |
 | Sudafrica | JSE `SENS` es servicio regulatorio, pero la documentacion revisada lo presenta mediante productos de informacion/suscriptores | No activar conector gratuito sin licencia clara |
@@ -29,15 +29,17 @@ la informacion mediante la Open API. La documentación oficial indica:
 
 Para confirmar mercado y aportar contexto posterior, `KRX OPEN API` declara
 que su servicio permite desarrollar aplicaciones y servicios con datos del
-Korea Exchange. Su lista publica incluye informacion diaria de acciones KOSPI
-y KOSDAQ desde `2010-01-04`. Requiere registro, clave y aprobación de uso.
+Korea Exchange. Sin embargo, sus términos en inglés, revisados el
+`2026-05-25`, limitan el uso a fines no comerciales, prohíben cobrar por los
+resultados y prohíben proporcionar los datos KRX a terceros. Por ello no se
+integra al output público de Open Edition.
 
 Flujo previsto:
 
-1. `OpenDART`: detectar securities registration statements u offering
-   disclosures de equity.
-2. `KRX`: confirmar evidencia de mercado/listing cuando el endpoint adecuado
-   y derechos de output queden validados.
+1. `OpenDART`: monitor implementado que detecta `C001` (registro de valores
+   de capital) y `C006` (pequeña oferta pública de capital) con clave gratuita.
+2. `KRX`: conservar como referencia no conectada mientras sus restricciones
+   de datos a terceros impidan mostrar resultados en el dashboard público.
 3. Mantener ofertas, listado y rendimiento como estados separados.
 
 ## Mercados En Observacion
@@ -55,8 +57,8 @@ Japón, Brasil, Europa y Corea.
 ## Prioridad De Construccion Actualizada
 
 1. `Japan IPO Filing Watch`: `EDINET` mas confirmacion `JPX New Listings`.
-2. `Korea Offering Watch`: `OpenDART` primero; `KRX` solo tras confirmar
-   output permitido del endpoint elegido.
+2. `Korea Offering Watch`: implementado sobre `OpenDART`; `KRX` excluido
+   del output público salvo términos distintos o permiso escrito.
 3. `Brazil Offering Watch`: implementado con `CVM Dados Abertos`.
 4. `EU Prospectus Watch`: implementado con `ESMA Prospectus III Securities`
    filtrado a `SHRS`.

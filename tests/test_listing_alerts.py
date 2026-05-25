@@ -68,6 +68,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "EDINET": current / "edinet-monitor.csv",
                     "CVM": current / "cvm-monitor.csv",
                     "ESMA": current / "esma-monitor.csv",
+                    "OPENDART": current / "opendart-monitor.csv",
                     "SGX": current / "sgx-monitor.csv",
                 }
             )
@@ -92,6 +93,7 @@ class ListingAlertsTests(unittest.TestCase):
                 "EDINET": "edinet-monitor.csv",
                 "CVM": "cvm-monitor.csv",
                 "ESMA": "esma-monitor.csv",
+                "OPENDART": "opendart-monitor.csv",
                 "SGX": "sgx-monitor.csv",
             }.items():
                 item = source / filename
@@ -110,6 +112,7 @@ class ListingAlertsTests(unittest.TestCase):
             self.assertTrue((root / "history" / "2026-05-24" / "edinet-monitor.csv").exists())
             self.assertTrue((root / "history" / "2026-05-24" / "cvm-monitor.csv").exists())
             self.assertTrue((root / "history" / "2026-05-24" / "esma-monitor.csv").exists())
+            self.assertTrue((root / "history" / "2026-05-24" / "opendart-monitor.csv").exists())
 
     def test_edinet_tracks_documents_without_promoting_a_listing_state(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -132,6 +135,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "EDINET": edinet_csv,
                     "CVM": Path("data/samples/global-alerts-previous/cvm-monitor.csv"),
                     "ESMA": Path("data/samples/global-alerts-previous/esma-monitor.csv"),
+                    "OPENDART": Path("data/samples/global-alerts-previous/opendart-monitor.csv"),
                     "SGX": Path("data/samples/global-alerts-previous/sgx-monitor.csv"),
                 }
             )
@@ -166,6 +170,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "EDINET": Path("data/samples/global-alerts-previous/edinet-monitor.csv"),
                     "CVM": cvm_csv,
                     "ESMA": Path("data/samples/global-alerts-previous/esma-monitor.csv"),
+                    "OPENDART": Path("data/samples/global-alerts-previous/opendart-monitor.csv"),
                     "SGX": Path("data/samples/global-alerts-previous/sgx-monitor.csv"),
                 }
             )
@@ -199,6 +204,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "EDINET": Path("data/samples/global-alerts-previous/edinet-monitor.csv"),
                     "CVM": Path("data/samples/global-alerts-previous/cvm-monitor.csv"),
                     "ESMA": esma_csv,
+                    "OPENDART": Path("data/samples/global-alerts-previous/opendart-monitor.csv"),
                     "SGX": Path("data/samples/global-alerts-previous/sgx-monitor.csv"),
                 }
             )
@@ -209,6 +215,40 @@ class ListingAlertsTests(unittest.TestCase):
         self.assertNotEqual(esma[0].status, "listed")
         page = render_alerts_html(compare_signals(esma, []), esma, date(2026, 5, 25), "baseline")
         self.assertIn("Initial regulated-market admission review", page)
+
+    def test_opendart_tracks_equity_filings_without_claiming_listing(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            opendart_csv = Path(temporary) / "opendart-monitor.csv"
+            opendart_csv.write_text(
+                "company_name,corp_code,stock_code,filing_id,filing_type,report_name,"
+                "market_hint,status,filing_date,observed_on,source_url,document_url\n"
+                "Demo Korea Co.,01000001,900001,20260525000001,C001,Equity Registration,"
+                "KOSDAQ,equity_securities_registration_review,2026-05-25,2026-05-25,"
+                "https://opendart.fss.or.kr/guide/detail.do,"
+                "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260525000001\n",
+                encoding="utf-8",
+            )
+            current = load_current_signals(
+                {
+                    "HKEX": Path("data/samples/global-alerts-previous/hkex-monitor.csv"),
+                    "LSE": Path("data/samples/global-alerts-previous/lse-upcoming.csv"),
+                    "ASX": Path("data/samples/global-alerts-previous/asx-monitor.csv"),
+                    "TSX": Path("data/samples/global-alerts-previous/tsx-monitor.csv"),
+                    "JPX": Path("data/samples/global-alerts-previous/jpx-monitor.csv"),
+                    "EDINET": Path("data/samples/global-alerts-previous/edinet-monitor.csv"),
+                    "CVM": Path("data/samples/global-alerts-previous/cvm-monitor.csv"),
+                    "ESMA": Path("data/samples/global-alerts-previous/esma-monitor.csv"),
+                    "OPENDART": opendart_csv,
+                    "SGX": Path("data/samples/global-alerts-previous/sgx-monitor.csv"),
+                }
+            )
+
+        filings = [signal for signal in current if signal.market == "OPENDART"]
+        self.assertEqual(filings[0].entity_key, "20260525000001")
+        self.assertIn("review", filings[0].status)
+        self.assertNotEqual(filings[0].status, "listed")
+        page = render_alerts_html(compare_signals(filings, []), filings, date(2026, 5, 25), "baseline")
+        self.assertIn("Equity securities registration review", page)
 
 
 def _signal(

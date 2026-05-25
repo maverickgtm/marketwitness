@@ -318,7 +318,7 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | Tokio / Japon | FSA `EDINET` Documents API y JPX `New Listings` | Monitores y diff diario implementados; EDINET permanece como filing y JPX como confirmacion |
 | Brasil | CVM `Ofertas Públicas de Distribuição` | Monitor ZIP diario ODbL implementado para ofertas de acciones; B3 debe confirmar listing |
 | Union Europea | ESMA `Prospectus III Securities` | Monitor oficial implementado para valores `SHRS` en Alemania, Paises Bajos e Italia |
-| Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Conector prioritario pendiente para ofertas regulatorias y confirmacion de mercado |
+| Corea del Sur | FSS `OpenDART` Disclosure Search API | Monitor implementado para filings `C001`/`C006` con clave gratuita; KRX no se republica por restriccion de entrega a terceros |
 | Rusia | Bank of Russia `Register of Russian Securities` y MOEX `ISS` | Solo investigacion restringida; sin ingesta ni señales por sanciones vigentes |
 
 ### Regla De Evidencia
@@ -343,8 +343,10 @@ Cada jurisdiccion conserva sus propias etapas:
 - Alemania, Paises Bajos e Italia: `ESMA Equity Prospectus Watch` ya filtra
   `SHRS` y conserva oferta/admission metadata con atribucion; no confirma
   primera negociacion. Para Frankfurt, `BaFin` sirve como corroboracion nacional.
-- Corea del Sur: un securities registration statement de `OpenDART` inicia
-  revision; `KRX` solo confirmara mercado tras validar derechos del output.
+- Corea del Sur: `Korea OpenDART Equity Offering Watch` captura filings
+  `C001` y `C006` con clave gratuita; cada filing inicia revision y no
+  confirma IPO, listing ni trading. `KRX` no entra al output público bajo
+  sus términos revisados de entrega de datos a terceros.
 - Rusia: el registro del Banco de Rusia documenta securities y `MOEX ISS`
   ofrece datos tecnicamente disponibles, pero `MOEX` fue designada por OFAC
   el `2024-06-12`; se excluye automatizacion y orientacion de posiciones.
@@ -376,17 +378,19 @@ Cada jurisdiccion conserva sus propias etapas:
   acciones del ZIP diario ODbL y exige confirmacion posterior en B3.
 - `ESMA Equity Prospectus Watch`: pagina europea que filtra valores `SHRS`
   del registro oficial y muestra eventos de oferta/admisión para revision.
+- `Korea OpenDART Equity Offering Watch`: pagina coreana que filtra filings
+  oficiales `C001` y `C006`; el modo live usa una clave gratuita del operador.
 - `Issuer Listing Confirmations`: pagina de hitos posteriores documentados
   por comunicados oficiales del emisor, con fecha de evento y de verificacion.
 - `ETF Holdings Activity`: pagina de diferencias entre snapshots de posiciones
   con fixtures sinteticos e importadores locales; la automatizacion autorizada
   de fuentes diarias aun esta pendiente.
-- `Global Listings Alerts`: bandeja diaria que compara snapshots de nueve
-  feeds, incluidos documentos EDINET, ofertas CVM y prospectos ESMA, y marca registros nuevos, modificados
+- `Global Listings Alerts`: bandeja diaria que compara snapshots de diez
+  feeds, incluidos documentos EDINET y OpenDART, ofertas CVM y prospectos ESMA, y marca registros nuevos, modificados
   o ausentes para revisión sin convertir filings en listings.
 - La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
   cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,
-  TSX, JPX, EDINET, CVM, ESMA, SGX, confirmaciones del emisor, actividad ETF y gobernanza de fuentes.
+  TSX, JPX, EDINET, CVM, ESMA, OpenDART, SGX, confirmaciones del emisor, actividad ETF y gobernanza de fuentes.
 
 ## Pagina 4: ETF Holdings Activity
 

@@ -650,7 +650,7 @@ registrante `CIK 0001064641`.
 
 ## Historial De Mercados Globales
 
-Los nueve feeds internacionales generan CSV normalizados. Después de
+Los diez feeds internacionales generan CSV normalizados. Después de
 obtenerlos, `global-alerts` copia la lectura del día a
 `data/raw/global/history/YYYY-MM-DD/`, selecciona la última captura anterior
 y genera una bandeja común:
@@ -665,6 +665,7 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
   --edinet data/raw/global/edinet-monitor.csv \
   --cvm data/raw/global/cvm-monitor.csv \
   --esma data/raw/global/esma-monitor.csv \
+  --opendart data/raw/global/opendart-monitor.csv \
   --sgx data/raw/global/sgx-monitor-live.csv \
   --history-dir data/raw/global/history \
   --output build/live/global-alerts.csv \
@@ -678,7 +679,8 @@ feed para revisión. En Japón, un documento EDINET permanece como señal
 documental y JPX confirma el hito de listing. En Brasil, una oferta CVM
 permanece como evidencia regulatoria hasta que una fuente B3 confirme el
 listing. En Europa, ESMA conserva evidencia de prospecto o admision para
-revision, no primera negociacion. Una remoción nunca se promueve
+revision, no primera negociacion. En Corea, un filing OpenDART permanece como
+evidencia regulatoria y no como IPO o listing confirmado. Una remoción nunca se promueve
 automáticamente a retirada, admisión o cotización completada.
 
 ## Confirmacion JPX De Tokio
@@ -756,6 +758,28 @@ atribución y rotulado de transformaciones. TargetAudit muestra esa procedencia
 y mantiene los eventos de oferta/admisión como revisión regulatoria; no
 declara primera negociación.
 
+## Filings OpenDART De Corea Del Sur
+
+`opendart-monitor` consulta la búsqueda oficial de disclosures de FSS
+OpenDART y selecciona únicamente `C001` (equity securities registration) y
+`C006` (small equity public offering). El servicio es gratuito en principio,
+pero requiere una clave del operador guardada fuera de Git:
+
+```bash
+export TARGETAUDIT_OPENDART_API_KEY="tu-clave-privada"
+PYTHONPATH=src python3 -m targetaudit opendart-monitor \
+  --since YYYY-MM-DD \
+  --output data/raw/global/opendart-monitor.csv \
+  --report build/live/opendart-monitor.md \
+  --html build/live/opendart-monitor.html \
+  --as-of YYYY-MM-DD
+```
+
+Un resultado inicia revisión regulatoria de oferta de capital; no confirma
+IPO, admisión, cotización ni inversión. `KRX OPEN API` no se conecta a la
+edición pública: sus términos en inglés revisados el `2026-05-25` limitan el
+uso a fines no comerciales y prohíben proporcionar sus datos a terceros.
+
 ## Automatizaciones Locales Activas
 
 En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
@@ -769,7 +793,8 @@ En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
   contraste público FCA NSM, además de las tablas oficiales ASX y TSX; resume
   cambios HKEX, emisiones previstas en Londres, coincidencias documentales,
   solicitudes/retiradas australianas, cotizaciones confirmadas en Canada,
-  aprobaciones/listings JPX, ofertas de acciones CVM, prospectos europeos ESMA y prospectos SGX.
+  aprobaciones/listings JPX, ofertas de acciones CVM, prospectos europeos ESMA,
+  filings coreanos OpenDART y prospectos SGX.
   También preserva snapshots y genera `Global Listings Alerts`.
 - `TargetAudit N-PORT trimestral`: consulta el catalogo oficial SEC cada lunes
   a las `21:50` hora de Guatemala, comenzando el `2026-05-25`; establece una

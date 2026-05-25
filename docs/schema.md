@@ -356,7 +356,7 @@ Registro de fuentes oficiales y conectores internacionales para la pagina
 
 | Columna | Requerida | Descripcion |
 |---|---:|---|
-| `market_code` | Si | Codigo unico: `LSE`, `HKEX`, `ASX`, `TSX`, `SGX`, `JPX`, `CVM`, `ESMA`, `KRX` |
+| `market_code` | Si | Codigo unico: `LSE`, `HKEX`, `ASX`, `TSX`, `SGX`, `JPX`, `CVM`, `ESMA`, `KRX`, `MOEX` |
 | `market_name` | Si | Mercado o bolsa |
 | `jurisdiction` | Si | Pais o jurisdiccion |
 | `connector_status` | Si | `live_official_feed`, `verified_snapshot`, `priority_connector`, `planned_connector` o `restricted_research_only` |
@@ -506,10 +506,24 @@ El monitor conserva únicamente `sec_securitiesType=SHRS` y jurisdicciones
 oferta inicial y emisión/oferta secundaria, siempre terminando en `review`.
 Un documento ESMA no prueba que ya comenzó la negociación.
 
+## Korea OpenDART Equity Offering Feed
+
+`opendart-monitor` consulta la búsqueda oficial OpenDART con clave gratuita o
+lee una fixture sintética declarada para la demo. Produce: `company_name`,
+`corp_code`, `stock_code`, `filing_id`, `filing_type`, `report_name`,
+`market_hint`, `status`, `filing_date`, `observed_on`, `source_url` y
+`document_url`.
+
+Solo consulta los tipos de emisión `C001` (registro de valores de capital) y
+`C006` (pequeña oferta pública de capital). Los estados
+`equity_securities_registration_review` y
+`small_equity_public_offering_review` abren revisión documental: no
+confirman IPO, listing ni primera negociación en KRX.
+
 ## Global Listings Alerts
 
 `global-alerts` normaliza los CSV actuales de `HKEX`, `LSE`, `ASX`, `TSX`,
-`JPX`, `EDINET`, `CVM`, `ESMA` y `SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa
+`JPX`, `EDINET`, `CVM`, `ESMA`, `OPENDART` y `SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa
 `--history-dir` y
 compara contra la última captura anterior. Produce un CSV con:
 `market`, `change_type`, `company_name`, `previous_status`, `current_status`,
@@ -533,6 +547,8 @@ acciones permanece como señal regulatoria brasileña y no se convierte en
 listing B3 por el solo hecho de aparecer en el diff.
 En ESMA la identidad es `document_id + isin`: eventos de prospecto/admisión
 para acciones permanecen como revisión y no como primera negociación.
+En OpenDART la identidad es `filing_id`: una presentación coreana de capital
+permanece como revisión regulatoria y no como confirmación de listing.
 
 ## `issuer_listing_confirmations.csv`
 

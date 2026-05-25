@@ -355,6 +355,13 @@ demo:
 		--report build/demo/esma-monitor.md \
 		--html build/demo/esma-monitor.html \
 		--as-of 2026-05-25
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit opendart-monitor \
+		--snapshot data/samples/opendart-equity-filings-synthetic.json \
+		--since 2026-05-01 \
+		--output build/demo/opendart-monitor.csv \
+		--report build/demo/opendart-monitor.md \
+		--html build/demo/opendart-monitor.html \
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sgx-monitor \
 		--snapshot data/samples/sgx-ipo-prospectus.json \
 		--output build/demo/sgx-monitor.csv \
@@ -370,6 +377,7 @@ demo:
 		--edinet build/demo/edinet-monitor.csv \
 		--cvm build/demo/cvm-monitor.csv \
 		--esma build/demo/esma-monitor.csv \
+		--opendart build/demo/opendart-monitor.csv \
 		--sgx build/demo/sgx-monitor.csv \
 		--previous-dir data/samples/global-alerts-previous \
 		--output build/demo/global-alerts.csv \

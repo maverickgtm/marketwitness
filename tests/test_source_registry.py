@@ -18,7 +18,7 @@ class SourceRegistryTests(unittest.TestCase):
         report = render_source_registry_report(providers, date(2026, 5, 25))
         page = render_source_registry_html(providers, date(2026, 5, 25))
 
-        self.assertEqual(len(providers), 33)
+        self.assertEqual(len(providers), 34)
         self.assertIn("Authorized Demo Export", report)
         self.assertIn("Alpha Vantage Daily Adjusted", report)
         self.assertIn("S&P DJI Constituent Data", report)
@@ -31,6 +31,7 @@ class SourceRegistryTests(unittest.TestCase):
         self.assertIn("FSA EDINET Documents API", report)
         self.assertIn("Brazil CVM Public Distribution Offerings Open Data", report)
         self.assertIn("ESMA Prospectus III Securities Register", report)
+        self.assertIn("FSS OpenDART Disclosure Search API", report)
         self.assertIn("`license_required`", report)
         self.assertIn("`manual_only`", report)
         self.assertIn("TipRanks", report)

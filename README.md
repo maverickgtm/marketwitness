@@ -83,9 +83,10 @@ por `ESMA` con `BaFin` como corroboracion nacional. Ver
 [Deep Dive: Tokio, Toronto Y Frankfurt](docs/market-deep-dive-tokyo-toronto-frankfurt.md).
 
 La revision final de brechas del `2026-05-25` encontro una nueva ruta
-defendible en Corea del Sur: `OpenDART` permite obtener disclosures y
-securities registration statements mediante Open API, y `KRX OPEN API`
-ofrece datos oficiales para aplicaciones con clave/aprobacion. Arabia
+defendible en Corea del Sur: `Korea OpenDART Equity Offering Watch` ya
+monitoriza disclosures `C001` y `C006` mediante Open API con clave gratuita.
+La revisión de `KRX OPEN API` confirmó que sus datos no deben entregarse a
+terceros, por lo que no se publican en el dashboard abierto. Arabia
 Saudita, Emiratos y Sudafrica quedaron en observacion por falta de un camino
 gratuito reutilizable confirmado. Ver
 [Market Gap Review: Corea, Golfo Y Africa](docs/market-gap-review-korea-gulf-africa.md).
@@ -362,7 +363,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `JPX` / Japon: monitores `JPX New Listings` y `EDINET` con diff diario separado para confirmaciones de Tokio y filings de oferta con clave gratuita.
 - `CVM` / Brasil: monitor oficial ODbL de ofertas publicas de acciones y diff diario; requiere evidencia B3 separada para confirmar listing.
 - `ESMA` / Union Europea: monitor oficial atribuible de prospectos para acciones en Alemania, Paises Bajos e Italia; no confirma primera negociacion.
-- `KRX` / Corea del Sur: `OpenDART` para registros de oferta y `KRX OPEN API` para evidencia de mercado a validar, en cola de implementacion.
+- `KRX` / Corea del Sur: monitor `OpenDART` implementado para filings de oferta de capital `C001`/`C006` con clave gratuita; KRX no se republica por sus restricciones a terceros.
 - `MOEX` / Rusia: `Bank of Russia` y `MOEX ISS` identificados, solo investigacion restringida por sanciones vigentes.
 
 Hong Kong ya incluye un conector a los JSON oficiales de HKEXnews para
@@ -389,9 +390,10 @@ diario. El registro es evidencia regulatoria, no confirmacion de cotizacion
 en B3. La Union Europea ya cuenta con `ESMA Equity Prospectus Watch`: consulta
 `Prospectus III Securities`, conserva solamente `SHRS` en Alemania, Paises
 Bajos e Italia y marca cada documento para revision sin afirmar trading.
-Corea del Sur tambien entra como prioridad pendiente: `OpenDART` aporta
-registros de valores y disclosures en XML/API; `KRX OPEN API` se evaluara para
-confirmacion de mercado sin publicar outputs fuera de sus terminos.
+Corea del Sur ya cuenta con `Korea OpenDART Equity Offering Watch`: consulta
+filings `C001` y `C006` del API oficial con clave gratuita y los marca para
+revisión sin afirmar IPO o listing. `KRX OPEN API` no se integra al output
+público porque los términos revisados prohíben proporcionar sus datos a terceros.
 Rusia queda visible pero no activada: el Banco de Rusia anuncio un registro
 oficial de valores el `2025-09-03` y `MOEX ISS` expone datos tecnicamente
 utiles, pero OFAC designo `MOEX`, `NCC` y `NSD` el `2024-06-12`. No se
@@ -500,6 +502,22 @@ El monitor usa el registro oficial `Prospectus III Securities` y filtra
 `SHRS`; un registro de admision inicial sigue siendo evidencia para revision,
 no confirmacion de primera negociacion.
 
+Para leer filings coreanos de oferta de capital desde OpenDART se necesita
+una clave gratuita del operador, guardada fuera de Git:
+
+```bash
+export TARGETAUDIT_OPENDART_API_KEY="tu-clave-privada"
+PYTHONPATH=src python3 -m targetaudit opendart-monitor \
+  --since YYYY-MM-DD \
+  --output data/raw/global/opendart-monitor.csv \
+  --report build/live/opendart-monitor.md \
+  --html build/live/opendart-monitor.html \
+  --as-of YYYY-MM-DD
+```
+
+El monitor consulta únicamente `C001` y `C006`: un resultado abre revisión
+regulatoria, no confirma IPO, listing o primera negociación en KRX.
+
 Para leer prospectos SGX en vivo:
 
 ```bash
@@ -537,6 +555,7 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
   --edinet data/raw/global/edinet-monitor.csv \
   --cvm data/raw/global/cvm-monitor.csv \
   --esma data/raw/global/esma-monitor.csv \
+  --opendart data/raw/global/opendart-monitor.csv \
   --sgx data/raw/global/sgx-monitor.csv \
   --history-dir data/raw/global/history \
   --output build/live/global-alerts.csv \
@@ -545,7 +564,7 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
 ```
 
 `global-alerts` clasifica diferencias como nuevas, modificadas o removidas
-del feed para revisión. EDINET, CVM y ESMA entran como evidencia regulatoria
+del feed para revisión. EDINET, CVM, ESMA y OpenDART entran como evidencia regulatoria
 temprana; JPX confirma hitos japoneses de listing, B3 requerira evidencia
 separada para Brasil y ESMA no confirma primera negociacion europea. Una
 remoción no confirma retiro, admisión ni inicio de negociación.
@@ -1002,6 +1021,9 @@ build/demo/cvm-monitor.html
 build/demo/esma-monitor.csv
 build/demo/esma-monitor.md
 build/demo/esma-monitor.html
+build/demo/opendart-monitor.csv
+build/demo/opendart-monitor.md
+build/demo/opendart-monitor.html
 build/demo/sgx-monitor.csv
 build/demo/sgx-monitor.md
 build/demo/sgx-monitor.html
