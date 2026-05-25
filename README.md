@@ -543,10 +543,13 @@ para evitar que una evidencia anterior sea reemplazada silenciosamente.
 
 La primera API FastAPI sirve únicamente resultados ya almacenados en DuckDB.
 No recolecta datos ni habilita la publicación de fuentes pendientes de licencia.
+El registro transversal de gobernanza se consulta desde el CSV validado
+configurable mediante `TARGETAUDIT_SOURCE_REGISTRY`.
 
 ```bash
 python3 -m pip install -e ".[application]"
 export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
+export TARGETAUDIT_SOURCE_REGISTRY="data/samples/source_registry.csv"
 python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 ```
 
@@ -557,6 +560,9 @@ exclusiones. La ficha de ticker incluye una linea temporal de hitos retenidos
 (referencia, entrada, target y salida/terminal) y deja visible que no representa
 una serie diaria de mercado. El demo almacena corridas separadas para el
 scorecard principal, targets revisados y guardas por acciones corporativas.
+La ruta `/dashboard/governance` presenta controles de fuente y observaciones
+excluidas o pendientes por corrida, sin atribuirles un proveedor hasta que
+esa linea de origen se persista en el almacen.
 
 Endpoints iniciales:
 
@@ -573,6 +579,8 @@ Endpoints iniciales:
 | `/api/v1/runs/{run_id}/audit/exclusions` | Excluidos y pendientes con motivo |
 | `/api/v1/runs/{run_id}/export/evaluations.csv` | Descarga CSV de observaciones de la corrida |
 | `/api/v1/runs/{run_id}/export/rankings-firms.csv` | Descarga CSV del ranking con los mismos filtros |
+| `/api/v1/governance/sources` | Registro de fuentes y controles de publicacion, filtrable por estado y clase |
+| `/dashboard/governance` | Pagina de auditoria de fuentes y observaciones excluidas |
 
 La documentación interactiva local queda disponible en `/docs` al iniciar el
 servidor. La API omite las rutas locales de los archivos originales y presenta

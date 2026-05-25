@@ -95,7 +95,9 @@ class ApiTests(unittest.TestCase):
             ),
             evaluations,
         )
-        self.client = TestClient(create_app(self.database))
+        self.client = TestClient(
+            create_app(self.database, Path("data/samples/source_registry.csv"))
+        )
 
     def tearDown(self) -> None:
         self.directory.cleanup()
@@ -106,6 +108,7 @@ class ApiTests(unittest.TestCase):
 
         self.assertEqual(health.status_code, 200)
         self.assertTrue(health.json()["database_available"])
+        self.assertTrue(health.json()["source_registry_available"])
         self.assertEqual(run.status_code, 200)
         self.assertEqual(run.json()["evaluated_count"], 2)
         self.assertEqual(run.json()["assets"][0]["asset_role"], "targets")
@@ -134,6 +137,25 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(facets.status_code, 200)
         self.assertEqual(facets.json()["sectors"], ["Financials"])
         self.assertEqual(facets.json()["tickers"], ["AAA", "BBB"])
+
+    def test_serves_governance_dashboard_and_filtered_source_controls(self) -> None:
+        page = self.client.get("/dashboard/governance")
+        sources = self.client.get("/api/v1/governance/sources")
+        blocked = self.client.get(
+            "/api/v1/governance/sources?deployment_state=blocked"
+        )
+        holdings = self.client.get(
+            "/api/v1/governance/sources?data_class=ETF%20holdings"
+        )
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Open code.", page.text)
+        self.assertIn("Run Exclusions And Pending", page.text)
+        self.assertEqual(sources.json()["provider_count"], 19)
+        self.assertGreater(sources.json()["open_review_count"], 0)
+        self.assertEqual(blocked.json()["sources"][0]["provider_id"], "tipranks-reference")
+        self.assertEqual(len(holdings.json()["sources"]), 3)
+        self.assertIn("publication_policy", sources.json()["sources"][0])
 
     def test_serves_firm_ticker_and_exclusion_audit_views(self) -> None:
         firm = self.client.get("/api/v1/runs/api-demo/firms/Example%20Firm")

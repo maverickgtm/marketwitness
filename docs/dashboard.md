@@ -42,10 +42,19 @@ exclusiones sin publicar datos comerciales.
 Objetivo: hacer visible qué datos pueden alimentar un producto público y qué
 fuentes aún requieren términos, licencia o exclusión expresa.
 
+- La ruta web `/dashboard/governance` consume el registro validado y la
+  auditoria de exclusiones almacenada por cada corrida.
 - Registro de fuentes oficiales, candidatas comerciales y datos sintéticos.
 - Estado de integración separado de estado de licencia/publicación.
 - Bloqueo visible para fuentes que no deben recolectarse automáticamente.
 - Enlace a la referencia oficial usada para cada decisión.
+- Filtros por clase de dato y estado operativo, junto a la vista por corrida
+  de observaciones excluidas y pendientes.
+
+La corrida guarda actualmente el enlace de evidencia de cada observacion, no
+el `provider_id` del registro de fuentes. Por eso ambas auditorias se muestran
+sin afirmar una relacion automatica; esa trazabilidad debe persistirse antes
+de unirlas fila por fila en produccion.
 
 ## Pagina 1: Financials Scorecard
 

@@ -14,9 +14,10 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import HTMLResponse, Response
 
 from . import METHODOLOGY_VERSION, __version__
-from .dashboard_web import financials_scorecard_html
+from .dashboard_web import financials_scorecard_html, source_governance_html
 from .models import Evaluation
 from .reporting import wilson_interval
+from .source_registry import SourceProvider, SourceRegistryDataError, load_source_registry
 from .storage import (
     WarehouseError,
     list_run_summaries,
@@ -26,11 +27,19 @@ from .storage import (
 )
 
 DEFAULT_DATABASE_PATH = "build/live/targetaudit.duckdb"
+DEFAULT_SOURCE_REGISTRY_PATH = "data/samples/source_registry.csv"
 
 
-def create_app(database_path: str | Path | None = None) -> FastAPI:
+def create_app(
+    database_path: str | Path | None = None,
+    source_registry_path: str | Path | None = None,
+) -> FastAPI:
     database = Path(
         database_path or os.environ.get("TARGETAUDIT_DATABASE", DEFAULT_DATABASE_PATH)
+    )
+    registry = Path(
+        source_registry_path
+        or os.environ.get("TARGETAUDIT_SOURCE_REGISTRY", DEFAULT_SOURCE_REGISTRY_PATH)
     )
     application = FastAPI(
         title="TargetAudit API",
@@ -48,6 +57,12 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
     def scorecard() -> str:
         return financials_scorecard_html()
 
+    @application.get(
+        "/dashboard/governance", response_class=HTMLResponse, include_in_schema=False
+    )
+    def source_governance() -> str:
+        return source_governance_html()
+
     @application.get("/api/v1/health")
     def health() -> dict[str, object]:
         return {
@@ -55,6 +70,40 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
             "service": "targetaudit-api",
             "methodology_version": METHODOLOGY_VERSION,
             "database_available": database.is_file(),
+            "source_registry_available": registry.is_file(),
+        }
+
+    @application.get("/api/v1/governance/sources")
+    def governance_sources(
+        deployment_state: str = "",
+        data_class: str = "",
+    ) -> dict[str, object]:
+        providers = _read_sources(registry)
+        all_providers = providers
+        if deployment_state:
+            providers = [
+                item for item in providers if item.deployment_state == deployment_state
+            ]
+        if data_class:
+            providers = [
+                item for item in providers if item.data_class.lower() == data_class.lower()
+            ]
+        deployment = Counter(item.deployment_state for item in all_providers)
+        integration = Counter(item.integration_status for item in all_providers)
+        return {
+            "reviewed_as_of": max(item.reviewed_on for item in all_providers).isoformat()
+            if all_providers
+            else None,
+            "provider_count": len(all_providers),
+            "implemented_count": integration["implemented"],
+            "open_review_count": (
+                deployment["review_required"] + deployment["license_required"]
+            ),
+            "manual_only_count": deployment["manual_only"],
+            "blocked_count": deployment["blocked"],
+            "deployment_states": sorted({item.deployment_state for item in all_providers}),
+            "data_classes": sorted({item.data_class for item in all_providers}),
+            "sources": [_public_source(item) for item in providers],
         }
 
     @application.get("/api/v1/runs")
@@ -213,6 +262,30 @@ def _warehouse_call(function, *args, **kwargs):
         return function(*args, **kwargs)
     except WarehouseError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+
+def _read_sources(registry: Path) -> list[SourceProvider]:
+    try:
+        return load_source_registry(registry)
+    except (OSError, SourceRegistryDataError) as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+
+def _public_source(item: SourceProvider) -> dict[str, object]:
+    return {
+        "provider_id": item.provider_id,
+        "provider_name": item.provider_name,
+        "data_class": item.data_class,
+        "access_model": item.access_model,
+        "integration_status": item.integration_status,
+        "license_status": item.license_status,
+        "publication_policy": item.publication_policy,
+        "deployment_state": item.deployment_state,
+        "official_url": item.official_url,
+        "reference_url": item.reference_url,
+        "reviewed_on": item.reviewed_on.isoformat(),
+        "review_note": item.review_note,
+    }
 
 
 def _firm_ranking_payload(

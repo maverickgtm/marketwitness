@@ -60,7 +60,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
   ranking filtrado y las observaciones de una corrida.
 - [ ] Serie diaria completa de precios/targets autorizada para graficos
   historicos publicos.
-- [ ] Pagina de auditoria de fuente y observaciones excluidas.
+- [x] Pagina de auditoria de fuentes, controles de publicacion y observaciones
+  excluidas o pendientes por corrida.
+- [ ] Persistir `provider_id` por observacion para enlazar resultados y
+  gobernanza de fuentes sin inferencias por URL.
 - [x] Pagina `ETF Holdings Activity` con comparador de snapshots, diferencias
   de posiciones, sello de fecha/frecuencia y demo sintetica reproducible.
 - [x] Importador local de archivos diarios ARK con normalizacion auditable y

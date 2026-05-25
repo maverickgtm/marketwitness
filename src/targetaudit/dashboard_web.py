@@ -79,7 +79,7 @@ def financials_scorecard_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Scorecard</nav>
+    <nav>TargetAudit / U.S. Financials / Scorecard / <a href="/dashboard/governance">Source Governance</a></nav>
     <h1>Price targets,<br>measured in daylight.</h1>
     <p class="lead">Auditable analyst-target research with visible sample size, uncertainty, benchmark context and exclusions. A hit is evidence of a reached target, not investment advice.</p>
     <p class="meta" id="run-meta">Loading latest stored research run...</p>
@@ -274,6 +274,203 @@ def financials_scorecard_html() -> str:
     }
     $("run").addEventListener("change", loadRun);
     $("apply").addEventListener("click", refresh);
+    initialize();
+  </script>
+</body>
+</html>"""
+
+
+def source_governance_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Source Governance</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --panel2:#14242d; --line:#20343d;
+      --text:#edf1ef; --muted:#98abb0; --mint:#56daac; --gold:#f0bc62;
+      --blue:#62a6ff; --red:#ff7d72;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1240px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(38px,5vw,58px); line-height:1.05; margin:38px 0 14px; }
+    h2 { margin:42px 0 16px; font-size:22px; }
+    h3 { margin:0 0 12px; font-size:16px; }
+    .lead { color:var(--muted); font-size:17px; max-width:850px; }
+    .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold);
+      border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
+    .cards { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin:34px 0; }
+    .card,.filters,.table-wrap,.detail { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:17px 20px; }
+    .card p { color:var(--muted); margin:0; }
+    .card strong { display:block; font-size:35px; color:var(--mint); margin-top:4px; }
+    .card small { color:var(--muted); }
+    .filters { padding:17px; display:grid; grid-template-columns:1.7fr 1.5fr auto; gap:12px; align-items:end; margin-bottom:18px; }
+    label { display:block; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+    select { width:100%; height:43px; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:9px; padding:0 11px; }
+    button { height:43px; border:0; border-radius:9px; color:#061117; background:var(--mint); padding:0 20px; font-weight:600; cursor:pointer; }
+    .sources-layout { display:grid; grid-template-columns:minmax(680px,1fr) 335px; gap:18px; }
+    .table-wrap { overflow:hidden; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); text-transform:uppercase; font-size:12px; font-weight:500; }
+    td small { display:block; color:var(--muted); }
+    tr[data-source] { cursor:pointer; }
+    tr[data-source]:hover { background:var(--panel2); }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; white-space:nowrap; }
+    .usable_with_policy { color:var(--mint); background:rgba(86,218,172,.12); }
+    .review_required,.manual_only { color:var(--gold); background:rgba(240,188,98,.12); }
+    .license_required { color:var(--blue); background:rgba(98,166,255,.12); }
+    .blocked { color:var(--red); background:rgba(255,125,114,.12); }
+    .detail { padding:18px; min-height:300px; }
+    .detail p { color:var(--muted); }
+    .fact { background:var(--panel2); border-radius:9px; padding:10px; margin:9px 0; }
+    .fact small { display:block; color:var(--muted); }
+    .fact strong { font-size:14px; font-weight:500; word-break:break-word; }
+    .audit-header { display:flex; align-items:end; justify-content:space-between; gap:16px; margin-top:38px; }
+    .audit-header h2 { margin:0; }
+    .audit-header select { width:360px; }
+    #error { display:none; border-left-color:var(--red); color:var(--red); }
+    @media(max-width:1000px) {
+      .cards { grid-template-columns:repeat(2,1fr); }
+      .filters,.sources-layout { grid-template-columns:1fr; }
+      .audit-header { display:block; }
+      .audit-header select { width:100%; margin-top:12px; }
+      .table-wrap { overflow-x:auto; }
+      table { min-width:700px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>TargetAudit / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a></nav>
+    <h1>Open code.<br>Controlled data.</h1>
+    <p class="lead">Publication rights are part of the evidence. This page separates sources already usable under documented policy from data that still requires terms, licensing or manual controls.</p>
+    <p class="meta" id="reviewed">Loading source registry...</p>
+    <section class="cards">
+      <article class="card"><p>Providers</p><strong id="providers">-</strong><small>Tracked sources</small></article>
+      <article class="card"><p>Implemented</p><strong id="implemented">-</strong><small>Technical adapters</small></article>
+      <article class="card"><p>Reviews Open</p><strong id="open">-</strong><small>Terms or license</small></article>
+      <article class="card"><p>Manual Only</p><strong id="manual">-</strong><small>No automated collection</small></article>
+      <article class="card"><p>Blocked</p><strong id="blocked">-</strong><small>No collection</small></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice">A public URL is not permission to republish data. Provider controls below govern collection and publication; exclusions below are run results and are not automatically assigned to a provider until provider lineage is persisted with each observation.</p>
+    <p id="error" class="notice"></p>
+    <h2>Source Controls</h2>
+    <section class="filters" aria-label="Source control filters">
+      <div><label for="state">Deployment state</label><select id="state"><option value="">All states</option></select></div>
+      <div><label for="data-class">Data class</label><select id="data-class"><option value="">All data classes</option></select></div>
+      <button id="apply">Apply</button>
+    </section>
+    <section class="sources-layout">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Provider</th><th>Integration</th><th>Deployment</th><th>Publication Policy</th></tr></thead>
+          <tbody id="sources"><tr><td colspan="4">Loading providers...</td></tr></tbody>
+        </table>
+      </div>
+      <aside id="source-detail" class="detail">
+        <h3>Source Detail</h3>
+        <p>Select a provider to inspect its review note and evidence references.</p>
+      </aside>
+    </section>
+    <section class="audit-header">
+      <div><h2>Run Exclusions And Pending</h2><p class="lead">Observations removed before ranking, with their retained source URL and exclusion reason.</p></div>
+      <div><label for="run">Research run</label><select id="run"></select></div>
+    </section>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Observation</th><th>Firm / Ticker</th><th>Status</th><th>Reason</th><th>Evidence</th></tr></thead>
+        <tbody id="exclusions"><tr><td colspan="5">Loading exclusions...</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const base = "/api/v1";
+    function text(value) {
+      return String(value == null || value === "" ? "-" : value)
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    }
+    function href(value) {
+      try {
+        const parsed = new URL(value);
+        return parsed.protocol === "https:" || parsed.protocol === "http:" ? text(value) : "#";
+      } catch (_) { return "#"; }
+    }
+    async function json(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+      return response.json();
+    }
+    function fail(message) {
+      $("error").style.display = "block";
+      $("error").textContent = message;
+    }
+    async function initialize() {
+      try {
+        const [sources, runs] = await Promise.all([json(`${base}/governance/sources`), json(`${base}/runs`)]);
+        $("reviewed").textContent = `Source registry reviewed as of ${sources.reviewed_as_of}`;
+        $("providers").textContent = sources.provider_count;
+        $("implemented").textContent = sources.implemented_count;
+        $("open").textContent = sources.open_review_count;
+        $("manual").textContent = sources.manual_only_count;
+        $("blocked").textContent = sources.blocked_count;
+        $("state").innerHTML += sources.deployment_states.map((state) => `<option value="${text(state)}">${text(state)}</option>`).join("");
+        $("data-class").innerHTML += sources.data_classes.map((dataClass) => `<option value="${text(dataClass)}">${text(dataClass)}</option>`).join("");
+        $("run").innerHTML = runs.map((run) => `<option value="${text(run.run_id)}">${text(run.run_id)} / ${text(run.as_of)}</option>`).join("");
+        const excludedRun = runs.find((run) => run.excluded_count > 0);
+        if (excludedRun) $("run").value = excludedRun.run_id;
+        renderSources(sources.sources);
+        await loadExclusions();
+      } catch (error) { fail(error.message); }
+    }
+    async function filterSources() {
+      const params = new URLSearchParams();
+      if ($("state").value) params.set("deployment_state", $("state").value);
+      if ($("data-class").value) params.set("data_class", $("data-class").value);
+      try {
+        const data = await json(`${base}/governance/sources?${params}`);
+        renderSources(data.sources);
+        resetSourceDetail();
+      } catch (error) { fail(error.message); }
+    }
+    function renderSources(rows) {
+      if (!rows.length) {
+        $("sources").innerHTML = '<tr><td colspan="4">No source matches these controls.</td></tr>';
+        return;
+      }
+      $("sources").innerHTML = rows.map((row) => `<tr data-source="${text(row.provider_id)}"><td><strong>${text(row.provider_name)}</strong><small>${text(row.data_class)}</small></td><td>${text(row.integration_status)}<small>${text(row.access_model)}</small></td><td><span class="pill ${text(row.deployment_state)}">${text(row.deployment_state)}</span></td><td><small>${text(row.publication_policy)}</small></td></tr>`).join("");
+      document.querySelectorAll("tr[data-source]").forEach((row) => {
+        const source = rows.find((item) => item.provider_id === row.dataset.source);
+        row.addEventListener("click", () => showSource(source));
+      });
+    }
+    function resetSourceDetail() {
+      $("source-detail").innerHTML = '<h3>Source Detail</h3><p>Select a provider to inspect its review note and evidence references.</p>';
+    }
+    function showSource(source) {
+      $("source-detail").innerHTML = `<h3>${text(source.provider_name)}</h3><span class="pill ${text(source.deployment_state)}">${text(source.deployment_state)}</span><div class="fact"><small>License status</small><strong>${text(source.license_status)}</strong></div><div class="fact"><small>Publication policy</small><strong>${text(source.publication_policy)}</strong></div><div class="fact"><small>Reviewed</small><strong>${text(source.reviewed_on)}</strong></div><p>${text(source.review_note)}</p><p><a href="${href(source.official_url)}" target="_blank" rel="noopener">Official source</a><br><a href="${href(source.reference_url)}" target="_blank" rel="noopener">Terms / reference</a></p>`;
+    }
+    async function loadExclusions() {
+      if (!$("run").value) {
+        $("exclusions").innerHTML = '<tr><td colspan="5">No evaluation runs stored.</td></tr>';
+        return;
+      }
+      try {
+        const audit = await json(`${base}/runs/${encodeURIComponent($("run").value)}/audit/exclusions`);
+        $("exclusions").innerHTML = audit.observations.length ? audit.observations.map((row) => `<tr><td>${text(row.observation_id)}</td><td><strong>${text(row.firm)}</strong><small>${text(row.ticker)}</small></td><td><span class="pill review_required">${text(row.status)}</span></td><td>${text(row.reason)}</td><td><a href="${href(row.source_url)}" target="_blank" rel="noopener">Source</a></td></tr>`).join("") : '<tr><td colspan="5">No excluded or pending observations in this run.</td></tr>';
+      } catch (error) { fail(error.message); }
+    }
+    $("apply").addEventListener("click", filterSources);
+    $("run").addEventListener("change", loadExclusions);
     initialize();
   </script>
 </body>
