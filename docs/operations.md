@@ -295,6 +295,8 @@ Para auditar el estado exacto incluido en un bundle, las rutas
 `/dashboard/governance-report/scorecard-readiness` sirven snapshots HTML
 generados. Las vistas `/dashboard/governance`, `/dashboard/approvals` y
 `/dashboard/readiness` continúan como controles interactivos separados.
+El snapshot `open-edition` conserva navegación directa hacia cada capacidad
+declarada para revisar el bundle publicado sin volver a la portada dinámica.
 
 ## Readiness Del Scorecard Publico
 

@@ -870,7 +870,8 @@ del demo sin confundirlo con resultados reales.
 Tambien incorpora seis `Governance Snapshots` que preservan el estado
 generado de Open Edition, extensiones licenciadas, fuentes, permisos,
 decisiones y readiness,
-separado de los controles interactivos del servidor. La ruta
+separado de los controles interactivos del servidor. El snapshot de Open
+Edition mantiene enlaces a las capacidades declaradas del bundle. La ruta
 `/dashboard/extensions` presenta proveedores que un usuario puede contratar
 por su cuenta, sus precios visibles y los derechos que aun bloquean la
 publicacion de rankings reales. La ruta

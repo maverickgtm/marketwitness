@@ -27,7 +27,14 @@ class OpenEditionTests(unittest.TestCase):
         self.assertEqual(rankings["status"], "bring_authorized_data")
         self.assertEqual(rankings["route"], "/dashboard/extensions")
         self.assertIn("no licensed target dataset", rankings["limitation"])
-        self.assertIn("No paid data required", render_open_edition_html(snapshot))
+        page = render_open_edition_html(snapshot)
+        report = render_open_edition_report(snapshot)
+        self.assertIn("No paid data required", page)
+        self.assertIn('href="/dashboard/financials">Open view</a>', page)
+        self.assertIn('href="/dashboard/ipo-watch">Open view</a>', page)
+        self.assertIn('href="/dashboard/etf-regulatory">Open view</a>', page)
+        self.assertIn('href="/dashboard/extensions">Open view</a>', page)
+        self.assertIn("[Open view](/dashboard/rwa-watch)", report)
         rwa = next(
             item for item in snapshot["capabilities"] if item["key"] == "rwa_watch_sandbox"
         )
@@ -39,7 +46,7 @@ class OpenEditionTests(unittest.TestCase):
         self.assertEqual(context["route"], "/dashboard/market-context")
         self.assertEqual(context["status"], "attributed_external_widget")
         self.assertIn("not stored", context["limitation"])
-        self.assertIn("Available without paid data subscriptions: `6`", render_open_edition_report(snapshot))
+        self.assertIn("Available without paid data subscriptions: `6`", report)
 
     def test_rejects_a_public_capability_if_its_free_source_becomes_unavailable(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))

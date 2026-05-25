@@ -67,6 +67,8 @@ general al directorio de reportes construidos.
   resultados de revision y readiness;
   estas capturan el bundle construido, mientras `/dashboard/governance`,
   `/dashboard/approvals` y `/dashboard/readiness` son controles interactivos.
+- `Open Edition Snapshot` enlaza cada capacidad declarada para recorrer el
+  bundle desde su manifiesto generado, no solo desde la portada interactiva.
 - Explica que el artefacto periodico generado en GitHub Actions usa fixtures
   redistribuibles, no consultas live ni rankings reales.
 - Enlaza controles operativos de politica, gobernanza y Release Center para

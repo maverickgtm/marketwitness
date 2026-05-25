@@ -155,6 +155,8 @@ consulta filings live, no incluye holdings reales de emisores y no publica un
 ranking real de analistas. El bundle puede recorrerse en la aplicacion desde
 `/dashboard/reports`, que enlaza solo rutas permitidas y no expone el
 directorio generado como explorador de archivos.
+El snapshot generado `/dashboard/governance-report/open-edition` tambien
+conserva enlaces directos a cada capacidad que declara.
 
 Para recolectar datos SEC públicos en vez de utilizar fixtures:
 
