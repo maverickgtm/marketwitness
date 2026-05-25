@@ -317,7 +317,7 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | Singapore Exchange | SGX `IPO Prospectus` | Feed JSON oficial implementado para prospectos publicados |
 | Tokio / Japon | FSA `EDINET` Documents API y JPX `New Listings` | Monitores y diff diario implementados; EDINET permanece como filing y JPX como confirmacion |
 | Brasil | CVM `Ofertas Públicas de Distribuição` | Monitor ZIP diario ODbL implementado para ofertas de acciones; B3 debe confirmar listing |
-| Union Europea | ESMA `Prospectus III` | Conector prioritario pendiente para prospectos de Alemania, Paises Bajos e Italia |
+| Union Europea | ESMA `Prospectus III Securities` | Monitor oficial implementado para valores `SHRS` en Alemania, Paises Bajos e Italia |
 | Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Conector prioritario pendiente para ofertas regulatorias y confirmacion de mercado |
 | Rusia | Bank of Russia `Register of Russian Securities` y MOEX `ISS` | Solo investigacion restringida; sin ingesta ni señales por sanciones vigentes |
 
@@ -340,9 +340,9 @@ Cada jurisdiccion conserva sus propias etapas:
   pagina y CSV.
 - Brasil: `CVM Equity Offering Watch` ya incorpora ofertas de acciones al diff
   diario; un registro inicia revision y no confirma listado o trading en B3.
-- Alemania, Paises Bajos e Italia: un prospecto `ESMA` es evidencia
-  regulatoria; el output transformado debe declarar fuente y transformacion.
-  Para Frankfurt, `BaFin` servira como corroboracion nacional del prospecto.
+- Alemania, Paises Bajos e Italia: `ESMA Equity Prospectus Watch` ya filtra
+  `SHRS` y conserva oferta/admission metadata con atribucion; no confirma
+  primera negociacion. Para Frankfurt, `BaFin` sirve como corroboracion nacional.
 - Corea del Sur: un securities registration statement de `OpenDART` inicia
   revision; `KRX` solo confirmara mercado tras validar derechos del output.
 - Rusia: el registro del Banco de Rusia documenta securities y `MOEX ISS`
@@ -374,17 +374,19 @@ Cada jurisdiccion conserva sus propias etapas:
   catalogo oficial SGX; funciona como señal documental para revision.
 - `CVM Equity Offering Watch`: pagina brasileña que filtra ofertas de
   acciones del ZIP diario ODbL y exige confirmacion posterior en B3.
+- `ESMA Equity Prospectus Watch`: pagina europea que filtra valores `SHRS`
+  del registro oficial y muestra eventos de oferta/admisión para revision.
 - `Issuer Listing Confirmations`: pagina de hitos posteriores documentados
   por comunicados oficiales del emisor, con fecha de evento y de verificacion.
 - `ETF Holdings Activity`: pagina de diferencias entre snapshots de posiciones
   con fixtures sinteticos e importadores locales; la automatizacion autorizada
   de fuentes diarias aun esta pendiente.
-- `Global Listings Alerts`: bandeja diaria que compara snapshots de siete
-  feeds, incluidos documentos EDINET y ofertas CVM, y marca registros nuevos, modificados
+- `Global Listings Alerts`: bandeja diaria que compara snapshots de nueve
+  feeds, incluidos documentos EDINET, ofertas CVM y prospectos ESMA, y marca registros nuevos, modificados
   o ausentes para revisión sin convertir filings en listings.
 - La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
   cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,
-  TSX, JPX, EDINET, CVM, SGX, confirmaciones del emisor, actividad ETF y gobernanza de fuentes.
+  TSX, JPX, EDINET, CVM, ESMA, SGX, confirmaciones del emisor, actividad ETF y gobernanza de fuentes.
 
 ## Pagina 4: ETF Holdings Activity
 

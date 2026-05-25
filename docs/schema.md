@@ -494,10 +494,22 @@ son `offering_recorded`, `offering_closed` y
 `offering_cancelled_or_withdrawn`. Una oferta CVM no confirma que la acción
 haya sido admitida o negociada en B3.
 
+## ESMA Prospectus III Securities Feed
+
+`esma-monitor` consulta el servicio A2A oficial de ESMA o lee una fixture
+sintética declarada para la demo. Produce: `company_name`, `isin`,
+`document_id`, `jurisdiction`, `security_type`, `offer_admission_type`,
+`status`, `filing_date`, `updated_at`, `observed_on` y `source_url`.
+
+El monitor conserva únicamente `sec_securitiesType=SHRS` y jurisdicciones
+`DE`, `NL` e `IT`. Sus estados distinguen admisión inicial regulada/MTF,
+oferta inicial y emisión/oferta secundaria, siempre terminando en `review`.
+Un documento ESMA no prueba que ya comenzó la negociación.
+
 ## Global Listings Alerts
 
 `global-alerts` normaliza los CSV actuales de `HKEX`, `LSE`, `ASX`, `TSX`,
-`JPX`, `EDINET`, `CVM` y `SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa
+`JPX`, `EDINET`, `CVM`, `ESMA` y `SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa
 `--history-dir` y
 compara contra la última captura anterior. Produce un CSV con:
 `market`, `change_type`, `company_name`, `previous_status`, `current_status`,
@@ -519,6 +531,8 @@ una enmienda y una solicitud de retiro permanecen como documentos regulatorios
 distintos. En CVM la identidad comparada es `offering_id`: una oferta de
 acciones permanece como señal regulatoria brasileña y no se convierte en
 listing B3 por el solo hecho de aparecer en el diff.
+En ESMA la identidad es `document_id + isin`: eventos de prospecto/admisión
+para acciones permanecen como revisión y no como primera negociación.
 
 ## `issuer_listing_confirmations.csv`
 

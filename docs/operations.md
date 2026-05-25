@@ -650,7 +650,7 @@ registrante `CIK 0001064641`.
 
 ## Historial De Mercados Globales
 
-Los ocho feeds internacionales generan CSV normalizados. Después de
+Los nueve feeds internacionales generan CSV normalizados. Después de
 obtenerlos, `global-alerts` copia la lectura del día a
 `data/raw/global/history/YYYY-MM-DD/`, selecciona la última captura anterior
 y genera una bandeja común:
@@ -664,6 +664,7 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
   --jpx data/raw/global/jpx-monitor.csv \
   --edinet data/raw/global/edinet-monitor.csv \
   --cvm data/raw/global/cvm-monitor.csv \
+  --esma data/raw/global/esma-monitor.csv \
   --sgx data/raw/global/sgx-monitor-live.csv \
   --history-dir data/raw/global/history \
   --output build/live/global-alerts.csv \
@@ -676,8 +677,9 @@ de la segunda, la bandeja marca evidencia nueva, modificada o removida del
 feed para revisión. En Japón, un documento EDINET permanece como señal
 documental y JPX confirma el hito de listing. En Brasil, una oferta CVM
 permanece como evidencia regulatoria hasta que una fuente B3 confirme el
-listing. Una remoción nunca se promueve automáticamente a retirada, admisión
-o cotización completada.
+listing. En Europa, ESMA conserva evidencia de prospecto o admision para
+revision, no primera negociacion. Una remoción nunca se promueve
+automáticamente a retirada, admisión o cotización completada.
 
 ## Confirmacion JPX De Tokio
 
@@ -734,6 +736,26 @@ No requiere clave ni proveedor pagado. El CSV identifica la oferta, el tipo
 de acción, el rito y el estado observado. Es evidencia de una oferta pública;
 la admisión o negociación en B3 debe verificarse mediante una fuente distinta.
 
+## Prospectos ESMA De Europa
+
+`esma-monitor` consulta el servicio A2A oficial `Prospectus III Securities`,
+sin clave, y selecciona únicamente registros `SHRS` de Alemania, Países Bajos
+e Italia:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit esma-monitor \
+  --since YYYY-MM-DD \
+  --output data/raw/global/esma-monitor.csv \
+  --report build/live/esma-monitor.md \
+  --html build/live/esma-monitor.html \
+  --as-of YYYY-MM-DD
+```
+
+El aviso legal oficial autoriza reproducir información del registro con
+atribución y rotulado de transformaciones. TargetAudit muestra esa procedencia
+y mantiene los eventos de oferta/admisión como revisión regulatoria; no
+declara primera negociación.
+
 ## Automatizaciones Locales Activas
 
 En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
@@ -747,7 +769,7 @@ En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
   contraste público FCA NSM, además de las tablas oficiales ASX y TSX; resume
   cambios HKEX, emisiones previstas en Londres, coincidencias documentales,
   solicitudes/retiradas australianas, cotizaciones confirmadas en Canada,
-  aprobaciones/listings JPX, ofertas de acciones CVM y prospectos SGX.
+  aprobaciones/listings JPX, ofertas de acciones CVM, prospectos europeos ESMA y prospectos SGX.
   También preserva snapshots y genera `Global Listings Alerts`.
 - `TargetAudit N-PORT trimestral`: consulta el catalogo oficial SEC cada lunes
   a las `21:50` hora de Guatemala, comenzando el `2026-05-25`; establece una

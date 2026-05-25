@@ -348,6 +348,13 @@ demo:
 		--report build/demo/cvm-monitor.md \
 		--html build/demo/cvm-monitor.html \
 		--as-of 2026-05-25
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit esma-monitor \
+		--snapshot data/samples/esma-equity-prospectuses-synthetic.json \
+		--since 2026-05-01 \
+		--output build/demo/esma-monitor.csv \
+		--report build/demo/esma-monitor.md \
+		--html build/demo/esma-monitor.html \
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sgx-monitor \
 		--snapshot data/samples/sgx-ipo-prospectus.json \
 		--output build/demo/sgx-monitor.csv \
@@ -362,6 +369,7 @@ demo:
 		--jpx build/demo/jpx-monitor.csv \
 		--edinet build/demo/edinet-monitor.csv \
 		--cvm build/demo/cvm-monitor.csv \
+		--esma build/demo/esma-monitor.csv \
 		--sgx build/demo/sgx-monitor.csv \
 		--previous-dir data/samples/global-alerts-previous \
 		--output build/demo/global-alerts.csv \

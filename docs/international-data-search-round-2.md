@@ -16,7 +16,7 @@ Watch`:
 | Prioridad | Cobertura | Fuente | Decision |
 |---:|---|---|---|
 | Implementada | Brasil | CVM `Portal Dados Abertos`: ofertas publicas de distribucion en ZIP diario ODbL | `cvm-monitor` filtra ofertas de acciones y entra al diff diario; B3 debe confirmar listing |
-| Alta | Alemania, Paises Bajos e Italia | ESMA `Prospectus III`: registros de prospectos con servicios machine-to-machine | Agregar un solo conector regional; su aviso legal autoriza reproducir informacion del registro con fuente y rotulo para transformaciones |
+| Implementada | Alemania, Paises Bajos e Italia | ESMA `Prospectus III Securities`: valores `SHRS` con servicios machine-to-machine | `esma-monitor` agrega el conector regional; atribuye la fuente y conserva el evento como revision, no trading |
 | Media | Paises Bajos | AFM registro de prospectos aprobados con exportacion CSV/XML desde `2007` | Referencia nacional especialmente clara; puede validar muestras de ESMA para Amsterdam |
 | Media | Argentina | BYMA API `EOD` anunciada sin costo y CNV AIF publica hechos/prospectos | Explorar precios EOD en laboratorio separado; aun falta confirmar derechos de output/republicacion |
 | Media | India | SEBI `Public Issues` publica draft/red herring/final offer documents | Fuente documental manual o futura; no se confirmo API publica ni licencia de reutilizacion automatizada |
@@ -65,7 +65,7 @@ tipo de documento y fechas. Su aviso legal autoriza reproducir la informacion
 del registro si se reconoce la fuente y, cuando se transforme o republique,
 se indica explicitamente la transformacion.
 
-Esto permite implementar un `EU Prospectus Watch` filtrado a:
+El `EU Prospectus Watch` implementado filtra el registro a:
 
 - Alemania, con `BaFin` como autoridad competente;
 - Paises Bajos, con `AFM`, cuyo registro nacional tambien exporta CSV/XML;
@@ -88,8 +88,9 @@ solo que el instrumento ya este negociando.
 1. `Brazil Offering Watch`: implementado como `cvm-monitor` sobre el dataset
    `Ofertas Publicas de Distribuicao` de CVM; separa ofertas de acciones de
    deuda, fondos y titulizaciones.
-2. `EU Prospectus Watch`: crear adaptador de fixtures del registro `Prospectus
-   III` de ESMA, inicialmente filtrado a Alemania, Paises Bajos e Italia.
+2. `EU Prospectus Watch`: implementado como `esma-monitor` sobre
+   `Prospectus III Securities`, filtrado a `SHRS` en Alemania, Paises Bajos e
+   Italia con atribucion visible.
 3. `Argentina EOD Review`: confirmar terminos de la API gratis `BYMA EOD`
    antes de incorporarla como laboratorio de precios.
 4. `Mexico Permission Track`: solo reconsiderar BMV si entrega autorizacion

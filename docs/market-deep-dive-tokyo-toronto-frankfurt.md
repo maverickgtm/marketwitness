@@ -12,7 +12,7 @@ cuando la fuente regional existente ya es la mejor ruta.
 |---|---|---|
 | Tokio | `JPX New Listings` publica fecha de listing, fecha de aprobacion, emisor, codigo, segmento y datos de oferta; `EDINET` aporta documentos regulatorios previos | Monitores JPX y EDINET y su diff diario implementados |
 | Toronto | `TSX New Company Listings` ya confirma nuevas cotizaciones; `SEDAR+` muestra filings pero prohibe scraping, automatizacion y construir bases sin permiso | Mantener el feed TSX activo para listings completados y bloquear expansion prospectiva automatizada basada en SEDAR+ |
-| Frankfurt | BaFin publica prospectos aprobados y remite al registro `ESMA`; ESMA ya ofrece la ruta A2A atribuible para Alemania | Mantener Frankfurt dentro del conector regional `ESMA`, con BaFin como corroboracion documental, sin crear conector duplicado |
+| Frankfurt | BaFin publica prospectos aprobados y remite al registro `ESMA`; ESMA ofrece la ruta A2A atribuible para Alemania | Cubierto por `esma-monitor` para valores `SHRS`, con BaFin como corroboracion documental, sin crear conector duplicado |
 
 ## Tokio
 
@@ -84,7 +84,8 @@ Como `ESMA Prospectus III` ya quedó seleccionado para Alemania, Países Bajos e
 Italia, no conviene crear otro conector Frankfurt que duplique prospectos.
 El diseño previsto es:
 
-- `ESMA`: ingesta regional atribuida de metadata de prospectos alemanes;
+- `ESMA`: ingesta regional atribuida ya implementada para metadata de valores
+  `SHRS` con prospectos alemanes;
 - `BaFin`: corroboracion documental de casos alemanes cuando se requiera;
 - evidencia posterior del mercado/bolsa: confirmacion de admision o primer
   trading, separada del prospecto.
@@ -95,7 +96,7 @@ El diseño previsto es:
 |---|---|---|
 | Tokio IPO Watch | `EDINET` pendiente para documentos | Confirmacion JPX y deteccion/diff documental EDINET implementados con estados separados |
 | Toronto Watch | Feed TSX de listings completados | Igual, con bloqueo documentado de `SEDAR+` automatizado |
-| Frankfurt Watch | Cubierto regionalmente por `ESMA` | Igual, con `BaFin` definido como corroboracion nacional |
+| Frankfurt Watch | Cubierto regionalmente por `esma-monitor` | Implementado para `SHRS`, con `BaFin` definido como corroboracion nacional |
 | Rankings de analistas | Sin dataset gratuito publicable | Sin cambio; ninguna de estas fuentes aporta price targets individuales reutilizables |
 
 ## Fuentes Oficiales Revisadas

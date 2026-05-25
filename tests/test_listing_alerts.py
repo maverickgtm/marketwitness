@@ -67,6 +67,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "JPX": current / "jpx-monitor.csv",
                     "EDINET": current / "edinet-monitor.csv",
                     "CVM": current / "cvm-monitor.csv",
+                    "ESMA": current / "esma-monitor.csv",
                     "SGX": current / "sgx-monitor.csv",
                 }
             )
@@ -90,6 +91,7 @@ class ListingAlertsTests(unittest.TestCase):
                 "JPX": "jpx-monitor.csv",
                 "EDINET": "edinet-monitor.csv",
                 "CVM": "cvm-monitor.csv",
+                "ESMA": "esma-monitor.csv",
                 "SGX": "sgx-monitor.csv",
             }.items():
                 item = source / filename
@@ -107,6 +109,7 @@ class ListingAlertsTests(unittest.TestCase):
             self.assertTrue((root / "history" / "2026-05-24" / "jpx-monitor.csv").exists())
             self.assertTrue((root / "history" / "2026-05-24" / "edinet-monitor.csv").exists())
             self.assertTrue((root / "history" / "2026-05-24" / "cvm-monitor.csv").exists())
+            self.assertTrue((root / "history" / "2026-05-24" / "esma-monitor.csv").exists())
 
     def test_edinet_tracks_documents_without_promoting_a_listing_state(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -128,6 +131,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "JPX": Path("data/samples/global-alerts-previous/jpx-monitor.csv"),
                     "EDINET": edinet_csv,
                     "CVM": Path("data/samples/global-alerts-previous/cvm-monitor.csv"),
+                    "ESMA": Path("data/samples/global-alerts-previous/esma-monitor.csv"),
                     "SGX": Path("data/samples/global-alerts-previous/sgx-monitor.csv"),
                 }
             )
@@ -161,6 +165,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "JPX": Path("data/samples/global-alerts-previous/jpx-monitor.csv"),
                     "EDINET": Path("data/samples/global-alerts-previous/edinet-monitor.csv"),
                     "CVM": cvm_csv,
+                    "ESMA": Path("data/samples/global-alerts-previous/esma-monitor.csv"),
                     "SGX": Path("data/samples/global-alerts-previous/sgx-monitor.csv"),
                 }
             )
@@ -171,6 +176,39 @@ class ListingAlertsTests(unittest.TestCase):
         self.assertNotIn("listed", cvm[0].status)
         page = render_alerts_html(compare_signals(cvm, []), cvm, date(2026, 5, 25), "baseline")
         self.assertIn("Offering recorded", page)
+
+    def test_esma_tracks_prospectuses_without_claiming_first_trading(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            esma_csv = Path(temporary) / "esma-monitor.csv"
+            esma_csv.write_text(
+                "company_name,isin,document_id,jurisdiction,security_type,offer_admission_type,"
+                "status,filing_date,updated_at,observed_on,source_url\n"
+                "Demo Europe SE,DE000DEMO,SYNTH-ESMA-001,Germany,Shares,"
+                "Initial admission to trading on regulated market,"
+                "initial_admission_regulated_market_review,2026-05-25,-,2026-05-25,"
+                "https://registers.esma.europa.eu/publication/helpApp\n",
+                encoding="utf-8",
+            )
+            current = load_current_signals(
+                {
+                    "HKEX": Path("data/samples/global-alerts-previous/hkex-monitor.csv"),
+                    "LSE": Path("data/samples/global-alerts-previous/lse-upcoming.csv"),
+                    "ASX": Path("data/samples/global-alerts-previous/asx-monitor.csv"),
+                    "TSX": Path("data/samples/global-alerts-previous/tsx-monitor.csv"),
+                    "JPX": Path("data/samples/global-alerts-previous/jpx-monitor.csv"),
+                    "EDINET": Path("data/samples/global-alerts-previous/edinet-monitor.csv"),
+                    "CVM": Path("data/samples/global-alerts-previous/cvm-monitor.csv"),
+                    "ESMA": esma_csv,
+                    "SGX": Path("data/samples/global-alerts-previous/sgx-monitor.csv"),
+                }
+            )
+
+        esma = [signal for signal in current if signal.market == "ESMA"]
+        self.assertEqual(esma[0].entity_key, "SYNTH-ESMA-001|DE000DEMO")
+        self.assertIn("review", esma[0].status)
+        self.assertNotEqual(esma[0].status, "listed")
+        page = render_alerts_html(compare_signals(esma, []), esma, date(2026, 5, 25), "baseline")
+        self.assertIn("Initial regulated-market admission review", page)
 
 
 def _signal(

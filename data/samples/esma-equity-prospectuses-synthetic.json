@@ -1,0 +1,54 @@
+{
+  "response": {
+    "docs": [
+      {
+        "sec_isin": "DE000SYNTH001",
+        "sec_securitiesType": "SHRS",
+        "sec_securitiesTypeDesc": "Shares",
+        "sec_offerAdmType": "IRMT",
+        "sec_offerAdmTypeDesc": "Initial admission to trading on regulated market",
+        "sec_natDocId": "SYNTH-DE-001",
+        "sec_docLastUpdateDate": "2026-05-22T12:00:00Z",
+        "sec_homeMemberStateCode": "DE",
+        "sec_approvalFilingDate": "2026-05-21T00:00:00Z",
+        "sec_issuerNameList": "Rhine Compute Demo AG - SYNTHLEI0001"
+      },
+      {
+        "sec_isin": "IT000SYNTH002",
+        "sec_securitiesType": "SHRS",
+        "sec_securitiesTypeDesc": "Shares",
+        "sec_offerAdmType": "SIRM",
+        "sec_offerAdmTypeDesc": "Secondary issuance on regulated market or MTF",
+        "sec_natDocId": "SYNTH-IT-002",
+        "sec_docLastUpdateDate": "2026-05-23T09:00:00Z",
+        "sec_homeMemberStateCode": "IT",
+        "sec_approvalFilingDate": "2026-05-22T00:00:00Z",
+        "sec_issuerNameList": "Milano Systems Demo S.p.A. - SYNTHLEI0002"
+      },
+      {
+        "sec_isin": "NL000FUND003",
+        "sec_securitiesType": "UCEF",
+        "sec_securitiesTypeDesc": "Units or shares in closed end funds",
+        "sec_offerAdmType": "IOWA",
+        "sec_offerAdmTypeDesc": "Initial offer without admission to trading/listing",
+        "sec_natDocId": "SYNTH-NL-003",
+        "sec_docLastUpdateDate": "2026-05-23T10:00:00Z",
+        "sec_homeMemberStateCode": "NL",
+        "sec_approvalFilingDate": "2026-05-22T00:00:00Z",
+        "sec_issuerNameList": "Excluded Fund Demo B.V. - SYNTHLEI0003"
+      },
+      {
+        "sec_isin": "DE000DERV004",
+        "sec_securitiesType": "DERV",
+        "sec_securitiesTypeDesc": "Derivative securities",
+        "sec_offerAdmType": "IMTF",
+        "sec_offerAdmTypeDesc": "Initial admission to trading on MTF with offer to the public",
+        "sec_natDocId": "SYNTH-DE-004",
+        "sec_docLastUpdateDate": "2026-05-23T11:00:00Z",
+        "sec_homeMemberStateCode": "DE",
+        "sec_approvalFilingDate": "2026-05-22T00:00:00Z",
+        "sec_issuerNameList": "Excluded Derivative Demo AG - SYNTHLEI0004"
+      }
+    ]
+  }
+}

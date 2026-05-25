@@ -36,7 +36,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Conector TSX `New Company Listings` como confirmacion de listings.
 - [x] Conector SGX `IPO Prospectus` mediante API JSON oficial.
 - [x] Monitor JPX `New Listings` para aprobaciones y fechas de listing de Tokio.
-- [x] Historial y diff diario de ocho monitores globales, incluidos JPX, EDINET y CVM, con cola de revision.
+- [x] Historial y diff diario de nueve monitores globales, incluidos JPX, EDINET, CVM y ESMA, con cola de revision.
 - [x] Ingesta de comunicados oficiales para confirmar listings.
 - [x] Validacion de splits y cambios de ticker.
 - [x] Validacion de barras de precios duplicadas o incoherentes.
@@ -148,10 +148,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
   estados de listing.
 - [x] Implementar `CVM Equity Offering Watch` sobre el ZIP diario ODbL y
   añadir ofertas de acciones brasileñas al diff sin promoverlas a listing B3.
+- [x] Implementar `ESMA Equity Prospectus Watch` para valores `SHRS` de
+  Alemania, Paises Bajos e Italia con atribucion y sin afirmar trading.
 - [ ] Validar un conector adicional de ofertas de Singapur sobre datasets/API
   de `MAS OPERA`.
-- [ ] Implementar el collector europeo de prospectos (`ESMA Prospectus III`)
-  con atribucion visible.
 - [ ] Implementar collector coreano de securities registration statements
   sobre `OpenDART` y validar confirmacion de mercado `KRX`.
 - [ ] Revision legal del producto y de sus disclaimers.

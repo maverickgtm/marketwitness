@@ -57,8 +57,9 @@ Japón, Brasil, Europa y Corea.
 1. `Japan IPO Filing Watch`: `EDINET` mas confirmacion `JPX New Listings`.
 2. `Korea Offering Watch`: `OpenDART` primero; `KRX` solo tras confirmar
    output permitido del endpoint elegido.
-3. `Brazil Offering Watch`: `CVM Dados Abertos`.
-4. `EU Prospectus Watch`: `ESMA Prospectus III`.
+3. `Brazil Offering Watch`: implementado con `CVM Dados Abertos`.
+4. `EU Prospectus Watch`: implementado con `ESMA Prospectus III Securities`
+   filtrado a `SHRS`.
 
 ## Fuentes Oficiales Revisadas
 
