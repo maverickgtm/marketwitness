@@ -111,6 +111,18 @@ class ApiTests(unittest.TestCase):
         self.assertLess(ranking[0]["hit_rate_ci_95_low"], 1.0)
         self.assertEqual(ranking[1]["firm"], "Other Firm")
 
+    def test_serves_financials_dashboard_and_filter_facets(self) -> None:
+        page = self.client.get("/dashboard/financials")
+        facets = self.client.get("/api/v1/runs/api-demo/facets")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Price targets,", page.text)
+        self.assertIn("/api/v1", page.text)
+        self.assertIn("evidenceHref", page.text)
+        self.assertEqual(facets.status_code, 200)
+        self.assertEqual(facets.json()["sectors"], ["Financials"])
+        self.assertEqual(facets.json()["tickers"], ["AAA", "BBB"])
+
     def test_serves_firm_ticker_and_exclusion_audit_views(self) -> None:
         firm = self.client.get("/api/v1/runs/api-demo/firms/Example%20Firm")
         ticker = self.client.get("/api/v1/runs/api-demo/tickers/aaa")

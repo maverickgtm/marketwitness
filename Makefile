@@ -8,6 +8,7 @@ test:
 
 demo:
 	mkdir -p build/demo
+	rm -f build/demo/targetaudit.duckdb
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit targets-import \
 		--export data/samples/authorized-target-export.csv \
 		--manifest data/samples/authorized-target-export-manifest.json \
@@ -22,6 +23,8 @@ demo:
 		--universe-membership data/samples/historical_universe.csv \
 		--output build/demo/evaluations.csv \
 		--report build/demo/report.md \
+		--database build/demo/targetaudit.duckdb \
+		--run-id demo-financials-2025-01-01 \
 		--minimum-sample 1 \
 		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
@@ -31,6 +34,8 @@ demo:
 		--universe-membership data/samples/historical_universe.csv \
 		--output build/demo/evaluations-target-revisions.csv \
 		--report build/demo/report-target-revisions.md \
+		--database build/demo/targetaudit.duckdb \
+		--run-id demo-target-revisions-2025-01-01 \
 		--minimum-sample 1 \
 		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
@@ -228,6 +233,8 @@ demo:
 		--universe-membership data/samples/historical_universe.csv \
 		--output build/demo/evaluations-actions-guarded.csv \
 		--report build/demo/report-actions-guarded.md \
+		--database build/demo/targetaudit.duckdb \
+		--run-id demo-actions-guarded-2025-01-01 \
 		--minimum-sample 1 \
 		--transaction-cost-bps 10 \
 		--as-of 2025-01-01

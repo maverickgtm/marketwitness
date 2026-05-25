@@ -8,8 +8,10 @@ from statistics import median
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import HTMLResponse
 
 from . import METHODOLOGY_VERSION, __version__
+from .dashboard_web import financials_scorecard_html
 from .models import Evaluation
 from .reporting import wilson_interval
 from .storage import (
@@ -32,6 +34,16 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
         version=__version__,
         description="Read-only API for auditable analyst target research runs.",
     )
+
+    @application.get("/", response_class=HTMLResponse, include_in_schema=False)
+    def scorecard_home() -> str:
+        return financials_scorecard_html()
+
+    @application.get(
+        "/dashboard/financials", response_class=HTMLResponse, include_in_schema=False
+    )
+    def scorecard() -> str:
+        return financials_scorecard_html()
 
     @application.get("/api/v1/health")
     def health() -> dict[str, object]:
@@ -89,6 +101,19 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
             "sector": sector or None,
             "direction": direction or None,
             "ranking": ranking,
+        }
+
+    @application.get("/api/v1/runs/{run_id}/facets")
+    def facets(run_id: str) -> dict[str, object]:
+        _read_run(database, run_id)
+        rows = _warehouse_call(read_evaluations, database, run_id)
+        return {
+            "run_id": run_id,
+            "methodology_version": METHODOLOGY_VERSION,
+            "sectors": sorted({item.sector or "Unclassified" for item in rows}),
+            "directions": sorted({item.direction for item in rows if item.direction}),
+            "firms": sorted({item.firm for item in rows}),
+            "tickers": sorted({item.ticker for item in rows}),
         }
 
     @application.get("/api/v1/runs/{run_id}/firms/{firm}")

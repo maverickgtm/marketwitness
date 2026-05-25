@@ -550,6 +550,12 @@ export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
 python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 ```
 
+Al abrir `http://127.0.0.1:8000/` se muestra el dashboard inicial
+`Financials Scorecard`, conectado a las corridas almacenadas. Incluye filtros
+de sector, direccion y muestra minima, detalle por firma/ticker y auditoria de
+exclusiones. El demo almacena corridas separadas para el scorecard principal,
+targets revisados y guardas por acciones corporativas.
+
 Endpoints iniciales:
 
 | Ruta | Uso |
@@ -557,6 +563,7 @@ Endpoints iniciales:
 | `/api/v1/health` | Estado y versión metodológica |
 | `/api/v1/runs` | Corridas almacenadas |
 | `/api/v1/runs/{run_id}` | Parámetros y hashes de evidencia de una corrida |
+| `/api/v1/runs/{run_id}/facets` | Sectores, firmas y tickers para filtros |
 | `/api/v1/runs/{run_id}/rankings/firms` | Ranking, con filtros `sector`, `direction` y `minimum_sample` |
 | `/api/v1/runs/{run_id}/firms/{firm}` | Observaciones y resumen de una firma |
 | `/api/v1/runs/{run_id}/tickers/{ticker}` | Historial evaluado de una acción |
@@ -568,10 +575,12 @@ servidor. La API omite las rutas locales de los archivos originales y presenta
 
 ## Inicio Rapido
 
-Requiere Python 3.9 o superior. No requiere instalar paquetes para ejecutar el
-demo.
+Requiere Python 3.9 o superior. El motor CLI básico puede ejecutarse sin
+paquetes externos; la verificación completa instala la capa de aplicación
+porque genera DuckDB y prueba la API/dashboard:
 
 ```bash
+python3 -m pip install -e ".[application]"
 make verify
 ```
 
@@ -581,6 +590,7 @@ instalable. Escribe:
 ```text
 build/demo/evaluations.csv
 build/demo/report.md
+build/demo/targetaudit.duckdb
 build/demo/authorized-targets.csv
 build/demo/authorized-targets-audit.csv
 build/demo/authorized-targets-import.md

@@ -19,6 +19,21 @@ Esta API puede alimentar el dashboard web con datos sinteticos o autorizados.
 Una base que contenga datos reales no debe exponerse publicamente hasta
 resolver los permisos de targets, precios y cualquier fuente redistribuida.
 
+## Aplicacion Financials Scorecard
+
+La ruta web inicial `/dashboard/financials` consume esta API y presenta:
+
+- Tarjetas de observaciones evaluadas, excluidas y pendientes.
+- Ranking de firmas con tasa de acierto, intervalo Wilson 95%, mediana de
+  dias al target y exceso neto.
+- Filtros por corrida, sector, direccion y muestra minima.
+- Panel de firma/ticker con enlace de evidencia.
+- Tabla de exclusiones y pendientes por motivo.
+
+El demo genera `build/demo/targetaudit.duckdb` con corridas sinteticas del
+scorecard, revisiones y guardas de acciones corporativas para probar ranking y
+exclusiones sin publicar datos comerciales.
+
 ## Vista Transversal: Source Governance
 
 Objetivo: hacer visible qué datos pueden alimentar un producto público y qué

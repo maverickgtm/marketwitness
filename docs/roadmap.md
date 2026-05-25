@@ -54,7 +54,9 @@ verificables de cotizaciones tecnologicas/estrategicas.
   y resultados tipados, con esquema relacional portable a PostgreSQL.
 - [x] API FastAPI inicial de solo lectura con endpoints de corridas, ranking
   de firmas, acciones y auditoria de exclusiones.
-- [ ] Dashboard web con filtros, series de targets y exportaciones.
+- [x] Dashboard web inicial `Financials Scorecard` con filtros, ranking,
+  detalle por firma/ticker y auditoria de exclusiones sobre la API.
+- [ ] Series graficas de targets y exportaciones descargables del dashboard.
 - [ ] Pagina de auditoria de fuente y observaciones excluidas.
 - [x] Pagina `ETF Holdings Activity` con comparador de snapshots, diferencias
   de posiciones, sello de fecha/frecuencia y demo sintetica reproducible.
