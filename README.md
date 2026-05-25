@@ -362,6 +362,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `CVM` / Brasil: portal oficial abierto de ofertas publicas, en cola de implementacion.
 - `ESMA` / Union Europea: prospectos regulatorios para Alemania, Paises Bajos e Italia, en cola de implementacion.
 - `KRX` / Corea del Sur: `OpenDART` para registros de oferta y `KRX OPEN API` para evidencia de mercado a validar, en cola de implementacion.
+- `MOEX` / Rusia: `Bank of Russia` y `MOEX ISS` identificados, solo investigacion restringida por sanciones vigentes.
 
 Hong Kong ya incluye un conector a los JSON oficiales de HKEXnews para
 solicitudes activas, activas con `PHIP`, inactivas, listadas y devueltas.
@@ -386,6 +387,12 @@ requieren collectors y confirmacion posterior de cotizacion.
 Corea del Sur tambien entra como prioridad pendiente: `OpenDART` aporta
 registros de valores y disclosures en XML/API; `KRX OPEN API` se evaluara para
 confirmacion de mercado sin publicar outputs fuera de sus terminos.
+Rusia queda visible pero no activada: el Banco de Rusia anuncio un registro
+oficial de valores el `2025-09-03` y `MOEX ISS` expone datos tecnicamente
+utiles, pero OFAC designo `MOEX`, `NCC` y `NSD` el `2024-06-12`. No se
+implementara ingesta ni orientacion de posiciones sin revision legal.
+
+Detalle: [Market Gap Review: Rusia](docs/market-gap-review-russia.md).
 
 Para leer HKEX en vivo:
 

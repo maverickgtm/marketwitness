@@ -140,6 +140,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   bloquear automatizacion `SEDAR+` y validar cobertura `ESMA`/`BaFin`.
 - [x] Revision final de brechas en Corea, Golfo y Sudafrica, incorporando
   `OpenDART`/`KRX` y dejando los mercados sin API confirmada en observacion.
+- [x] Revision de Rusia, documentando `Bank of Russia`/`MOEX ISS` como
+  `restricted_research_only` por la designacion OFAC de `MOEX`.
 - [ ] Implementar un monitor regulatorio japones sobre el API oficial
   `EDINET` y validar un conector adicional
   de ofertas de Singapur sobre datasets/API de `MAS OPERA`.
@@ -148,6 +150,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [ ] Implementar collector coreano de securities registration statements
   sobre `OpenDART` y validar confirmacion de mercado `KRX`.
 - [ ] Revision legal del producto y de sus disclaimers.
+- [ ] Mantener Rusia sin ingesta automatica salvo autorizacion legal
+  documentada sobre sanciones y licencia de datos.
 
 ## Decisiones Pendientes
 

@@ -305,6 +305,7 @@ Revision inicial al `2026-05-24`; ampliaciones internacionales al `2026-05-25`:
 | Brasil | CVM `Portal Dados Abertos` | Registros estructurados de ofertas publicas de distribucion | Conector prioritario pendiente para API/dataset oficial |
 | UE: Alemania, Paises Bajos e Italia | ESMA `Prospectus III` | Prospectos y documentos relacionados notificados por autoridades nacionales | Conector prioritario pendiente; reproduccion permitida con fuente y rotulo de transformacion |
 | Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Securities registration statements/ofertas mas estadisticas oficiales de mercado | Conector prioritario pendiente; validar output KRX del endpoint usado |
+| Rusia | Bank of Russia `Register of Russian Securities` y MOEX `ISS` | Registro oficial de securities y datos de mercado disponibles tecnicamente | Solo investigacion restringida: MOEX designada por OFAC; sin collector ni señales |
 
 Las etapas no son intercambiables entre jurisdicciones. Por ejemplo, un
 `PHIP` de HKEX indica aprobacion en principio, mientras una aparicion en ASX
@@ -326,6 +327,15 @@ tampoco confirma el inicio de negociacion.
 `OpenDART` permite construir una cola coreana de securities registration
 statements y disclosures de ofertas. `KRX OPEN API` complementaria la
 confirmacion de mercado una vez validado el uso publico del output elegido.
+
+Rusia se documenta pero no se automatiza. El Banco de Rusia publico el
+`2025-09-03` la existencia de su registro de securities, mientras `MOEX ISS`
+declara datos demorados gratuitos. Sin embargo, el Tesoro de Estados Unidos
+designo `MOEX`, `NCC` y `NSD` el `2024-06-12` conforme a `E.O. 14024`.
+TargetAudit no publicara feed, alertas ni orientacion de posiciones rusas sin
+revision legal especifica.
+
+Analisis: [Market Gap Review: Rusia](market-gap-review-russia.md).
 
 El conector HKEX consulta los endpoints JSON usados por la propia pagina
 oficial, incluyendo:

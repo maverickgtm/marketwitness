@@ -12,6 +12,7 @@ CONNECTOR_STATUSES = {
     "verified_snapshot",
     "priority_connector",
     "planned_connector",
+    "restricted_research_only",
 }
 GLOBAL_SOURCE_COLUMNS = {
     "market_code",
@@ -101,6 +102,7 @@ def render_global_listings_report(markets: list[GlobalMarketSource], as_of: date
         f"- Verified snapshots: `{counts['verified_snapshot']}`",
         f"- Priority connectors: `{counts['priority_connector']}`",
         f"- Planned official connectors: `{counts['planned_connector']}`",
+        f"- Restricted research-only markets: `{counts['restricted_research_only']}`",
         "",
         "This coverage map defines where official listing signals can be monitored.",
         "Only `live_official_feed` identifies an implemented ingestion path. A",
@@ -148,6 +150,11 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
         ("Live feeds", counts["live_official_feed"], "LSE, HKEX, ASX, TSX, JPX and SGX implemented"),
         ("Verified snapshots", counts["verified_snapshot"], "Official capture, not continuous"),
         (
+            "Restricted",
+            counts["restricted_research_only"],
+            "Documented only; no ingestion",
+        ),
+        (
             "Expansion queue",
             expansion_count,
             f"{counts['priority_connector']} priority; {counts['planned_connector']} planned",
@@ -185,7 +192,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
   <style>
     :root {{
       --bg:#071016; --panel:#0f1c24; --line:#20343d; --text:#edf1ef;
-      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff;
+      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff; --rose:#f48687;
     }}
     * {{ box-sizing:border-box; }} body {{ margin:0; background:var(--bg); color:var(--text);
       font:15px/1.5 Inter,Arial,sans-serif; }}
@@ -194,7 +201,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     h1 {{ font-size:clamp(34px,5vw,54px); line-height:1.06; margin:38px 0 14px; }}
     .lead {{ color:var(--muted); max-width:740px; font-size:17px; }}
     .meta {{ color:var(--muted); margin-top:30px; font-size:13px; }}
-    .cards {{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:35px 0; }}
+    .cards {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:16px; margin:35px 0; }}
     .card,.table-wrap,.queue-item,.notice {{ background:var(--panel); border:1px solid var(--line); border-radius:14px; }}
     .card {{ padding:18px 20px; }} .card p {{ margin:0; color:var(--muted); }}
     .card strong {{ display:block; color:var(--mint); font-size:38px; }}
@@ -214,6 +221,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     .planned_connector {{ color:var(--blue); background:rgba(98,166,255,.12); }}
     .live_official_feed {{ color:var(--mint); background:rgba(86,218,172,.12); }}
     .verified_snapshot {{ color:var(--gold); background:rgba(240,188,98,.12); }}
+    .restricted_research_only {{ color:var(--rose); background:rgba(244,134,135,.12); }}
     .queue {{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }}
     .queue-item {{ padding:17px; }} .queue-item div {{ display:flex; gap:13px; align-items:baseline; }}
     .queue-item h3 {{ margin:0; color:var(--mint); }} .queue-item span {{ color:var(--muted); }}

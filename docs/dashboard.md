@@ -319,6 +319,7 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | Brasil | CVM `Portal Dados Abertos` | Conector prioritario pendiente para ofertas publicas estructuradas |
 | Union Europea | ESMA `Prospectus III` | Conector prioritario pendiente para prospectos de Alemania, Paises Bajos e Italia |
 | Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Conector prioritario pendiente para ofertas regulatorias y confirmacion de mercado |
+| Rusia | Bank of Russia `Register of Russian Securities` y MOEX `ISS` | Solo investigacion restringida; sin ingesta ni señales por sanciones vigentes |
 
 ### Regla De Evidencia
 
@@ -343,6 +344,9 @@ Cada jurisdiccion conserva sus propias etapas:
   Para Frankfurt, `BaFin` servira como corroboracion nacional del prospecto.
 - Corea del Sur: un securities registration statement de `OpenDART` inicia
   revision; `KRX` solo confirmara mercado tras validar derechos del output.
+- Rusia: el registro del Banco de Rusia documenta securities y `MOEX ISS`
+  ofrece datos tecnicamente disponibles, pero `MOEX` fue designada por OFAC
+  el `2024-06-12`; se excluye automatizacion y orientacion de posiciones.
 
 ### Salidas Operativas
 
