@@ -683,6 +683,11 @@ archivo ya descargado sigue disponible `sec-nport-import`.
 Los identificadores `XLF` anteriores fueron confirmados en un filing
 `NPORT-P` oficial de `SELECT SECTOR SPDR TRUST`.
 
+El dashboard publica únicamente vistas conocidas para esta sección:
+`/dashboard/etf/xlf-demo` y `/dashboard/etf/iyf-demo` para fixtures
+sintéticos, y `/dashboard/etf/nport-recent` junto a
+`/dashboard/etf-regulatory` para evidencia SEC periódica.
+
 Para reconstruir varios periodos desde ZIP trimestrales SEC extraidos
 localmente, se puede repetir `--dataset-dir` por trimestre:
 
@@ -845,7 +850,7 @@ reales. La ruta
 `/dashboard/market-context` muestra el benchmark `XLF` en un widget atribuido
 de TradingView que no alimenta el scorecard ni se almacena como evidencia. La
 ruta
-`/dashboard/reports` organiza nueve paginas generadas permitidas del
+`/dashboard/reports` organiza doce paginas generadas permitidas del
 bundle semanal de Open Edition y enlaza sus controles de publicacion; no
 expone libremente archivos del directorio de construccion. Entre ellas se
 encuentran `Global Listings Alerts`, que compara señales internacionales para
@@ -930,6 +935,9 @@ Endpoints iniciales:
 | `/dashboard/ipo-watch` | Reporte generado de vigilancia SEC de filings IPO |
 | `/dashboard/sec-alerts` | Cola de filings SEC descubiertos que requieren revisión antes de cambiar estados IPO |
 | `/dashboard/ipo-reviews` | Auditoria de decisiones documentadas aplicadas al registro IPO Watch |
+| `/dashboard/etf/xlf-demo` | Diferencias de holdings sintéticas para `XLF-DEMO`, sin afirmar operaciones reales |
+| `/dashboard/etf/iyf-demo` | Diferencias de holdings sintéticas para `IYF-DEMO`, sin recolección automatizada |
+| `/dashboard/etf/nport-recent` | Comparación periódica reciente generada desde el flujo SEC N-PORT |
 | `/dashboard/etf-regulatory` | Actividad regulatoria ETF basada en periodos N-PORT |
 | `/dashboard/document-checks` | Verificaciones documentales regulatorias generadas |
 | `/dashboard/global-listings` | Mapa navegable de cobertura y monitores oficiales internacionales |

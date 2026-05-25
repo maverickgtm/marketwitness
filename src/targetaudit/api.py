@@ -71,6 +71,11 @@ GLOBAL_MONITOR_REPORTS = {
     "opendart": "opendart-monitor.html",
     "sgx": "sgx-monitor.html",
 }
+ETF_ACTIVITY_REPORTS = {
+    "xlf-demo": "etf-holdings-activity.html",
+    "iyf-demo": "etf-holdings-iyf-activity.html",
+    "nport-recent": "etf-holdings-regulatory-activity.html",
+}
 
 
 def create_app(
@@ -150,6 +155,17 @@ def create_app(
     )
     def etf_regulatory_report() -> str:
         return _generated_html(reports, "etf-holdings-regulatory-history.html")
+
+    @application.get(
+        "/dashboard/etf/{view}", response_class=HTMLResponse, include_in_schema=False
+    )
+    def etf_activity_report(view: str) -> str:
+        filename = ETF_ACTIVITY_REPORTS.get(view)
+        if filename is None:
+            raise HTTPException(
+                status_code=404, detail="ETF activity report is not allowlisted."
+            )
+        return _generated_html(reports, filename)
 
     @application.get(
         "/dashboard/document-checks", response_class=HTMLResponse, include_in_schema=False

@@ -470,6 +470,11 @@ publicada. No se etiquetara automaticamente como compra o venta: puede estar
 afectada por creaciones/redenciones del fondo, derivados o acciones
 corporativas.
 
+En la aplicacion, `/dashboard/etf/xlf-demo` y `/dashboard/etf/iyf-demo`
+presentan solamente fixtures sinteticos. La evidencia SEC queda separada en
+`/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory`; ninguna de estas
+rutas se presenta como actividad diaria o en tiempo real.
+
 ### Importacion Local ARK
 
 ARK publica materiales descargables y declara una actualizacion diaria de

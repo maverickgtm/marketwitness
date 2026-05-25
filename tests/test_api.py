@@ -119,6 +119,14 @@ class ApiTests(unittest.TestCase):
             "<html><h1>ETF Regulatory Holdings generated page</h1></html>",
             encoding="utf-8",
         )
+        for filename, title in (
+            ("etf-holdings-activity.html", "XLF Holdings Sandbox generated page"),
+            ("etf-holdings-iyf-activity.html", "IYF Holdings Sandbox generated page"),
+            ("etf-holdings-regulatory-activity.html", "N-PORT Recent Filing generated page"),
+        ):
+            (self.reports / filename).write_text(
+                f"<html><h1>{title}</h1></html>", encoding="utf-8"
+            )
         (self.reports / "lse-fca-check.html").write_text(
             "<html><h1>Public Document Checks generated page</h1></html>",
             encoding="utf-8",
@@ -248,10 +256,13 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Reproducible reports.", page.text)
         self.assertIn("Known routes only.", page.text)
-        self.assertIn("9 allowlisted pages", page.text)
+        self.assertIn("12 allowlisted pages", page.text)
         self.assertIn("/dashboard/ipo-watch", page.text)
         self.assertIn("/dashboard/sec-alerts", page.text)
         self.assertIn("/dashboard/ipo-reviews", page.text)
+        self.assertIn("/dashboard/etf/xlf-demo", page.text)
+        self.assertIn("/dashboard/etf/iyf-demo", page.text)
+        self.assertIn("/dashboard/etf/nport-recent", page.text)
         self.assertIn("/dashboard/etf-regulatory", page.text)
         self.assertIn("/dashboard/document-checks", page.text)
         self.assertIn("/dashboard/rwa-watch", page.text)
@@ -342,6 +353,21 @@ class ApiTests(unittest.TestCase):
                 self.assertIn(marker, response.text)
 
         self.assertEqual(self.client.get("/dashboard/global/not-configured").status_code, 404)
+
+    def test_serves_only_allowlisted_etf_activity_pages(self) -> None:
+        pages = {
+            "/dashboard/etf/xlf-demo": "XLF Holdings Sandbox generated page",
+            "/dashboard/etf/iyf-demo": "IYF Holdings Sandbox generated page",
+            "/dashboard/etf/nport-recent": "N-PORT Recent Filing generated page",
+        }
+
+        for route, marker in pages.items():
+            with self.subTest(route=route):
+                response = self.client.get(route)
+                self.assertEqual(response.status_code, 200)
+                self.assertIn(marker, response.text)
+
+        self.assertEqual(self.client.get("/dashboard/etf/not-configured").status_code, 404)
 
     def test_compares_run_methodology_and_evidence_fingerprints(self) -> None:
         response = self.client.get(

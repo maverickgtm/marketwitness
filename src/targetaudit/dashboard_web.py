@@ -144,7 +144,7 @@ def report_center_html() -> str:
     <p class="lead">A reading room for the report pages included in the tested Open Edition bundle. It exposes approved dashboard routes, never arbitrary files from the generated-report directory.</p>
     <p class="meta">Open Edition bundle / Weekly GitHub Actions build / 30-day artifact retention</p>
     <section class="cards">
-      <article class="card"><p>Generated report routes</p><strong>9 allowlisted pages</strong></article>
+      <article class="card"><p>Generated report routes</p><strong>12 allowlisted pages</strong></article>
       <article class="card"><p>Bundle schedule</p><strong>Weekly + manual</strong></article>
       <article class="card"><p>Required paid data</p><strong>None</strong></article>
     </section>
@@ -156,6 +156,9 @@ def report_center_html() -> str:
       <article class="report"><span class="pill fixture">fixture workflow</span><h3>IPO Watch</h3><p>Reviewed IPO-watch example with SEC-shaped discovery and documented decisions.</p><small>Demonstration evidence, not a live SEC scan.</small><a href="/dashboard/ipo-watch">Open report</a></article>
       <article class="report"><span class="pill regulatory">SEC discovery</span><h3>SEC IPO Alerts</h3><p>Public-filing review queue with watchlist matching and visible filing signals.</p><small>New evidence requires review before changing a company state.</small><a href="/dashboard/sec-alerts">Open report</a></article>
       <article class="report"><span class="pill regulatory">manual decision log</span><h3>IPO Review Outcomes</h3><p>Documented review decisions used to generate the current IPO Watch registry.</p><small>A retained audit trail for promotion, rejection or pending review.</small><a href="/dashboard/ipo-reviews">Open report</a></article>
+      <article class="report"><span class="pill fixture">synthetic ETF snapshot</span><h3>XLF Holdings Sandbox</h3><p>Daily-shaped observed holding differences for the financial-sector benchmark.</p><small>Synthetic snapshots only; not confirmed manager trades.</small><a href="/dashboard/etf/xlf-demo">Open report</a></article>
+      <article class="report"><span class="pill fixture">synthetic ETF snapshot</span><h3>IYF Holdings Sandbox</h3><p>A second financial ETF comparison to test multi-fund activity reporting.</p><small>Synthetic snapshots only; no automated iShares collection.</small><a href="/dashboard/etf/iyf-demo">Open report</a></article>
+      <article class="report"><span class="pill regulatory">regulatory periodic</span><h3>N-PORT Recent Filing</h3><p>A recent-period comparison from the SEC regulatory evidence workflow.</p><small>Periodic filing evidence, not daily portfolio activity.</small><a href="/dashboard/etf/nport-recent">Open report</a></article>
       <article class="report"><span class="pill regulatory">regulatory periodic</span><h3>ETF Regulatory Holdings</h3><p>N-PORT period comparison for the regulatory ETF evidence layer.</p><small>Periodic filing evidence, not real-time ETF trading.</small><a href="/dashboard/etf-regulatory">Open report</a></article>
       <article class="report"><span class="pill regulatory">document check</span><h3>Public Document Checks</h3><p>Documentary corroboration example for monitored listing candidates.</p><small>A document match does not confirm admission or trading.</small><a href="/dashboard/document-checks">Open report</a></article>
       <article class="report"><span class="pill fixture">synthetic sandbox</span><h3>RWA Watch Sandbox</h3><p>Auditable tokenized-asset observation format using synthetic rows only.</p><small>No live xStocks, venue or issuer feed is collected.</small><a href="/dashboard/rwa-watch">Open report</a></article>

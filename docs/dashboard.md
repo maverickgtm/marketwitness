@@ -46,10 +46,11 @@ comprar datos comerciales.
 Objetivo: volver navegable el bundle semanal de Open Edition sin abrir acceso
 general al directorio de reportes construidos.
 
-- La ruta `/dashboard/reports` agrupa las nueve paginas HTML ya permitidas:
+- La ruta `/dashboard/reports` agrupa las doce paginas HTML ya permitidas:
   IPO Watch, SEC IPO Alerts, IPO Review Outcomes, ETF Regulatory Holdings,
-  Public Document Checks, RWA Watch Sandbox, Global Listings Watch, Global
-  Listings Alerts e Issuer Confirmations.
+  XLF Holdings Sandbox, IYF Holdings Sandbox, N-PORT Recent Filing, Public
+  Document Checks, RWA Watch Sandbox, Global Listings Watch, Global Listings
+  Alerts e Issuer Confirmations.
 - `SEC IPO Alerts` y `IPO Review Outcomes` completan el recorrido auditable
   desde filing descubierto hasta decisión manual; ninguna alerta cambia el
   estado de una compañía sin una revisión documentada.
@@ -458,6 +459,10 @@ con la frecuencia real de cada fuente.
 
 - Implementado: comparador de snapshots normalizados, CSV de diferencias,
   reporte Markdown y pagina HTML con fixture sintetico reproducible.
+- Navegacion publica: `/dashboard/etf/xlf-demo` y
+  `/dashboard/etf/iyf-demo` sirven exclusivamente comparaciones sinteticas;
+  `/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory` muestran la
+  capa regulatoria SEC separada.
 - Implementado: importador local de CSV ARK descargado por el operador,
   conservando fecha efectiva y frecuencia diaria declarada.
 - Implementado: importador local State Street SPDR/XLF y fixture

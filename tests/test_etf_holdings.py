@@ -32,6 +32,10 @@ class EtfHoldingsTests(unittest.TestCase):
         self.assertIn("not\nconfirmed manager trades", report)
         self.assertIn("Observed changes", page)
         self.assertIn("Demo snapshots are synthetic", page)
+        self.assertIn('href="/dashboard/etf/xlf-demo"', page)
+        self.assertIn('href="/dashboard/etf/iyf-demo"', page)
+        self.assertIn('href="/dashboard/etf/nport-recent"', page)
+        self.assertIn('href="/dashboard/etf-regulatory"', page)
         self.assertNotIn("bought", page.lower())
         self.assertNotIn("sold", page.lower())
 
