@@ -34,6 +34,8 @@ def financials_scorecard_html() -> str:
     label { display:block; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
     select,input { width:100%; height:43px; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:9px; padding:0 11px; }
     button { height:43px; border:0; border-radius:9px; color:#061117; background:var(--mint); padding:0 20px; font-weight:600; cursor:pointer; }
+    .actions { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:15px 0 32px; color:var(--muted); }
+    .action-link { background:var(--panel2); border:1px solid var(--line); border-radius:9px; padding:10px 14px; font-size:14px; }
     .layout { display:grid; grid-template-columns:minmax(580px,1fr) 355px; gap:18px; }
     .table-wrap { overflow:hidden; }
     table { width:100%; border-collapse:collapse; }
@@ -52,6 +54,14 @@ def financials_scorecard_html() -> str:
     .metric { background:var(--panel2); border-radius:9px; padding:10px; }
     .metric small { display:block; color:var(--muted); }
     .metric strong { font-size:19px; }
+    .timeline { margin-top:18px; }
+    .timeline p { font-size:13px; }
+    .chart { margin:12px 0; padding:10px; background:var(--panel2); border-radius:9px; overflow:hidden; }
+    .chart h4 { font-size:13px; margin:0 0 7px; color:var(--text); font-weight:500; }
+    .chart svg { display:block; width:100%; height:auto; }
+    .chart-events { display:grid; gap:5px; margin-top:8px; color:var(--muted); font-size:11px; }
+    .chart-events strong { color:var(--text); font-weight:500; }
+    .chart-note { color:var(--gold); }
     a { color:var(--mint); text-decoration:none; }
     .audit-grid { display:grid; grid-template-columns:300px 1fr; gap:18px; }
     .reasons { padding:18px; }
@@ -89,6 +99,11 @@ def financials_scorecard_html() -> str:
       <div><label for="direction">Direction</label><select id="direction"><option value="">Up and down</option><option value="up">Up targets</option><option value="down">Down targets</option></select></div>
       <div><label for="sample">Minimum N</label><input id="sample" type="number" min="1" value="1"></div>
       <button id="apply">Apply</button>
+    </section>
+    <section class="actions" aria-label="Downloads">
+      <span>Download auditable results:</span>
+      <a id="export-ranking" class="action-link" href="#">Export filtered ranking CSV</a>
+      <a id="export-evaluations" class="action-link" href="#">Export observations CSV</a>
     </section>
     <h2>Firm Ranking</h2>
     <section class="layout">
@@ -175,6 +190,8 @@ def financials_scorecard_html() -> str:
       const params = new URLSearchParams({minimum_sample: $("sample").value || "1"});
       if ($("sector").value) params.set("sector", $("sector").value);
       if ($("direction").value) params.set("direction", $("direction").value);
+      $("export-ranking").href = `${base}/runs/${encodeURIComponent(currentRun)}/export/rankings-firms.csv?${params}`;
+      $("export-evaluations").href = `${base}/runs/${encodeURIComponent(currentRun)}/export/evaluations.csv`;
       try {
         const [result, audit] = await Promise.all([
           json(`${base}/runs/${encodeURIComponent(currentRun)}/rankings/firms?${params}`),
@@ -207,10 +224,48 @@ def financials_scorecard_html() -> str:
     }
     async function showTicker(ticker) {
       try {
-        const data = await json(`${base}/runs/${encodeURIComponent(currentRun)}/tickers/${encodeURIComponent(ticker)}`);
+        const [data, timeline] = await Promise.all([
+          json(`${base}/runs/${encodeURIComponent(currentRun)}/tickers/${encodeURIComponent(ticker)}`),
+          json(`${base}/runs/${encodeURIComponent(currentRun)}/tickers/${encodeURIComponent(ticker)}/timeline`)
+        ]);
         const rows = data.observations.map((row) => `<article class="metric"><small>${text(row.firm)} / ${text(row.published_date)}</small><strong>${text(row.status)}${row.hit === true ? " / hit" : row.hit === false ? " / miss" : ""}</strong><small>Target: ${text(row.price_target)} / Reason: ${text(row.reason)}</small><a href="${evidenceHref(row.source_url)}" target="_blank" rel="noopener">Evidence source</a></article>`).join("");
-        $("detail").innerHTML = `<h3>${text(ticker)} Evidence</h3><p>${data.observations.length} observation(s) retained in this run.</p><section class="summary">${rows}</section>`;
+        $("detail").innerHTML = `<h3>${text(ticker)} Evidence</h3><p>${data.observations.length} observation(s) retained in this run.</p><section class="summary">${rows}</section><section class="timeline"><h3>Evaluation Evidence Timeline</h3>${renderTimeline(timeline)}</section>`;
       } catch (error) { fail(error.message); }
+    }
+    function renderTimeline(data) {
+      const charts = data.observations.map((observation) => {
+        const points = observation.points
+          .filter((point) => Number.isFinite(Number(point.value)))
+          .slice()
+          .sort((left, right) => left.date.localeCompare(right.date));
+        if (!points.length) {
+          return `<article class="chart"><h4>${text(observation.firm)} / ${text(observation.observation_id)}</h4><p class="chart-note">No price milestones retained because this observation was not scored.</p></article>`;
+        }
+        const target = Number(observation.price_target);
+        const values = points.map((point) => Number(point.value));
+        if (Number.isFinite(target)) values.push(target);
+        const lower = Math.min(...values);
+        const upper = Math.max(...values);
+        const spread = Math.max(upper - lower, Math.max(upper * .04, 1));
+        const floor = lower - spread * .2;
+        const ceiling = upper + spread * .2;
+        const width = 315, height = 150, left = 46, right = 24, top = 13, bottom = 18;
+        const plotWidth = width - left - right, plotHeight = height - top - bottom;
+        const times = points.map((point) => Date.parse(`${point.date}T00:00:00Z`));
+        const minimumTime = Math.min(...times), maximumTime = Math.max(...times);
+        const elapsed = Math.max(maximumTime - minimumTime, 1);
+        const x = (index) => left + (points.length === 1 ? plotWidth / 2 : plotWidth * (times[index] - minimumTime) / elapsed);
+        const y = (value) => top + (ceiling - value) * plotHeight / (ceiling - floor);
+        const polyline = points.map((point, index) => `${x(index).toFixed(1)},${y(Number(point.value)).toFixed(1)}`).join(" ");
+        const targetLine = Number.isFinite(target) ? `<line x1="${left}" y1="${y(target).toFixed(1)}" x2="${width - right}" y2="${y(target).toFixed(1)}" stroke="#f0bc62" stroke-dasharray="4 4"/><text x="${left}" y="${(y(target) - 5).toFixed(1)}" fill="#f0bc62" font-size="10">target ${text(observation.price_target)}</text>` : "";
+        const marks = points.map((point, index) => {
+          const color = point.kind === "hit" ? "#f0bc62" : point.kind === "exit" ? "#62a6ff" : "#56daac";
+          return `<circle cx="${x(index).toFixed(1)}" cy="${y(Number(point.value)).toFixed(1)}" r="4" fill="${color}"/>`;
+        }).join("");
+        const events = points.map((point) => `<span><strong>${text(point.date)}</strong> / ${text(point.label)}: ${text(point.value)}</span>`).join("");
+        return `<article class="chart"><h4>${text(observation.firm)} / ${text(observation.observation_id)}</h4><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Retained evaluation milestones for ${text(observation.observation_id)}"><line x1="${left}" y1="${top}" x2="${left}" y2="${height - bottom}" stroke="#20343d"/><line x1="${left}" y1="${height - bottom}" x2="${width - right}" y2="${height - bottom}" stroke="#20343d"/>${targetLine}<polyline points="${polyline}" fill="none" stroke="#56daac" stroke-width="2"/>${marks}</svg><div class="chart-events">${events}</div></article>`;
+      }).join("");
+      return `<p class="chart-note">${text(data.limitation)}</p>${charts}`;
     }
     function renderAudit(data) {
       const entries = Object.entries(data.counts_by_reason);

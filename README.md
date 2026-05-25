@@ -553,8 +553,10 @@ python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 Al abrir `http://127.0.0.1:8000/` se muestra el dashboard inicial
 `Financials Scorecard`, conectado a las corridas almacenadas. Incluye filtros
 de sector, direccion y muestra minima, detalle por firma/ticker y auditoria de
-exclusiones. El demo almacena corridas separadas para el scorecard principal,
-targets revisados y guardas por acciones corporativas.
+exclusiones. La ficha de ticker incluye una linea temporal de hitos retenidos
+(referencia, entrada, target y salida/terminal) y deja visible que no representa
+una serie diaria de mercado. El demo almacena corridas separadas para el
+scorecard principal, targets revisados y guardas por acciones corporativas.
 
 Endpoints iniciales:
 
@@ -567,7 +569,10 @@ Endpoints iniciales:
 | `/api/v1/runs/{run_id}/rankings/firms` | Ranking, con filtros `sector`, `direction` y `minimum_sample` |
 | `/api/v1/runs/{run_id}/firms/{firm}` | Observaciones y resumen de una firma |
 | `/api/v1/runs/{run_id}/tickers/{ticker}` | Historial evaluado de una acción |
+| `/api/v1/runs/{run_id}/tickers/{ticker}/timeline` | Hitos de evidencia retenidos para la visualización |
 | `/api/v1/runs/{run_id}/audit/exclusions` | Excluidos y pendientes con motivo |
+| `/api/v1/runs/{run_id}/export/evaluations.csv` | Descarga CSV de observaciones de la corrida |
+| `/api/v1/runs/{run_id}/export/rankings-firms.csv` | Descarga CSV del ranking con los mismos filtros |
 
 La documentación interactiva local queda disponible en `/docs` al iniciar el
 servidor. La API omite las rutas locales de los archivos originales y presenta

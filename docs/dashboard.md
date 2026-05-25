@@ -28,6 +28,9 @@ La ruta web inicial `/dashboard/financials` consume esta API y presenta:
   dias al target y exceso neto.
 - Filtros por corrida, sector, direccion y muestra minima.
 - Panel de firma/ticker con enlace de evidencia.
+- Linea temporal visual de los hitos retenidos por observacion; no se presenta
+  como una serie diaria de precios.
+- Exportacion CSV de observaciones y del ranking filtrado.
 - Tabla de exclusiones y pendientes por motivo.
 
 El demo genera `build/demo/targetaudit.duckdb` con corridas sinteticas del

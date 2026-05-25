@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import csv
+import io
 import os
+import re
 from collections import Counter, defaultdict
 from decimal import Decimal
 from pathlib import Path
@@ -8,7 +11,7 @@ from statistics import median
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 
 from . import METHODOLOGY_VERSION, __version__
 from .dashboard_web import financials_scorecard_html
@@ -78,30 +81,44 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
         sector: str = "",
         direction: str = Query(default="", pattern="^(|up|down)$"),
     ) -> dict[str, object]:
-        run = _read_run(database, run_id)
-        rows = _warehouse_call(read_evaluations, database, run_id, status="evaluated")
-        if sector:
-            rows = [item for item in rows if item.sector.lower() == sector.lower()]
-        if direction:
-            rows = [item for item in rows if item.direction == direction]
-        threshold = minimum_sample or run["minimum_sample"]
-        grouped: defaultdict[str, list[Evaluation]] = defaultdict(list)
-        for item in rows:
-            grouped[item.firm].append(item)
-        ranking = [
-            _ranking_row(firm, values)
-            for firm, values in grouped.items()
-            if len(values) >= threshold
+        return _firm_ranking_payload(database, run_id, minimum_sample, sector, direction)
+
+    @application.get("/api/v1/runs/{run_id}/export/evaluations.csv")
+    def evaluations_export(run_id: str) -> Response:
+        _read_run(database, run_id)
+        rows = _warehouse_call(read_evaluations, database, run_id)
+        exported = [_public_evaluation(item) for item in rows]
+        return _csv_download(
+            f"targetaudit-{_safe_filename(run_id)}-evaluations.csv",
+            exported,
+            list(exported[0]) if exported else [],
+        )
+
+    @application.get("/api/v1/runs/{run_id}/export/rankings-firms.csv")
+    def firm_ranking_export(
+        run_id: str,
+        minimum_sample: Optional[int] = Query(default=None, ge=1),
+        sector: str = "",
+        direction: str = Query(default="", pattern="^(|up|down)$"),
+    ) -> Response:
+        result = _firm_ranking_payload(database, run_id, minimum_sample, sector, direction)
+        rows = result["ranking"]
+        fields = [
+            "firm",
+            "observations",
+            "hits",
+            "hit_rate",
+            "hit_rate_ci_95_low",
+            "hit_rate_ci_95_high",
+            "mean_terminal_absolute_error_pct",
+            "median_days_to_hit",
+            "mean_horizon_excess_return_pct",
+            "mean_net_strategy_return_pct",
+            "mean_net_strategy_excess_return_pct",
         ]
-        ranking.sort(key=lambda row: (-row["hit_rate"], -row["observations"], row["firm"].lower()))
-        return {
-            "run_id": run_id,
-            "methodology_version": METHODOLOGY_VERSION,
-            "minimum_sample": threshold,
-            "sector": sector or None,
-            "direction": direction or None,
-            "ranking": ranking,
-        }
+        return _csv_download(
+            f"targetaudit-{_safe_filename(run_id)}-firm-ranking.csv", rows, fields
+        )
 
     @application.get("/api/v1/runs/{run_id}/facets")
     def facets(run_id: str) -> dict[str, object]:
@@ -148,6 +165,25 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
             "observations": [_public_evaluation(item) for item in rows],
         }
 
+    @application.get("/api/v1/runs/{run_id}/tickers/{ticker}/timeline")
+    def ticker_timeline(run_id: str, ticker: str) -> dict[str, object]:
+        _read_run(database, run_id)
+        symbol = ticker.upper()
+        rows = _warehouse_call(read_evaluations, database, run_id, ticker=symbol)
+        if not rows:
+            raise HTTPException(status_code=404, detail="Ticker not found in this run.")
+        return {
+            "run_id": run_id,
+            "ticker": symbol,
+            "methodology_version": METHODOLOGY_VERSION,
+            "series_type": "evaluation_evidence_points",
+            "limitation": (
+                "Retained evaluation milestones only; this is not a daily "
+                "market-price series."
+            ),
+            "observations": [_timeline_observation(item) for item in rows],
+        }
+
     @application.get("/api/v1/runs/{run_id}/audit/exclusions")
     def exclusions(run_id: str) -> dict[str, object]:
         _read_run(database, run_id)
@@ -179,6 +215,39 @@ def _warehouse_call(function, *args, **kwargs):
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
 
+def _firm_ranking_payload(
+    database: Path,
+    run_id: str,
+    minimum_sample: Optional[int],
+    sector: str,
+    direction: str,
+) -> dict[str, object]:
+    run = _read_run(database, run_id)
+    rows = _warehouse_call(read_evaluations, database, run_id, status="evaluated")
+    if sector:
+        rows = [item for item in rows if item.sector.lower() == sector.lower()]
+    if direction:
+        rows = [item for item in rows if item.direction == direction]
+    threshold = minimum_sample or run["minimum_sample"]
+    grouped: defaultdict[str, list[Evaluation]] = defaultdict(list)
+    for item in rows:
+        grouped[item.firm].append(item)
+    ranking = [
+        _ranking_row(firm, values)
+        for firm, values in grouped.items()
+        if len(values) >= threshold
+    ]
+    ranking.sort(key=lambda row: (-row["hit_rate"], -row["observations"], row["firm"].lower()))
+    return {
+        "run_id": run_id,
+        "methodology_version": METHODOLOGY_VERSION,
+        "minimum_sample": threshold,
+        "sector": sector or None,
+        "direction": direction or None,
+        "ranking": ranking,
+    }
+
+
 def _ranking_row(firm: str, rows: list[Evaluation]) -> dict[str, object]:
     hits = sum(item.hit is True for item in rows)
     low, high = wilson_interval(hits, len(rows))
@@ -207,6 +276,70 @@ def _public_evaluation(item: Evaluation) -> dict[str, object]:
     row["hit"] = item.hit
     row["days_to_target"] = item.days_to_target
     return row
+
+
+def _timeline_observation(item: Evaluation) -> dict[str, object]:
+    milestones = [
+        ("Reference close", item.reference_date, item.reference_price, "reference"),
+        ("Entry close", item.entry_date, item.entry_price, "entry"),
+        ("Target hit", item.hit_date, item.price_target if item.hit else None, "hit"),
+        (
+            "Strategy exit",
+            item.strategy_exit_date,
+            item.strategy_exit_price,
+            "exit",
+        ),
+        ("Terminal close", item.terminal_date, item.terminal_price, "terminal"),
+    ]
+    points: list[dict[str, object]] = []
+    for label, dated, value, kind in milestones:
+        if not dated or value is None:
+            continue
+        existing = next(
+            (
+                point
+                for point in points
+                if point["date"] == dated and point["value"] == float(value)
+            ),
+            None,
+        )
+        if existing:
+            existing["label"] = f'{existing["label"]} / {label}'
+            if kind == "hit":
+                existing["kind"] = kind
+        else:
+            points.append(
+                {"label": label, "date": dated, "value": float(value), "kind": kind}
+            )
+    return {
+        "observation_id": item.observation_id,
+        "firm": item.firm,
+        "status": item.status,
+        "reason": item.reason,
+        "published_date": item.published_date,
+        "price_target": float(item.price_target) if item.price_target is not None else None,
+        "target_end_date": item.expiry_date or item.terminal_date,
+        "points": points,
+    }
+
+
+def _safe_filename(value: str) -> str:
+    return re.sub(r"[^A-Za-z0-9_-]+", "-", value).strip("-") or "run"
+
+
+def _csv_download(
+    filename: str, rows: list[dict[str, object]], fieldnames: list[str]
+) -> Response:
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(output, fieldnames=fieldnames, extrasaction="ignore")
+    if fieldnames:
+        writer.writeheader()
+        writer.writerows(rows)
+    return Response(
+        output.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 def _decimal_rate(numerator: int, denominator: int) -> float:

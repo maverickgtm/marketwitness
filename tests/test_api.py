@@ -39,10 +39,20 @@ class ApiTests(unittest.TestCase):
                 source_url="https://example.invalid/hit",
                 status="evaluated",
                 direction="up",
+                reference_date="2023-01-03",
+                reference_price=Decimal("100"),
+                entry_date="2023-01-04",
+                entry_price=Decimal("101"),
+                expiry_date="2024-01-03",
+                terminal_date="2024-01-03",
+                terminal_price=Decimal("118"),
                 hit=True,
+                hit_date="2023-02-01",
                 days_to_target=20,
                 terminal_absolute_error_pct=Decimal("0.05"),
                 excess_return_pct=Decimal("0.03"),
+                strategy_exit_date="2023-02-01",
+                strategy_exit_price=Decimal("120"),
                 strategy_net_return_pct=Decimal("0.19"),
                 strategy_net_excess_return_pct=Decimal("0.08"),
             ),
@@ -119,6 +129,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Price targets,", page.text)
         self.assertIn("/api/v1", page.text)
         self.assertIn("evidenceHref", page.text)
+        self.assertIn("Export observations CSV", page.text)
+        self.assertIn("renderTimeline", page.text)
         self.assertEqual(facets.status_code, 200)
         self.assertEqual(facets.json()["sectors"], ["Financials"])
         self.assertEqual(facets.json()["tickers"], ["AAA", "BBB"])
@@ -132,6 +144,34 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(ticker.json()["ticker"], "AAA")
         self.assertEqual(len(ticker.json()["observations"]), 2)
         self.assertEqual(audit.json()["counts_by_reason"], {"missing_reference_price": 1})
+
+    def test_serves_ticker_evidence_timeline_without_claiming_daily_prices(self) -> None:
+        response = self.client.get("/api/v1/runs/api-demo/tickers/aaa/timeline")
+
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["series_type"], "evaluation_evidence_points")
+        self.assertIn("not a daily", data["limitation"])
+        points = data["observations"][0]["points"]
+        self.assertEqual(points[0]["label"], "Reference close")
+        self.assertTrue(any("Strategy exit" in point["label"] for point in points))
+
+    def test_exports_observations_and_filtered_ranking_as_csv(self) -> None:
+        observations = self.client.get("/api/v1/runs/api-demo/export/evaluations.csv")
+        ranking = self.client.get(
+            "/api/v1/runs/api-demo/export/rankings-firms.csv?direction=up&minimum_sample=1"
+        )
+
+        self.assertEqual(observations.status_code, 200)
+        self.assertIn("text/csv", observations.headers["content-type"])
+        self.assertIn(
+            'filename="targetaudit-api-demo-evaluations.csv"',
+            observations.headers["content-disposition"],
+        )
+        self.assertIn("observation_id", observations.text)
+        self.assertIn("hit", observations.text)
+        self.assertIn("Example Firm", ranking.text)
+        self.assertNotIn("Other Firm", ranking.text)
 
     def test_unknown_run_and_firm_return_not_found(self) -> None:
         missing_run = self.client.get("/api/v1/runs/not-present")
