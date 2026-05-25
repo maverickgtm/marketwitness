@@ -315,6 +315,7 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | Australian Securities Exchange | ASX `Upcoming floats and listings` | Feed HTML oficial implementado |
 | Toronto Stock Exchange | TSX `New Company Listings` | Feed HTML oficial implementado para listings completados |
 | Singapore Exchange | SGX `IPO Prospectus` | Feed JSON oficial implementado para prospectos publicados |
+| Japon | FSA `EDINET` Documents API | Conector prioritario pendiente para documentos regulatorios de ofertas |
 
 ### Regla De Evidencia
 
@@ -330,6 +331,8 @@ Cada jurisdiccion conserva sus propias etapas:
   fuente adicional para alertas prospectivas.
 - Singapur: el feed implementado documenta prospectos publicados; cada
   documento debe revisarse antes de afirmar admision o inicio de negociacion.
+- Japon: un securities registration statement de `EDINET` inicia revision
+  documental; el collector con clave y atribucion aun esta pendiente.
 
 ### Salidas Operativas
 

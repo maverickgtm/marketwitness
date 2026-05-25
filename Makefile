@@ -77,7 +77,7 @@ demo:
 		--sources data/samples/global_market_sources.csv \
 		--report build/demo/global-listings.md \
 		--html build/demo/global-listings.html \
-		--as-of 2026-05-24
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit issuer-confirmations \
 		--registry data/samples/issuer_listing_confirmations.csv \
 		--report build/demo/issuer-confirmations.md \

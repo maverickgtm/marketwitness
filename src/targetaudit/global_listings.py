@@ -142,11 +142,16 @@ def write_global_listings_report(
 
 def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) -> str:
     counts = Counter(market.connector_status for market in markets)
+    expansion_count = counts["priority_connector"] + counts["planned_connector"]
     cards = [
         ("Mapped markets", len(markets), "Official sources identified"),
         ("Live feeds", counts["live_official_feed"], "LSE, HKEX, ASX, TSX and SGX implemented"),
         ("Verified snapshots", counts["verified_snapshot"], "Official capture, not continuous"),
-        ("Expansion queue", counts["planned_connector"], "Official sources to connect"),
+        (
+            "Expansion queue",
+            expansion_count,
+            f"{counts['priority_connector']} priority; {counts['planned_connector']} planned",
+        ),
     ]
     cards_html = "".join(
         f'<article class="card"><p>{escape(label)}</p><strong>{count}</strong>'

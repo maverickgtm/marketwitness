@@ -68,6 +68,7 @@ público".
 | WSJ / CNBC | Vistas y cobertura editorial sobre recomendaciones | Contexto manual | No feed documentado para ingestión/publicacion |
 | Yahoo Finance | Recomendaciones/targets visibles con proveedores declarados | Verificacion visual puntual | No redistribuir informacion de Yahoo Finance; no integrar scraper |
 | Investing.com | Ratings visibles en interfaz | Verificacion visual puntual | Sus terminos prohiben almacenamiento/redistribucion sin permiso escrito |
+| AnalystCentral | Afirma CSV gratuito con 10 anos de ratings y price targets de Wall Street para mas de 8,500 acciones e indices | Candidato interesante para solicitar permiso agregado | Sus terminos restringen uso a fines personales y prohiben republicacion, derivados y data mining sin autorizacion escrita |
 
 ### Conclusion Inicial
 
@@ -87,6 +88,26 @@ publica manteniendo la atribucion original. Es adecuado para contexto visual
 de mercado, no para almacenar o puntuar historial de analistas:
 <https://www.tradingview.com/widget-docs/widgets/charts/> y
 <https://www.tradingview.com/policies/>.
+
+## Busqueda Internacional Gratuita
+
+La revision del `2026-05-25` en Reino Unido, Japon, Australia, Hong Kong,
+Singapur y China continental no encontro un dataset gratuito y publicable que
+resuelva targets historicos individuales de firmas estadounidenses. Si abrio
+tres caminos relevantes para ampliar el producto sin costo:
+
+| Fuente | Aporte Potencial | Limite Actual |
+|---|---|---|
+| FSA `EDINET` Documents API (Japon) | API oficial gratuita de documentos regulatorios, incluidos securities registration statements; requiere clave | Construir monitor IPO documental con atribucion y acceso responsable |
+| `EDINET DB` (Japon) | Enriquecimiento financiero japones; declara display publico atribuido en sus planes | Candidato secundario; la ruta principal debe conservar la fuente oficial |
+| `MAS OPERA` y Singapore Open Data Licence | Prospectos/ofertas oficiales de Singapur; la licencia abierta autoriza usos y derivados de datasets cubiertos con atribucion | Falta confirmar el dataset/API OPERA concreto aplicable |
+| JPX `J-Quants API` | OHLC japones ajustado, listado de valores y fundamentales; plan gratis con dos anos y 12 semanas de retraso | Falta confirmar derechos de publicar precios/outputs del plan gratuito |
+
+Australia, LSE, HKEX, SGX y SSE/CIIS ofrecen productos oficiales muy utiles
+de precios o acciones corporativas, pero los caminos revisados son
+suscripciones, trials, uso personal o servicios sujetos a licencia; no
+habilitan la edicion publica gratis. Ver el expediente completo en
+[Busqueda Internacional De Datos Gratuitos](international-data-search.md).
 
 ## Activos Tokenizados Y RWA Watch
 
@@ -241,7 +262,7 @@ no una IPO confirmada, hasta revisar el documento.
 
 ## Global Listings Watch: Fuentes Oficiales Identificadas
 
-Revisado al `2026-05-24`:
+Revision inicial al `2026-05-24`; ampliacion EDINET al `2026-05-25`:
 
 | Mercado | Fuente Oficial | Senal Disponible | Estado TargetAudit |
 |---|---|---|---|
@@ -251,11 +272,17 @@ Revisado al `2026-05-24`:
 | Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida, fecha anticipada y retiros | Feed HTML oficial implementado |
 | Canada | TSX New Company Listings | Nuevas companias ya listadas | Feed HTML oficial implementado como confirmación |
 | Singapur | SGX IPO Prospectus API | Prospectos IPO publicados | Feed JSON oficial implementado |
+| Japon | FSA `EDINET` Documents API | Securities registration statements y documentos regulatorios | Conector prioritario pendiente de implementacion con API key y atribucion |
 
 Las etapas no son intercambiables entre jurisdicciones. Por ejemplo, un
 `PHIP` de HKEX indica aprobacion en principio, mientras una aparicion en ASX
 Upcoming Listings solo confirma que ASX recibio una solicitud formal y presenta
 una fecha anticipada.
+
+El API oficial `EDINET` de la Financial Services Agency japonesa permite
+buscar y descargar documentos regulatorios. Un securities registration
+statement abre revision de una posible oferta; no confirma admision ni inicio
+de negociacion y no aporta targets de analistas.
 
 El conector HKEX consulta los endpoints JSON usados por la propia pagina
 oficial, incluyendo:

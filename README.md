@@ -54,6 +54,17 @@ y FMP exige un acuerdo especifico de display/licencia. TradingView puede
 anadirse mas adelante como widget gratuito atribuido para contexto visual, no
 como fuente de historial de analistas.
 
+Tambien se realizo un barrido internacional en Reino Unido, Japon, Australia,
+Hong Kong, Singapur y China continental. No aparecio un historial gratuito
+publicable de targets individuales de firmas estadounidenses; si surgieron
+rutas prometedoras para ampliar monitores regulatorios: el API oficial
+gratuito de documentos de Japon (`EDINET`) queda como conector prioritario, y
+Singapur (`MAS OPERA`) requiere confirmar un endpoint abierto concreto. Tambien
+surgio un laboratorio de precios japoneses
+mediante el plan gratis de JPX `J-Quants`, sujeto a confirmar derechos de
+output. Ver
+[Busqueda Internacional De Datos Gratuitos](docs/international-data-search.md).
+
 La investigacion de `RWA Watch` ya cubre 20 exchanges relevantes y
 Pepperstone. `xStocks / Backed` documenta APIs sin autenticacion para
 metadatos, precios, documentos legales y proof of reserves, pero sus terminos
@@ -323,6 +334,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `ASX` / Australia: monitor HTML oficial de upcoming floats and listings.
 - `TSX` / Canada: monitor HTML oficial de nuevas companias ya listadas.
 - `SGX` / Singapur: catalogo oficial de prospectos IPO.
+- `JPX` / Japon: API oficial `EDINET` de documentos regulatorios, en cola de implementacion.
 
 Hong Kong ya incluye un conector a los JSON oficiales de HKEXnews para
 solicitudes activas, activas con `PHIP`, inactivas, listadas y devueltas.
@@ -336,6 +348,10 @@ completadas; no lo usa para predecir solicitudes futuras.
 Singapur ya consulta el catálogo JSON oficial `SGX IPO Prospectus`; registra
 documentos publicados para revisión y no confirma automáticamente una
 cotización completada.
+Japon se incorpora como prioridad pendiente: el API oficial `EDINET` permite
+buscar securities registration statements y otros documentos regulatorios,
+pero aun falta implementar el collector con clave, atribucion y controles de
+acceso responsable.
 
 Para leer HKEX en vivo:
 
@@ -944,6 +960,8 @@ Consulta [la metodologia](docs/methodology.md),
 mantiene en [el roadmap](docs/roadmap.md) y la ejecucion continua en
 [operations.md](docs/operations.md). Para colaborar, consulta
 [CONTRIBUTING.md](CONTRIBUTING.md) y la politica de [seguridad](SECURITY.md).
+La investigacion de nuevas fuentes internacionales se conserva en
+[international-data-search.md](docs/international-data-search.md).
 
 ## Aviso
 
