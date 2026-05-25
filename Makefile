@@ -241,6 +241,12 @@ demo:
 		--minimum-sample 1 \
 		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit operations-quality \
+		--database build/demo/targetaudit.duckdb \
+		--report build/demo/operations-quality.md \
+		--html build/demo/operations-quality.html \
+		--maximum-excluded-rate 0.50 \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-upcoming \
 		--page-file data/samples/lse-new-issues-page.json \
 		--output build/demo/lse-upcoming.csv \

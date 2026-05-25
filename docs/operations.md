@@ -114,6 +114,31 @@ datos a SEC:
 make verify
 ```
 
+## Quality Gate De Corridas
+
+Toda ejecucion periodica del scorecard debe evaluar la calidad de las corridas
+almacenadas antes de actualizar una vista publica o distribuir un reporte:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit operations-quality \
+  --database build/live/targetaudit.duckdb \
+  --report build/live/operations-quality.md \
+  --html build/live/operations-quality.html \
+  --maximum-excluded-rate 0.50 \
+  --as-of YYYY-MM-DD
+```
+
+El control marca `blocked` si falta la version metodologica, la huella de
+entradas, archivos mínimos (`targets` y `prices`) o linaje `provider_id`.
+Marca `review_required` si la tasa de exclusiones excede el umbral o la
+muestra evaluada no alcanza el mínimo del ranking. `quality_pass` significa
+que la corrida pasó verificaciones operativas; no sustituye la revisión de
+licencias y permisos en Source Governance.
+
+La API sirve el mismo cálculo en `/api/v1/operations/quality` y la página
+`/dashboard/operations` lo presenta para seguimiento durante ejecuciones
+recurrentes.
+
 ## Registro De Fuentes Y Licencias
 
 Antes de habilitar un nuevo proveedor o mostrar resultados reales, generar la

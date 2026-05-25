@@ -83,7 +83,7 @@ def financials_scorecard_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Scorecard / <a href="/dashboard/governance">Source Governance</a></nav>
+    <nav>TargetAudit / U.S. Financials / Scorecard / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Price targets,<br>measured in daylight.</h1>
     <p class="lead">Auditable analyst-target research with visible sample size, uncertainty, benchmark context and exclusions. A hit is evidence of a reached target, not investment advice.</p>
     <p class="meta" id="run-meta">Loading latest stored research run...</p>
@@ -386,7 +386,7 @@ def source_governance_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a></nav>
+    <nav>TargetAudit / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Open code.<br>Controlled data.</h1>
     <p class="lead">Publication rights are part of the evidence. This page separates sources already usable under documented policy from data that still requires terms, licensing or manual controls.</p>
     <p class="meta" id="reviewed">Loading source registry...</p>
@@ -399,7 +399,7 @@ def source_governance_html() -> str:
     </section>
   </header>
   <main>
-    <p class="notice">A public URL is not permission to republish data. Provider controls below govern collection and publication; exclusions below are run results and are not automatically assigned to a provider until provider lineage is persisted with each observation.</p>
+    <p class="notice">A public URL is not permission to republish data. Provider controls below govern collection and publication; newer run exclusions retain provider lineage while historical unlinked rows stay visibly unresolved.</p>
     <p id="error" class="notice"></p>
     <h2>Source Controls</h2>
     <section class="filters" aria-label="Source control filters">
@@ -516,6 +516,152 @@ def source_governance_html() -> str:
     $("apply").addEventListener("click", filterSources);
     $("run").addEventListener("change", loadExclusions);
     initialize();
+  </script>
+</body>
+</html>"""
+
+
+def operations_quality_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Operations Quality</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --panel2:#14242d; --line:#20343d;
+      --text:#edf1ef; --muted:#98abb0; --mint:#56daac; --gold:#f0bc62;
+      --red:#ff7d72;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1240px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(38px,5vw,58px); line-height:1.05; margin:38px 0 14px; }
+    h2 { margin:42px 0 16px; font-size:22px; }
+    h3 { margin:0 0 12px; font-size:16px; }
+    .lead { color:var(--muted); font-size:17px; max-width:860px; }
+    .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold);
+      border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.controls,.table-wrap,.detail { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:17px 20px; }
+    .card p { color:var(--muted); margin:0; }
+    .card strong { display:block; font-size:35px; color:var(--mint); margin-top:4px; }
+    .card small { color:var(--muted); }
+    .controls { padding:17px; display:grid; grid-template-columns:260px auto; gap:12px; align-items:end; margin-bottom:18px; }
+    label { display:block; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+    input { width:100%; height:43px; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:9px; padding:0 11px; }
+    button { height:43px; border:0; border-radius:9px; color:#061117; background:var(--mint); padding:0 20px; font-weight:600; cursor:pointer; }
+    .layout { display:grid; grid-template-columns:minmax(680px,1fr) 335px; gap:18px; }
+    .table-wrap { overflow:hidden; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); text-transform:uppercase; font-size:12px; font-weight:500; }
+    td small { display:block; color:var(--muted); }
+    tr[data-run] { cursor:pointer; }
+    tr[data-run]:hover { background:var(--panel2); }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; white-space:nowrap; }
+    .quality_pass { color:var(--mint); background:rgba(86,218,172,.12); }
+    .review_required { color:var(--gold); background:rgba(240,188,98,.12); }
+    .blocked { color:var(--red); background:rgba(255,125,114,.12); }
+    .detail { padding:18px; min-height:280px; }
+    .detail p { color:var(--muted); }
+    .finding { padding:10px; margin:9px 0; border-radius:9px; background:var(--panel2); }
+    .finding strong { display:block; font-size:12px; color:var(--gold); }
+    #error { display:none; border-left-color:var(--red); color:var(--red); }
+    @media(max-width:1000px) {
+      .cards { grid-template-columns:repeat(2,1fr); }
+      .controls,.layout { grid-template-columns:1fr; }
+      .table-wrap { overflow-x:auto; }
+      table { min-width:720px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>TargetAudit / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/governance">Source Governance</a></nav>
+    <h1>Ship evidence,<br>not surprises.</h1>
+    <p class="lead">Operational quality gates for stored evaluation runs: reproducibility stamps, required inputs, provider lineage and anomalous exclusion rates.</p>
+    <p class="meta">Refreshable quality view over stored evaluation runs</p>
+    <section class="cards">
+      <article class="card"><p>Runs</p><strong id="runs">-</strong><small>Stored evaluations</small></article>
+      <article class="card"><p>Quality Pass</p><strong id="pass">-</strong><small>Still subject to licensing</small></article>
+      <article class="card"><p>Review</p><strong id="review">-</strong><small>Needs operator attention</small></article>
+      <article class="card"><p>Blocked</p><strong id="blocked">-</strong><small>Do not release</small></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice" id="publication-note">Operational quality passing does not grant data publication rights; source-governance approval is still required.</p>
+    <p id="error" class="notice"></p>
+    <h2>Run Quality Monitor</h2>
+    <section class="controls" aria-label="Quality controls">
+      <div><label for="threshold">Maximum excluded rate</label><input id="threshold" type="number" min="0" max="1" step="0.05" value="0.50"></div>
+      <button id="apply">Apply Quality Gate</button>
+    </section>
+    <section class="layout">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Run</th><th>Status</th><th>Evaluated</th><th>Excluded</th><th>Unlinked</th></tr></thead>
+          <tbody id="quality"><tr><td colspan="5">Loading quality monitor...</td></tr></tbody>
+        </table>
+      </div>
+      <aside id="detail" class="detail">
+        <h3>Quality Findings</h3>
+        <p>Select a run to inspect why it passed, requires review or is blocked.</p>
+      </aside>
+    </section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const base = "/api/v1";
+    let currentRows = [];
+    function text(value) {
+      return String(value == null || value === "" ? "-" : value)
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    }
+    function pct(value) { return (Number(value) * 100).toFixed(2) + "%"; }
+    async function json(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+      return response.json();
+    }
+    function fail(message) {
+      $("error").style.display = "block";
+      $("error").textContent = message;
+    }
+    async function refresh() {
+      $("error").style.display = "none";
+      try {
+        const threshold = $("threshold").value || "0.50";
+        const data = await json(`${base}/operations/quality?maximum_excluded_rate=${encodeURIComponent(threshold)}`);
+        currentRows = data.runs;
+        $("runs").textContent = data.run_count;
+        $("pass").textContent = data.quality_pass_count;
+        $("review").textContent = data.review_required_count;
+        $("blocked").textContent = data.blocked_count;
+        $("publication-note").textContent = data.publication_note;
+        renderRows(data.runs);
+      } catch (error) { fail(error.message); }
+    }
+    function renderRows(rows) {
+      if (!rows.length) {
+        $("quality").innerHTML = '<tr><td colspan="5">No stored evaluation runs are available.</td></tr>';
+        return;
+      }
+      $("quality").innerHTML = rows.map((row) => `<tr data-run="${text(row.run_id)}"><td><strong>${text(row.run_id)}</strong><small>${text(row.dataset_label || "unstamped")}</small></td><td><span class="pill ${text(row.quality_status)}">${text(row.quality_status)}</span></td><td>${row.evaluated_count} / ${row.observation_count}</td><td>${pct(row.excluded_rate)}</td><td>${row.unlinked_observation_count}</td></tr>`).join("");
+      document.querySelectorAll("tr[data-run]").forEach((row) => row.addEventListener("click", () => showRun(row.dataset.run)));
+      showRun(rows[0].run_id);
+    }
+    function showRun(runId) {
+      const run = currentRows.find((item) => item.run_id === runId);
+      const findings = run.findings.length ? run.findings.map((finding) => `<div class="finding"><strong>${text(finding.severity)} / ${text(finding.code)}</strong>${text(finding.message)}</div>`).join("") : "<p>No operational quality findings in this run.</p>";
+      $("detail").innerHTML = `<h3>${text(run.run_id)}</h3><p>Methodology ${text(run.methodology_version || "unstamped")} / Evidence ${text(run.dataset_fingerprint ? run.dataset_fingerprint.slice(0, 12) : "unstamped")}</p>${findings}`;
+    }
+    $("apply").addEventListener("click", refresh);
+    refresh();
   </script>
 </body>
 </html>"""

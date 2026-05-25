@@ -14,8 +14,13 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import HTMLResponse, Response
 
 from . import METHODOLOGY_VERSION, __version__
-from .dashboard_web import financials_scorecard_html, source_governance_html
+from .dashboard_web import (
+    financials_scorecard_html,
+    operations_quality_html,
+    source_governance_html,
+)
 from .models import Evaluation
+from .operations_quality import build_quality_snapshot
 from .reporting import wilson_interval
 from .source_registry import SourceProvider, SourceRegistryDataError, load_source_registry
 from .storage import (
@@ -63,6 +68,12 @@ def create_app(
     def source_governance() -> str:
         return source_governance_html()
 
+    @application.get(
+        "/dashboard/operations", response_class=HTMLResponse, include_in_schema=False
+    )
+    def operations_quality() -> str:
+        return operations_quality_html()
+
     @application.get("/api/v1/health")
     def health() -> dict[str, object]:
         return {
@@ -109,6 +120,12 @@ def create_app(
     @application.get("/api/v1/runs")
     def runs() -> list[dict[str, object]]:
         return _warehouse_call(list_run_summaries, database)
+
+    @application.get("/api/v1/operations/quality")
+    def quality_monitor(
+        maximum_excluded_rate: Decimal = Query(default=Decimal("0.50"), ge=0, le=1),
+    ) -> dict[str, object]:
+        return _warehouse_call(build_quality_snapshot, database, maximum_excluded_rate)
 
     @application.get("/api/v1/runs/compare")
     def compare_runs(left_run_id: str, right_run_id: str) -> dict[str, object]:

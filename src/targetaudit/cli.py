@@ -203,6 +203,11 @@ from .target_imports import (
     write_import_report,
     write_normalized_targets,
 )
+from .operations_quality import (
+    build_quality_snapshot,
+    write_quality_html,
+    write_quality_report,
+)
 from .reporting import write_markdown_report
 from .storage import EvaluationRun, WarehouseError, generated_run_id, store_evaluation_run
 
@@ -390,6 +395,24 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Governance review cutoff in YYYY-MM-DD format.",
+    )
+    quality_parser = subparsers.add_parser(
+        "operations-quality",
+        help="Audit stored evaluation runs for reproducibility and release-quality issues.",
+    )
+    quality_parser.add_argument("--database", required=True, help="DuckDB warehouse path.")
+    quality_parser.add_argument("--report", required=True, help="Markdown quality report path.")
+    quality_parser.add_argument("--html", help="Optional HTML quality dashboard output path.")
+    quality_parser.add_argument(
+        "--maximum-excluded-rate",
+        type=Decimal,
+        default=Decimal("0.50"),
+        help="Review threshold for excluded share of observations (default: 0.50).",
+    )
+    quality_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Quality report cutoff in YYYY-MM-DD format.",
     )
     etf_parser = subparsers.add_parser(
         "etf-holdings-activity",
@@ -959,6 +982,23 @@ def main() -> int:
         print(
             f"Wrote source governance for {len(providers)} providers "
             f"to {args.report}."
+        )
+        return 0
+
+    if args.command == "operations-quality":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            snapshot = build_quality_snapshot(args.database, args.maximum_excluded_rate)
+            write_quality_report(args.report, snapshot, as_of)
+            if args.html:
+                write_quality_html(args.html, snapshot, as_of)
+        except (WarehouseError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Checked {snapshot['run_count']} stored evaluation runs; "
+            f"{snapshot['blocked_count']} blocked and "
+            f"{snapshot['review_required_count']} require review. "
+            f"Report written to {args.report}."
         )
         return 0
 

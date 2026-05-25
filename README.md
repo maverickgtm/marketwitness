@@ -571,6 +571,10 @@ La ruta `/dashboard/governance` presenta controles de fuente y observaciones
 excluidas o pendientes por corrida. Las nuevas evaluaciones conservan
 `provider_id` y enlazan su control de publicacion; resultados historicos sin
 ese campo se identifican como `unlinked` en vez de inferirlo por la URL.
+La ruta `/dashboard/operations` presenta el monitor de calidad de corridas:
+revisa sellos reproducibles, entradas obligatorias, linaje de proveedor y
+tasas altas de exclusion. Pasar este monitor no autoriza publicar fuentes que
+aun requieran licencia o revision de terminos.
 
 Endpoints iniciales:
 
@@ -589,6 +593,8 @@ Endpoints iniciales:
 | `/api/v1/runs/{run_id}/export/rankings-firms.csv` | Descarga CSV del ranking con los mismos filtros |
 | `/api/v1/governance/sources` | Registro de fuentes y controles de publicacion, filtrable por estado y clase |
 | `/dashboard/governance` | Pagina de auditoria de fuentes y observaciones excluidas |
+| `/api/v1/operations/quality` | Monitor de calidad de corridas, con umbral configurable de exclusiones |
+| `/dashboard/operations` | Pagina operativa de corridas aprobadas, en revision o bloqueadas |
 
 La documentación interactiva local queda disponible en `/docs` al iniciar el
 servidor. La API omite las rutas locales de los archivos originales y presenta
@@ -628,6 +634,8 @@ build/demo/corporate-actions.md
 build/demo/corporate-actions.html
 build/demo/evaluations-actions-guarded.csv
 build/demo/report-actions-guarded.md
+build/demo/operations-quality.md
+build/demo/operations-quality.html
 build/demo/ipo-watch.md
 build/demo/ipo-watch.html
 build/demo/sec-ipo-discovery.csv

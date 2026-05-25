@@ -90,10 +90,13 @@ verificables de cotizaciones tecnologicas/estrategicas.
 ## Milestone 5: Operacion Publica (`v1.0`)
 
 - [ ] Licencia de datos apta para mostrar resultados publicamente.
-- [ ] Actualizaciones programadas y monitoreo de calidad.
+- [ ] Actualizaciones programadas del scorecard con fuentes publicables.
+- [x] Monitoreo de calidad por corrida con bloqueo de entradas/linaje
+  incompletos y revision visible de exclusiones anormales.
 - [x] Versionado de datasets y metodologia por corrida, con huella estable de
   entradas y comparacion visible en API/dashboard.
 - [ ] Informes periodicos reproducibles.
+- [x] Informe operativo reproducible de calidad, disponible por CLI y dashboard.
 - [ ] Revision legal del producto y de sus disclaimers.
 
 ## Decisiones Pendientes

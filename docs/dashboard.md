@@ -63,6 +63,21 @@ vista muestra el control de publicacion enlazado en cada exclusion o pendiente.
 Entradas historicas sin ese linaje permanecen visibles como `unlinked`, sin
 inferir una fuente por la URL.
 
+## Vista Operativa: Operations Quality
+
+Objetivo: impedir que una tarea recurrente publique o destaque una corrida
+incompleta sin hacer visible el problema.
+
+- La ruta `/dashboard/operations` consume
+  `/api/v1/operations/quality?maximum_excluded_rate=...`.
+- Valida que cada corrida tenga version metodologica y huella del dataset.
+- Exige activos de entrada `targets` y `prices` antes de considerarla completa.
+- Bloquea resultados con observaciones sin `provider_id` declarado.
+- Envia a revision corridas cuya tasa de exclusiones supera el umbral
+  operativo o cuya muestra evaluada no alcanza el minimo configurado.
+- Un estado `quality_pass` es solo un control tecnico; la autorizacion de
+  publicacion permanece bajo `Source Governance`.
+
 ## Pagina 1: Financials Scorecard
 
 Objetivo: auditar `price targets` sobre financials de Estados Unidos.

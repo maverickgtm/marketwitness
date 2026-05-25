@@ -27,6 +27,8 @@ class ApiTests(unittest.TestCase):
         root = Path(self.directory.name)
         asset = root / "targets.csv"
         asset.write_text("auditable input\n", encoding="utf-8")
+        prices = root / "prices.csv"
+        prices.write_text("auditable prices\n", encoding="utf-8")
         self.database = root / "targetaudit.duckdb"
         evaluations = [
             Evaluation(
@@ -94,7 +96,7 @@ class ApiTests(unittest.TestCase):
                 minimum_sample=1,
                 transaction_cost_bps_per_side=Decimal("10"),
                 universe_id="financials-demo",
-                asset_paths={"targets": asset},
+                asset_paths={"targets": asset, "prices": prices},
                 dataset_label="API fixture",
             ),
             evaluations,
@@ -109,7 +111,7 @@ class ApiTests(unittest.TestCase):
                 minimum_sample=1,
                 transaction_cost_bps_per_side=Decimal("10"),
                 universe_id="financials-demo",
-                asset_paths={"targets": alternate_asset},
+                asset_paths={"targets": alternate_asset, "prices": prices},
                 dataset_label="Alternate API fixture",
             ),
             evaluations,
@@ -133,7 +135,10 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(run.json()["methodology_version"], "0.3.3")
         self.assertEqual(run.json()["dataset_label"], "API fixture")
         self.assertEqual(len(run.json()["dataset_fingerprint"]), 64)
-        self.assertEqual(run.json()["assets"][0]["asset_role"], "targets")
+        self.assertEqual(
+            {asset["asset_role"] for asset in run.json()["assets"]},
+            {"prices", "targets"},
+        )
         self.assertNotIn("asset_path", run.json()["assets"][0])
 
     def test_serves_firm_ranking_using_methodology_outputs(self) -> None:
@@ -174,6 +179,19 @@ class ApiTests(unittest.TestCase):
             comparison["comparability"], "same_methodology_different_dataset"
         )
         self.assertEqual(comparison["deltas"]["evaluated_count"], 0)
+
+    def test_serves_operations_quality_monitor_and_dashboard(self) -> None:
+        response = self.client.get("/api/v1/operations/quality")
+        page = self.client.get("/dashboard/operations")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["run_count"], 2)
+        self.assertEqual(response.json()["quality_pass_count"], 2)
+        self.assertEqual(response.json()["blocked_count"], 0)
+        self.assertIn("does not grant data publication rights", response.json()["publication_note"])
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Ship evidence,", page.text)
+        self.assertIn("operations/quality", page.text)
 
     def test_serves_governance_dashboard_and_filtered_source_controls(self) -> None:
         page = self.client.get("/dashboard/governance")
