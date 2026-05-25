@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 import importlib.util
+import io
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
+from unittest.mock import patch
 
+from targetaudit.cli import main
 from targetaudit.models import Evaluation
 from targetaudit.operations_quality import (
     build_quality_snapshot,
@@ -62,6 +66,59 @@ class OperationsQualityTests(unittest.TestCase):
             review = next(run for run in snapshot["runs"] if run["run_id"] == "review-exclusions")
             self.assertEqual(review["quality_status"], "review_required")
             self.assertIn("excluded_rate_high", [finding["code"] for finding in review["findings"]])
+            focused = build_quality_snapshot(database, Decimal("0.50"), "quality-pass")
+            self.assertEqual(focused["selected_run_id"], "quality-pass")
+            self.assertEqual(focused["run_count"], 1)
+            self.assertEqual(focused["quality_pass_count"], 1)
+
+    def test_cli_release_gate_writes_report_and_fails_reviewed_run(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            database = root / "targetaudit.duckdb"
+            report = root / "quality.md"
+            store_evaluation_run(
+                database,
+                EvaluationRun(
+                    run_id="review-gate",
+                    as_of=date(2025, 1, 1),
+                    minimum_sample=2,
+                    transaction_cost_bps_per_side=Decimal("10"),
+                    universe_id="financials",
+                    asset_paths=_assets(root),
+                    dataset_label="Review gate fixture",
+                ),
+                [_evaluation("scored", "evaluated", "synthetic-demo")],
+            )
+            argv = [
+                "targetaudit",
+                "operations-quality",
+                "--database",
+                str(database),
+                "--report",
+                str(report),
+                "--run-id",
+                "review-gate",
+                "--require-quality-pass",
+                "--as-of",
+                "2026-05-24",
+            ]
+
+            with patch("sys.argv", argv), redirect_stdout(io.StringIO()) as output:
+                exit_code = main()
+
+            self.assertEqual(exit_code, 2)
+            self.assertIn("Release gate failed", output.getvalue())
+            self.assertIn("ranking_sample_not_met", report.read_text(encoding="utf-8"))
+
+            missing_scope = argv[:]
+            missing_scope.remove("--run-id")
+            missing_scope.remove("review-gate")
+            with (
+                patch("sys.argv", missing_scope),
+                redirect_stderr(io.StringIO()),
+                self.assertRaises(SystemExit),
+            ):
+                main()
 
     def test_blocks_missing_required_inputs_and_provider_lineage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

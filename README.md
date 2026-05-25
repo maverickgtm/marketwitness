@@ -576,6 +576,22 @@ revisa sellos reproducibles, entradas obligatorias, linaje de proveedor y
 tasas altas de exclusion. Pasar este monitor no autoriza publicar fuentes que
 aun requieran licencia o revision de terminos.
 
+Para una actualización automatizada del scorecard, la corrida candidata se
+puede detener antes de publicarla:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit operations-quality \
+  --database build/live/targetaudit.duckdb \
+  --run-id RUN-ID \
+  --report build/live/operations-quality.md \
+  --html build/live/operations-quality.html \
+  --require-quality-pass \
+  --as-of YYYY-MM-DD
+```
+
+El informe se escribe aunque la compuerta falle; un estado `blocked` o
+`review_required` devuelve código de salida `2` para detener el pipeline.
+
 Endpoints iniciales:
 
 | Ruta | Uso |
@@ -593,7 +609,7 @@ Endpoints iniciales:
 | `/api/v1/runs/{run_id}/export/rankings-firms.csv` | Descarga CSV del ranking con los mismos filtros |
 | `/api/v1/governance/sources` | Registro de fuentes y controles de publicacion, filtrable por estado y clase |
 | `/dashboard/governance` | Pagina de auditoria de fuentes y observaciones excluidas |
-| `/api/v1/operations/quality` | Monitor de calidad de corridas, con umbral configurable de exclusiones |
+| `/api/v1/operations/quality?run_id=RUN-ID` | Monitor de calidad global o de una corrida candidata, con umbral configurable de exclusiones |
 | `/dashboard/operations` | Pagina operativa de corridas aprobadas, en revision o bloqueadas |
 
 La documentación interactiva local queda disponible en `/docs` al iniciar el

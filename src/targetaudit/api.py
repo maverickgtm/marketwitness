@@ -124,8 +124,13 @@ def create_app(
     @application.get("/api/v1/operations/quality")
     def quality_monitor(
         maximum_excluded_rate: Decimal = Query(default=Decimal("0.50"), ge=0, le=1),
+        run_id: str = "",
     ) -> dict[str, object]:
-        return _warehouse_call(build_quality_snapshot, database, maximum_excluded_rate)
+        if run_id:
+            _read_run(database, run_id)
+        return _warehouse_call(
+            build_quality_snapshot, database, maximum_excluded_rate, run_id
+        )
 
     @application.get("/api/v1/runs/compare")
     def compare_runs(left_run_id: str, right_run_id: str) -> dict[str, object]:

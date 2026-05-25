@@ -96,7 +96,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Versionado de datasets y metodologia por corrida, con huella estable de
   entradas y comparacion visible en API/dashboard.
 - [ ] Informes periodicos reproducibles.
-- [x] Informe operativo reproducible de calidad, disponible por CLI y dashboard.
+- [x] Informe operativo reproducible de calidad, disponible por CLI, dashboard
+  y monitor local recurrente del warehouse live.
 - [ ] Revision legal del producto y de sus disclaimers.
 
 ## Decisiones Pendientes

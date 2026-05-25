@@ -122,9 +122,11 @@ almacenadas antes de actualizar una vista publica o distribuir un reporte:
 ```bash
 PYTHONPATH=src python3 -m targetaudit operations-quality \
   --database build/live/targetaudit.duckdb \
+  --run-id RUN-ID \
   --report build/live/operations-quality.md \
   --html build/live/operations-quality.html \
   --maximum-excluded-rate 0.50 \
+  --require-quality-pass \
   --as-of YYYY-MM-DD
 ```
 
@@ -135,7 +137,15 @@ muestra evaluada no alcanza el mínimo del ranking. `quality_pass` significa
 que la corrida pasó verificaciones operativas; no sustituye la revisión de
 licencias y permisos en Source Governance.
 
-La API sirve el mismo cálculo en `/api/v1/operations/quality` y la página
+Con `--run-id` una ejecución automatizada verifica únicamente la corrida que
+intenta distribuir. `--require-quality-pass` conserva los reportes de
+evidencia, pero finaliza con código `2` si la corrida queda `blocked` o
+`review_required`, impidiendo que un pipeline publique resultados sin revisión.
+La compuerta exige `--run-id`: nunca aprueba por accidente una corrida antigua
+solo porque el warehouse contiene resultados previos.
+
+La API sirve el mismo cálculo en
+`/api/v1/operations/quality?run_id=RUN-ID` y la página
 `/dashboard/operations` lo presenta para seguimiento durante ejecuciones
 recurrentes.
 
@@ -538,7 +548,7 @@ admisión o cotización completada.
 
 ## Automatizaciones Locales Activas
 
-En la aplicacion Codex se configuraron tres ejecuciones recurrentes locales:
+En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
 
 - `TargetAudit IPO Watch diario`: consulta el indice SEC, conserva snapshots,
   genera `SEC IPO Alerts` y resume posibles registros, prospectos o retiros
@@ -554,9 +564,13 @@ En la aplicacion Codex se configuraron tres ejecuciones recurrentes locales:
   a las `21:50` hora de Guatemala, comenzando el `2026-05-25`; establece una
   linea base en su primera corrida y luego descarga solo ZIP nuevos para
   regenerar la serie regulatoria `XLF` cuando existan datos locales validos.
+- `TargetAudit Scorecard Quality diario`: comprueba de lunes a viernes el
+  warehouse `build/live/targetaudit.duckdb`, genera el reporte operativo si
+  existen corridas reales autorizadas y reporta claramente cuando aun no hay
+  una corrida live. Nunca sustituye esa ausencia con el demo.
 
-Las tres tareas tratan los eventos como informacion regulatoria para investigar,
-no como instrucciones para tomar posiciones.
+Las cuatro tareas tratan evidencia operativa o eventos regulatorios para
+investigar, no como instrucciones para tomar posiciones.
 
 El contraste FCA NSM distingue entre un emisor sin documento encontrado y
 una coincidencia documental que requiere revisión. No promueve

@@ -404,10 +404,20 @@ def main() -> int:
     quality_parser.add_argument("--report", required=True, help="Markdown quality report path.")
     quality_parser.add_argument("--html", help="Optional HTML quality dashboard output path.")
     quality_parser.add_argument(
+        "--run-id",
+        default="",
+        help="Optional stored run identifier to quality-check in isolation.",
+    )
+    quality_parser.add_argument(
         "--maximum-excluded-rate",
         type=Decimal,
         default=Decimal("0.50"),
         help="Review threshold for excluded share of observations (default: 0.50).",
+    )
+    quality_parser.add_argument(
+        "--require-quality-pass",
+        action="store_true",
+        help="Return exit status 2 if a checked run is blocked or requires review.",
     )
     quality_parser.add_argument(
         "--as-of",
@@ -986,9 +996,13 @@ def main() -> int:
         return 0
 
     if args.command == "operations-quality":
+        if args.require_quality_pass and not args.run_id:
+            parser.error("--require-quality-pass requires --run-id for the candidate run.")
         try:
             as_of = date.fromisoformat(args.as_of)
-            snapshot = build_quality_snapshot(args.database, args.maximum_excluded_rate)
+            snapshot = build_quality_snapshot(
+                args.database, args.maximum_excluded_rate, args.run_id
+            )
             write_quality_report(args.report, snapshot, as_of)
             if args.html:
                 write_quality_html(args.html, snapshot, as_of)
@@ -1000,6 +1014,11 @@ def main() -> int:
             f"{snapshot['review_required_count']} require review. "
             f"Report written to {args.report}."
         )
+        if args.require_quality_pass and (
+            snapshot["blocked_count"] or snapshot["review_required_count"]
+        ):
+            print("Release gate failed: all checked runs must have quality_pass status.")
+            return 2
         return 0
 
     if args.command == "etf-holdings-activity":

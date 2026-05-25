@@ -7,7 +7,12 @@ from html import escape
 from pathlib import Path
 from typing import Any
 
-from .storage import list_run_summaries, read_evaluations, read_run_assets
+from .storage import (
+    list_run_summaries,
+    read_evaluations,
+    read_run_assets,
+    read_run_summary,
+)
 
 REQUIRED_INPUT_ROLES = {"prices", "targets"}
 
@@ -15,9 +20,15 @@ REQUIRED_INPUT_ROLES = {"prices", "targets"}
 def build_quality_snapshot(
     database_path: str | Path,
     maximum_excluded_rate: Decimal = Decimal("0.50"),
+    run_id: str = "",
 ) -> dict[str, Any]:
     if maximum_excluded_rate < 0 or maximum_excluded_rate > 1:
         raise ValueError("Maximum excluded rate must be between zero and one.")
+    summaries = (
+        [read_run_summary(database_path, run_id)]
+        if run_id
+        else list_run_summaries(database_path)
+    )
     runs = [
         _assess_run(
             run,
@@ -25,10 +36,11 @@ def build_quality_snapshot(
             read_evaluations(database_path, run["run_id"]),
             maximum_excluded_rate,
         )
-        for run in list_run_summaries(database_path)
+        for run in summaries
     ]
     statuses = Counter(run["quality_status"] for run in runs)
     return {
+        "selected_run_id": run_id or None,
         "maximum_excluded_rate": float(maximum_excluded_rate),
         "run_count": len(runs),
         "quality_pass_count": statuses["quality_pass"],
