@@ -23,6 +23,7 @@ from .dashboard_web import (
     operations_quality_html,
     provider_approvals_html,
     public_use_policy_html,
+    report_center_html,
     release_center_html,
     scorecard_readiness_html,
     source_governance_html,
@@ -101,6 +102,12 @@ def create_app(
     )
     def open_edition() -> str:
         return open_edition_html()
+
+    @application.get(
+        "/dashboard/reports", response_class=HTMLResponse, include_in_schema=False
+    )
+    def report_center() -> str:
+        return report_center_html()
 
     @application.get(
         "/dashboard/extensions", response_class=HTMLResponse, include_in_schema=False

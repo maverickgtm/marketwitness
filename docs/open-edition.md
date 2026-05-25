@@ -112,9 +112,10 @@ python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 ```
 
 Abrir `http://127.0.0.1:8000/` muestra la portada `Open Edition`.
-Desde ella se abren `/dashboard/ipo-watch`, `/dashboard/etf-regulatory` y
-`/dashboard/document-checks`, que solo sirven artefactos HTML conocidos
-producidos por `make demo`.
+Desde ella se abre `/dashboard/reports`, un indice de
+`/dashboard/ipo-watch`, `/dashboard/etf-regulatory`,
+`/dashboard/document-checks` y `/dashboard/rwa-watch`; estas rutas solo
+sirven artefactos HTML conocidos producidos por `make demo`.
 La portada tambien enlaza `/dashboard/policy`, que debe revisarse antes de
 habilitar datos live o publicar resultados.
 Tambien enlaza `/dashboard/market-context`, cuya carga de TradingView requiere
@@ -133,7 +134,9 @@ durante 30 dias, un artefacto descargable con:
 La ejecucion no necesita secrets, claves API ni suscripciones porque procesa
 exclusivamente fixtures redistribuibles incluidos en el repositorio. No
 consulta filings live, no incluye holdings reales de emisores y no publica un
-ranking real de analistas.
+ranking real de analistas. El bundle puede recorrerse en la aplicacion desde
+`/dashboard/reports`, que enlaza solo rutas permitidas y no expone el
+directorio generado como explorador de archivos.
 
 Para recolectar datos SEC públicos en vez de utilizar fixtures:
 

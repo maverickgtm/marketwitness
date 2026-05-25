@@ -33,11 +33,27 @@ comprar datos comerciales.
 - Presenta SEC IPO Watch y SEC N-PORT como capacidades gratuitas con límites
   visibles, incluida la identificación `User-Agent` exigida para solicitudes
   SEC live.
-- Enlaza reportes generados autorizados mediante `/dashboard/ipo-watch`,
-  `/dashboard/etf-regulatory` y `/dashboard/document-checks`; la API no expone
-  archivos arbitrarios de la carpeta de construcción.
+- Enlaza `/dashboard/reports` como indice de los reportes generados permitidos
+  y desde alli expone `/dashboard/ipo-watch`, `/dashboard/etf-regulatory` y
+  `/dashboard/document-checks`; la API no expone archivos arbitrarios de la
+  carpeta de construccion.
 - El ranking real de analistas permanece como ampliación voluntaria y nunca
   como condición para usar la edición pública.
+
+## Pagina: Report Center
+
+Objetivo: volver navegable el bundle semanal de Open Edition sin abrir acceso
+general al directorio de reportes construidos.
+
+- La ruta `/dashboard/reports` agrupa las cuatro paginas HTML ya permitidas:
+  IPO Watch, ETF Regulatory Holdings, Public Document Checks y RWA Watch
+  Sandbox.
+- Explica que el artefacto periodico generado en GitHub Actions usa fixtures
+  redistribuibles, no consultas live ni rankings reales.
+- Enlaza controles operativos de politica, gobernanza y Release Center para
+  que los limites de cada reporte queden visibles durante su lectura.
+- No agrega un endpoint de archivos: cada enlace corresponde a una ruta fija
+  servida por la API.
 
 ## Pagina: Market Context
 

@@ -48,7 +48,7 @@ def open_edition_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Open Edition / <a href="/dashboard/market-context">Market Context</a> / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/extensions">Licensed Extensions</a> / <a href="/dashboard/financials">Financials Sandbox</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Governance</a></nav>
+    <nav>TargetAudit / Open Edition / <a href="/dashboard/reports">Report Center</a> / <a href="/dashboard/market-context">Market Context</a> / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/extensions">Licensed Extensions</a> / <a href="/dashboard/financials">Financials Sandbox</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Governance</a></nav>
     <h1>Market research.<br>No paid data required.</h1>
     <p class="lead" id="promise">Loading the zero-cost product profile...</p>
     <p class="meta" id="reviewed">Loading source controls...</p>
@@ -96,6 +96,75 @@ def open_edition_html() -> str:
     }
     initialize();
   </script>
+</body>
+</html>"""
+
+
+def report_center_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Report Center</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --line:#20343d; --text:#edf1ef;
+      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1240px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(40px,5vw,62px); line-height:1.04; margin:38px 0 14px; }
+    h2 { margin:42px 0 16px; font-size:22px; }
+    h3 { margin:12px 0 8px; }
+    .lead { color:var(--muted); font-size:18px; max-width:920px; }
+    .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:34px 0; }
+    .card,.report,.control,.notice { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:18px 20px; }
+    .card p { color:var(--muted); margin:0; }
+    .card strong { color:var(--mint); display:block; font-size:20px; margin-top:5px; }
+    .notice { border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); margin:18px 0; }
+    .reports { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+    .report,.control { padding:18px; }
+    .report p,.report small,.control p { color:var(--muted); display:block; }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; }
+    .fixture { color:var(--blue); background:rgba(98,166,255,.12); }
+    .regulatory { color:var(--mint); background:rgba(86,218,172,.12); }
+    .controls { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    @media(max-width:900px) { .cards,.reports,.controls { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav><a href="/dashboard/open">Open Edition</a> / Report Center / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/financials">Financials Sandbox</a></nav>
+    <h1>Reproducible reports.<br>Known routes only.</h1>
+    <p class="lead">A reading room for the report pages included in the tested Open Edition bundle. It exposes approved dashboard routes, never arbitrary files from the generated-report directory.</p>
+    <p class="meta">Open Edition bundle / Weekly GitHub Actions build / 30-day artifact retention</p>
+    <section class="cards">
+      <article class="card"><p>Generated report routes</p><strong>4 allowlisted pages</strong></article>
+      <article class="card"><p>Bundle schedule</p><strong>Weekly + manual</strong></article>
+      <article class="card"><p>Required paid data</p><strong>None</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice"><strong>Scope:</strong> the weekly GitHub artifact is generated from redistributable fixtures. These pages demonstrate monitoring and audit workflows; they are not live market alerts, analyst rankings or investment recommendations.</p>
+    <h2>Generated Reports</h2>
+    <section class="reports">
+      <article class="report"><span class="pill fixture">fixture workflow</span><h3>IPO Watch</h3><p>Reviewed IPO-watch example with SEC-shaped discovery and documented decisions.</p><small>Demonstration evidence, not a live SEC scan.</small><a href="/dashboard/ipo-watch">Open report</a></article>
+      <article class="report"><span class="pill regulatory">regulatory periodic</span><h3>ETF Regulatory Holdings</h3><p>N-PORT period comparison for the regulatory ETF evidence layer.</p><small>Periodic filing evidence, not real-time ETF trading.</small><a href="/dashboard/etf-regulatory">Open report</a></article>
+      <article class="report"><span class="pill regulatory">document check</span><h3>Public Document Checks</h3><p>Documentary corroboration example for monitored listing candidates.</p><small>A document match does not confirm admission or trading.</small><a href="/dashboard/document-checks">Open report</a></article>
+      <article class="report"><span class="pill fixture">synthetic sandbox</span><h3>RWA Watch Sandbox</h3><p>Auditable tokenized-asset observation format using synthetic rows only.</p><small>No live xStocks, venue or issuer feed is collected.</small><a href="/dashboard/rwa-watch">Open report</a></article>
+    </section>
+    <h2>Operational Controls</h2>
+    <section class="controls">
+      <article class="control"><h3>Public Use Policy</h3><p>See data boundaries, blocked sources and no-recommendation rules.</p><a href="/dashboard/policy">Open policy</a></article>
+      <article class="control"><h3>Source Governance</h3><p>Inspect provider states, rights review and excluded observations.</p><a href="/dashboard/governance">Open governance</a></article>
+      <article class="control"><h3>Release Center</h3><p>Review why demo evidence cannot become a public real-data scorecard.</p><a href="/dashboard/release">Open release controls</a></article>
+    </section>
+  </main>
 </body>
 </html>"""
 

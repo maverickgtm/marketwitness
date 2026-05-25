@@ -207,8 +207,22 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(snapshot.json()["public_data_ready_count"], 3)
         self.assertEqual(snapshot.json()["attributed_widget_count"], 1)
         self.assertEqual(snapshot.json()["optional_extension_count"], 1)
+        self.assertIn("/dashboard/reports", page.text)
         self.assertIn("/dashboard/policy", page.text)
         self.assertIn("/dashboard/market-context", page.text)
+
+    def test_serves_allowlisted_report_center_for_periodic_bundle(self) -> None:
+        page = self.client.get("/dashboard/reports")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Reproducible reports.", page.text)
+        self.assertIn("Known routes only.", page.text)
+        self.assertIn("4 allowlisted pages", page.text)
+        self.assertIn("/dashboard/ipo-watch", page.text)
+        self.assertIn("/dashboard/etf-regulatory", page.text)
+        self.assertIn("/dashboard/document-checks", page.text)
+        self.assertIn("/dashboard/rwa-watch", page.text)
+        self.assertIn("not live market alerts", page.text)
 
     def test_serves_attributed_market_context_without_a_data_endpoint(self) -> None:
         page = self.client.get("/dashboard/market-context")

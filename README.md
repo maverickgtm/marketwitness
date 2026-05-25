@@ -845,6 +845,9 @@ reales. La ruta
 `/dashboard/market-context` muestra el benchmark `XLF` en un widget atribuido
 de TradingView que no alimenta el scorecard ni se almacena como evidencia. La
 ruta
+`/dashboard/reports` organiza las cuatro paginas generadas permitidas del
+bundle semanal de Open Edition y enlaza sus controles de publicacion; no
+expone libremente archivos del directorio de construccion. La ruta
 `/dashboard/extensions` presenta proveedores que un usuario puede contratar
 por su cuenta, sus precios visibles y los derechos que aun bloquean la
 publicacion de rankings reales. La ruta
@@ -916,6 +919,7 @@ Endpoints iniciales:
 | `/api/v1/health` | Estado y versión metodológica |
 | `/api/v1/open-edition` | Capacidades ejecutables sin suscripciones pagadas y límites declarados |
 | `/dashboard/open` | Portada de la edición gratuita de GitHub |
+| `/dashboard/reports` | Centro de reportes reproducibles con las rutas generadas permitidas del bundle Open Edition |
 | `/api/v1/policy/public-use` | Politica estructurada de uso responsable, capas de datos y fuentes bloqueadas |
 | `/dashboard/policy` | Pagina publica de no-recomendacion y derechos de datos pendientes |
 | `/dashboard/market-context` | Widget atribuido de TradingView para contexto visual de `XLF`, fuera del scorecard |
