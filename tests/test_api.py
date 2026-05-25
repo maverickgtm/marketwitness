@@ -279,7 +279,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Open code.", page.text)
         self.assertIn("Run Exclusions And Pending", page.text)
         self.assertIn("Provider Control", page.text)
-        self.assertEqual(sources.json()["provider_count"], 23)
+        self.assertEqual(sources.json()["provider_count"], 24)
         self.assertGreater(sources.json()["open_review_count"], 0)
         self.assertEqual(blocked.json()["sources"][0]["provider_id"], "tipranks-reference")
         self.assertEqual(len(holdings.json()["sources"]), 3)

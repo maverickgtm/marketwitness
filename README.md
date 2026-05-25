@@ -54,6 +54,12 @@ y FMP exige un acuerdo especifico de display/licencia. TradingView puede
 anadirse mas adelante como widget gratuito atribuido para contexto visual, no
 como fuente de historial de analistas.
 
+Bybit aporta una oportunidad diferente: su producto `xStocks` lista tokens de
+acciones y ETF estadounidenses en Spot, respaldados 1:1 por Backed y
+operables 24/7. Su API V5 documenta estos instrumentos, por lo que queda como
+candidato gratuito para un futuro monitor de activos tokenizados (`RWA
+Watch`), no como fuente de ratings, price targets o recomendaciones.
+
 TargetAudit nace de una pregunta sencilla: si una firma publica un precio
 objetivo para una accion, ?ese pronostico se cumplio y una estrategia basada en
 el habria superado una alternativa pasiva?
@@ -109,11 +115,11 @@ PYTHONPATH=src python3 -m targetaudit provider-approvals \
   --as-of YYYY-MM-DD
 ```
 
-El expediente opcional sigue cinco candidatos: Benzinga, Alpha Vantage,
-Nasdaq Daily List, NYSE y S&P DJI. Cuatro son críticos para habilitar targets,
-precios, acciones corporativas y universo histórico de un ranking real;
-ninguno está aprobado para salida pública todavía, y ninguno es requisito
-para `Open Edition`.
+El expediente opcional sigue siete candidatos: Benzinga, Alpha Vantage,
+Nasdaq Daily List, NYSE, S&P DJI, Finnhub y Financial Modeling Prep. Cuatro
+son críticos para habilitar targets, precios, acciones corporativas y universo
+histórico de un ranking real; ninguno está aprobado para salida pública
+todavía, y ninguno es requisito para `Open Edition`.
 
 Una revisión humana documentada genera copias actualizadas del registro y la
 cola, manteniendo intactos los archivos base:

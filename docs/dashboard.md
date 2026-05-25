@@ -45,6 +45,8 @@ confundir un precio disponible con derechos de publicacion publica.
   mostrando que los derechos de display o redistribucion requieren acuerdo.
 - Mantiene TradingView como posible widget de contexto visual atribuido,
   separado de la ingesta de targets y del ranking.
+- Mantiene Bybit `xStocks` fuera de esta pagina: pertenece a un eventual
+  monitor `RWA Watch`, no a las fuentes de price targets de analistas.
 - Expone enlaces oficiales a producto, precio y terminos.
 - Mantiene el contador de proveedores aprobados para output publico en cero
   mientras no exista permiso escrito.

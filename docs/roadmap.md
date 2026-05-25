@@ -100,6 +100,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   opciones contractuales pendientes de derechos de output publico.
 - [ ] Widget atribuido de TradingView para contexto visual de mercado, sin
   usarlo como fuente de datos del scorecard.
+- [ ] Diseno de `RWA Watch` para xStocks de Bybit, usando el endpoint V5
+  documentado solo despues de confirmar terminos de display y retencion.
 - [ ] Licencia o aportación autorizada opcional para mostrar rankings reales
   de analistas públicamente.
 - [ ] Actualizaciones programadas del scorecard real con fuentes opcionales

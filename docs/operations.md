@@ -227,7 +227,7 @@ PYTHONPATH=src python3 -m targetaudit provider-approvals \
   --as-of YYYY-MM-DD
 ```
 
-La cola inicial conserva cinco candidatos y cuatro aprobaciones críticas
+La cola inicial conserva siete candidatos y cuatro aprobaciones críticas
 abiertas. Una fila aprobada que contradiga `source_registry.csv` hace fallar
 el reporte: la evidencia de permiso y la gobernanza deben coincidir antes de
 activar una fuente. La vista web está disponible en `/dashboard/approvals`.

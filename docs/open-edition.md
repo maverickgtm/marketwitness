@@ -33,6 +33,10 @@ Un widget oficial de TradingView podria anadirse como contexto visual de
 mercado conservando su atribucion. Ese componente no alimentaria el ranking
 ni reemplazaria una licencia de historial de targets.
 
+Bybit `xStocks` queda como candidato para una expansion futura `RWA Watch`:
+son tokens de acciones y ETF, no analyst targets ni acciones directas. El
+endpoint V5 se evaluaria solo tras documentar permisos de uso publico.
+
 ## Capacidades Incluidas
 
 ### Financials Scorecard Sandbox

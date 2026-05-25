@@ -41,8 +41,8 @@ copias revisadas de ambos registros y su auditoría. El fixture inicial
 documenta que la página premium de Alpha Vantage todavía no demuestra permiso
 de salida pública y por eso conserva el expediente pendiente.
 
-Al `2026-05-24`, el inventario contiene 23 fuentes: 15 conectores o fixtures
-implementados, 16 fuentes que aun exigen revision de terminos/licencia para
+Al `2026-05-24`, el inventario contiene 24 fuentes: 15 conectores o fixtures
+implementados, 17 fuentes que aun exigen revision de terminos/licencia para
 uso público real, 1 integracion limitada a descarga manual y 1 referencia
 bloqueada para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto
@@ -87,6 +87,26 @@ publica manteniendo la atribucion original. Es adecuado para contexto visual
 de mercado, no para almacenar o puntuar historial de analistas:
 <https://www.tradingview.com/widget-docs/widgets/charts/> y
 <https://www.tradingview.com/policies/>.
+
+## Activos Tokenizados Y Bybit
+
+Bybit sirve para una expansion distinta del scorecard. La revision oficial al
+`2026-05-24` confirma dos productos separados:
+
+| Producto Bybit | Que Ofrece | Encaje En TargetAudit |
+|---|---|---|
+| `xStocks` en Spot | Tokens de acciones y ETF estadounidenses respaldados 1:1 por Backed; trading 24/7 | Candidato para un futuro `RWA Watch` o comparador de desvio contra el activo subyacente |
+| TradFi (MT5) Stock CFDs | Mas de 150 CFDs de acciones USA; derivados sin propiedad y con apalancamiento hasta `5:1` | Contexto de producto/riesgo solamente; no fuente de targets ni de acciones reales |
+
+La API V5 documenta `GET /v5/market/instruments-info` para Spot y el campo
+`xstockMultiplier` cuando `symbolType=xstocks`, lo que demuestra una ruta
+programatica para descubrir instrumentos. Antes de mostrar series o conservar
+datos reales en un release publico se deben revisar terminos de retencion y
+display; por ahora queda como fuente candidata, no conector implementado.
+
+Esta linea tampoco resuelve la pregunta inicial de analistas: Bybit ofrece
+mercado para activos tokenizados o CFDs, no un historial de pronosticos de
+Roth MKM, KBW, UBS, Citi o Barclays.
 
 ## Precios Ajustados Y Mercado
 
@@ -379,6 +399,10 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - Koyfin download restrictions: <https://www.koyfin.com/help/faq/can-i-download-data/>
 - TradingView chart widgets: <https://www.tradingview.com/widget-docs/widgets/charts/>
 - TradingView policies: <https://www.tradingview.com/policies/>
+- Bybit xStocks FAQ: <https://www.bybit.com/en/help-center/article/FAQ-xStocks-on-Bybit>
+- Bybit V5 instruments info: <https://bybit-exchange.github.io/docs/v5/market/instrument>
+- Bybit TradFi contracts: <https://www.bybitglobal.com/en/help-center/article/Contracts-Available-on-TradFi-MT5-and-Specifications>
+- Bybit restricted jurisdictions: <https://www.bybit.com/en/help-center/article/Service-Restricted-Countries>
 - Yahoo Finance data providers: <https://help.yahoo.com/kb/SLN2310.html>
 - Investing.com terms: <https://www.investing.com/about-us/terms-and-conditions>
 - LSEG I/B/E/S: <https://www.lseg.com/en/data-analytics/financial-data/company-data/ibes-estimates>
