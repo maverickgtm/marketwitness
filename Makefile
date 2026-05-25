@@ -83,19 +83,29 @@ demo:
 		--report build/demo/issuer-confirmations.md \
 		--html build/demo/issuer-confirmations.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit source-registry \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit provider-approval-review \
 		--registry data/samples/source_registry.csv \
+		--approvals data/samples/provider_approval_queue.csv \
+		--decisions data/samples/provider_approval_decisions.csv \
+		--output-registry build/demo/provider-reviewed-source-registry.csv \
+		--output-approvals build/demo/provider-reviewed-approval-queue.csv \
+		--output build/demo/provider-approval-review-outcomes.csv \
+		--report build/demo/provider-approval-review-outcomes.md \
+		--html build/demo/provider-approval-review-outcomes.html \
+		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit source-registry \
+		--registry build/demo/provider-reviewed-source-registry.csv \
 		--report build/demo/source-registry.md \
 		--html build/demo/source-registry.html \
 		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit provider-approvals \
-		--registry data/samples/source_registry.csv \
-		--approvals data/samples/provider_approval_queue.csv \
+		--registry build/demo/provider-reviewed-source-registry.csv \
+		--approvals build/demo/provider-reviewed-approval-queue.csv \
 		--report build/demo/provider-approvals.md \
 		--html build/demo/provider-approvals.html \
 		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit scorecard-readiness \
-		--registry data/samples/source_registry.csv \
+		--registry build/demo/provider-reviewed-source-registry.csv \
 		--report build/demo/scorecard-readiness.md \
 		--html build/demo/scorecard-readiness.html \
 		--as-of 2026-05-24
@@ -266,7 +276,7 @@ demo:
 		--maximum-excluded-rate 0.50 \
 		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit scorecard-release \
-		--registry data/samples/source_registry.csv \
+		--registry build/demo/provider-reviewed-source-registry.csv \
 		--database build/demo/targetaudit.duckdb \
 		--run-id demo-actions-guarded-2025-01-01 \
 		--report build/demo/scorecard-release.md \

@@ -106,6 +106,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   procedencia de activos y calidad pública en una decisión reproducible.
 - [x] Cola de aprobación de proveedores que documenta evidencia y criterio de
   promoción de los candidatos críticos sin autoautorizar publicación.
+- [x] Flujo de decisión manual que genera registros promovidos o pendientes
+  con evidencia, sin editar la gobernanza base en silencio.
 - [ ] Revision legal del producto y de sus disclaimers.
 
 ## Decisiones Pendientes

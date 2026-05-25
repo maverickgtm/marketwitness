@@ -79,6 +79,9 @@ de permitir datos reales en una salida pública.
   fuentes también declara una política compatible con salida pública.
 - La cola documenta trabajo pendiente; no aprueba ni conecta una fuente
   automáticamente.
+- El comando `provider-approval-review` produce una auditoría HTML y copias
+  generadas del registro y la cola después de una decisión humana; estas
+  copias son las que deben evaluarse en Readiness.
 
 ## Vista De Preparacion: Scorecard Readiness
 

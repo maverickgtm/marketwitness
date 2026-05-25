@@ -24,6 +24,11 @@ El expediente de trabajo complementario vive en
 promoción para los candidatos del scorecard; no modifica automáticamente la
 política de una fuente.
 
+Cuando existe una decisión documentada, `provider-approval-review` escribe
+copias revisadas de ambos registros y su auditoría. El fixture inicial
+documenta que la página premium de Alpha Vantage todavía no demuestra permiso
+de salida pública y por eso conserva el expediente pendiente.
+
 Al `2026-05-24`, el inventario contiene 21 fuentes: 15 conectores o fixtures
 implementados, 14 fuentes que aun exigen revision de terminos/licencia para
 uso público real, 1 integracion limitada a descarga manual y 1 referencia

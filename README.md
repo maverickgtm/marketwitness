@@ -66,6 +66,27 @@ Nasdaq Daily List, NYSE y S&P DJI. Cuatro son críticos para habilitar targets,
 precios, acciones corporativas y universo histórico; ninguno está aprobado
 para salida pública todavía.
 
+Una revisión humana documentada genera copias actualizadas del registro y la
+cola, manteniendo intactos los archivos base:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit provider-approval-review \
+  --registry data/samples/source_registry.csv \
+  --approvals data/samples/provider_approval_queue.csv \
+  --decisions data/private/provider_approval_decisions.csv \
+  --output-registry build/live/provider-reviewed-source-registry.csv \
+  --output-approvals build/live/provider-reviewed-approval-queue.csv \
+  --output build/live/provider-approval-review-outcomes.csv \
+  --report build/live/provider-approval-review-outcomes.md \
+  --html build/live/provider-approval-review-outcomes.html \
+  --as-of YYYY-MM-DD
+```
+
+`approve_public_output` exige un enlace HTTPS de evidencia y una integración
+`implemented` o `manual_verified`. Después de promover un proveedor, Readiness
+y Release Center deben ejecutarse sobre el registro generado; una aprobación
+aislada nunca autoriza publicar una corrida.
+
 La vista de preparación del scorecard traduce esas reglas en requisitos de
 publicación para `U.S. Financials`:
 
@@ -716,6 +737,11 @@ build/demo/source-registry.md
 build/demo/source-registry.html
 build/demo/provider-approvals.md
 build/demo/provider-approvals.html
+build/demo/provider-reviewed-source-registry.csv
+build/demo/provider-reviewed-approval-queue.csv
+build/demo/provider-approval-review-outcomes.csv
+build/demo/provider-approval-review-outcomes.md
+build/demo/provider-approval-review-outcomes.html
 build/demo/scorecard-readiness.md
 build/demo/scorecard-readiness.html
 build/demo/scorecard-release.md

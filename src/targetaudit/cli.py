@@ -225,6 +225,16 @@ from .provider_approvals import (
     write_approval_html,
     write_approval_report,
 )
+from .provider_approval_reviews import (
+    ProviderApprovalReviewDataError,
+    apply_provider_approval_decisions,
+    load_provider_approval_decisions,
+    write_provider_review_html,
+    write_provider_review_outcomes_csv,
+    write_provider_review_report,
+    write_reviewed_approval_queue,
+    write_reviewed_source_registry,
+)
 from .reporting import write_markdown_report
 from .storage import EvaluationRun, WarehouseError, generated_run_id, store_evaluation_run
 
@@ -440,6 +450,27 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Approval queue review cutoff in YYYY-MM-DD format.",
+    )
+    approval_review_parser = subparsers.add_parser(
+        "provider-approval-review",
+        help="Apply documented manual permission decisions to generated governance files.",
+    )
+    approval_review_parser.add_argument("--registry", required=True, help="Provider registry CSV.")
+    approval_review_parser.add_argument("--approvals", required=True, help="Provider approval queue CSV.")
+    approval_review_parser.add_argument("--decisions", required=True, help="Manual provider decision CSV.")
+    approval_review_parser.add_argument(
+        "--output-registry", required=True, help="Generated reviewed provider registry CSV."
+    )
+    approval_review_parser.add_argument(
+        "--output-approvals", required=True, help="Generated reviewed provider approval CSV."
+    )
+    approval_review_parser.add_argument("--output", required=True, help="Decision outcome CSV path.")
+    approval_review_parser.add_argument("--report", required=True, help="Markdown decision audit path.")
+    approval_review_parser.add_argument("--html", help="Optional decision audit HTML output path.")
+    approval_review_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Manual decision cutoff in YYYY-MM-DD format.",
     )
     readiness_parser = subparsers.add_parser(
         "scorecard-readiness",
@@ -1097,6 +1128,35 @@ def main() -> int:
             f"Wrote approval queue for {snapshot['queue_count']} providers; "
             f"{snapshot['critical_open_count']} critical approvals remain open. "
             f"Report written to {args.report}."
+        )
+        return 0
+
+    if args.command == "provider-approval-review":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            providers = load_source_registry(args.registry)
+            approvals = load_provider_approvals(args.approvals)
+            decisions = load_provider_approval_decisions(args.decisions)
+            reviewed_providers, reviewed_approvals, outcomes = apply_provider_approval_decisions(
+                providers, approvals, decisions, as_of
+            )
+            write_reviewed_source_registry(args.output_registry, reviewed_providers)
+            write_reviewed_approval_queue(args.output_approvals, reviewed_approvals)
+            write_provider_review_outcomes_csv(args.output, outcomes)
+            write_provider_review_report(args.report, outcomes, as_of)
+            if args.html:
+                write_provider_review_html(args.html, outcomes, as_of)
+        except (
+            ProviderApprovalDataError,
+            ProviderApprovalReviewDataError,
+            SourceRegistryDataError,
+            ValueError,
+        ) as exc:
+            parser.error(str(exc))
+        print(
+            f"Applied {len(outcomes)} documented provider decisions; "
+            f"wrote reviewed governance files to {args.output_registry} "
+            f"and {args.output_approvals}."
         )
         return 0
 

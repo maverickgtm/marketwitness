@@ -135,10 +135,13 @@ def build_approval_queue(
             )
         if (
             approval.approval_status == "approved_public_output"
-            and provider.deployment_state != "usable_with_policy"
+            and (
+                provider.deployment_state != "usable_with_policy"
+                or provider.integration_status not in {"implemented", "manual_verified"}
+            )
         ):
             raise ProviderApprovalDataError(
-                f"Approval for {provider.provider_id} conflicts with source governance."
+                f"Approval for {provider.provider_id} conflicts with source governance or integration state."
             )
         items.append(_queue_item(provider, approval))
     counts = Counter(item["approval_status"] for item in items)
@@ -177,12 +180,14 @@ def _queue_item(
     promotion_ready = (
         approval.approval_status == "approved_public_output"
         and provider.deployment_state == "usable_with_policy"
+        and provider.integration_status in {"implemented", "manual_verified"}
     )
     return {
         "provider_id": provider.provider_id,
         "provider_name": provider.provider_name,
         "data_class": provider.data_class,
         "deployment_state": provider.deployment_state,
+        "integration_status": provider.integration_status,
         "license_status": provider.license_status,
         "approval_status": approval.approval_status,
         "priority": approval.priority,

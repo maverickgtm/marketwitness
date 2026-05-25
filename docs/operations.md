@@ -213,6 +213,29 @@ abiertas. Una fila aprobada que contradiga `source_registry.csv` hace fallar
 el reporte: la evidencia de permiso y la gobernanza deben coincidir antes de
 activar una fuente. La vista web está disponible en `/dashboard/approvals`.
 
+Cuando se reciba o revise evidencia de licencia, aplicarla mediante una
+decisión manual a salidas generadas, no editando el registro original:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit provider-approval-review \
+  --registry data/samples/source_registry.csv \
+  --approvals data/samples/provider_approval_queue.csv \
+  --decisions data/private/provider_approval_decisions.csv \
+  --output-registry build/live/provider-reviewed-source-registry.csv \
+  --output-approvals build/live/provider-reviewed-approval-queue.csv \
+  --output build/live/provider-approval-review-outcomes.csv \
+  --report build/live/provider-approval-review-outcomes.md \
+  --html build/live/provider-approval-review-outcomes.html \
+  --as-of YYYY-MM-DD
+```
+
+`retain_pending` registra evidencia insuficiente sin promover;
+`reject_public_output` cierra un expediente para este uso; y
+`approve_public_output` solo acepta permiso documentado junto con un conector
+verificado como `implemented` o `manual_verified`. Usar después
+`build/live/provider-reviewed-source-registry.csv` en `scorecard-readiness` y
+`scorecard-release`.
+
 ## Readiness Del Scorecard Publico
 
 Antes de producir una corrida real se debe revisar si existen fuentes

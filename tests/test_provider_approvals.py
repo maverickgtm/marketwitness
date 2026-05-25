@@ -55,6 +55,26 @@ class ProviderApprovalTests(unittest.TestCase):
                 date(2026, 5, 24),
             )
 
+    def test_rejects_public_permission_for_a_source_without_verified_integration(self) -> None:
+        providers = [
+            SourceProvider(
+                provider_id="candidate",
+                provider_name="Candidate",
+                data_class="Analyst targets",
+                access_model="commercial_api_candidate",
+                integration_status="candidate",
+                license_status="public_access_rules_documented",
+                publication_policy="source_link_and_derived_output",
+                official_url="https://example.invalid/source",
+                reference_url="https://example.invalid/terms",
+                reviewed_on=date(2026, 5, 24),
+                review_note="Rights approved but connector remains pending.",
+            )
+        ]
+
+        with self.assertRaisesRegex(ProviderApprovalDataError, "integration state"):
+            build_approval_queue(providers, [_approved("candidate")], date(2026, 5, 24))
+
     def test_rejects_demo_providers_from_production_approval_queue(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))
 

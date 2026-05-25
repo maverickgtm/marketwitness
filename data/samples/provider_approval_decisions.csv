@@ -1,0 +1,2 @@
+provider_id,decision,reviewed_on,evidence_url,evidence_summary,new_integration_status,review_note
+alpha-vantage-prices,retain_pending,2026-05-24,https://www.alphavantage.co/premium/,Premium product page does not document permission for public derived scorecard output.,,Reviewed product access reference; written derived-output permission remains required before promotion.

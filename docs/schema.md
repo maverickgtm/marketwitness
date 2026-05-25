@@ -231,6 +231,27 @@ si el registro de fuentes también permite salida pública.
 | `reviewed_on` | Si | Fecha ISO de la revisión |
 | `review_note` | Si | Estado y siguiente acción del expediente |
 
+## `provider_approval_decisions.csv`
+
+Registro manual que transforma evidencia revisada en copias generadas de
+`source_registry.csv` y `provider_approval_queue.csv`. El archivo base no se
+modifica y cada aplicación escribe un reporte de resultados.
+
+| Columna | Requerida | Descripcion |
+|---|---:|---|
+| `provider_id` | Si | Expediente existente en la cola de aprobaciones |
+| `decision` | Si | `retain_pending`, `approve_public_output` o `reject_public_output` |
+| `reviewed_on` | Si | Fecha ISO de la decisión |
+| `evidence_url` | Si | Documento o página HTTPS revisada |
+| `evidence_summary` | Si | Qué prueba o no prueba la evidencia |
+| `new_integration_status` | Solo aprobación | `implemented` o `manual_verified`; nunca se infiere solo por tener licencia |
+| `review_note` | Si | Decisión y alcance autorizado |
+
+Una aprobación promueve el expediente a `approved_public_output` y genera una
+fuente con `public_access_rules_documented` y
+`source_link_and_derived_output`. Todavía debe pasar
+`scorecard-readiness` y, para una corrida concreta, `scorecard-release`.
+
 ## `ipo_watch.csv`
 
 Registro auditable para la pagina `IPO Watch`. A diferencia de los targets, no
