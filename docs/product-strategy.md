@@ -36,10 +36,12 @@ Competidores observados al `2026-05-24`:
 
 | Producto | Enfoque Visible | Oportunidad Para TargetAudit |
 |---|---|---|
-| TipRanks | Ratings, targets y rankings amplios para inversores | Ser reproducible y mostrar datos/exclusiones detras del score |
+| TipRanks | Ratings, targets y metodologia de exito a un ano | Benchmark metodologico directo; ser reproducible sin incorporar datos sin derechos |
 | MarketBeat | Mas de un millon de recomendaciones y rankings por suscripcion; export reciente anunciado hasta seis meses | Piloto privado de cobertura, no fuente suficiente para score a un ano ni publicacion sin licencia |
 | WallStreetZen | Ranking propio sobre mas de 4,000 analistas | Benchmark metodologico privado, no feed historico confirmado |
 | Yahoo Finance / Investing.com | Consulta visual de ratings y targets | Referencia manual solamente; sus terminos no sustentan ingestion o redistribucion |
+| Finnhub / FMP | Endpoints programaticos de tendencia o consenso de target | Conectores futuros solo bajo licencia explicita de display/redistribucion |
+| TradingView | Widgets gratuitos con atribucion conservada | Contexto visual publico futuro, separado del motor de targets |
 | Quiver Quantitative | Desempeno historico de analistas usando datos Benzinga | Examinar firmas especialistas contra generalistas dentro de financials |
 | AnaChart | Charts y hit ratios de price targets publicos | Comparar precision con benchmark sectorial y versionar reglas |
 

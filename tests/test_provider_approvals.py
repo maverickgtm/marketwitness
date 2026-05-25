@@ -20,7 +20,7 @@ class ProviderApprovalTests(unittest.TestCase):
 
         snapshot = build_approval_queue(providers, approvals, date(2026, 5, 24))
 
-        self.assertEqual(snapshot["queue_count"], 5)
+        self.assertEqual(snapshot["queue_count"], 7)
         self.assertEqual(snapshot["critical_open_count"], 4)
         self.assertEqual(snapshot["approved_count"], 0)
         self.assertFalse(snapshot["public_activation_ready"])
@@ -28,6 +28,7 @@ class ProviderApprovalTests(unittest.TestCase):
             all(control["status"] == "pending_approval" for control in snapshot["controls"])
         )
         self.assertIn("Benzinga Analyst Ratings API via Massive", render_approval_report(snapshot))
+        self.assertIn("Finnhub Enterprise Redistribution", render_approval_report(snapshot))
         self.assertIn("Permission before", render_approval_html(snapshot))
 
     def test_approves_activation_only_when_governance_and_dossiers_both_pass(self) -> None:

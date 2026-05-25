@@ -96,6 +96,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
   redistribuible y monitores regulatorios públicos claramente separados.
 - [x] Catalogo `bring your own license` para que el usuario compare opciones
   pagadas sin volverlas requisito ni confundirlas con permiso de publicacion.
+- [x] Clasificacion de APIs freemium de targets/consenso (Finnhub y FMP) como
+  opciones contractuales pendientes de derechos de output publico.
+- [ ] Widget atribuido de TradingView para contexto visual de mercado, sin
+  usarlo como fuente de datos del scorecard.
 - [ ] Licencia o aportación autorizada opcional para mostrar rankings reales
   de analistas públicamente.
 - [ ] Actualizaciones programadas del scorecard real con fuentes opcionales

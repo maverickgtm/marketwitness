@@ -17,7 +17,7 @@ class LicensedExtensionTests(unittest.TestCase):
 
         snapshot = build_licensed_extensions_snapshot(extensions, date(2026, 5, 24))
 
-        self.assertEqual(snapshot["extension_count"], 6)
+        self.assertEqual(snapshot["extension_count"], 8)
         self.assertEqual(snapshot["listed_price_count"], 3)
         self.assertEqual(snapshot["individual_option_count"], 3)
         self.assertEqual(snapshot["public_output_approved_count"], 0)
@@ -33,9 +33,19 @@ class LicensedExtensionTests(unittest.TestCase):
         )
         self.assertEqual(marketbeat["price_display"], "USD 249/year or USD 29/month")
         self.assertIn("six months", marketbeat["coverage"])
+        finnhub = next(
+            item for item in snapshot["items"] if item["extension_id"] == "finnhub-enterprise"
+        )
+        self.assertEqual(finnhub["price_display"], "Quote required")
+        self.assertIn("Recommendation Trends", finnhub["coverage"])
+        fmp = next(
+            item for item in snapshot["items"] if item["extension_id"] == "fmp-data-display-license"
+        )
+        self.assertIn("Price Target Consensus", fmp["coverage"])
         self.assertIn("not require these providers", snapshot["policy_note"])
         self.assertIn("USD 99/month", render_licensed_extensions_report(snapshot))
         self.assertIn("MarketBeat All Access", render_licensed_extensions_report(snapshot))
+        self.assertIn("Finnhub Enterprise Redistribution", render_licensed_extensions_report(snapshot))
         self.assertIn("Bring your own", render_licensed_extensions_html(snapshot))
 
     def test_rejects_a_review_after_the_catalog_cutoff(self) -> None:

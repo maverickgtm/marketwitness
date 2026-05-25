@@ -247,6 +247,9 @@ La pagina `/dashboard/extensions` presenta el precio publicado y los terminos
 revisados. La opcion individual Massive / Benzinga (`USD 99/month`) continua
 marcada como uso privado sujeto a licencia; no satisface por si sola el
 requisito de output publico de `/dashboard/readiness`.
+Finnhub y Financial Modeling Prep aparecen solo como candidatos a contrato:
+una clave gratis o de pruebas no cambia el bloqueo de publicacion hasta contar
+con derechos escritos de display o redistribucion.
 
 Cuando se reciba o revise evidencia de licencia, aplicarla mediante una
 decisión manual a salidas generadas, no editando el registro original:

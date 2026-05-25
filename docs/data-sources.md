@@ -41,8 +41,8 @@ copias revisadas de ambos registros y su auditoría. El fixture inicial
 documenta que la página premium de Alpha Vantage todavía no demuestra permiso
 de salida pública y por eso conserva el expediente pendiente.
 
-Al `2026-05-24`, el inventario contiene 21 fuentes: 15 conectores o fixtures
-implementados, 14 fuentes que aun exigen revision de terminos/licencia para
+Al `2026-05-24`, el inventario contiene 23 fuentes: 15 conectores o fixtures
+implementados, 16 fuentes que aun exigen revision de terminos/licencia para
 uso público real, 1 integracion limitada a descarga manual y 1 referencia
 bloqueada para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto
@@ -57,11 +57,15 @@ público".
 | MarketBeat All Access | Mas de un millon de recomendaciones y export CSV para hasta seis meses recientes | Piloto privado economico y verificacion de cobertura | `USD 249/year` o `USD 29/month`; no cubre por si solo evaluacion a un ano ni redistribucion |
 | WallStreetZen Premium | Rankings propios sobre mas de 4,000 analistas | Benchmark privado para contrastar metodologia | `USD 19.50/month` anual; exportaciones solo para investigacion interna, no redistribucion |
 | GuruFocus | Analyst estimates de Refinitiv/Morningstar segun FAQ | Candidato para revision de cobertura | No confirmar como feed de targets individuales; licencia comercial para redistribuir |
+| Finnhub | `Recommendation Trends` y `Price Target` declarados en cobertura Enterprise | Potencial conector programatico de consenso/target | Derechos de redistribucion declarados para Enterprise con cotizacion; plan gratis no basta para publicacion |
+| Financial Modeling Prep | `Price Target Summary` y `Price Target Consensus` documentados | Potencial validacion programatica agregada | Display o redistribucion exige acuerdo especifico; confirmar granularidad historica individual |
 | LSEG I/B/E/S | Historial institucional de estimaciones y recomendaciones | Fuente de investigacion de alta calidad | Candidata futura, probablemente costosa |
-| Financial Modeling Prep | APIs de price-target summary/consensus e historical grades | Puede complementar o validar cobertura | Confirmar si entrega targets individuales historicos y limites del plan |
 | MarketBeat | Historial, screener y ranking propios | Referencia metodologica y verificacion manual | Herramientas/exportaciones sujetas a suscripcion y terminos |
-| TipRanks | Rankings y targets visibles en su producto | Referencia conceptual | No usar scraping; sus terminos restringen extraccion/copia |
-| Finviz | Eventos visibles en paginas de acciones | Verificacion manual puntual | No adoptado como colector hasta revisar permisos de automatizacion |
+| TipRanks | Rankings y targets visibles; su FAQ mide ratings Buy por un ano | Benchmark metodologico cercano a TargetAudit | No usar scraping; requerir licencia/API institucional para datos |
+| Finviz | Eventos visibles en paginas USA; Elite anuncia export/API access | Verificacion manual puntual | `USD 39.50/month` o `USD 299.50/year`; no adoptar como colector sin derechos de output |
+| StockAnalysis.com | Paginas `Analysts` y datos derivados de multiples fuentes | Verificacion visual puntual | Terminos permiten snippets atribuidos, no republicar contenido completo |
+| Koyfin | Charts y estimaciones de consenso visibles | Referencia visual y graficos citables | No API; estimates y valuation restringidos de descarga por proveedor |
+| WSJ / CNBC | Vistas y cobertura editorial sobre recomendaciones | Contexto manual | No feed documentado para ingestión/publicacion |
 | Yahoo Finance | Recomendaciones/targets visibles con proveedores declarados | Verificacion visual puntual | No redistribuir informacion de Yahoo Finance; no integrar scraper |
 | Investing.com | Ratings visibles en interfaz | Verificacion visual puntual | Sus terminos prohiben almacenamiento/redistribucion sin permiso escrito |
 
@@ -76,6 +80,13 @@ evidencia URL o campos evaluables queda rechazada antes del scorecard. El
 fixture incluido es sintetico y no representa una licencia comercial real.
 Las alternativas pagadas y sus limites se documentan en
 `docs/licensed-extensions.md`.
+
+TradingView queda fuera de la tabla de targets porque su oportunidad es
+distinta: ofrece widgets gratuitos que pueden integrarse en una pagina
+publica manteniendo la atribucion original. Es adecuado para contexto visual
+de mercado, no para almacenar o puntuar historial de analistas:
+<https://www.tradingview.com/widget-docs/widgets/charts/> y
+<https://www.tradingview.com/policies/>.
 
 ## Precios Ajustados Y Mercado
 
@@ -103,6 +114,11 @@ La documentación oficial de Alpha Vantage consultada el `2026-05-24`
 mantiene `TIME_SERIES_DAILY_ADJUSTED` como función `Premium` y describe que
 entrega OHLCV operado, cierre ajustado y eventos históricos de split/dividendo:
 <https://www.alphavantage.co/documentation/>.
+Su API `NEWS_SENTIMENT` cubre noticias historicas y live, incluidas noticias
+de IPO; sin embargo, los terminos revisados conceden acceso personal no
+comercial salvo acuerdo escrito. No se debe presentar como sustituto gratuito
+publicable de ratings de analistas:
+<https://www.alphavantage.co/terms_of_service/>.
 
 ## Universo Historico
 
@@ -353,6 +369,16 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - WallStreetZen terms: <https://www.wallstreetzen.com/terms-of-service>
 - GuruFocus FAQ: <https://www.gurufocus.com/faq>
 - GuruFocus term of use: <https://www.gurufocus.com/term-of-use>
+- Finnhub enterprise licensing: <https://finnhub.io/pricing-startups-and-enterprise>
+- Financial Modeling Prep analyst estimates: <https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/?direct=true>
+- Financial Modeling Prep display licensing: <https://intelligence.financialmodelingprep.com/pricing-plans?direct=true>
+- TipRanks FAQ: <https://www.tipranks.com/faq>
+- Finviz FAQ and pricing: <https://finviz.com/help/faq>
+- StockAnalysis.com terms: <https://stockanalysis.com/terms-of-use/>
+- Koyfin API FAQ: <https://www.koyfin.com/help/faq/can-i-get-the-data-via-api/>
+- Koyfin download restrictions: <https://www.koyfin.com/help/faq/can-i-download-data/>
+- TradingView chart widgets: <https://www.tradingview.com/widget-docs/widgets/charts/>
+- TradingView policies: <https://www.tradingview.com/policies/>
 - Yahoo Finance data providers: <https://help.yahoo.com/kb/SLN2310.html>
 - Investing.com terms: <https://www.investing.com/about-us/terms-and-conditions>
 - LSEG I/B/E/S: <https://www.lseg.com/en/data-analytics/financial-data/company-data/ibes-estimates>

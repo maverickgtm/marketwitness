@@ -25,6 +25,13 @@ para publicar rankings compartidos.
 Tambien registra MarketBeat como piloto privado potencial de bajo costo y
 WallStreetZen como referencia metodologica; ninguno habilita un ranking
 publico real ni es requisito de esta edicion.
+Finnhub y Financial Modeling Prep quedan registrados como futuras rutas
+programaticas, pero sus planes gratuitos no conceden por si solos derechos de
+mostrar o redistribuir datos en un producto publico.
+
+Un widget oficial de TradingView podria anadirse como contexto visual de
+mercado conservando su atribucion. Ese componente no alimentaria el ranking
+ni reemplazaria una licencia de historial de targets.
 
 ## Capacidades Incluidas
 

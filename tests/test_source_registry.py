@@ -18,7 +18,7 @@ class SourceRegistryTests(unittest.TestCase):
         report = render_source_registry_report(providers, date(2026, 5, 24))
         page = render_source_registry_html(providers, date(2026, 5, 24))
 
-        self.assertEqual(len(providers), 21)
+        self.assertEqual(len(providers), 23)
         self.assertIn("Authorized Demo Export", report)
         self.assertIn("Alpha Vantage Daily Adjusted", report)
         self.assertIn("S&P DJI Constituent Data", report)
@@ -30,6 +30,8 @@ class SourceRegistryTests(unittest.TestCase):
         self.assertIn("`license_required`", report)
         self.assertIn("`manual_only`", report)
         self.assertIn("TipRanks", report)
+        self.assertIn("Finnhub Enterprise Redistribution", report)
+        self.assertIn("Financial Modeling Prep Data Display License", report)
         self.assertIn("Public accessibility is not a license", page)
         self.assertIn("blocked", page)
 

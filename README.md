@@ -47,6 +47,13 @@ insuficiente para el ranking de targets con mas de un ano de antiguedad.
 WallStreetZen es referencia de metodologia/rendimiento, no un feed historico
 de targets confirmado para el motor.
 
+Finnhub y Financial Modeling Prep ofrecen rutas programaticas potenciales
+para consenso o targets, pero sus paginas oficiales no convierten el plan
+gratis en permiso de publicacion: Finnhub situa redistribucion en Enterprise
+y FMP exige un acuerdo especifico de display/licencia. TradingView puede
+anadirse mas adelante como widget gratuito atribuido para contexto visual, no
+como fuente de historial de analistas.
+
 TargetAudit nace de una pregunta sencilla: si una firma publica un precio
 objetivo para una accion, ?ese pronostico se cumplio y una estrategia basada en
 el habria superado una alternativa pasiva?

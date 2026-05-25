@@ -208,9 +208,10 @@ class ApiTests(unittest.TestCase):
 
         self.assertEqual(page.status_code, 200)
         self.assertIn("Bring your own", page.text)
+        self.assertIn("Freemium API warning", page.text)
         self.assertIn("/api/v1/extensions/licensed", page.text)
         self.assertEqual(snapshot.status_code, 200)
-        self.assertEqual(snapshot.json()["extension_count"], 6)
+        self.assertEqual(snapshot.json()["extension_count"], 8)
         self.assertEqual(snapshot.json()["listed_price_count"], 3)
         self.assertEqual(snapshot.json()["public_output_approved_count"], 0)
         self.assertEqual(snapshot.json()["items"][0]["price_display"], "USD 99/month")
@@ -278,7 +279,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Open code.", page.text)
         self.assertIn("Run Exclusions And Pending", page.text)
         self.assertIn("Provider Control", page.text)
-        self.assertEqual(sources.json()["provider_count"], 21)
+        self.assertEqual(sources.json()["provider_count"], 23)
         self.assertGreater(sources.json()["open_review_count"], 0)
         self.assertEqual(blocked.json()["sources"][0]["provider_id"], "tipranks-reference")
         self.assertEqual(len(holdings.json()["sources"]), 3)
@@ -304,7 +305,7 @@ class ApiTests(unittest.TestCase):
         page = self.client.get("/dashboard/approvals")
 
         self.assertEqual(approvals.status_code, 200)
-        self.assertEqual(approvals.json()["queue_count"], 5)
+        self.assertEqual(approvals.json()["queue_count"], 7)
         self.assertEqual(approvals.json()["critical_open_count"], 4)
         self.assertEqual(approvals.json()["approved_count"], 0)
         self.assertFalse(approvals.json()["public_activation_ready"])
@@ -316,6 +317,8 @@ class ApiTests(unittest.TestCase):
                 "nasdaq-daily-list",
                 "nyse-actions",
                 "sp-dji-constituents",
+                "finnhub-targets",
+                "fmp-targets",
             },
         )
         self.assertEqual(page.status_code, 200)
