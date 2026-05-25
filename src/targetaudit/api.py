@@ -76,6 +76,13 @@ ETF_ACTIVITY_REPORTS = {
     "iyf-demo": "etf-holdings-iyf-activity.html",
     "nport-recent": "etf-holdings-regulatory-activity.html",
 }
+FINANCIALS_AUDIT_REPORTS = {
+    "target-import": "authorized-targets-import.html",
+    "adjusted-prices": "alpha-vantage-prices.html",
+    "corporate-actions": "corporate-actions.html",
+    "operations-quality": "operations-quality.html",
+    "release-decision": "scorecard-release.html",
+}
 
 
 def create_app(
@@ -205,6 +212,17 @@ def create_app(
         if filename is None:
             raise HTTPException(
                 status_code=404, detail="Global monitor report is not allowlisted."
+            )
+        return _generated_html(reports, filename)
+
+    @application.get(
+        "/dashboard/audit/{report}", response_class=HTMLResponse, include_in_schema=False
+    )
+    def financials_audit_report(report: str) -> str:
+        filename = FINANCIALS_AUDIT_REPORTS.get(report)
+        if filename is None:
+            raise HTTPException(
+                status_code=404, detail="Financials audit report is not allowlisted."
             )
         return _generated_html(reports, filename)
 

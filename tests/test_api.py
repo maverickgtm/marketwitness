@@ -159,6 +159,16 @@ class ApiTests(unittest.TestCase):
             (self.reports / filename).write_text(
                 f"<html><h1>{title}</h1></html>", encoding="utf-8"
             )
+        for filename, title in (
+            ("authorized-targets-import.html", "Target Import Audit generated page"),
+            ("alpha-vantage-prices.html", "Adjusted Price Evidence generated page"),
+            ("corporate-actions.html", "Corporate Actions Audit generated page"),
+            ("operations-quality.html", "Operations Quality Snapshot generated page"),
+            ("scorecard-release.html", "Release Decision Snapshot generated page"),
+        ):
+            (self.reports / filename).write_text(
+                f"<html><h1>{title}</h1></html>", encoding="utf-8"
+            )
         store_evaluation_run(
             self.database,
             EvaluationRun(
@@ -256,7 +266,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Reproducible reports.", page.text)
         self.assertIn("Known routes only.", page.text)
-        self.assertIn("12 allowlisted pages", page.text)
+        self.assertIn("17 allowlisted pages", page.text)
         self.assertIn("/dashboard/ipo-watch", page.text)
         self.assertIn("/dashboard/sec-alerts", page.text)
         self.assertIn("/dashboard/ipo-reviews", page.text)
@@ -269,6 +279,11 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/global-listings", page.text)
         self.assertIn("/dashboard/global-alerts", page.text)
         self.assertIn("/dashboard/issuer-confirmations", page.text)
+        self.assertIn("/dashboard/audit/target-import", page.text)
+        self.assertIn("/dashboard/audit/adjusted-prices", page.text)
+        self.assertIn("/dashboard/audit/corporate-actions", page.text)
+        self.assertIn("/dashboard/audit/operations-quality", page.text)
+        self.assertIn("/dashboard/audit/release-decision", page.text)
         self.assertIn("not live market alerts", page.text)
 
     def test_serves_attributed_market_context_without_a_data_endpoint(self) -> None:
@@ -368,6 +383,23 @@ class ApiTests(unittest.TestCase):
                 self.assertIn(marker, response.text)
 
         self.assertEqual(self.client.get("/dashboard/etf/not-configured").status_code, 404)
+
+    def test_serves_only_allowlisted_financials_audit_pages(self) -> None:
+        pages = {
+            "/dashboard/audit/target-import": "Target Import Audit generated page",
+            "/dashboard/audit/adjusted-prices": "Adjusted Price Evidence generated page",
+            "/dashboard/audit/corporate-actions": "Corporate Actions Audit generated page",
+            "/dashboard/audit/operations-quality": "Operations Quality Snapshot generated page",
+            "/dashboard/audit/release-decision": "Release Decision Snapshot generated page",
+        }
+
+        for route, marker in pages.items():
+            with self.subTest(route=route):
+                response = self.client.get(route)
+                self.assertEqual(response.status_code, 200)
+                self.assertIn(marker, response.text)
+
+        self.assertEqual(self.client.get("/dashboard/audit/not-configured").status_code, 404)
 
     def test_compares_run_methodology_and_evidence_fingerprints(self) -> None:
         response = self.client.get(

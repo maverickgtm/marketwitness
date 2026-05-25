@@ -277,6 +277,13 @@ verificado como `implemented` o `manual_verified`. Usar después
 `build/live/provider-reviewed-source-registry.csv` en `scorecard-readiness` y
 `scorecard-release`.
 
+Los cinco reportes generados de la cadena Financials tambien se pueden
+recorrer en el dashboard por rutas fijas: `/dashboard/audit/target-import`,
+`/dashboard/audit/adjusted-prices`, `/dashboard/audit/corporate-actions`,
+`/dashboard/audit/operations-quality` y
+`/dashboard/audit/release-decision`. La pagina de decision del demo documenta
+el bloqueo; no autoriza publicar rankings reales.
+
 ## Readiness Del Scorecard Publico
 
 Antes de producir una corrida real se debe revisar si existen fuentes

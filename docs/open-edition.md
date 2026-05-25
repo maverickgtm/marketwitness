@@ -120,8 +120,9 @@ Desde ella se abre `/dashboard/reports`, un indice de
 `/dashboard/etf/nport-recent`, `/dashboard/etf-regulatory`,
 `/dashboard/document-checks`, `/dashboard/rwa-watch`,
 `/dashboard/global-listings`, `/dashboard/global-alerts` y
-`/dashboard/issuer-confirmations`; estas rutas solo sirven artefactos HTML
-conocidos producidos por `make demo`. La portada global abre exclusivamente
+`/dashboard/issuer-confirmations`, ademas del paquete fijo
+`/dashboard/audit/{report}` para evidencia Financials del demo; estas rutas
+solo sirven artefactos HTML conocidos producidos por `make demo`. La portada global abre exclusivamente
 los diez monitores internacionales incluidos en la lista permitida
 `/dashboard/global/{monitor}`, no un explorador de archivos generados.
 La portada tambien enlaza `/dashboard/policy`, que debe revisarse antes de

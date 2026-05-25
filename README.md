@@ -850,11 +850,14 @@ reales. La ruta
 `/dashboard/market-context` muestra el benchmark `XLF` en un widget atribuido
 de TradingView que no alimenta el scorecard ni se almacena como evidencia. La
 ruta
-`/dashboard/reports` organiza doce paginas generadas permitidas del
+`/dashboard/reports` organiza diecisiete paginas generadas permitidas del
 bundle semanal de Open Edition y enlaza sus controles de publicacion; no
 expone libremente archivos del directorio de construccion. Entre ellas se
 encuentran `Global Listings Alerts`, que compara señales internacionales para
-revision, e `Issuer Confirmations`, que conserva hitos primarios revisados. La ruta
+revision, e `Issuer Confirmations`, que conserva hitos primarios revisados.
+Tambien expone cinco reportes fijos `Financials Audit Evidence` para recorrer
+la importacion, precios, acciones corporativas, calidad y decision de release
+del demo sin confundirlo con resultados reales. La ruta
 `/dashboard/extensions` presenta proveedores que un usuario puede contratar
 por su cuenta, sus precios visibles y los derechos que aun bloquean la
 publicacion de rankings reales. La ruta
@@ -944,6 +947,7 @@ Endpoints iniciales:
 | `/dashboard/global-alerts` | Cola comparada de cambios en señales de listings y documentos internacionales |
 | `/dashboard/issuer-confirmations` | Hitos de cotización verificados desde comunicados oficiales revisados |
 | `/dashboard/global/{monitor}` | Monitor permitido: `hkex`, `lse-upcoming`, `asx`, `tsx`, `jpx`, `edinet`, `cvm`, `esma`, `opendart` o `sgx` |
+| `/dashboard/audit/{report}` | Evidencia Financials permitida: `target-import`, `adjusted-prices`, `corporate-actions`, `operations-quality` o `release-decision` |
 | `/api/v1/runs` | Corridas almacenadas |
 | `/api/v1/runs/{run_id}` | Parámetros y hashes de evidencia de una corrida |
 | `/api/v1/runs/{run_id}/facets` | Sectores, firmas y tickers para filtros |

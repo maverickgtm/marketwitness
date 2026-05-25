@@ -144,7 +144,7 @@ def report_center_html() -> str:
     <p class="lead">A reading room for the report pages included in the tested Open Edition bundle. It exposes approved dashboard routes, never arbitrary files from the generated-report directory.</p>
     <p class="meta">Open Edition bundle / Weekly GitHub Actions build / 30-day artifact retention</p>
     <section class="cards">
-      <article class="card"><p>Generated report routes</p><strong>12 allowlisted pages</strong></article>
+      <article class="card"><p>Generated report routes</p><strong>17 allowlisted pages</strong></article>
       <article class="card"><p>Bundle schedule</p><strong>Weekly + manual</strong></article>
       <article class="card"><p>Required paid data</p><strong>None</strong></article>
     </section>
@@ -165,6 +165,14 @@ def report_center_html() -> str:
       <article class="report"><span class="pill regulatory">international coverage</span><h3>Global Listings Watch</h3><p>Official signal map and navigation for international listing and filing monitors.</p><small>Jurisdictions retain separate confirmation rules and blocked paths.</small><a href="/dashboard/global-listings">Open report</a></article>
       <article class="report"><span class="pill regulatory">global review queue</span><h3>Global Listings Alerts</h3><p>Differences across listing and regulatory-document monitors in ten international markets.</p><small>Filings open review; exchange evidence is required to confirm listing milestones.</small><a href="/dashboard/global-alerts">Open report</a></article>
       <article class="report"><span class="pill regulatory">primary evidence</span><h3>Issuer Confirmations</h3><p>Official issuer-release milestones reviewed separately from listing-candidate feeds.</p><small>Verified events remain research evidence, not trading instructions.</small><a href="/dashboard/issuer-confirmations">Open report</a></article>
+    </section>
+    <h2>Financials Audit Evidence</h2>
+    <section class="reports">
+      <article class="report"><span class="pill fixture">controlled input</span><h3>Target Import Audit</h3><p>Authorized-export ingestion demo with accepted and rejected rows kept visible.</p><small>Internal-only fixture evidence; not a public analyst dataset.</small><a href="/dashboard/audit/target-import">Open report</a></article>
+      <article class="report"><span class="pill fixture">price provenance</span><h3>Adjusted Price Evidence</h3><p>Normalized adjusted-price fixture prepared for evaluation with provenance shown.</p><small>Demonstrates the adapter; does not license public scorecard data.</small><a href="/dashboard/audit/adjusted-prices">Open report</a></article>
+      <article class="report"><span class="pill regulatory">scoring guard</span><h3>Corporate Actions Audit</h3><p>Splits and ticker-transition evidence checked before comparable scoring.</p><small>Affected observations are guarded rather than silently counted.</small><a href="/dashboard/audit/corporate-actions">Open report</a></article>
+      <article class="report"><span class="pill regulatory">quality gate</span><h3>Operations Quality Snapshot</h3><p>Generated check of required inputs, lineage and exclusion review status.</p><small>Passing quality alone never grants data-publication rights.</small><a href="/dashboard/audit/operations-quality">Open report</a></article>
+      <article class="report"><span class="pill regulatory">release gate</span><h3>Release Decision Snapshot</h3><p>Generated decision combining source rights, lineage and run quality.</p><small>The included demo remains blocked from public real-data claims.</small><a href="/dashboard/audit/release-decision">Open report</a></article>
     </section>
     <h2>Operational Controls</h2>
     <section class="controls">
