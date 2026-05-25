@@ -489,8 +489,9 @@ publicada. No se etiquetara automaticamente como compra o venta: puede estar
 afectada por creaciones/redenciones del fondo, derivados o acciones
 corporativas.
 
-En la aplicacion, `/dashboard/etf/xlf-demo` y `/dashboard/etf/iyf-demo`
-presentan solamente fixtures sinteticos. La evidencia SEC queda separada en
+En la aplicacion, `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo` y
+`/dashboard/etf/iyf-demo` presentan solamente fixtures sinteticos. La
+evidencia SEC queda separada en
 `/dashboard/etf/nport-recent`, `/dashboard/etf-regulatory`,
 `/dashboard/etf/nport-catalog` y `/dashboard/etf/nport-sync`; ninguna de
 estas rutas se presenta como actividad diaria o en tiempo real.
@@ -515,6 +516,8 @@ Para producir actividad deben importarse dos capturas oficiales separadas y
 pasar sus CSV normalizados a `etf-holdings-activity`. Los archivos oficiales
 y sus derivados reales permanecen locales mientras la politica de
 redistribucion no este autorizada.
+El bundle probado incluye `/dashboard/etf/arkk-demo`, calculado exclusivamente
+desde dos archivos ARK-shaped sinteticos redistribuibles.
 
 ### Importacion Local SPDR/XLF
 

@@ -600,7 +600,8 @@ PYTHONPATH=src python3 -m targetaudit etf-holdings-activity \
 
 Los datos incluidos son sinteticos: todavia falta habilitar publicacion
 abierta de descargas oficiales. Ya existe un importador local de CSV
-descargados desde ARK:
+descargados desde ARK. El bundle demo también compara dos fixtures con el
+mismo formato en `/dashboard/etf/arkk-demo`, sin redistribuir holdings reales:
 
 ```bash
 PYTHONPATH=src python3 -m targetaudit ark-holdings-import \
@@ -685,8 +686,9 @@ Los identificadores `XLF` anteriores fueron confirmados en un filing
 `NPORT-P` oficial de `SELECT SECTOR SPDR TRUST`.
 
 El dashboard publica únicamente vistas conocidas para esta sección:
-`/dashboard/etf/xlf-demo` y `/dashboard/etf/iyf-demo` para fixtures
-sintéticos; `/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory`
+`/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo` y
+`/dashboard/etf/iyf-demo` para fixtures sintéticos;
+`/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory`
 para comparaciones SEC periódicas; y `/dashboard/etf/nport-catalog` junto a
 `/dashboard/etf/nport-sync` para auditar el catálogo trimestral y el estado
 incremental sin presentarlos como actividad diaria.
@@ -774,8 +776,9 @@ auditados en desarrollo:
 - Publica un registro de gobernanza de proveedores, licencias y uso permitido.
 - Genera una pagina `ETF Holdings Activity` para diferencias auditables entre
   snapshots, con una demo sintetica y limites de interpretacion visibles.
-- Normaliza descargas locales de holdings ARK al esquema ETF, manteniendo
-  bloqueada la redistribucion publica de datos oficiales hasta revisar permiso.
+- Normaliza descargas locales de holdings ARK al esquema ETF y publica
+  `ARKK-DEMO` desde fixtures, manteniendo bloqueada la redistribucion publica
+  de datos oficiales hasta revisar permiso.
 - Normaliza descargas locales SPDR/XLF y usa un fixture `XLF-DEMO` para probar
   actividad ETF alineada con la especializacion en financials.
 - Normaliza descargas manuales iShares/IYF y usa un fixture `IYF-DEMO`, dejando
@@ -855,7 +858,7 @@ reales. La ruta
 `/dashboard/market-context` muestra el benchmark `XLF` en un widget atribuido
 de TradingView que no alimenta el scorecard ni se almacena como evidencia. La
 ruta
-`/dashboard/reports` organiza veintiseis paginas generadas permitidas del
+`/dashboard/reports` organiza veintisiete paginas generadas permitidas del
 bundle semanal de Open Edition y enlaza sus controles de publicacion; no
 expone libremente archivos del directorio de construccion. Entre ellas se
 encuentran `SEC IPO Discovery Queue`, que conserva la entrada universal antes
@@ -949,6 +952,7 @@ Endpoints iniciales:
 | `/dashboard/sec-discovery` | Entrada universal generada de formularios SEC candidatos, previa al triage y a decisiones manuales |
 | `/dashboard/sec-alerts` | Cola de filings SEC descubiertos que requieren revisión antes de cambiar estados IPO |
 | `/dashboard/ipo-reviews` | Auditoria de decisiones documentadas aplicadas al registro IPO Watch |
+| `/dashboard/etf/arkk-demo` | Diferencias de holdings sintéticas en formato `ARKK-DEMO`, sin redistribuir holdings ARK reales |
 | `/dashboard/etf/xlf-demo` | Diferencias de holdings sintéticas para `XLF-DEMO`, sin afirmar operaciones reales |
 | `/dashboard/etf/iyf-demo` | Diferencias de holdings sintéticas para `IYF-DEMO`, sin recolección automatizada |
 | `/dashboard/etf/nport-recent` | Comparación periódica reciente generada desde el flujo SEC N-PORT |
@@ -1052,6 +1056,9 @@ build/demo/ipo-watch-reviewed.csv
 build/demo/sec-review-outcomes.csv
 build/demo/sec-review-outcomes.md
 build/demo/sec-review-outcomes.html
+build/demo/etf-holdings-ark-activity.csv
+build/demo/etf-holdings-ark-activity.md
+build/demo/etf-holdings-ark-activity.html
 build/demo/global-listings.md
 build/demo/global-listings.html
 build/demo/issuer-confirmations.md

@@ -72,6 +72,7 @@ GLOBAL_MONITOR_REPORTS = {
     "sgx": "sgx-monitor.html",
 }
 ETF_ACTIVITY_REPORTS = {
+    "arkk-demo": "etf-holdings-ark-activity.html",
     "xlf-demo": "etf-holdings-activity.html",
     "iyf-demo": "etf-holdings-iyf-activity.html",
     "nport-recent": "etf-holdings-regulatory-activity.html",

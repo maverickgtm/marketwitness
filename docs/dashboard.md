@@ -46,9 +46,9 @@ comprar datos comerciales.
 Objetivo: volver navegable el bundle semanal de Open Edition sin abrir acceso
 general al directorio de reportes construidos.
 
-- La ruta `/dashboard/reports` agrupa veintiseis paginas HTML ya permitidas:
+- La ruta `/dashboard/reports` agrupa veintisiete paginas HTML ya permitidas:
   IPO Watch, SEC IPO Discovery Queue, SEC IPO Alerts, IPO Review Outcomes, ETF Regulatory Holdings,
-  XLF Holdings Sandbox, IYF Holdings Sandbox, N-PORT Recent Filing, Public
+  ARKK Holdings Sandbox, XLF Holdings Sandbox, IYF Holdings Sandbox, N-PORT Recent Filing, Public
   Document Checks, RWA Watch Sandbox, Global Listings Watch, Global Listings
   Alerts, Issuer Confirmations, N-PORT Dataset Catalog, N-PORT Sync Status,
   cinco reportes de evidencia Financials y seis snapshots de gobernanza.
@@ -471,15 +471,16 @@ con la frecuencia real de cada fuente.
 
 - Implementado: comparador de snapshots normalizados, CSV de diferencias,
   reporte Markdown y pagina HTML con fixture sintetico reproducible.
-- Navegacion publica: `/dashboard/etf/xlf-demo` y
-  `/dashboard/etf/iyf-demo` sirven exclusivamente comparaciones sinteticas;
+- Navegacion publica: `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo`
+  y `/dashboard/etf/iyf-demo` sirven exclusivamente comparaciones sinteticas;
   `/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory` muestran la
   capa regulatoria SEC separada.
 - Navegacion operativa SEC: `/dashboard/etf/nport-catalog` muestra releases
   trimestrales disponibles y `/dashboard/etf/nport-sync` conserva el estado
   incremental; ninguna vista afirma actividad diaria del gestor.
-- Implementado: importador local de CSV ARK descargado por el operador,
-  conservando fecha efectiva y frecuencia diaria declarada.
+- Implementado: importador local de CSV ARK descargado por el operador y vista
+  `ARKK-DEMO` con dos fixtures comparables, conservando fecha efectiva y
+  frecuencia diaria declarada.
 - Implementado: importador local State Street SPDR/XLF y fixture
   `XLF-DEMO`, alineado al benchmark Financials.
 - Implementado: importador manual iShares/IYF y fixture `IYF-DEMO`; los

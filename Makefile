@@ -162,6 +162,13 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/ark-holdings-current.csv \
 		--report build/demo/ark-holdings-current-import.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
+		--previous build/demo/ark-holdings-previous.csv \
+		--current build/demo/ark-holdings-current.csv \
+		--output build/demo/etf-holdings-ark-activity.csv \
+		--report build/demo/etf-holdings-ark-activity.md \
+		--html build/demo/etf-holdings-ark-activity.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit spdr-holdings-import \
 		--snapshot data/samples/spdr-xlf-holdings-previous.csv \
 		--fund-symbol XLF-DEMO \

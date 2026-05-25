@@ -74,6 +74,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   de posiciones, sello de fecha/frecuencia y demo sintetica reproducible.
 - [x] Importador local de archivos diarios ARK con normalizacion auditable y
   politica de no redistribucion de holdings reales pendiente de permiso.
+- [x] Vista `ARKK-DEMO` de variaciones entre fixtures ARK-shaped, visible en
+  el dashboard sin redistribuir holdings oficiales.
 - [x] Importador local State Street SPDR/XLF para holdings diarios y demo
   `XLF-DEMO` alineado a Financials.
 - [x] Importador local iShares/IYF para un segundo ETF financiero, con demo

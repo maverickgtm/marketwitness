@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.etf_holdings import load_holdings_snapshot
+from targetaudit.etf_holdings import compare_holdings, load_holdings_snapshot, render_holdings_html
 from targetaudit.providers.ark import (
     ArkHoldingsDataError,
     load_ark_holdings_snapshot,
@@ -45,6 +45,40 @@ class ArkHoldingsProviderTests(unittest.TestCase):
             loaded = load_holdings_snapshot(output, date(2026, 5, 24))
 
         self.assertEqual(loaded[3].position_ticker, "NEWF")
+
+    def test_fixture_pair_renders_arkk_activity_sandbox(self) -> None:
+        previous = load_ark_holdings_snapshot(
+            Path("data/samples/ark-holdings-previous.csv"),
+            "ARKK-DEMO",
+            "Synthetic ARK-format ETF",
+            date(2026, 5, 22),
+            "https://example.invalid/ark-demo/2026-05-22",
+            synthetic_fixture=True,
+        )
+        current = load_ark_holdings_snapshot(
+            Path("data/samples/ark-holdings-current.csv"),
+            "ARKK-DEMO",
+            "Synthetic ARK-format ETF",
+            date(2026, 5, 23),
+            "https://example.invalid/ark-demo/2026-05-23",
+            synthetic_fixture=True,
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            prior_path = Path(temporary) / "previous.csv"
+            current_path = Path(temporary) / "current.csv"
+            write_normalized_holdings(prior_path, previous)
+            write_normalized_holdings(current_path, current)
+            prior_rows = load_holdings_snapshot(prior_path, date(2026, 5, 24))
+            current_rows = load_holdings_snapshot(current_path, date(2026, 5, 24))
+
+        changes = compare_holdings(prior_rows, current_rows)
+        page = render_holdings_html(prior_rows, current_rows, changes, date(2026, 5, 24))
+
+        self.assertEqual(len(changes), 5)
+        self.assertIn("ARKK-DEMO", page)
+        self.assertIn("Demo snapshots are synthetic", page)
+        self.assertNotIn("bought", page.lower())
+        self.assertNotIn("sold", page.lower())
 
     def test_rejects_rows_for_a_different_fund(self) -> None:
         with self.assertRaisesRegex(ArkHoldingsDataError, "not requested fund"):

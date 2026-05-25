@@ -124,6 +124,7 @@ class ApiTests(unittest.TestCase):
             encoding="utf-8",
         )
         for filename, title in (
+            ("etf-holdings-ark-activity.html", "ARKK Holdings Sandbox generated page"),
             ("etf-holdings-activity.html", "XLF Holdings Sandbox generated page"),
             ("etf-holdings-iyf-activity.html", "IYF Holdings Sandbox generated page"),
             ("etf-holdings-regulatory-activity.html", "N-PORT Recent Filing generated page"),
@@ -283,11 +284,12 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Reproducible reports.", page.text)
         self.assertIn("Known routes only.", page.text)
-        self.assertIn("26 allowlisted pages", page.text)
+        self.assertIn("27 allowlisted pages", page.text)
         self.assertIn("/dashboard/ipo-watch", page.text)
         self.assertIn("/dashboard/sec-discovery", page.text)
         self.assertIn("/dashboard/sec-alerts", page.text)
         self.assertIn("/dashboard/ipo-reviews", page.text)
+        self.assertIn("/dashboard/etf/arkk-demo", page.text)
         self.assertIn("/dashboard/etf/xlf-demo", page.text)
         self.assertIn("/dashboard/etf/iyf-demo", page.text)
         self.assertIn("/dashboard/etf/nport-recent", page.text)
@@ -399,6 +401,7 @@ class ApiTests(unittest.TestCase):
 
     def test_serves_only_allowlisted_etf_activity_pages(self) -> None:
         pages = {
+            "/dashboard/etf/arkk-demo": "ARKK Holdings Sandbox generated page",
             "/dashboard/etf/xlf-demo": "XLF Holdings Sandbox generated page",
             "/dashboard/etf/iyf-demo": "IYF Holdings Sandbox generated page",
             "/dashboard/etf/nport-recent": "N-PORT Recent Filing generated page",
