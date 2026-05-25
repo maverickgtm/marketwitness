@@ -286,7 +286,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Open code.", page.text)
         self.assertIn("Run Exclusions And Pending", page.text)
         self.assertIn("Provider Control", page.text)
-        self.assertEqual(sources.json()["provider_count"], 31)
+        self.assertEqual(sources.json()["provider_count"], 32)
         self.assertGreater(sources.json()["open_review_count"], 0)
         self.assertEqual(sources.json()["blocked_count"], 4)
         self.assertEqual(
@@ -302,6 +302,10 @@ class ApiTests(unittest.TestCase):
         self.assertIn("publication_policy", sources.json()["sources"][0])
         self.assertIn(
             "edinet-offerings",
+            {item["provider_id"] for item in sources.json()["sources"]},
+        )
+        self.assertIn(
+            "cvm-equity-offerings",
             {item["provider_id"] for item in sources.json()["sources"]},
         )
 

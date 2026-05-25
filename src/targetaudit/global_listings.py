@@ -147,7 +147,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     expansion_count = counts["priority_connector"] + counts["planned_connector"]
     cards = [
         ("Mapped markets", len(markets), "Official sources identified"),
-        ("Live feeds", counts["live_official_feed"], "LSE, HKEX, ASX, TSX, JPX and SGX implemented"),
+        ("Live feeds", counts["live_official_feed"], "LSE, HKEX, ASX, TSX, JPX, SGX and CVM implemented"),
         ("Verified snapshots", counts["verified_snapshot"], "Official capture, not continuous"),
         (
             "Restricted",
@@ -239,7 +239,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
     <section class="cards">{cards_html}</section>
   </header>
   <main>
-    <p class="notice">HKEX, LSE, ASX, TSX, JPX and SGX have official ingestion paths. A separate issuer-release registry preserves confirmed milestones without turning them into investment conclusions.</p>
+    <p class="notice">HKEX, LSE, ASX, TSX, JPX, SGX and CVM have official ingestion paths. CVM evidence is an offering signal, not proof of a B3 listing. A separate issuer-release registry preserves confirmed milestones without turning them into investment conclusions.</p>
     <section class="monitor-links" aria-label="Monitoring pages">
       <a href="global-alerts.html">Open daily change review</a>
       <a href="hkex-monitor.html">Open HKEX live monitor</a>
@@ -249,6 +249,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
       <a href="tsx-monitor.html">Open TSX listing confirmations</a>
       <a href="jpx-monitor.html">Open JPX listing confirmations</a>
       <a href="edinet-monitor.html">Open EDINET offering filings</a>
+      <a href="cvm-monitor.html">Open CVM equity offerings</a>
       <a href="sgx-monitor.html">Open SGX prospectus monitor</a>
       <a href="issuer-confirmations.html">Open issuer confirmations</a>
       <a href="etf-holdings-activity.html">Open ETF holdings activity</a>

@@ -68,8 +68,8 @@ output. Ver
 
 La segunda ronda, concluida el `2026-05-25`, reviso India, Mexico, Brasil,
 Argentina, Alemania, Suiza, Paises Bajos e Italia. Brasil `CVM Dados Abertos`
-y el registro europeo `ESMA Prospectus III` se incorporan como conectores
-prioritarios para documentos de ofertas/prospectos. `ESMA` puede cubrir
+ya se implemento para ofertas de acciones bajo ODbL; el registro europeo
+`ESMA Prospectus III` permanece como conector prioritario. `ESMA` puede cubrir
 Alemania, Paises Bajos e Italia bajo reproduccion atribuida; `BMV` Mexico no
 se conecta porque sus terminos prohiben parsing y reproduccion sin permiso
 escrito. Ver
@@ -360,7 +360,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `TSX` / Canada: monitor HTML oficial de nuevas companias ya listadas.
 - `SGX` / Singapur: catalogo oficial de prospectos IPO.
 - `JPX` / Japon: monitores `JPX New Listings` y `EDINET` con diff diario separado para confirmaciones de Tokio y filings de oferta con clave gratuita.
-- `CVM` / Brasil: portal oficial abierto de ofertas publicas, en cola de implementacion.
+- `CVM` / Brasil: monitor oficial ODbL de ofertas publicas de acciones y diff diario; requiere evidencia B3 separada para confirmar listing.
 - `ESMA` / Union Europea: prospectos regulatorios para Alemania, Paises Bajos e Italia, en cola de implementacion.
 - `KRX` / Corea del Sur: `OpenDART` para registros de oferta y `KRX OPEN API` para evidencia de mercado a validar, en cola de implementacion.
 - `MOEX` / Rusia: `Bank of Russia` y `MOEX ISS` identificados, solo investigacion restringida por sanciones vigentes.
@@ -383,10 +383,12 @@ enmiendas y retiros desde el API oficial, mientras `JPX New Listings` confirma
 fechas de aprobacion o listing en Tokio. Ambas capas ya entran al historial
 comparativo diario con estados separados para que un filing no se presente
 como cotizacion.
-Brasil y la Union Europea se incorporan como prioridades pendientes:
-`CVM Dados Abertos` ofrece ofertas publicas estructuradas y `ESMA Prospectus
-III` permite recuperar prospectos europeos con reproduccion atribuida. Ambos
-requieren collectors y confirmacion posterior de cotizacion.
+Brasil ya cuenta con `CVM Equity Offering Watch`: lee el ZIP diario abierto
+de `CVM Dados Abertos`, filtra ofertas de acciones y las incorpora al diff
+diario. El registro es evidencia regulatoria, no confirmacion de cotizacion
+en B3. La Union Europea permanece como prioridad pendiente: `ESMA Prospectus
+III` permite recuperar prospectos europeos con reproduccion atribuida y
+requiere collector y confirmacion posterior de cotizacion.
 Corea del Sur tambien entra como prioridad pendiente: `OpenDART` aporta
 registros de valores y disclosures en XML/API; `KRX OPEN API` se evaluara para
 confirmacion de mercado sin publicar outputs fuera de sus terminos.
@@ -468,6 +470,21 @@ PYTHONPATH=src python3 -m targetaudit edinet-monitor \
   --as-of YYYY-MM-DD
 ```
 
+Para leer ofertas publicas de acciones de Brasil desde el ZIP diario ODbL de
+CVM, sin clave:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit cvm-monitor \
+  --since YYYY-MM-DD \
+  --output data/raw/global/cvm-monitor.csv \
+  --report build/live/cvm-monitor.md \
+  --html build/live/cvm-monitor.html \
+  --as-of YYYY-MM-DD
+```
+
+El resultado abre revision regulatoria; no confirma admision ni primera
+negociacion en B3.
+
 Para leer prospectos SGX en vivo:
 
 ```bash
@@ -503,6 +520,7 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
   --tsx data/raw/global/tsx-monitor.csv \
   --jpx data/raw/global/jpx-monitor.csv \
   --edinet data/raw/global/edinet-monitor.csv \
+  --cvm data/raw/global/cvm-monitor.csv \
   --sgx data/raw/global/sgx-monitor.csv \
   --history-dir data/raw/global/history \
   --output build/live/global-alerts.csv \
@@ -511,9 +529,10 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
 ```
 
 `global-alerts` clasifica diferencias como nuevas, modificadas o removidas
-del feed para revisión. EDINET entra como evidencia documental temprana y JPX
-como confirmación de hitos de listing; una remoción no confirma retiro,
-admisión ni inicio de negociación.
+del feed para revisión. EDINET y CVM entran como evidencia regulatoria
+temprana; JPX confirma hitos japoneses de listing y B3 requerira evidencia
+separada para Brasil. Una remoción no confirma retiro, admisión ni inicio de
+negociación.
 
 ## ETF Holdings Activity
 
@@ -961,6 +980,9 @@ build/demo/jpx-monitor.html
 build/demo/edinet-monitor.csv
 build/demo/edinet-monitor.md
 build/demo/edinet-monitor.html
+build/demo/cvm-monitor.csv
+build/demo/cvm-monitor.md
+build/demo/cvm-monitor.html
 build/demo/sgx-monitor.csv
 build/demo/sgx-monitor.md
 build/demo/sgx-monitor.html

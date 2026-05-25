@@ -66,6 +66,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "TSX": current / "tsx-monitor.csv",
                     "JPX": current / "jpx-monitor.csv",
                     "EDINET": current / "edinet-monitor.csv",
+                    "CVM": current / "cvm-monitor.csv",
                     "SGX": current / "sgx-monitor.csv",
                 }
             )
@@ -88,6 +89,7 @@ class ListingAlertsTests(unittest.TestCase):
                 "TSX": "tsx-monitor.csv",
                 "JPX": "jpx-monitor.csv",
                 "EDINET": "edinet-monitor.csv",
+                "CVM": "cvm-monitor.csv",
                 "SGX": "sgx-monitor.csv",
             }.items():
                 item = source / filename
@@ -104,6 +106,7 @@ class ListingAlertsTests(unittest.TestCase):
             self.assertTrue((root / "history" / "2026-05-24" / "sgx-monitor.csv").exists())
             self.assertTrue((root / "history" / "2026-05-24" / "jpx-monitor.csv").exists())
             self.assertTrue((root / "history" / "2026-05-24" / "edinet-monitor.csv").exists())
+            self.assertTrue((root / "history" / "2026-05-24" / "cvm-monitor.csv").exists())
 
     def test_edinet_tracks_documents_without_promoting_a_listing_state(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -124,6 +127,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "TSX": Path("data/samples/global-alerts-previous/tsx-monitor.csv"),
                     "JPX": Path("data/samples/global-alerts-previous/jpx-monitor.csv"),
                     "EDINET": edinet_csv,
+                    "CVM": Path("data/samples/global-alerts-previous/cvm-monitor.csv"),
                     "SGX": Path("data/samples/global-alerts-previous/sgx-monitor.csv"),
                 }
             )
@@ -136,6 +140,37 @@ class ListingAlertsTests(unittest.TestCase):
         page = render_alerts_html(alerts, edinet, date(2026, 5, 25), "baseline")
         self.assertIn("Initial registration", page)
         self.assertNotIn("securities_registration_statement", page)
+
+    def test_cvm_tracks_offerings_without_promoting_a_listing_state(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            cvm_csv = Path(temporary) / "cvm-monitor.csv"
+            cvm_csv.write_text(
+                "company_name,offering_id,security_type,offering_type,procedure,status,"
+                "filing_date,registration_date,observed_on,source_url,resource_url\n"
+                "Demo Brasil S.A.,SYNTH-CVM-001,ACOES,Primaria,RCVM 160,offering_recorded,"
+                "2026-05-25,-,2026-05-25,https://dados.cvm.gov.br/dataset/oferta-distrib,"
+                "https://dados.cvm.gov.br/dados/OFERTA/DISTRIB/DADOS/oferta_distribuicao.zip\n",
+                encoding="utf-8",
+            )
+            current = load_current_signals(
+                {
+                    "HKEX": Path("data/samples/global-alerts-previous/hkex-monitor.csv"),
+                    "LSE": Path("data/samples/global-alerts-previous/lse-upcoming.csv"),
+                    "ASX": Path("data/samples/global-alerts-previous/asx-monitor.csv"),
+                    "TSX": Path("data/samples/global-alerts-previous/tsx-monitor.csv"),
+                    "JPX": Path("data/samples/global-alerts-previous/jpx-monitor.csv"),
+                    "EDINET": Path("data/samples/global-alerts-previous/edinet-monitor.csv"),
+                    "CVM": cvm_csv,
+                    "SGX": Path("data/samples/global-alerts-previous/sgx-monitor.csv"),
+                }
+            )
+
+        cvm = [signal for signal in current if signal.market == "CVM"]
+        self.assertEqual(cvm[0].entity_key, "SYNTH-CVM-001")
+        self.assertEqual(cvm[0].status, "offering_recorded")
+        self.assertNotIn("listed", cvm[0].status)
+        page = render_alerts_html(compare_signals(cvm, []), cvm, date(2026, 5, 25), "baseline")
+        self.assertIn("Offering recorded", page)
 
 
 def _signal(

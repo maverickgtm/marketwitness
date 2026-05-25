@@ -481,10 +481,23 @@ El estado emitido es `prospectus_published`: prueba que SGX publicó un
 documento de prospecto en su catálogo, pero no confirma por sí solo admisión,
 inicio de negociación o una decisión de inversión.
 
+## CVM Equity Offering ZIP Feed
+
+`cvm-monitor` lee los CSV oficiales incluidos en el ZIP diario brasileño
+`Ofertas Públicas de Distribuição` o una fixture sintética declarada para la
+demo. Produce: `company_name`, `offering_id`, `security_type`,
+`offering_type`, `procedure`, `status`, `filing_date`, `registration_date`,
+`observed_on`, `source_url` y `resource_url`.
+
+Solo conserva valores mobiliarios identificados como acciones. Los estados
+son `offering_recorded`, `offering_closed` y
+`offering_cancelled_or_withdrawn`. Una oferta CVM no confirma que la acción
+haya sido admitida o negociada en B3.
+
 ## Global Listings Alerts
 
 `global-alerts` normaliza los CSV actuales de `HKEX`, `LSE`, `ASX`, `TSX`,
-`JPX`, `EDINET` y `SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa
+`JPX`, `EDINET`, `CVM` y `SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa
 `--history-dir` y
 compara contra la última captura anterior. Produce un CSV con:
 `market`, `change_type`, `company_name`, `previous_status`, `current_status`,
@@ -503,7 +516,9 @@ al mismo emisor en etapas oficiales distintas.
 
 En EDINET la identidad comparada es `document_id`: una declaracion inicial,
 una enmienda y una solicitud de retiro permanecen como documentos regulatorios
-separados. Ninguno se normaliza como admision o listing JPX.
+distintos. En CVM la identidad comparada es `offering_id`: una oferta de
+acciones permanece como señal regulatoria brasileña y no se convierte en
+listing B3 por el solo hecho de aparecer en el diff.
 
 ## `issuer_listing_confirmations.csv`
 

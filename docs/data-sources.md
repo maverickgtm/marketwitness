@@ -114,7 +114,7 @@ Alemania, Suiza, Paises Bajos e Italia agrego dos rutas de expansion:
 
 | Fuente | Aporte Potencial | Limite Actual |
 |---|---|---|
-| CVM `Portal Dados Abertos` (Brasil) | Ofertas publicas en datasets estructurados y API oficial | Implementar collector y verificar atribucion del dataset antes de publicar alertas derivadas |
+| CVM `Portal Dados Abertos` (Brasil) | Ofertas publicas en ZIP diario oficial bajo ODbL | Collector de ofertas de acciones y diff diario implementados; B3 sigue siendo necesario para confirmar listing |
 | ESMA `Prospectus III` (UE) | Prospectos de autoridades nacionales, con A2A y permiso de reproduccion atribuido; cubre Alemania, Paises Bajos e Italia | Implementar collector y confirmar trading mediante evidencia posterior |
 | AFM (Paises Bajos) | Registro publico de prospectos aprobados desde 2007, exportable como CSV/XML | Usar como corroboracion nacional del conector ESMA |
 | BYMA API `EOD` (Argentina) | Precios de cierre anunciados sin costo | Revisar derechos de display/output antes de construir laboratorio |
@@ -302,7 +302,7 @@ Revision inicial al `2026-05-24`; ampliaciones internacionales al `2026-05-25`:
 | Canada | TSX New Company Listings | Nuevas companias ya listadas | Feed HTML oficial implementado como confirmación; `SEDAR+` bloqueado para automatizacion publica |
 | Singapur | SGX IPO Prospectus API | Prospectos IPO publicados | Feed JSON oficial implementado |
 | Japon / Tokio | FSA `EDINET` Documents API y JPX `New Listings` | Documentos de ofertas mas fechas oficiales de aprobacion/listing TSE | EDINET filing watch, JPX y diff diario conjunto implementados |
-| Brasil | CVM `Portal Dados Abertos` | Registros estructurados de ofertas publicas de distribucion | Conector prioritario pendiente para API/dataset oficial |
+| Brasil | CVM `Ofertas Públicas de Distribuição` | Ofertas de acciones en ZIP diario abierto | Feed oficial implementado con atribucion ODbL; requiere B3 para confirmar cotizacion |
 | UE: Alemania, Paises Bajos e Italia | ESMA `Prospectus III` | Prospectos y documentos relacionados notificados por autoridades nacionales | Conector prioritario pendiente; reproduccion permitida con fuente y rotulo de transformacion |
 | Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Securities registration statements/ofertas mas estadisticas oficiales de mercado | Conector prioritario pendiente; validar output KRX del endpoint usado |
 | Rusia | Bank of Russia `Register of Russian Securities` y MOEX `ISS` | Registro oficial de securities y datos de mercado disponibles tecnicamente | Solo investigacion restringida: MOEX designada por OFAC; sin collector ni señales |
@@ -321,8 +321,9 @@ revision de una posible oferta; no confirma listing. Su documento entra al
 historial diario con identidad propia, mientras JPX conserva la confirmacion
 de cotizacion. Ninguno aporta targets de analistas.
 
-El portal abierto de `CVM` permite construir una cola brasileña de ofertas
-publicas. El registro `Prospectus III` de `ESMA` permite una cola europea
+El portal abierto de `CVM` ya alimenta una cola brasileña de ofertas de
+acciones mediante el ZIP diario publicado bajo ODbL. Esa evidencia no declara
+listing ni trading en B3. El registro `Prospectus III` de `ESMA` permite una cola europea
 atribuida para Alemania, Paises Bajos e Italia; la aprobacion de un prospecto
 tampoco confirma el inicio de negociacion.
 
@@ -551,6 +552,7 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - ASX Upcoming floats and listings: <https://www.asx.com.au/listings/upcoming-floats-and-listings>
 - TSX New Company Listings: <https://www.tsx.com/en/news/new-company-listings>
 - SGX IPO Prospectus: <https://www.sgx.com/securities/ipo-prospectus>
+- CVM Ofertas Publicas de Distribuicao: <https://dados.cvm.gov.br/dataset/oferta-distrib>
 - SEC Form N-PORT: <https://www.sec.gov/files/formn-port.pdf>
 - SEC Form N-PORT Data Sets: <https://www.sec.gov/data-research/sec-markets-data/form-n-port-data-sets>
 - SEC N-PORT dataset readme: <https://www.sec.gov/files/nport_readme.pdf>

@@ -15,7 +15,7 @@ Watch`:
 
 | Prioridad | Cobertura | Fuente | Decision |
 |---:|---|---|---|
-| Alta | Brasil | CVM `Portal Dados Abertos`: ofertas publicas de distribucion en datasets estructurados y API | Agregar como conector prioritario para documentos/eventos de ofertas; requiere collector y validacion final de atribucion del dataset |
+| Implementada | Brasil | CVM `Portal Dados Abertos`: ofertas publicas de distribucion en ZIP diario ODbL | `cvm-monitor` filtra ofertas de acciones y entra al diff diario; B3 debe confirmar listing |
 | Alta | Alemania, Paises Bajos e Italia | ESMA `Prospectus III`: registros de prospectos con servicios machine-to-machine | Agregar un solo conector regional; su aviso legal autoriza reproducir informacion del registro con fuente y rotulo para transformaciones |
 | Media | Paises Bajos | AFM registro de prospectos aprobados con exportacion CSV/XML desde `2007` | Referencia nacional especialmente clara; puede validar muestras de ESMA para Amsterdam |
 | Media | Argentina | BYMA API `EOD` anunciada sin costo y CNV AIF publica hechos/prospectos | Explorar precios EOD en laboratorio separado; aun falta confirmar derechos de output/republicacion |
@@ -85,9 +85,9 @@ solo que el instrumento ya este negociando.
 
 ## Siguientes Implementaciones
 
-1. `Brazil Offering Watch`: crear adaptador de fixtures para el dataset
-   `Ofertas Publicas de Distribuicao` de CVM y separar ofertas de acciones de
-   deuda, fondos y otros instrumentos.
+1. `Brazil Offering Watch`: implementado como `cvm-monitor` sobre el dataset
+   `Ofertas Publicas de Distribuicao` de CVM; separa ofertas de acciones de
+   deuda, fondos y titulizaciones.
 2. `EU Prospectus Watch`: crear adaptador de fixtures del registro `Prospectus
    III` de ESMA, inicialmente filtrado a Alemania, Paises Bajos e Italia.
 3. `Argentina EOD Review`: confirmar terminos de la API gratis `BYMA EOD`
@@ -98,7 +98,7 @@ solo que el instrumento ya este negociando.
 ## Fuentes Oficiales Revisadas
 
 - Brasil CVM Portal Dados Abertos: <https://dados.cvm.gov.br/>
-- Brasil CVM ofertas publicas: <https://dados.cvm.gov.br/dataset/?groups=ofertas-publicas>
+- Brasil CVM ofertas publicas: <https://dados.cvm.gov.br/dataset/oferta-distrib>
 - Brasil B3 Hub de dados publicos: <https://www.b3.com.br/pt_br/dados/hub-de-dados-publicos/>
 - ESMA databases and registers: <https://www.esma.europa.eu/publications-and-data/databases-and-registers>
 - ESMA A2A help / Prospectus III: <https://registers.esma.europa.eu/publication/helpApp>

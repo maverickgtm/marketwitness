@@ -1,0 +1,4 @@
+Numero_Processo;Numero_Registro_Oferta;Tipo_Oferta;Tipo_Ativo;Nome_Emissor;Rito_Oferta;Modalidade_Registro;Data_Abertura_Processo;Data_Protocolo;Data_Registro_Oferta;Data_Encerramento_Oferta
+SYNTH-CVM-2026-001;SYNTH/REG/001;Primaria;ACOES ORDINARIAS;Sao Paulo Digital Markets Demo S.A.;RCVM 160 (rito ordinario);Concedido;2026-05-20;2026-05-20;2026-05-23;
+SYNTH-CVM-2026-002;SYNTH/REG/002;Secundaria;ACOES PREFERENCIAIS;Rio Applied Systems Demo S.A.;RCVM 160 (rito ordinario);Concedido;2026-05-21;2026-05-21;2026-05-24;2026-05-25
+SYNTH-CVM-2026-003;SYNTH/REG/003;Primaria;DEBENTURES;Excluded Debt Demo S.A.;RCVM 160 (rito ordinario);Concedido;2026-05-22;2026-05-22;2026-05-24;

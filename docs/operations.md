@@ -650,7 +650,7 @@ registrante `CIK 0001064641`.
 
 ## Historial De Mercados Globales
 
-Los siete feeds internacionales generan CSV normalizados. Después de
+Los ocho feeds internacionales generan CSV normalizados. Después de
 obtenerlos, `global-alerts` copia la lectura del día a
 `data/raw/global/history/YYYY-MM-DD/`, selecciona la última captura anterior
 y genera una bandeja común:
@@ -663,6 +663,7 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
   --tsx data/raw/global/tsx-monitor-live.csv \
   --jpx data/raw/global/jpx-monitor.csv \
   --edinet data/raw/global/edinet-monitor.csv \
+  --cvm data/raw/global/cvm-monitor.csv \
   --sgx data/raw/global/sgx-monitor-live.csv \
   --history-dir data/raw/global/history \
   --output build/live/global-alerts.csv \
@@ -673,8 +674,10 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
 La primera ejecución establece la línea base y no inventa cambios. A partir
 de la segunda, la bandeja marca evidencia nueva, modificada o removida del
 feed para revisión. En Japón, un documento EDINET permanece como señal
-documental y JPX confirma el hito de listing; una remoción nunca se promueve
-automáticamente a retirada, admisión o cotización completada.
+documental y JPX confirma el hito de listing. En Brasil, una oferta CVM
+permanece como evidencia regulatoria hasta que una fuente B3 confirme el
+listing. Una remoción nunca se promueve automáticamente a retirada, admisión
+o cotización completada.
 
 ## Confirmacion JPX De Tokio
 
@@ -712,6 +715,25 @@ definidos en la especificación oficial EDINET. Su resultado abre revisión de
 la oferta y entra en el diff diario mediante `--edinet`; la confirmación de
 listing sigue correspondiendo a JPX.
 
+## Ofertas CVM De Brasil
+
+`cvm-monitor` lee el ZIP diario del conjunto oficial `Ofertas Públicas de
+Distribuição`, publicado por CVM bajo licencia ODbL, y filtra solamente
+ofertas de acciones:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit cvm-monitor \
+  --since YYYY-MM-DD \
+  --output data/raw/global/cvm-monitor.csv \
+  --report build/live/cvm-monitor.md \
+  --html build/live/cvm-monitor.html \
+  --as-of YYYY-MM-DD
+```
+
+No requiere clave ni proveedor pagado. El CSV identifica la oferta, el tipo
+de acción, el rito y el estado observado. Es evidencia de una oferta pública;
+la admisión o negociación en B3 debe verificarse mediante una fuente distinta.
+
 ## Automatizaciones Locales Activas
 
 En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
@@ -720,13 +742,13 @@ En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
   genera `SEC IPO Alerts` y resume posibles registros, prospectos o retiros
   nuevos, incluyendo coincidencias exactas de `CIK` con la watchlist y triage
   heuristico visible para SPAC/ETF.
-- `TargetAudit Global Listings diario`: consulta los seis feeds oficiales
-  oficiales o páginas estructuradas, el componente JSON oficial LSE `Upcoming issues` y el
+- `TargetAudit Global Listings diario`: consulta feeds oficiales o páginas
+  estructuradas, el componente JSON oficial LSE `Upcoming issues` y el
   contraste público FCA NSM, además de las tablas oficiales ASX y TSX; resume
   cambios HKEX, emisiones previstas en Londres, coincidencias documentales,
   solicitudes/retiradas australianas, cotizaciones confirmadas en Canada,
-  aprobaciones/listings JPX y prospectos SGX. También preserva snapshots y
-  genera `Global Listings Alerts`.
+  aprobaciones/listings JPX, ofertas de acciones CVM y prospectos SGX.
+  También preserva snapshots y genera `Global Listings Alerts`.
 - `TargetAudit N-PORT trimestral`: consulta el catalogo oficial SEC cada lunes
   a las `21:50` hora de Guatemala, comenzando el `2026-05-25`; establece una
   linea base en su primera corrida y luego descarga solo ZIP nuevos para

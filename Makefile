@@ -341,6 +341,13 @@ demo:
 		--report build/demo/edinet-monitor.md \
 		--html build/demo/edinet-monitor.html \
 		--as-of 2026-05-25
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit cvm-monitor \
+		--snapshot data/samples/cvm-equity-offerings-synthetic.csv \
+		--since 2026-05-01 \
+		--output build/demo/cvm-monitor.csv \
+		--report build/demo/cvm-monitor.md \
+		--html build/demo/cvm-monitor.html \
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sgx-monitor \
 		--snapshot data/samples/sgx-ipo-prospectus.json \
 		--output build/demo/sgx-monitor.csv \
@@ -354,6 +361,7 @@ demo:
 		--tsx build/demo/tsx-monitor.csv \
 		--jpx build/demo/jpx-monitor.csv \
 		--edinet build/demo/edinet-monitor.csv \
+		--cvm build/demo/cvm-monitor.csv \
 		--sgx build/demo/sgx-monitor.csv \
 		--previous-dir data/samples/global-alerts-previous \
 		--output build/demo/global-alerts.csv \

@@ -149,6 +149,14 @@ from .providers.edinet import (
     write_edinet_html,
     write_edinet_report,
 )
+from .providers.cvm import (
+    CvmDataError,
+    fetch_cvm_equity_offerings,
+    load_cvm_snapshot,
+    write_cvm_csv,
+    write_cvm_html,
+    write_cvm_report,
+)
 from .providers.sgx import (
     SgxDataError,
     fetch_sgx_prospectuses,
@@ -893,6 +901,7 @@ def main() -> int:
     alerts_parser.add_argument("--tsx", required=True, help="Current TSX monitor CSV.")
     alerts_parser.add_argument("--jpx", required=True, help="Current JPX monitor CSV.")
     alerts_parser.add_argument("--edinet", required=True, help="Current EDINET offering monitor CSV.")
+    alerts_parser.add_argument("--cvm", required=True, help="Current CVM equity-offering monitor CSV.")
     alerts_parser.add_argument("--sgx", required=True, help="Current SGX monitor CSV.")
     alerts_parser.add_argument(
         "--previous-dir",
@@ -1002,6 +1011,25 @@ def main() -> int:
         help="EDINET submission date to request in YYYY-MM-DD format; defaults to --as-of.",
     )
     edinet_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Report cutoff in YYYY-MM-DD format.",
+    )
+    cvm_parser = subparsers.add_parser(
+        "cvm-monitor", help="Read Brazil CVM public-distribution equity-offering records."
+    )
+    cvm_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    cvm_parser.add_argument("--report", required=True, help="Markdown report path.")
+    cvm_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    cvm_parser.add_argument(
+        "--snapshot", help="Read a saved CVM-shaped CSV fixture instead of requesting the official ZIP."
+    )
+    cvm_parser.add_argument(
+        "--since",
+        required=True,
+        help="Earliest offering filing date to include in YYYY-MM-DD format.",
+    )
+    cvm_parser.add_argument(
         "--as-of",
         default=date.today().isoformat(),
         help="Report cutoff in YYYY-MM-DD format.",
@@ -1179,6 +1207,30 @@ def main() -> int:
         print(
             f"Wrote EDINET offering watch for {len(filings)} filtered document "
             f"records to {args.report}."
+        )
+        return 0
+
+    if args.command == "cvm-monitor":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            since = date.fromisoformat(args.since)
+            if since > as_of:
+                raise CvmDataError("CVM filing window cannot start after report cutoff.")
+            if args.snapshot:
+                offerings = load_cvm_snapshot(args.snapshot, as_of, since)
+                source_mode = "synthetic_fixture"
+            else:
+                offerings = fetch_cvm_equity_offerings(since, as_of)
+                source_mode = "live"
+            write_cvm_csv(args.output, offerings)
+            write_cvm_report(args.report, offerings, as_of, since, source_mode)
+            if args.html:
+                write_cvm_html(args.html, offerings, as_of, since, source_mode)
+        except (CvmDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote CVM equity offering watch for {len(offerings)} filtered records "
+            f"to {args.report}."
         )
         return 0
 
@@ -1733,6 +1785,7 @@ def main() -> int:
                 "TSX": args.tsx,
                 "JPX": args.jpx,
                 "EDINET": args.edinet,
+                "CVM": args.cvm,
                 "SGX": args.sgx,
             }
             current = load_current_signals(paths)
