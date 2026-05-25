@@ -50,7 +50,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 
 ## Milestone 4: Aplicacion (`v0.4`)
 
-- [ ] DuckDB para analisis local y migracion preparada a PostgreSQL.
+- [x] DuckDB inicial para conservar corridas de evaluacion, hashes de evidencia
+  y resultados tipados, con esquema relacional portable a PostgreSQL.
 - [ ] API FastAPI con endpoints de rankings, firmas y acciones.
 - [ ] Dashboard web con filtros, series de targets y exportaciones.
 - [ ] Pagina de auditoria de fuente y observaciones excluidas.

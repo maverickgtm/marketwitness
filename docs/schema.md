@@ -152,6 +152,27 @@ de salida.
 Los datasets reales nunca deben agregarse a Git dentro de `data/raw/` o
 `data/private/`, carpetas deliberadamente ignoradas.
 
+## Almacen Analitico DuckDB
+
+`evaluate --database` conserva una corrida reproducible en una base DuckDB
+local. La dependencia es opcional porque la generacion CSV/Markdown sigue
+funcionando sin instalar paquetes externos:
+
+```bash
+python3 -m pip install -e ".[warehouse]"
+```
+
+| Tabla | Proposito |
+|---|---|
+| `evaluation_runs` | Parametros, fecha de corte y conteos por estado de cada corrida |
+| `run_assets` | Ruta, tamano y hash SHA-256 de cada entrada o artefacto producido |
+| `evaluations` | Resultados tipados por fila, unidos a la corrida mediante `run_id` |
+
+El `run_id` no puede sobreescribirse: una ejecucion corregida se registra como
+una nueva corrida. El esquema usa tablas y tipos compatibles con una futura
+migracion a PostgreSQL para la API publica; DuckDB es el almacen local de
+analisis, no una autorizacion para publicar los datos guardados.
+
 ## `source_registry.csv`
 
 Registro transversal de fuentes consideradas por TargetAudit y su control de

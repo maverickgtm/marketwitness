@@ -12,6 +12,9 @@ license = {text = "MIT"}
 authors = [{name = "TargetAudit contributors"}]
 keywords = ["finance", "price-targets", "analysts", "backtesting", "research"]
 
+[project.optional-dependencies]
+warehouse = ["duckdb>=1.2,<2"]
+
 [project.scripts]
 targetaudit = "targetaudit.cli:main"
 

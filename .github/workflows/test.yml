@@ -15,5 +15,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install analytical warehouse dependency
+        run: python -m pip install ".[warehouse]"
       - name: Run release verification
         run: make verify

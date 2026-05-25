@@ -204,6 +204,7 @@ from .target_imports import (
     write_normalized_targets,
 )
 from .reporting import write_markdown_report
+from .storage import EvaluationRun, WarehouseError, generated_run_id, store_evaluation_run
 
 
 def main() -> int:
@@ -227,6 +228,14 @@ def main() -> int:
     )
     evaluate_parser.add_argument("--output", required=True, help="Evaluation output CSV.")
     evaluate_parser.add_argument("--report", required=True, help="Markdown report path.")
+    evaluate_parser.add_argument(
+        "--database",
+        help="Optional DuckDB warehouse path used to preserve this auditable evaluation run.",
+    )
+    evaluate_parser.add_argument(
+        "--run-id",
+        help="Stable warehouse run identifier; valid only when --database is supplied.",
+    )
     evaluate_parser.add_argument(
         "--minimum-sample",
         type=int,
@@ -1360,6 +1369,8 @@ def main() -> int:
         as_of = date.fromisoformat(args.as_of)
         if args.minimum_sample < 1:
             parser.error("--minimum-sample must be positive.")
+        if args.run_id and not args.database:
+            parser.error("--run-id requires --database.")
         targets = load_targets(args.targets)
         prices = load_prices(args.prices)
         actions = (
@@ -1384,10 +1395,36 @@ def main() -> int:
             universe[0].universe_id if universe else "",
             args.transaction_cost_bps,
         )
+        warehouse_run_id = ""
+        if args.database:
+            warehouse_run_id = args.run_id or generated_run_id(as_of)
+            asset_paths = {
+                "targets": args.targets,
+                "prices": args.prices,
+                "evaluations_csv": args.output,
+                "report_markdown": args.report,
+            }
+            if args.corporate_actions:
+                asset_paths["corporate_actions"] = args.corporate_actions
+            if args.universe_membership:
+                asset_paths["universe_membership"] = args.universe_membership
+            store_evaluation_run(
+                args.database,
+                EvaluationRun(
+                    run_id=warehouse_run_id,
+                    as_of=as_of,
+                    minimum_sample=args.minimum_sample,
+                    transaction_cost_bps_per_side=args.transaction_cost_bps,
+                    universe_id=universe[0].universe_id if universe else "",
+                    asset_paths=asset_paths,
+                ),
+                evaluations,
+            )
     except (
         CorporateActionDataError,
         DataFormatError,
         HistoricalUniverseDataError,
+        WarehouseError,
         ValueError,
     ) as exc:
         parser.error(str(exc))
@@ -1399,6 +1436,8 @@ def main() -> int:
         f"Evaluated {evaluated}; excluded {excluded}; pending {pending}. "
         f"Report written to {args.report}."
     )
+    if args.database:
+        print(f"Stored warehouse run {warehouse_run_id} in {args.database}.")
     return 0
 
 

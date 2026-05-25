@@ -516,6 +516,29 @@ Todavia no es un ranking de mercado listo para decisiones de inversion. Para
 publicar resultados reales hacen falta observaciones historicas licenciadas o
 documentadas una por una y precios ajustados cuya licencia permita su uso.
 
+## Almacen Local De Corridas
+
+Para conservar resultados consultables por la futura API, instala la capacidad
+opcional DuckDB y agrega `--database` a `evaluate`:
+
+```bash
+python3 -m pip install -e ".[warehouse]"
+PYTHONPATH=src python3 -m targetaudit evaluate \
+  --targets data/samples/targets.csv \
+  --prices data/samples/prices.csv \
+  --universe-membership data/samples/historical_universe.csv \
+  --output build/demo/evaluations-warehouse.csv \
+  --report build/demo/report-warehouse.md \
+  --database build/demo/targetaudit.duckdb \
+  --run-id demo-financials-2025-01-01 \
+  --minimum-sample 1 \
+  --as-of 2025-01-01
+```
+
+La base registra parametros de la corrida, resultados tipados y hashes
+SHA-256 de los archivos de entrada y salida. Un `run-id` existente se rechaza
+para evitar que una evidencia anterior sea reemplazada silenciosamente.
+
 ## Inicio Rapido
 
 Requiere Python 3.9 o superior. No requiere instalar paquetes para ejecutar el
@@ -636,7 +659,8 @@ docs/                   Metodologia, estrategia, dashboard, fuentes y roadmap
 
 - `v0.3`: rigor cuantitativo, incluyendo intervalos, segmentos y control de
   integrantes historicos del universo.
-- `v0.4`: API con FastAPI y base DuckDB/PostgreSQL.
+- `v0.4`: base DuckDB para corridas auditables, seguida por API FastAPI y
+  dashboard web.
 - `v0.5`: dashboard web, filtros por sector y paginas de firma/accion.
 - `v1.0`: pipeline actualizado periodicamente con una fuente de targets cuya
   licencia permita el producto publico.
