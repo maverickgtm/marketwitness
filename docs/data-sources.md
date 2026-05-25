@@ -100,7 +100,7 @@ activo y usar exchanges solamente como venues secundarios.
 |---|---|---|
 | `RWA Watch Sandbox` | Observaciones de precio de referencia y token/venue creadas por TargetAudit | Modulo funcional sin costo; demuestra desviaciones y controles sin datos reales |
 | `xStocks / Backed Public API` | Recursos sin autenticacion para metadatos, precio subyacente/mercado, documentacion legal y proof of reserves | Referencia tecnica bloqueada: los terminos revisados no autorizan recoleccion/republicacion publica automatizada |
-| `Ondo Global Markets` | Mas de 200 acciones y ETF tokenizados con ruta API/SDK documentada | Segunda familia candidata, pendiente de acceso y derechos publicos |
+| `Ondo Global Markets` | API autenticada para datos de mercado orientados a aplicaciones; requiere onboarding y `x-api-key` | Candidato autorizado, no fuente gratis abierta; pendiente de derechos publicos |
 | Bybit, Kraken, Gate y Bitget | Venues oficiales que anuncian xStocks u Ondo tokenizados | Candidatos secundarios para contrastar mercado despues de validar terminos |
 | LBank | Zona xStocks anunciada con activos impulsados por Backed | Referencia de venue hasta confirmar API |
 | Gemini y OKX | Gemini declara que su producto no esta disponible via API; OKX dirige estos activos a DEX/wallet y no a su CEX | Referencia de cobertura, no conectores |
@@ -114,6 +114,10 @@ Los terminos oficiales de xStocks/Backed revisados el `2026-05-24` son
 determinantes: acceso publico a endpoints no equivale a derechos de producto
 publico. La edicion GitHub no realiza llamadas xStocks ni conserva sus precios;
 solo muestra un sandbox sintetico mientras no exista autorizacion escrita.
+En Ondo, la documentacion permite identificar una via contractual mas viable:
+sus endpoints de precios se describen para display en aplicaciones, pero solo
+despues de onboarding y API key. No se activa como fuente gratis ni publicable
+hasta recibir condiciones suficientes para este uso.
 
 ## Precios Ajustados Y Mercado
 
@@ -416,7 +420,10 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - xStocks terms of service: <https://xstocks.fi/documents/xstocks-terms-of-service.pdf>
 - Backed Assets terms of service: <https://assets.backed.fi/terms-of-service>
 - Ondo Global Markets overview: <https://docs.ondo.finance/ondo-global-markets/overview>
-- Ondo API integration: <https://docs.ondo.finance/ondo-global-markets/minting-and-redemption/minting-and-redemption-through-api>
+- Ondo API reference: <https://docs.ondo.finance/api-reference/overview>
+- Ondo API quickstart: <https://docs.ondo.finance/api-reference/quickstart>
+- Ondo terms of service: <https://docs.ondo.finance/legal/terms-of-service>
+- Ondo important notes: <https://docs.ondo.finance/ondo-global-markets/important-notes>
 - Kraken xStocks: <https://www.kraken.com/xstocks>
 - Gate xStocks: <https://www.gate.com/xstocks>
 - Bitget Ondo announcement: <https://www.bitget.com/support/articles/12560603838361>

@@ -36,9 +36,10 @@ ni reemplazaria una licencia de historial de targets.
 La investigacion inicial de `RWA Watch` mapea 20 exchanges centralizados y
 Pepperstone. Los terminos revisados bloquean la recoleccion/republicacion
 publica automatizada de `xStocks / Backed`, aunque existan endpoints visibles;
-`Ondo Global Markets` permanece bajo revision. La Open Edition incluye en su
-lugar un sandbox sintetico que no realiza llamadas reales. Ninguna de estas
-fuentes alimenta analyst targets. Ver
+`Ondo Global Markets` documenta APIs para display pero requiere onboarding,
+API key y revision de derechos de output. La Open Edition incluye en su lugar
+un sandbox sintetico que no realiza llamadas reales. Ninguna de estas fuentes
+alimenta analyst targets. Ver
 [RWA Watch: Exchanges Y Fuentes Base](rwa-watch-sources.md).
 
 ## Capacidades Incluidas
