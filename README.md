@@ -543,6 +543,8 @@ PYTHONPATH=src python3 -m targetaudit evaluate \
   --targets data/samples/targets.csv \
   --prices data/samples/prices.csv \
   --universe-membership data/samples/historical_universe.csv \
+  --prices-provider-id synthetic-demo \
+  --universe-provider-id synthetic-demo \
   --output build/demo/evaluations-warehouse.csv \
   --report build/demo/report-warehouse.md \
   --database build/demo/targetaudit.duckdb \
@@ -555,9 +557,13 @@ PYTHONPATH=src python3 -m targetaudit evaluate \
 La base registra parametros de la corrida, version metodologica, resultados
 tipados y hashes SHA-256 de los archivos de entrada y salida. Tambien deriva
 una `dataset_fingerprint` estable solo a partir de las entradas, para comparar
-corridas sin confundir evidencia con reportes regenerados. Un `run-id`
-existente se rechaza para evitar que una evidencia anterior sea reemplazada
-silenciosamente.
+corridas sin confundir evidencia con reportes regenerados; la huella también
+cambia si varía el proveedor declarado de un activo. Un `run-id` existente se
+rechaza para evitar que una evidencia anterior sea reemplazada silenciosamente.
+Las corridas destinadas a revisión pública deben declarar
+`--prices-provider-id`, `--corporate-actions-provider-id` y
+`--universe-provider-id` cuando esos activos existen; `Release Center`
+contrasta esos identificadores con las políticas aprobadas del registro.
 
 ## API De Lectura
 
@@ -615,10 +621,10 @@ El modo `--public-release` exige que la corrida conserve `targets`, `prices`,
 `corporate_actions` y `universe_membership`; pasarla tampoco reemplaza la
 aprobación de fuentes en `Scorecard Readiness`.
 
-Para una decisión final única, `Release Center` combina fuentes, linaje de la
-corrida y calidad de publicación. Una observación enlazada a un fixture demo
-o a un proveedor no aprobado bloquea la salida aunque existan fuentes
-candidatas en el registro:
+Para una decisión final única, `Release Center` combina fuentes, linaje de las
+observaciones, procedencia de los activos y calidad de publicación. Una
+observación o archivo enlazado a un fixture demo o a un proveedor no aprobado
+bloquea la salida aunque existan fuentes candidatas en el registro:
 
 ```bash
 PYTHONPATH=src python3 -m targetaudit scorecard-release \
@@ -652,7 +658,7 @@ Endpoints iniciales:
 | `/dashboard/readiness` | Pagina de preparación y bloqueos de publicación del scorecard |
 | `/api/v1/operations/quality?run_id=RUN-ID&public_release=true` | Monitor operativo o compuerta de publicación de una corrida candidata, con umbral configurable de exclusiones |
 | `/dashboard/operations` | Pagina operativa de corridas aprobadas, en revision o bloqueadas |
-| `/api/v1/releases/scorecard?run_id=RUN-ID` | Decisión combinada de publicación: fuentes, linaje y calidad de corrida |
+| `/api/v1/releases/scorecard?run_id=RUN-ID` | Decisión combinada de publicación: fuentes, linaje de observaciones, procedencia de activos y calidad |
 | `/dashboard/release` | Release Center para inspeccionar una corrida candidata antes de distribuirla |
 
 La documentación interactiva local queda disponible en `/docs` al iniciar el

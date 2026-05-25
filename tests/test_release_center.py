@@ -90,6 +90,19 @@ def _stored_run(root: Path, provider_id: str) -> Path:
         path = root / f"{role}.csv"
         path.write_text(f"{role}\n", encoding="utf-8")
         assets[role] = path
+    asset_provider_ids = (
+        {
+            "prices": "prices",
+            "corporate_actions": "actions",
+            "universe_membership": "universe",
+        }
+        if provider_id == "targets"
+        else {
+            "prices": "synthetic-demo",
+            "corporate_actions": "synthetic-demo",
+            "universe_membership": "synthetic-demo",
+        }
+    )
     store_evaluation_run(
         database,
         EvaluationRun(
@@ -99,6 +112,7 @@ def _stored_run(root: Path, provider_id: str) -> Path:
             transaction_cost_bps_per_side=Decimal("10"),
             universe_id="financials",
             asset_paths=assets,
+            asset_provider_ids=asset_provider_ids,
             dataset_label="Release center fixture",
         ),
         [

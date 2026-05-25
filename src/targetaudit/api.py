@@ -217,6 +217,7 @@ def create_app(
                 "asset_role": item["asset_role"],
                 "sha256": item["sha256"],
                 "byte_size": item["byte_size"],
+                "provider_id": item["provider_id"],
             }
             for item in _warehouse_call(read_run_assets, database, run_id)
         ]

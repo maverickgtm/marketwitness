@@ -241,6 +241,21 @@ def main() -> int:
         "--universe-membership",
         help="Optional point-in-time membership CSV used to restrict the scored universe.",
     )
+    evaluate_parser.add_argument(
+        "--prices-provider-id",
+        default="",
+        help="Source-registry provider identifier for stored adjusted-price evidence.",
+    )
+    evaluate_parser.add_argument(
+        "--corporate-actions-provider-id",
+        default="",
+        help="Source-registry provider identifier for stored corporate-action evidence.",
+    )
+    evaluate_parser.add_argument(
+        "--universe-provider-id",
+        default="",
+        help="Source-registry provider identifier for stored point-in-time universe evidence.",
+    )
     evaluate_parser.add_argument("--output", required=True, help="Evaluation output CSV.")
     evaluate_parser.add_argument("--report", required=True, help="Markdown report path.")
     evaluate_parser.add_argument(
@@ -1575,6 +1590,11 @@ def main() -> int:
                 asset_paths["corporate_actions"] = args.corporate_actions
             if args.universe_membership:
                 asset_paths["universe_membership"] = args.universe_membership
+            asset_provider_ids = {"prices": args.prices_provider_id}
+            if args.corporate_actions:
+                asset_provider_ids["corporate_actions"] = args.corporate_actions_provider_id
+            if args.universe_membership:
+                asset_provider_ids["universe_membership"] = args.universe_provider_id
             store_evaluation_run(
                 args.database,
                 EvaluationRun(
@@ -1584,6 +1604,7 @@ def main() -> int:
                     transaction_cost_bps_per_side=args.transaction_cost_bps,
                     universe_id=universe[0].universe_id if universe else "",
                     asset_paths=asset_paths,
+                    asset_provider_ids=asset_provider_ids,
                     dataset_label=args.dataset_label,
                 ),
                 evaluations,

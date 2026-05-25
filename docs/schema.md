@@ -166,7 +166,7 @@ python3 -m pip install -e ".[warehouse]"
 | Tabla | Proposito |
 |---|---|
 | `evaluation_runs` | Parametros, fecha de corte, version metodologica, huella de entradas y conteos por estado de cada corrida |
-| `run_assets` | Ruta, tamano y hash SHA-256 de cada entrada o artefacto producido |
+| `run_assets` | Ruta, tamano, hash SHA-256 y `provider_id` declarado de cada entrada o artefacto producido |
 | `evaluations` | Resultados tipados por fila, unidos a la corrida mediante `run_id` |
 
 El `run_id` no puede sobreescribirse: una ejecucion corregida se registra como
@@ -176,14 +176,18 @@ analisis, no una autorizacion para publicar los datos guardados.
 `evaluations.provider_id` conserva el enlace declarado por la observacion al
 registro de fuentes; las bases creadas antes de este campo reciben una columna
 vacia al volver a escribir y se presentan como linaje no enlazado.
+`run_assets.provider_id` conserva la procedencia declarada de precios,
+acciones corporativas y membresía histórica. Bases anteriores se leen con
+procedencia vacía y no pueden superar una decisión de publicación hasta
+generar una nueva corrida con activos trazables.
 
 `evaluation_runs.methodology_version` sella las reglas aplicadas en la corrida
 y `dataset_label` aporta una descripcion legible del conjunto evaluado.
 `dataset_fingerprint` es un SHA-256 de un manifiesto ordenado compuesto por
-rol, hash y tamano de cada entrada (`targets`, `prices`, universo y acciones
-cuando correspondan). Excluye artefactos derivados como el CSV de evaluaciones
-y el reporte Markdown. Bases anteriores se leen con esos sellos vacios y deben
-mostrarse como historicas sin versionar.
+rol, hash, tamano y `provider_id` de cada entrada (`targets`, `prices`,
+universo y acciones cuando correspondan). Excluye artefactos derivados como
+el CSV de evaluaciones y el reporte Markdown. Bases anteriores se leen con
+esos sellos vacios y deben mostrarse como historicas sin versionar.
 
 ## `source_registry.csv`
 

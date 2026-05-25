@@ -171,9 +171,10 @@ PYTHONPATH=src python3 -m targetaudit scorecard-release \
   --as-of YYYY-MM-DD
 ```
 
-El reporte conserva tres compuertas separadas: derechos productivos para los
+El reporte conserva cuatro compuertas separadas: derechos productivos para los
 cuatro controles del scorecard, `provider_id` de targets realmente utilizado
-por la corrida y calidad de publicación con sus cuatro activos. Un bloqueo
+por la corrida, procedencia declarada de `prices`, `corporate_actions` y
+`universe_membership`, y calidad de publicación con sus cuatro activos. Un bloqueo
 devuelve código `2`, por lo que puede detener un despliegue automatizado sin
 ocultar la evidencia generada. La misma decisión está disponible en
 `/dashboard/release` y `/api/v1/releases/scorecard?run_id=RUN-ID`.
@@ -618,7 +619,8 @@ En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:
   `build/live/targetaudit.duckdb`; genera el reporte operativo si existen
   corridas reales autorizadas y reporta claramente cuando aun no hay una
   corrida live. Nunca sustituye esa ausencia con el demo y exige
-  `scorecard-release` antes de distribuir una corrida candidata.
+  `scorecard-release` antes de distribuir una corrida candidata; esa decisión
+  también exige procedencia por activo en la nueva corrida.
 
 Las cuatro tareas tratan evidencia operativa o eventos regulatorios para
 investigar, no como instrucciones para tomar posiciones.

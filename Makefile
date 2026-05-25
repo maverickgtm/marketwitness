@@ -21,6 +21,8 @@ demo:
 		--targets build/demo/authorized-targets.csv \
 		--prices data/samples/prices.csv \
 		--universe-membership data/samples/historical_universe.csv \
+		--prices-provider-id synthetic-demo \
+		--universe-provider-id synthetic-demo \
 		--output build/demo/evaluations.csv \
 		--report build/demo/report.md \
 		--database build/demo/targetaudit.duckdb \
@@ -33,6 +35,8 @@ demo:
 		--targets data/samples/targets_revisions.csv \
 		--prices data/samples/prices_revisions.csv \
 		--universe-membership data/samples/historical_universe.csv \
+		--prices-provider-id synthetic-demo \
+		--universe-provider-id synthetic-demo \
 		--output build/demo/evaluations-target-revisions.csv \
 		--report build/demo/report-target-revisions.md \
 		--database build/demo/targetaudit.duckdb \
@@ -238,6 +242,9 @@ demo:
 		--prices data/samples/prices.csv \
 		--corporate-actions data/samples/corporate_actions.csv \
 		--universe-membership data/samples/historical_universe.csv \
+		--prices-provider-id synthetic-demo \
+		--corporate-actions-provider-id synthetic-demo \
+		--universe-provider-id synthetic-demo \
 		--output build/demo/evaluations-actions-guarded.csv \
 		--report build/demo/report-actions-guarded.md \
 		--database build/demo/targetaudit.duckdb \

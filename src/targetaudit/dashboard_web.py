@@ -832,11 +832,11 @@ def release_center_html() -> str:
     .lead { color:var(--muted); font-size:17px; max-width:890px; }
     .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold);
       border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
-    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .cards { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin:34px 0; }
     .card,.controls,.panel,.table-wrap { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
     .card { padding:17px 20px; }
     .card p { color:var(--muted); margin:0; }
-    .card strong { display:block; font-size:35px; color:var(--mint); margin-top:4px; text-transform:uppercase; }
+    .card strong { display:block; font-size:31px; color:var(--mint); margin-top:4px; text-transform:uppercase; }
     .card strong.blocked { color:var(--red); }
     .controls { padding:17px; display:grid; grid-template-columns:2fr 1fr auto; gap:12px; align-items:end; }
     label { display:block; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
@@ -874,7 +874,8 @@ def release_center_html() -> str:
     <section class="cards">
       <article class="card"><p>Release decision</p><strong id="release" class="blocked">-</strong></article>
       <article class="card"><p>Source rights</p><strong id="source" class="blocked">-</strong></article>
-      <article class="card"><p>Provider lineage</p><strong id="lineage" class="blocked">-</strong></article>
+      <article class="card"><p>Target lineage</p><strong id="lineage" class="blocked">-</strong></article>
+      <article class="card"><p>Asset lineage</p><strong id="asset-lineage" class="blocked">-</strong></article>
       <article class="card"><p>Run quality</p><strong id="quality" class="blocked">-</strong></article>
     </section>
   </header>
@@ -931,13 +932,15 @@ def release_center_html() -> str:
         state("release", data.release_status, data.release_ready);
         state("source", data.source_gate_status, data.source_gate_status === "pass");
         state("lineage", data.lineage_gate_status, data.lineage_gate_status === "pass");
+        state("asset-lineage", data.asset_lineage_gate_status, data.asset_lineage_gate_status === "pass");
         state("quality", data.quality_gate_status, data.quality_gate_status === "pass");
         $("reviewed").textContent = `${data.market_focus} / Candidate ${data.run_id} / Reviewed as of ${data.as_of}`;
         $("publication-note").textContent = data.publication_note;
         $("blockers").innerHTML = data.blockers.length ? data.blockers.map((item) => `<li>${text(item)}</li>`).join("") : "<li>No release blockers remain.</li>";
         $("controls").innerHTML = data.readiness.requirements.map((item) => `<tr><td><strong>${text(item.label)}</strong></td><td><span class="pill ${text(item.status)}">${text(item.status)}</span></td><td>${text(item.blocker || "Ready under approved policy.")}</td></tr>`).join("");
         const run = data.candidate_run;
-        $("evidence").innerHTML = `<small>Candidate evidence</small><strong>${text(run.dataset_label)}</strong><p>Methodology ${text(run.methodology_version)} / Assets: ${text(run.asset_roles.join(", "))}</p><p>Provider lineage: ${text(data.candidate_provider_ids.join(", "))}</p><p>Evaluated ${run.evaluated_count} / Excluded ${(run.excluded_rate * 100).toFixed(2)}%</p>`;
+        const assets = data.asset_lineage.map((item) => `${item.role}: ${item.provider_id || "unlinked"} / ${item.status}`).join("<br>");
+        $("evidence").innerHTML = `<small>Candidate evidence</small><strong>${text(run.dataset_label)}</strong><p>Methodology ${text(run.methodology_version)} / Assets: ${text(run.asset_roles.join(", "))}</p><p>Target lineage: ${text(data.candidate_provider_ids.join(", "))}</p><p>${assets}</p><p>Evaluated ${run.evaluated_count} / Excluded ${(run.excluded_rate * 100).toFixed(2)}%</p>`;
       } catch (error) { fail(error.message); }
     }
     async function initialize() {

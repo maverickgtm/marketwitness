@@ -12,6 +12,7 @@ from targetaudit.storage import (
     EvaluationRun,
     WarehouseError,
     read_evaluations,
+    read_run_assets,
     read_run_summary,
     store_evaluation_run,
 )
@@ -66,6 +67,7 @@ class StorageTests(unittest.TestCase):
                     transaction_cost_bps_per_side=Decimal("10"),
                     universe_id="financials-demo",
                     asset_paths={"targets": target_file},
+                    asset_provider_ids={"targets": "synthetic-demo"},
                     dataset_label="Auditable fixture",
                 ),
                 evaluations,
@@ -84,7 +86,7 @@ class StorageTests(unittest.TestCase):
             connection = duckdb.connect(str(database), read_only=True)
             try:
                 saved_asset = connection.execute(
-                    "SELECT asset_role, length(sha256) FROM run_assets"
+                    "SELECT asset_role, length(sha256), provider_id FROM run_assets"
                 ).fetchone()
                 saved_result = connection.execute(
                     "SELECT hit, strategy_net_return_pct, provider_id FROM evaluations "
@@ -92,7 +94,7 @@ class StorageTests(unittest.TestCase):
                 ).fetchone()
             finally:
                 connection.close()
-            self.assertEqual(saved_asset, ("targets", 64))
+            self.assertEqual(saved_asset, ("targets", 64, "synthetic-demo"))
             self.assertEqual(
                 saved_result, (True, Decimal("0.180000000000"), "synthetic-demo")
             )
@@ -167,6 +169,43 @@ class StorageTests(unittest.TestCase):
                 read_run_summary(database, "second")["dataset_fingerprint"],
             )
 
+    def test_dataset_fingerprint_includes_declared_asset_provider(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            targets = root / "targets.csv"
+            targets.write_text("same input\n", encoding="utf-8")
+            database = root / "targetaudit.duckdb"
+            evaluation = Evaluation(
+                observation_id="one",
+                ticker="AAA",
+                firm="Firm",
+                sector="",
+                published_date="",
+                price_target=None,
+                source_url="",
+                status="excluded",
+                reason="invalid",
+            )
+            for run_id, provider_id in (("first", "provider-one"), ("second", "provider-two")):
+                store_evaluation_run(
+                    database,
+                    EvaluationRun(
+                        run_id=run_id,
+                        as_of=date(2025, 1, 1),
+                        minimum_sample=1,
+                        transaction_cost_bps_per_side=Decimal("10"),
+                        universe_id="",
+                        asset_paths={"targets": targets},
+                        asset_provider_ids={"targets": provider_id},
+                    ),
+                    [evaluation],
+                )
+
+            self.assertNotEqual(
+                read_run_summary(database, "first")["dataset_fingerprint"],
+                read_run_summary(database, "second")["dataset_fingerprint"],
+            )
+
     def test_reads_existing_database_created_before_provider_lineage_column(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             database = Path(directory) / "targetaudit.duckdb"
@@ -212,6 +251,48 @@ class StorageTests(unittest.TestCase):
             legacy_run = read_run_summary(database, "old-schema")
             self.assertEqual(legacy_run["methodology_version"], "")
             self.assertEqual(legacy_run["dataset_fingerprint"], "")
+
+    def test_reads_run_assets_created_before_asset_provider_lineage_column(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            targets = root / "targets.csv"
+            targets.write_text("targets\n", encoding="utf-8")
+            database = root / "targetaudit.duckdb"
+            store_evaluation_run(
+                database,
+                EvaluationRun(
+                    run_id="legacy-assets",
+                    as_of=date(2025, 1, 1),
+                    minimum_sample=1,
+                    transaction_cost_bps_per_side=Decimal("10"),
+                    universe_id="",
+                    asset_paths={"targets": targets},
+                    asset_provider_ids={"targets": "synthetic-demo"},
+                ),
+                [
+                    Evaluation(
+                        observation_id="one",
+                        ticker="AAA",
+                        firm="Firm",
+                        sector="",
+                        published_date="2023-01-02",
+                        price_target=Decimal("100"),
+                        source_url="https://example.invalid/one",
+                        status="evaluated",
+                        provider_id="synthetic-demo",
+                    )
+                ],
+            )
+
+            import duckdb
+
+            connection = duckdb.connect(str(database))
+            try:
+                connection.execute("ALTER TABLE run_assets DROP COLUMN provider_id")
+            finally:
+                connection.close()
+
+            self.assertEqual(read_run_assets(database, "legacy-assets")[0]["provider_id"], "")
 
 
 if __name__ == "__main__":

@@ -140,6 +140,7 @@ class ApiTests(unittest.TestCase):
             {"prices", "targets"},
         )
         self.assertNotIn("asset_path", run.json()["assets"][0])
+        self.assertIn("provider_id", run.json()["assets"][0])
 
     def test_serves_firm_ranking_using_methodology_outputs(self) -> None:
         response = self.client.get("/api/v1/runs/api-demo/rankings/firms")
@@ -251,6 +252,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(decision.json()["source_gate_status"], "blocked")
         self.assertEqual(decision.json()["quality_gate_status"], "blocked")
         self.assertEqual(decision.json()["lineage_gate_status"], "blocked")
+        self.assertEqual(decision.json()["asset_lineage_gate_status"], "blocked")
         self.assertEqual(missing.status_code, 404)
         self.assertEqual(page.status_code, 200)
         self.assertIn("Release only", page.text)

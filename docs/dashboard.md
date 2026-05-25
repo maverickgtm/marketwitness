@@ -108,8 +108,10 @@ alimentar un scorecard público.
   `public_release`.
 - Bloquea una corrida si sus observaciones declaran un `provider_id` que no
   corresponde a un proveedor de targets aprobado para salida pública.
-- Mantiene separados los estados de derechos de fuente, linaje usado por la
-  corrida y calidad de evidencia.
+- Exige que activos de precios, acciones corporativas y universo histórico
+  declaren también el proveedor aprobado que los originó.
+- Mantiene separados los estados de derechos de fuente, linaje de targets,
+  procedencia de activos y calidad de evidencia.
 
 ## Pagina 1: Financials Scorecard
 
