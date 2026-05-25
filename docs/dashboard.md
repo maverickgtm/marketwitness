@@ -45,9 +45,10 @@ comprar datos comerciales.
 Objetivo: volver navegable el bundle semanal de Open Edition sin abrir acceso
 general al directorio de reportes construidos.
 
-- La ruta `/dashboard/reports` agrupa las seis paginas HTML ya permitidas:
+- La ruta `/dashboard/reports` agrupa las siete paginas HTML ya permitidas:
   IPO Watch, ETF Regulatory Holdings, Public Document Checks, RWA Watch
-  Sandbox, Global Listings Alerts e Issuer Confirmations.
+  Sandbox, Global Listings Watch, Global Listings Alerts e Issuer
+  Confirmations.
 - `Global Listings Alerts` permite consultar la cola comparada de diez
   mercados internacionales sin confundir documentos de oferta con listings
   confirmados; `Issuer Confirmations` conserva hitos oficiales ya revisados.
@@ -439,7 +440,10 @@ Cada jurisdiccion conserva sus propias etapas:
 - `Global Listings Alerts`: bandeja diaria que compara snapshots de diez
   feeds, incluidos documentos EDINET y OpenDART, ofertas CVM y prospectos ESMA, y marca registros nuevos, modificados
   o ausentes para revisión sin convertir filings en listings.
-- La portada `Global Listings Watch` enlaza ambas vistas para navegar entre
+- La portada `/dashboard/global-listings` enlaza estas vistas mediante rutas
+  fijas para diez monitores internacionales; `/dashboard/global/{monitor}`
+  rechaza cualquier reporte fuera de la lista permitida.
+- `Global Listings Watch` permite navegar entre
   cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,
   TSX, JPX, EDINET, CVM, ESMA, OpenDART, SGX, confirmaciones del emisor, actividad ETF y gobernanza de fuentes.
 

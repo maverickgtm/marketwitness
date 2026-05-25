@@ -241,21 +241,21 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
   <main>
     <p class="notice">HKEX, LSE, ASX, TSX, JPX, SGX, CVM, ESMA and OpenDART have official ingestion paths. CVM, ESMA and OpenDART evidence open regulatory review; they are not proof of trading. A separate issuer-release registry preserves confirmed milestones without turning them into investment conclusions.</p>
     <section class="monitor-links" aria-label="Monitoring pages">
-      <a href="global-alerts.html">Open daily change review</a>
-      <a href="hkex-monitor.html">Open HKEX live monitor</a>
-      <a href="lse-upcoming.html">Open LSE live monitor</a>
-      <a href="lse-fca-check.html">Open LSE / FCA check</a>
-      <a href="asx-monitor.html">Open ASX live monitor</a>
-      <a href="tsx-monitor.html">Open TSX listing confirmations</a>
-      <a href="jpx-monitor.html">Open JPX listing confirmations</a>
-      <a href="edinet-monitor.html">Open EDINET offering filings</a>
-      <a href="cvm-monitor.html">Open CVM equity offerings</a>
-      <a href="esma-monitor.html">Open ESMA equity prospectuses</a>
-      <a href="opendart-monitor.html">Open Korea equity filings</a>
-      <a href="sgx-monitor.html">Open SGX prospectus monitor</a>
-      <a href="issuer-confirmations.html">Open issuer confirmations</a>
-      <a href="etf-holdings-activity.html">Open ETF holdings activity</a>
-      <a href="source-registry.html">Open source governance</a>
+      <a href="/dashboard/global-alerts">Open daily change review</a>
+      <a href="/dashboard/global/hkex">Open HKEX live monitor</a>
+      <a href="/dashboard/global/lse-upcoming">Open LSE live monitor</a>
+      <a href="/dashboard/document-checks">Open LSE / FCA check</a>
+      <a href="/dashboard/global/asx">Open ASX live monitor</a>
+      <a href="/dashboard/global/tsx">Open TSX listing confirmations</a>
+      <a href="/dashboard/global/jpx">Open JPX listing confirmations</a>
+      <a href="/dashboard/global/edinet">Open EDINET offering filings</a>
+      <a href="/dashboard/global/cvm">Open CVM equity offerings</a>
+      <a href="/dashboard/global/esma">Open ESMA equity prospectuses</a>
+      <a href="/dashboard/global/opendart">Open Korea equity filings</a>
+      <a href="/dashboard/global/sgx">Open SGX prospectus monitor</a>
+      <a href="/dashboard/issuer-confirmations">Open issuer confirmations</a>
+      <a href="/dashboard/etf-regulatory">Open ETF regulatory holdings</a>
+      <a href="/dashboard/governance">Open source governance</a>
     </section>
     <h2>Official source map</h2>
     <div class="table-wrap"><table>

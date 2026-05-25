@@ -144,7 +144,7 @@ def report_center_html() -> str:
     <p class="lead">A reading room for the report pages included in the tested Open Edition bundle. It exposes approved dashboard routes, never arbitrary files from the generated-report directory.</p>
     <p class="meta">Open Edition bundle / Weekly GitHub Actions build / 30-day artifact retention</p>
     <section class="cards">
-      <article class="card"><p>Generated report routes</p><strong>6 allowlisted pages</strong></article>
+      <article class="card"><p>Generated report routes</p><strong>7 allowlisted pages</strong></article>
       <article class="card"><p>Bundle schedule</p><strong>Weekly + manual</strong></article>
       <article class="card"><p>Required paid data</p><strong>None</strong></article>
     </section>
@@ -157,6 +157,7 @@ def report_center_html() -> str:
       <article class="report"><span class="pill regulatory">regulatory periodic</span><h3>ETF Regulatory Holdings</h3><p>N-PORT period comparison for the regulatory ETF evidence layer.</p><small>Periodic filing evidence, not real-time ETF trading.</small><a href="/dashboard/etf-regulatory">Open report</a></article>
       <article class="report"><span class="pill regulatory">document check</span><h3>Public Document Checks</h3><p>Documentary corroboration example for monitored listing candidates.</p><small>A document match does not confirm admission or trading.</small><a href="/dashboard/document-checks">Open report</a></article>
       <article class="report"><span class="pill fixture">synthetic sandbox</span><h3>RWA Watch Sandbox</h3><p>Auditable tokenized-asset observation format using synthetic rows only.</p><small>No live xStocks, venue or issuer feed is collected.</small><a href="/dashboard/rwa-watch">Open report</a></article>
+      <article class="report"><span class="pill regulatory">international coverage</span><h3>Global Listings Watch</h3><p>Official signal map and navigation for international listing and filing monitors.</p><small>Jurisdictions retain separate confirmation rules and blocked paths.</small><a href="/dashboard/global-listings">Open report</a></article>
       <article class="report"><span class="pill regulatory">global review queue</span><h3>Global Listings Alerts</h3><p>Differences across listing and regulatory-document monitors in ten international markets.</p><small>Filings open review; exchange evidence is required to confirm listing milestones.</small><a href="/dashboard/global-alerts">Open report</a></article>
       <article class="report"><span class="pill regulatory">primary evidence</span><h3>Issuer Confirmations</h3><p>Official issuer-release milestones reviewed separately from listing-candidate feeds.</p><small>Verified events remain research evidence, not trading instructions.</small><a href="/dashboard/issuer-confirmations">Open report</a></article>
     </section>

@@ -930,8 +930,10 @@ Endpoints iniciales:
 | `/dashboard/ipo-watch` | Reporte generado de vigilancia SEC de filings IPO |
 | `/dashboard/etf-regulatory` | Actividad regulatoria ETF basada en periodos N-PORT |
 | `/dashboard/document-checks` | Verificaciones documentales regulatorias generadas |
+| `/dashboard/global-listings` | Mapa navegable de cobertura y monitores oficiales internacionales |
 | `/dashboard/global-alerts` | Cola comparada de cambios en señales de listings y documentos internacionales |
 | `/dashboard/issuer-confirmations` | Hitos de cotización verificados desde comunicados oficiales revisados |
+| `/dashboard/global/{monitor}` | Monitor permitido: `hkex`, `lse-upcoming`, `asx`, `tsx`, `jpx`, `edinet`, `cvm`, `esma`, `opendart` o `sgx` |
 | `/api/v1/runs` | Corridas almacenadas |
 | `/api/v1/runs/{run_id}` | Parámetros y hashes de evidencia de una corrida |
 | `/api/v1/runs/{run_id}/facets` | Sectores, firmas y tickers para filtros |

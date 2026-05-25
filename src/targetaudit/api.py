@@ -59,6 +59,18 @@ DEFAULT_SOURCE_REGISTRY_PATH = "data/samples/source_registry.csv"
 DEFAULT_PROVIDER_APPROVALS_PATH = "data/samples/provider_approval_queue.csv"
 DEFAULT_GENERATED_REPORTS_PATH = "build/demo"
 DEFAULT_LICENSED_EXTENSIONS_PATH = "data/samples/licensed_extensions.csv"
+GLOBAL_MONITOR_REPORTS = {
+    "hkex": "hkex-monitor.html",
+    "lse-upcoming": "lse-upcoming.html",
+    "asx": "asx-monitor.html",
+    "tsx": "tsx-monitor.html",
+    "jpx": "jpx-monitor.html",
+    "edinet": "edinet-monitor.html",
+    "cvm": "cvm-monitor.html",
+    "esma": "esma-monitor.html",
+    "opendart": "opendart-monitor.html",
+    "sgx": "sgx-monitor.html",
+}
 
 
 def create_app(
@@ -150,6 +162,23 @@ def create_app(
     )
     def issuer_confirmations_report() -> str:
         return _generated_html(reports, "issuer-confirmations.html")
+
+    @application.get(
+        "/dashboard/global-listings", response_class=HTMLResponse, include_in_schema=False
+    )
+    def global_listings_report() -> str:
+        return _generated_html(reports, "global-listings.html")
+
+    @application.get(
+        "/dashboard/global/{monitor}", response_class=HTMLResponse, include_in_schema=False
+    )
+    def global_monitor_report(monitor: str) -> str:
+        filename = GLOBAL_MONITOR_REPORTS.get(monitor)
+        if filename is None:
+            raise HTTPException(
+                status_code=404, detail="Global monitor report is not allowlisted."
+            )
+        return _generated_html(reports, filename)
 
     @application.get(
         "/dashboard/market-context", response_class=HTMLResponse, include_in_schema=False

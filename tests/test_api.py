@@ -128,6 +128,22 @@ class ApiTests(unittest.TestCase):
             "<html><h1>Issuer Confirmations generated page</h1></html>",
             encoding="utf-8",
         )
+        for filename, title in (
+            ("global-listings.html", "Global Listings Watch generated page"),
+            ("hkex-monitor.html", "HKEX Monitor generated page"),
+            ("lse-upcoming.html", "LSE Upcoming generated page"),
+            ("asx-monitor.html", "ASX Monitor generated page"),
+            ("tsx-monitor.html", "TSX Monitor generated page"),
+            ("jpx-monitor.html", "JPX Monitor generated page"),
+            ("edinet-monitor.html", "EDINET Monitor generated page"),
+            ("cvm-monitor.html", "CVM Monitor generated page"),
+            ("esma-monitor.html", "ESMA Monitor generated page"),
+            ("opendart-monitor.html", "OpenDART Monitor generated page"),
+            ("sgx-monitor.html", "SGX Monitor generated page"),
+        ):
+            (self.reports / filename).write_text(
+                f"<html><h1>{title}</h1></html>", encoding="utf-8"
+            )
         store_evaluation_run(
             self.database,
             EvaluationRun(
@@ -225,11 +241,12 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Reproducible reports.", page.text)
         self.assertIn("Known routes only.", page.text)
-        self.assertIn("6 allowlisted pages", page.text)
+        self.assertIn("7 allowlisted pages", page.text)
         self.assertIn("/dashboard/ipo-watch", page.text)
         self.assertIn("/dashboard/etf-regulatory", page.text)
         self.assertIn("/dashboard/document-checks", page.text)
         self.assertIn("/dashboard/rwa-watch", page.text)
+        self.assertIn("/dashboard/global-listings", page.text)
         self.assertIn("/dashboard/global-alerts", page.text)
         self.assertIn("/dashboard/issuer-confirmations", page.text)
         self.assertIn("not live market alerts", page.text)
@@ -289,6 +306,29 @@ class ApiTests(unittest.TestCase):
         self.assertIn("RWA Watch Sandbox generated page", rwa.text)
         self.assertIn("Global Listings Alerts generated page", global_alerts.text)
         self.assertIn("Issuer Confirmations generated page", issuer_confirmations.text)
+
+    def test_serves_only_allowlisted_global_monitor_pages(self) -> None:
+        pages = {
+            "/dashboard/global-listings": "Global Listings Watch generated page",
+            "/dashboard/global/hkex": "HKEX Monitor generated page",
+            "/dashboard/global/lse-upcoming": "LSE Upcoming generated page",
+            "/dashboard/global/asx": "ASX Monitor generated page",
+            "/dashboard/global/tsx": "TSX Monitor generated page",
+            "/dashboard/global/jpx": "JPX Monitor generated page",
+            "/dashboard/global/edinet": "EDINET Monitor generated page",
+            "/dashboard/global/cvm": "CVM Monitor generated page",
+            "/dashboard/global/esma": "ESMA Monitor generated page",
+            "/dashboard/global/opendart": "OpenDART Monitor generated page",
+            "/dashboard/global/sgx": "SGX Monitor generated page",
+        }
+
+        for route, marker in pages.items():
+            with self.subTest(route=route):
+                response = self.client.get(route)
+                self.assertEqual(response.status_code, 200)
+                self.assertIn(marker, response.text)
+
+        self.assertEqual(self.client.get("/dashboard/global/not-configured").status_code, 404)
 
     def test_compares_run_methodology_and_evidence_fingerprints(self) -> None:
         response = self.client.get(
