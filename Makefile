@@ -353,6 +353,7 @@ demo:
 		--asx build/demo/asx-monitor.csv \
 		--tsx build/demo/tsx-monitor.csv \
 		--jpx build/demo/jpx-monitor.csv \
+		--edinet build/demo/edinet-monitor.csv \
 		--sgx build/demo/sgx-monitor.csv \
 		--previous-dir data/samples/global-alerts-previous \
 		--output build/demo/global-alerts.csv \

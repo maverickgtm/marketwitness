@@ -144,8 +144,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
   `restricted_research_only` por la designacion OFAC de `MOEX`.
 - [x] Implementar un monitor regulatorio japones sobre el API oficial
   `EDINET` para filings de oferta con clave gratuita.
-- [ ] Integrar filings `EDINET` al historial diario y validar un conector adicional
-  de ofertas de Singapur sobre datasets/API de `MAS OPERA`.
+- [x] Integrar filings `EDINET` al historial diario sin promover documentos a
+  estados de listing.
+- [ ] Validar un conector adicional de ofertas de Singapur sobre datasets/API
+  de `MAS OPERA`.
 - [ ] Implementar collectors de ofertas de Brasil (`CVM Dados Abertos`) y
   prospectos europeos (`ESMA Prospectus III`) con atribucion visible.
 - [ ] Implementar collector coreano de securities registration statements

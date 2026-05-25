@@ -65,6 +65,7 @@ class ListingAlertsTests(unittest.TestCase):
                     "ASX": current / "asx-monitor.csv",
                     "TSX": current / "tsx-monitor.csv",
                     "JPX": current / "jpx-monitor.csv",
+                    "EDINET": current / "edinet-monitor.csv",
                     "SGX": current / "sgx-monitor.csv",
                 }
             )
@@ -86,6 +87,7 @@ class ListingAlertsTests(unittest.TestCase):
                 "ASX": "asx-monitor.csv",
                 "TSX": "tsx-monitor.csv",
                 "JPX": "jpx-monitor.csv",
+                "EDINET": "edinet-monitor.csv",
                 "SGX": "sgx-monitor.csv",
             }.items():
                 item = source / filename
@@ -101,6 +103,39 @@ class ListingAlertsTests(unittest.TestCase):
             self.assertEqual(previous.name, "2026-05-23")
             self.assertTrue((root / "history" / "2026-05-24" / "sgx-monitor.csv").exists())
             self.assertTrue((root / "history" / "2026-05-24" / "jpx-monitor.csv").exists())
+            self.assertTrue((root / "history" / "2026-05-24" / "edinet-monitor.csv").exists())
+
+    def test_edinet_tracks_documents_without_promoting_a_listing_state(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            edinet_csv = Path(temporary) / "edinet-monitor.csv"
+            edinet_csv.write_text(
+                "company_name,edinet_code,security_code,document_id,document_type_code,status,"
+                "submitted_at,observed_on,source_url,document_url\n"
+                "Demo Co.,E9DEMO1,0001,SYNTHJP0001,030,securities_registration_statement,"
+                "2026-05-25 09:10,2026-05-25,https://example.invalid/guide,"
+                "https://example.invalid/document\n",
+                encoding="utf-8",
+            )
+            current = load_current_signals(
+                {
+                    "HKEX": Path("data/samples/global-alerts-previous/hkex-monitor.csv"),
+                    "LSE": Path("data/samples/global-alerts-previous/lse-upcoming.csv"),
+                    "ASX": Path("data/samples/global-alerts-previous/asx-monitor.csv"),
+                    "TSX": Path("data/samples/global-alerts-previous/tsx-monitor.csv"),
+                    "JPX": Path("data/samples/global-alerts-previous/jpx-monitor.csv"),
+                    "EDINET": edinet_csv,
+                    "SGX": Path("data/samples/global-alerts-previous/sgx-monitor.csv"),
+                }
+            )
+
+        edinet = [signal for signal in current if signal.market == "EDINET"]
+        self.assertEqual(edinet[0].entity_key, "SYNTHJP0001")
+        self.assertEqual(edinet[0].status, "securities_registration_statement")
+        self.assertNotIn("listed", edinet[0].status)
+        alerts = compare_signals(edinet, [])
+        page = render_alerts_html(alerts, edinet, date(2026, 5, 25), "baseline")
+        self.assertIn("Initial registration", page)
+        self.assertNotIn("securities_registration_statement", page)
 
 
 def _signal(

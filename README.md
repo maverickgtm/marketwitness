@@ -359,7 +359,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `ASX` / Australia: monitor HTML oficial de upcoming floats and listings.
 - `TSX` / Canada: monitor HTML oficial de nuevas companias ya listadas.
 - `SGX` / Singapur: catalogo oficial de prospectos IPO.
-- `JPX` / Japon: monitor `JPX New Listings` y diff diario para confirmacion de Tokio; monitor `EDINET` implementado para filings de oferta con clave gratuita.
+- `JPX` / Japon: monitores `JPX New Listings` y `EDINET` con diff diario separado para confirmaciones de Tokio y filings de oferta con clave gratuita.
 - `CVM` / Brasil: portal oficial abierto de ofertas publicas, en cola de implementacion.
 - `ESMA` / Union Europea: prospectos regulatorios para Alemania, Paises Bajos e Italia, en cola de implementacion.
 - `KRX` / Corea del Sur: `OpenDART` para registros de oferta y `KRX OPEN API` para evidencia de mercado a validar, en cola de implementacion.
@@ -380,8 +380,9 @@ documentos publicados para revisión y no confirma automáticamente una
 cotización completada.
 Japon ya tiene dos capas: `EDINET` filtra securities registration statements,
 enmiendas y retiros desde el API oficial, mientras `JPX New Listings` confirma
-fechas de aprobacion o listing en Tokio. Falta integrar EDINET al historial
-comparativo diario.
+fechas de aprobacion o listing en Tokio. Ambas capas ya entran al historial
+comparativo diario con estados separados para que un filing no se presente
+como cotizacion.
 Brasil y la Union Europea se incorporan como prioridades pendientes:
 `CVM Dados Abertos` ofrece ofertas publicas estructuradas y `ESMA Prospectus
 III` permite recuperar prospectos europeos con reproduccion atribuida. Ambos
@@ -501,6 +502,7 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
   --asx data/raw/global/asx-monitor.csv \
   --tsx data/raw/global/tsx-monitor.csv \
   --jpx data/raw/global/jpx-monitor.csv \
+  --edinet data/raw/global/edinet-monitor.csv \
   --sgx data/raw/global/sgx-monitor.csv \
   --history-dir data/raw/global/history \
   --output build/live/global-alerts.csv \
@@ -509,8 +511,9 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
 ```
 
 `global-alerts` clasifica diferencias como nuevas, modificadas o removidas
-del feed para revisión. Una remoción no confirma retiro, admisión ni inicio de
-negociación.
+del feed para revisión. EDINET entra como evidencia documental temprana y JPX
+como confirmación de hitos de listing; una remoción no confirma retiro,
+admisión ni inicio de negociación.
 
 ## ETF Holdings Activity
 

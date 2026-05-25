@@ -8,14 +8,20 @@ from datetime import date
 from html import escape
 from pathlib import Path
 
-MARKETS = ("HKEX", "LSE", "ASX", "TSX", "JPX", "SGX")
+MARKETS = ("HKEX", "LSE", "ASX", "TSX", "JPX", "EDINET", "SGX")
 SNAPSHOT_FILENAMES = {
     "HKEX": "hkex-monitor.csv",
     "LSE": "lse-upcoming.csv",
     "ASX": "asx-monitor.csv",
     "TSX": "tsx-monitor.csv",
     "JPX": "jpx-monitor.csv",
+    "EDINET": "edinet-monitor.csv",
     "SGX": "sgx-monitor.csv",
+}
+EDINET_STATUS_LABELS = {
+    "securities_registration_statement": "Initial registration",
+    "amended_securities_registration_statement": "Amendment",
+    "registration_withdrawal_request": "Withdrawal request",
 }
 
 
@@ -154,9 +160,10 @@ def render_alerts_report(
         f"- Changed records: `{counts['changed']}`",
         f"- Records no longer in current feed, requiring review: `{counts['removed_from_feed_review']}`",
         "",
-        "This change log compares official-source snapshots. A record disappearing",
+        "This change log compares normalized evidence snapshots. A record disappearing",
         "from an upcoming or documentary feed is not automatically a withdrawal,",
-        "listing completion or investment signal; it requires source review.",
+        "listing completion or investment signal; it requires source review. Demo",
+        "fixtures explicitly labelled synthetic are not public filing evidence.",
         "",
         "## Current Coverage",
         "",
@@ -223,8 +230,8 @@ def render_alerts_html(
         f"<td>{escape(item.market)}</td>"
         f'<td><span class="badge {escape(item.change_type)}">{escape(item.change_type)}</span></td>'
         f"<td><strong>{escape(item.company_name)}</strong><small>{escape(item.current_detail or item.previous_detail)}</small></td>"
-        f"<td>{escape(item.previous_status or '-')}</td>"
-        f"<td>{escape(item.current_status or '-')}</td>"
+        f"<td>{escape(_display_status(item.market, item.previous_status))}</td>"
+        f"<td>{escape(_display_status(item.market, item.current_status))}</td>"
         f"<td>{escape(item.review_action)}</td>"
         f'<td><a href="{escape(item.source_url)}">Source</a></td>'
         "</tr>"
@@ -241,12 +248,12 @@ nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font
 .cards{{display:flex;gap:16px;margin:35px 0}}.card,.notice,.table-wrap{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{padding:18px 20px;min-width:200px}}.card p{{margin:0;color:var(--muted)}}.card strong{{font-size:38px;color:var(--mint);display:block}}
 .coverage{{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}}.market{{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 13px;color:var(--muted)}}.market strong{{color:var(--text);margin-right:7px}}
 .notice{{border-left:3px solid var(--gold);color:var(--muted);padding:15px 18px}}h2{{margin-top:42px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}th{{text-transform:uppercase;font-size:12px;color:var(--muted);font-weight:500}}td small{{display:block;color:var(--muted)}}a{{color:var(--mint);text-decoration:none}}.badge{{border-radius:999px;padding:5px 9px;font-size:12px;white-space:nowrap}}.new{{color:var(--mint);background:rgba(86,218,172,.12)}}.changed{{color:var(--gold);background:rgba(240,188,98,.12)}}.removed_from_feed_review{{color:var(--rose);background:rgba(244,134,135,.12)}}
-@media(max-width:800px){{.cards{{display:block}}.card{{margin-bottom:12px}}.table-wrap{{overflow-x:auto}}table{{min-width:980px}}}}
+@media(max-width:800px){{.cards{{display:block}}.card{{margin-bottom:12px}}.table-wrap{{overflow:visible;background:transparent;border:0}}table,tbody,tr,td{{display:block;width:100%}}thead{{display:none}}tr{{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:12px 0;padding:8px 14px}}td{{border:0;padding:7px 0;overflow-wrap:anywhere}}td::before{{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}}td:nth-child(1)::before{{content:"Market"}}td:nth-child(2)::before{{content:"Change"}}td:nth-child(3)::before{{content:"Issuer"}}td:nth-child(4)::before{{content:"Previous"}}td:nth-child(5)::before{{content:"Current"}}td:nth-child(6)::before{{content:"Next step"}}td:nth-child(7)::before{{content:"Evidence"}}.badge{{display:inline-block;white-space:normal}}}}
 </style></head><body><header><nav>TargetAudit / Global Listings Watch / Alerts</nav>
-<h1>What changed.<br>What needs review.</h1><p class="lead">Daily differences across official listing and prospectus feeds, preserved as an auditable research queue.</p>
+<h1>What changed.<br>What needs review.</h1><p class="lead">Daily differences across listing and regulatory-document evidence feeds, preserved as an auditable research queue.</p>
 <p class="meta">Observed {escape(as_of.isoformat())} / baseline {escape(baseline_label)}</p><section class="cards">{cards}</section>
 <section class="coverage">{coverage}</section></header>
-<main><p class="notice">Disappearance from a feed does not prove withdrawal, admission or trading. Review the primary source before changing an issuer status.</p>
+<main><p class="notice">Disappearance from a feed does not prove withdrawal, admission or trading. EDINET filings open review; only JPX evidence confirms Japan listing milestones. Synthetic demo evidence is not a public filing.</p>
 <h2>Review queue</h2><div class="table-wrap"><table><thead><tr><th>Market</th><th>Change</th><th>Issuer</th><th>Previous</th><th>Current</th><th>Next step</th><th>Evidence</th></tr></thead><tbody>{rows}</tbody></table></div></main></body></html>"""
 
 
@@ -311,6 +318,16 @@ def _normalize_row(market: str, row: dict[str, str]) -> ListingSignal:
         )
         source = row.get("outline_url", "").strip() or row.get("source_url", "").strip()
         key = security_code
+    elif market == "EDINET":
+        status = row.get("status", "").strip()
+        document_id = row.get("document_id", "").strip()
+        detail = (
+            f"{row.get('submitted_at', '').strip()} / EDINET "
+            f"{row.get('edinet_code', '').strip()} / security {row.get('security_code', '').strip()}"
+        )
+        # Document retrieval endpoints require the user's API key; link the official guide.
+        source = row.get("source_url", "").strip()
+        key = document_id
     elif market == "SGX":
         status = row.get("status", "").strip()
         document_id = row.get("document_id", "").strip()
@@ -342,8 +359,8 @@ def _alert(
     item = current or previous
     assert item is not None
     actions = {
-        "new": "Review new official evidence and classify its milestone.",
-        "changed": "Review changed official evidence before updating status.",
+        "new": "Review new evidence and classify its milestone.",
+        "changed": "Review changed evidence before updating status.",
         "removed_from_feed_review": "Confirm reason for removal in primary sources.",
     }
     return ListingAlert(
@@ -357,3 +374,11 @@ def _alert(
         review_action=actions[change_type],
         source_url=item.source_url,
     )
+
+
+def _display_status(market: str, status: str) -> str:
+    if not status:
+        return "-"
+    if market == "EDINET":
+        return EDINET_STATUS_LABELS.get(status, status)
+    return status

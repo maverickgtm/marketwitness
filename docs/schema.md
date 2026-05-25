@@ -484,7 +484,7 @@ inicio de negociación o una decisión de inversión.
 ## Global Listings Alerts
 
 `global-alerts` normaliza los CSV actuales de `HKEX`, `LSE`, `ASX`, `TSX`,
-`JPX` y `SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa
+`JPX`, `EDINET` y `SGX`, los archiva bajo `history/YYYY-MM-DD/` cuando se usa
 `--history-dir` y
 compara contra la última captura anterior. Produce un CSV con:
 `market`, `change_type`, `company_name`, `previous_status`, `current_status`,
@@ -500,6 +500,10 @@ compara contra la última captura anterior. Produce un CSV con:
 En HKEX la identidad comparada es un hito de ciclo de vida
 (`company + status + event_date + stock_code`), porque el feed puede conservar
 al mismo emisor en etapas oficiales distintas.
+
+En EDINET la identidad comparada es `document_id`: una declaracion inicial,
+una enmienda y una solicitud de retiro permanecen como documentos regulatorios
+separados. Ninguno se normaliza como admision o listing JPX.
 
 ## `issuer_listing_confirmations.csv`
 

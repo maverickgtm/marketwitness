@@ -650,7 +650,7 @@ registrante `CIK 0001064641`.
 
 ## Historial De Mercados Globales
 
-Los seis conectores internacionales generan CSV normalizados. Después de
+Los siete feeds internacionales generan CSV normalizados. Después de
 obtenerlos, `global-alerts` copia la lectura del día a
 `data/raw/global/history/YYYY-MM-DD/`, selecciona la última captura anterior
 y genera una bandeja común:
@@ -662,6 +662,7 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
   --asx data/raw/global/asx-monitor-live.csv \
   --tsx data/raw/global/tsx-monitor-live.csv \
   --jpx data/raw/global/jpx-monitor.csv \
+  --edinet data/raw/global/edinet-monitor.csv \
   --sgx data/raw/global/sgx-monitor-live.csv \
   --history-dir data/raw/global/history \
   --output build/live/global-alerts.csv \
@@ -671,8 +672,9 @@ PYTHONPATH=src python3 -m targetaudit global-alerts \
 
 La primera ejecución establece la línea base y no inventa cambios. A partir
 de la segunda, la bandeja marca evidencia nueva, modificada o removida del
-feed para revisión. Una remoción nunca se promueve automáticamente a retirada,
-admisión o cotización completada.
+feed para revisión. En Japón, un documento EDINET permanece como señal
+documental y JPX confirma el hito de listing; una remoción nunca se promueve
+automáticamente a retirada, admisión o cotización completada.
 
 ## Confirmacion JPX De Tokio
 
@@ -686,9 +688,9 @@ PYTHONPATH=src python3 -m targetaudit jpx-monitor \
   --html build/live/jpx-monitor.html
 ```
 
-Su CSV ya entra en el diff global diario; `EDINET` aporta ahora una señal
-documental anterior por separado. Una aprobacion JPX no es una instruccion de
-inversion.
+Su CSV ya entra en el diff global diario junto con `EDINET`, que aporta una
+señal documental anterior sin convertirse en estado de listing. Una
+aprobacion JPX no es una instruccion de inversion.
 
 ## Filings EDINET De Japon
 
@@ -707,7 +709,8 @@ PYTHONPATH=src python3 -m targetaudit edinet-monitor \
 
 El collector conserva únicamente los documentos `030`, `040` y `050`
 definidos en la especificación oficial EDINET. Su resultado abre revisión de
-la oferta; la confirmación de listing sigue correspondiendo a JPX.
+la oferta y entra en el diff diario mediante `--edinet`; la confirmación de
+listing sigue correspondiendo a JPX.
 
 ## Automatizaciones Locales Activas
 
