@@ -289,6 +289,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/sec-discovery", page.text)
         self.assertIn("/dashboard/sec-alerts", page.text)
         self.assertIn("/dashboard/ipo-reviews", page.text)
+        self.assertIn('href="/dashboard/ipo"', page.text)
+        self.assertIn("IPO Watch Center", page.text)
         self.assertIn("/dashboard/etf/arkk-demo", page.text)
         self.assertIn("/dashboard/etf/xlf-demo", page.text)
         self.assertIn("/dashboard/etf/iyf-demo", page.text)
@@ -315,6 +317,21 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/governance-report/approval-review", page.text)
         self.assertIn("/dashboard/governance-report/scorecard-readiness", page.text)
         self.assertIn("not live market alerts", page.text)
+
+    def test_serves_ipo_watch_center_without_promoting_discovered_evidence(self) -> None:
+        page = self.client.get("/dashboard/ipo")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Confirm before status.", page.text)
+        self.assertIn("/dashboard/sec-discovery", page.text)
+        self.assertIn("/dashboard/sec-alerts", page.text)
+        self.assertIn("/dashboard/ipo-reviews", page.text)
+        self.assertIn("/dashboard/ipo-watch", page.text)
+        self.assertIn("/dashboard/global-listings", page.text)
+        self.assertIn("/dashboard/global-alerts", page.text)
+        self.assertIn("/dashboard/issuer-confirmations", page.text)
+        self.assertIn("does not confirm an IPO", page.text)
+        self.assertIn("Required paid data", page.text)
 
     def test_serves_etf_evidence_center_with_separated_frequency_layers(self) -> None:
         page = self.client.get("/dashboard/etf")

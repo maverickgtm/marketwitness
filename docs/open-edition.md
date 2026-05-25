@@ -68,6 +68,8 @@ permiso explicito de output publico.
 - Consume fuentes públicas SEC EDGAR sin clave de pago.
 - Descubre filings potencialmente relacionados con cotizaciones y exige
   revisión documentada antes de promover una empresa.
+- La portada `/dashboard/ipo` conecta intake, triage, decisiones, tablero y
+  evidencia internacional sin mezclar sus estados.
 - Las solicitudes live deben incluir `TARGETAUDIT_SEC_USER_AGENT` con un
   correo de contacto conforme a las reglas SEC.
 
@@ -121,7 +123,7 @@ python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 
 Abrir `http://127.0.0.1:8000/` muestra la portada `Open Edition`.
 Desde ella se abre `/dashboard/reports`, un indice de
-`/dashboard/ipo-watch`, `/dashboard/sec-discovery`, `/dashboard/sec-alerts`, `/dashboard/ipo-reviews`,
+`/dashboard/ipo`, `/dashboard/ipo-watch`, `/dashboard/sec-discovery`, `/dashboard/sec-alerts`, `/dashboard/ipo-reviews`,
 `/dashboard/etf`, `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo`, `/dashboard/etf/iyf-demo`,
 `/dashboard/etf/nport-recent`, `/dashboard/etf-regulatory`,
 `/dashboard/etf/nport-catalog`, `/dashboard/etf/nport-sync`,

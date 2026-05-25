@@ -133,7 +133,7 @@ def report_center_html() -> str:
     .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; }
     .fixture { color:var(--blue); background:rgba(98,166,255,.12); }
     .regulatory { color:var(--mint); background:rgba(86,218,172,.12); }
-    .controls { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .controls { display:grid; grid-template-columns:repeat(auto-fit,minmax(205px,1fr)); gap:16px; }
     @media(max-width:900px) { .cards,.reports,.controls { grid-template-columns:1fr; } }
   </style>
 </head>
@@ -189,10 +189,80 @@ def report_center_html() -> str:
     </section>
     <h2>Operational Controls</h2>
     <section class="controls">
+      <article class="control"><h3>IPO Watch Center</h3><p>Follow discovery, reviewed status and international listing evidence without blending milestones.</p><a href="/dashboard/ipo">Open IPO workflow</a></article>
       <article class="control"><h3>ETF Evidence Center</h3><p>Separate synthetic comparisons from periodic SEC N-PORT evidence before reading changes.</p><a href="/dashboard/etf">Open ETF evidence</a></article>
       <article class="control"><h3>Public Use Policy</h3><p>See data boundaries, blocked sources and no-recommendation rules.</p><a href="/dashboard/policy">Open policy</a></article>
       <article class="control"><h3>Source Governance</h3><p>Inspect provider states, rights review and excluded observations.</p><a href="/dashboard/governance">Open governance</a></article>
       <article class="control"><h3>Release Center</h3><p>Review why demo evidence cannot become a public real-data scorecard.</p><a href="/dashboard/release">Open release controls</a></article>
+    </section>
+  </main>
+</body>
+</html>"""
+
+
+def ipo_watch_center_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | IPO Watch Center</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --line:#20343d; --text:#edf1ef;
+      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1220px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(40px,5vw,62px); line-height:1.04; margin:38px 0 14px; }
+    h2 { margin:42px 0 16px; font-size:22px; }
+    h3 { margin:10px 0 8px; }
+    .lead { color:var(--muted); font-size:18px; max-width:920px; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.stage,.notice { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:18px 20px; }
+    .card p,.stage p,.stage small { color:var(--muted); margin:0; display:block; }
+    .card strong { color:var(--mint); display:block; font-size:27px; margin-top:5px; }
+    .notice { border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); }
+    .workflow { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .coverage { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .stage { padding:18px; }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; }
+    .intake { color:var(--blue); background:rgba(98,166,255,.12); }
+    .review { color:var(--gold); background:rgba(240,188,98,.12); }
+    .verified { color:var(--mint); background:rgba(86,218,172,.12); }
+    @media(max-width:950px) { .cards,.workflow,.coverage { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav><a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/reports">Report Center</a> / IPO Watch Center</nav>
+    <h1>IPO evidence.<br>Confirm before status.</h1>
+    <p class="lead">Navigate potential offerings, reviewed filing evidence and confirmed listing milestones without turning rumors or documents into trading instructions.</p>
+    <section class="cards">
+      <article class="card"><p>U.S. workflow stages</p><strong>4</strong></article>
+      <article class="card"><p>International markets mapped</p><strong>10</strong></article>
+      <article class="card"><p>Official global feeds active</p><strong>9</strong></article>
+      <article class="card"><p>Required paid data</p><strong>None</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice"><strong>Evidence rule:</strong> a discovered filing begins review; it does not confirm an IPO, listing, first trade or position to take. Verified issuer and exchange evidence remains separate from candidate monitoring.</p>
+    <h2>U.S. SEC Review Workflow</h2>
+    <section class="workflow">
+      <article class="stage"><span class="pill intake">1 / intake</span><h3>SEC Discovery Queue</h3><p>Potential registration, prospectus and withdrawal forms from a daily index.</p><small>Not a confirmed IPO calendar.</small><a href="/dashboard/sec-discovery">Open view</a></article>
+      <article class="stage"><span class="pill review">2 / triage</span><h3>SEC IPO Alerts</h3><p>New filing evidence prioritized by transparent review signals.</p><small>No automatic status changes.</small><a href="/dashboard/sec-alerts">Open view</a></article>
+      <article class="stage"><span class="pill review">3 / decision</span><h3>IPO Review Outcomes</h3><p>Documented human decisions matched back to filing URL and CIK.</p><small>Controlled promotion audit.</small><a href="/dashboard/ipo-reviews">Open view</a></article>
+      <article class="stage"><span class="pill verified">4 / registry</span><h3>IPO Watch</h3><p>Candidate, filed, listed and withdrawn milestones with sources.</p><small>Research status board only.</small><a href="/dashboard/ipo-watch">Open view</a></article>
+    </section>
+    <h2>International Listings Evidence</h2>
+    <section class="coverage">
+      <article class="stage"><span class="pill verified">source map</span><h3>Global Listings Watch</h3><p>Official signal rules for ten markets, with restricted routes kept explicit.</p><a href="/dashboard/global-listings">Open view</a></article>
+      <article class="stage"><span class="pill review">change queue</span><h3>Global Listings Alerts</h3><p>Daily comparison of offering, prospectus and listing-document signals.</p><a href="/dashboard/global-alerts">Open view</a></article>
+      <article class="stage"><span class="pill verified">primary evidence</span><h3>Issuer Confirmations</h3><p>Reviewed official issuer milestones such as trading start or offering close.</p><a href="/dashboard/issuer-confirmations">Open view</a></article>
     </section>
   </main>
 </body>

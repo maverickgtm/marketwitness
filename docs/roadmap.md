@@ -27,6 +27,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Ejecucion diaria persistente SEC con historial y cola enlazada por CIK.
 - [x] Pagina HTML `SEC IPO Discovery Queue` para la entrada universal, separada
   del triage y de cualquier cambio de estado del tablero.
+- [x] Centro navegable `IPO Watch Center` para ordenar intake SEC, decisiones
+  revisadas, tablero e indicadores internacionales sin promover rumores.
 - [x] Triage SEC transparente para coincidencias watchlist, señales SPAC/ETF y prospectos finales.
 - [x] Promocion revisada desde SEC IPO Alerts al tablero IPO Watch mediante decisiones documentadas.
 - [x] Conector LSE `New issues` mediante componente JSON oficial.

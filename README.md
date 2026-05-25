@@ -303,6 +303,10 @@ confirmadas por el proyecto.
 IPO Watch no genera recomendaciones automaticas de compra, venta ni tamanos
 de posicion.
 
+La ruta `/dashboard/ipo` es la portada navegable del modulo: ordena el
+pipeline SEC de descubrimiento, triage, decision documentada y tablero, y lo
+separa de los monitores internacionales y confirmaciones primarias.
+
 ### Descubrimiento Universal De IPOs
 
 Para no depender solo de una lista manual, TargetAudit incluye una cola de
@@ -951,6 +955,7 @@ Endpoints iniciales:
 | `/dashboard/market-context` | Widget atribuido de TradingView para contexto visual de `XLF`, fuera del scorecard |
 | `/api/v1/extensions/licensed` | Opciones de datos pagados por el usuario, precio visible y restricciones de publicación |
 | `/dashboard/extensions` | Página de extensiones opcionales `bring your own license` |
+| `/dashboard/ipo` | Centro de evidencia IPO que separa intake SEC, decisiones revisadas y confirmaciones globales |
 | `/dashboard/ipo-watch` | Reporte generado de vigilancia SEC de filings IPO |
 | `/dashboard/sec-discovery` | Entrada universal generada de formularios SEC candidatos, previa al triage y a decisiones manuales |
 | `/dashboard/sec-alerts` | Cola de filings SEC descubiertos que requieren revisión antes de cambiar estados IPO |

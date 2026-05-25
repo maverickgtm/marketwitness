@@ -35,6 +35,7 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertIn("Beyond Wall Street", page)
         self.assertIn("0 priority; 0 planned", page)
         self.assertIn("Documented only; no ingestion", page)
+        self.assertIn('href="/dashboard/ipo">IPO Watch Center</a>', page)
         self.assertIn("HKEX, LSE, ASX, TSX, JPX, SGX, CVM, ESMA and OpenDART have official ingestion paths", page)
         self.assertIn('href="/dashboard/global-alerts"', page)
         self.assertIn('href="/dashboard/global/hkex"', page)

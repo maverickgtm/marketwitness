@@ -37,6 +37,7 @@ class SecIpoDiscoveryTests(unittest.TestCase):
         self.assertIn("not a confirmed IPO calendar", page)
         self.assertIn("SPACE EXPLORATION TECHNOLOGIES CORP.", page)
         self.assertIn("Bundled SEC-shaped index fixture", page)
+        self.assertIn('href="/dashboard/ipo">IPO Watch Center</a>', page)
         self.assertNotIn("file:", page)
 
     def test_accepts_iso_date_from_normalized_import(self) -> None:

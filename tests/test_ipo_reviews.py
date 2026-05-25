@@ -47,7 +47,9 @@ class IpoReviewTests(unittest.TestCase):
         self.assertEqual(promoted.cik, "0006666666")
         self.assertEqual(outcomes[0].result, "promoted")
         self.assertIn("Status promotions: `1`", render_review_report(outcomes, reviewed, date(2026, 5, 20)))
-        self.assertIn("Controlled updates", render_review_html(outcomes, reviewed, date(2026, 5, 20)))
+        page = render_review_html(outcomes, reviewed, date(2026, 5, 20))
+        self.assertIn("Controlled updates", page)
+        self.assertIn('href="/dashboard/ipo">IPO Watch Center</a>', page)
 
     def test_records_non_promotion_decision_without_changing_registry(self) -> None:
         decisions = load_review_decisions(

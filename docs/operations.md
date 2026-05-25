@@ -27,6 +27,8 @@ Internet solo para visualizar ese tercero.
 La lista inicial de SpaceX, Cerebras y candidatos conocidos es una semilla.
 El monitor continuo debe detectar **cualquier** potencial nueva IPO visible en
 fuentes publicas, someterla a revision y luego actualizar el dashboard.
+La ruta `/dashboard/ipo` presenta este recorrido y mantiene separada la
+evidencia internacional ya implementada.
 
 ## Fuente Primaria: SEC EDGAR
 

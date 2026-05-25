@@ -18,6 +18,7 @@ from . import METHODOLOGY_VERSION, __version__
 from .dashboard_web import (
     etf_evidence_center_html,
     financials_scorecard_html,
+    ipo_watch_center_html,
     licensed_extensions_html,
     market_context_html,
     open_edition_html,
@@ -150,6 +151,12 @@ def create_app(
     )
     def licensed_extension_page() -> str:
         return licensed_extensions_html()
+
+    @application.get(
+        "/dashboard/ipo", response_class=HTMLResponse, include_in_schema=False
+    )
+    def ipo_watch_center() -> str:
+        return ipo_watch_center_html()
 
     @application.get(
         "/dashboard/ipo-watch", response_class=HTMLResponse, include_in_schema=False

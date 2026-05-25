@@ -35,6 +35,7 @@ class SecAlertsTests(unittest.TestCase):
         self.assertIn("neither mechanism automatically confirms an IPO", report)
         self.assertIn("Public filings", page)
         self.assertIn("SPAC name signals", page)
+        self.assertIn('href="/dashboard/ipo">IPO Watch Center</a>', page)
 
     def test_archive_suppresses_same_document_on_repeated_run(self) -> None:
         filings = load_discovered_filings(Path("data/samples/sec-ipo-discovery.csv"))

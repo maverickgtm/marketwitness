@@ -232,7 +232,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Global Listings Watch</nav>
+    <nav><a href="/dashboard/ipo">IPO Watch Center</a> / Global Listings Watch</nav>
     <h1>Beyond Wall Street.<br>Listings worldwide.</h1>
     <p class="lead">Map official signals for IPOs and new listings across London, Hong Kong and additional exchanges without blending incompatible regulatory evidence.</p>
     <p class="meta">Sources reviewed as of {escape(as_of.isoformat())}</p>

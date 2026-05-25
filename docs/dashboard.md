@@ -71,7 +71,7 @@ general al directorio de reportes construidos.
   bundle desde su manifiesto generado, no solo desde la portada interactiva.
 - Explica que el artefacto periodico generado en GitHub Actions usa fixtures
   redistribuibles, no consultas live ni rankings reales.
-- Enlaza controles operativos de ETF Evidence Center, politica, gobernanza y Release Center para
+- Enlaza controles operativos de IPO Watch Center, ETF Evidence Center, politica, gobernanza y Release Center para
   que los limites de cada reporte queden visibles durante su lectura.
 - No agrega un endpoint de archivos: cada enlace corresponde a una ruta fija
   servida por la API.
@@ -289,6 +289,9 @@ Componentes:
 
 Objetivo: seguir eventos verificables de grandes IPOs tecnologicas y
 estrategicas, sin convertir rumores en operaciones.
+
+- Centro de lectura: `/dashboard/ipo` ordena el pipeline SEC y separa el
+  mapa internacional y sus confirmaciones de un simple filing descubierto.
 
 ### Panel Superior
 

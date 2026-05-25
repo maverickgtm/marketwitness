@@ -280,7 +280,7 @@ def render_ipo_watch_html(items: list[IpoWatchItem], as_of: date) -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / IPO Watch</nav>
+    <nav><a href="/dashboard/reports">Report Center</a> / <a href="/dashboard/ipo">IPO Watch Center</a> / Status Board</nav>
     <h1>Upcoming listings,<br>verified first.</h1>
     <p class="lead">Track high-interest public listings through filings and issuer confirmations. Rumors remain candidates until a primary source confirms them.</p>
     <p class="meta">Verified as of {escape(as_of.isoformat())} / {len(items)} companies monitored</p>

@@ -30,6 +30,7 @@ class IpoWatchTests(unittest.TestCase):
         self.assertIn("Upcoming listings", page)
         self.assertIn("SpaceX", page)
         self.assertIn("Research dashboard only", page)
+        self.assertIn('href="/dashboard/ipo">IPO Watch Center</a>', page)
         self.assertIn('href="/dashboard/sec-alerts"', page)
         self.assertIn('href="/dashboard/ipo-reviews"', page)
         self.assertIn("https://www.sec.gov/Archives/edgar/data/1181412", page)
