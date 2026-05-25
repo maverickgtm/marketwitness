@@ -130,6 +130,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(health.status_code, 200)
         self.assertTrue(health.json()["database_available"])
         self.assertTrue(health.json()["source_registry_available"])
+        self.assertTrue(health.json()["provider_approvals_available"])
         self.assertEqual(run.status_code, 200)
         self.assertEqual(run.json()["evaluated_count"], 2)
         self.assertEqual(run.json()["methodology_version"], "0.3.3")
@@ -240,6 +241,29 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Earn the right", page.text)
         self.assertIn("/api/v1/readiness/scorecard", page.text)
+
+    def test_serves_provider_approval_queue_and_dashboard(self) -> None:
+        approvals = self.client.get("/api/v1/governance/approvals")
+        page = self.client.get("/dashboard/approvals")
+
+        self.assertEqual(approvals.status_code, 200)
+        self.assertEqual(approvals.json()["queue_count"], 5)
+        self.assertEqual(approvals.json()["critical_open_count"], 4)
+        self.assertEqual(approvals.json()["approved_count"], 0)
+        self.assertFalse(approvals.json()["public_activation_ready"])
+        self.assertEqual(
+            {item["provider_id"] for item in approvals.json()["items"]},
+            {
+                "benzinga-targets",
+                "alpha-vantage-prices",
+                "nasdaq-daily-list",
+                "nyse-actions",
+                "sp-dji-constituents",
+            },
+        )
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Permission before", page.text)
+        self.assertIn("/api/v1/governance/approvals", page.text)
 
     def test_serves_combined_release_decision_and_release_center(self) -> None:
         decision = self.client.get("/api/v1/releases/scorecard?run_id=api-demo")

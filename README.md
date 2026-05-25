@@ -49,6 +49,23 @@ conectores de bolsas internacionales quedan pendientes de revisión de términos
 Benzinga y Nasdaq Daily List requieren resolver licencia antes de alimentar
 resultados públicos; TipRanks no se adopta para recolección automatizada.
 
+La cola de aprobaciones convierte esos bloqueos en expedientes concretos de
+trabajo, sin cambiar por sí sola el estado de gobernanza:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit provider-approvals \
+  --registry data/samples/source_registry.csv \
+  --approvals data/samples/provider_approval_queue.csv \
+  --report build/live/provider-approvals.md \
+  --html build/live/provider-approvals.html \
+  --as-of YYYY-MM-DD
+```
+
+El primer expediente sigue cinco candidatos: Benzinga, Alpha Vantage,
+Nasdaq Daily List, NYSE y S&P DJI. Cuatro son críticos para habilitar targets,
+precios, acciones corporativas y universo histórico; ninguno está aprobado
+para salida pública todavía.
+
 La vista de preparación del scorecard traduce esas reglas en requisitos de
 publicación para `U.S. Financials`:
 
@@ -576,6 +593,7 @@ configurable mediante `TARGETAUDIT_SOURCE_REGISTRY`.
 python3 -m pip install -e ".[application]"
 export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
 export TARGETAUDIT_SOURCE_REGISTRY="data/samples/source_registry.csv"
+export TARGETAUDIT_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
 python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 ```
 
@@ -593,6 +611,9 @@ La ruta `/dashboard/governance` presenta controles de fuente y observaciones
 excluidas o pendientes por corrida. Las nuevas evaluaciones conservan
 `provider_id` y enlazan su control de publicacion; resultados historicos sin
 ese campo se identifican como `unlinked` en vez de inferirlo por la URL.
+La ruta `/dashboard/approvals` presenta el expediente de permisos pendiente
+por proveedor y los cuatro controles críticos que aún bloquean el scorecard
+público.
 La ruta `/dashboard/operations` presenta el monitor de calidad de corridas:
 revisa sellos reproducibles, entradas obligatorias, linaje de proveedor y
 tasas altas de exclusion. Pasar este monitor no autoriza publicar fuentes que
@@ -654,6 +675,8 @@ Endpoints iniciales:
 | `/api/v1/runs/{run_id}/export/rankings-firms.csv` | Descarga CSV del ranking con los mismos filtros |
 | `/api/v1/governance/sources` | Registro de fuentes y controles de publicacion, filtrable por estado y clase |
 | `/dashboard/governance` | Pagina de auditoria de fuentes y observaciones excluidas |
+| `/api/v1/governance/approvals` | Cola de permisos, evidencia requerida y controles críticos de activación pública |
+| `/dashboard/approvals` | Expedientes de aprobación de proveedores pendientes o resueltos |
 | `/api/v1/readiness/scorecard` | Requisitos de fuentes productivas para publicar el Financials Scorecard |
 | `/dashboard/readiness` | Pagina de preparación y bloqueos de publicación del scorecard |
 | `/api/v1/operations/quality?run_id=RUN-ID&public_release=true` | Monitor operativo o compuerta de publicación de una corrida candidata, con umbral configurable de exclusiones |
@@ -691,6 +714,8 @@ build/demo/report-target-revisions.md
 build/demo/evaluations-target-revisions.csv
 build/demo/source-registry.md
 build/demo/source-registry.html
+build/demo/provider-approvals.md
+build/demo/provider-approvals.html
 build/demo/scorecard-readiness.md
 build/demo/scorecard-readiness.html
 build/demo/scorecard-release.md

@@ -197,6 +197,22 @@ puede funcionar técnicamente y permanecer bloqueada para un producto público
 hasta revisar términos de uso o licencia. `restricted_no_collection` impide
 registrar accidentalmente una fuente como conector implementado.
 
+Para organizar el trabajo de permisos que puede destrabar el scorecard:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit provider-approvals \
+  --registry data/samples/source_registry.csv \
+  --approvals data/samples/provider_approval_queue.csv \
+  --report build/live/provider-approvals.md \
+  --html build/live/provider-approvals.html \
+  --as-of YYYY-MM-DD
+```
+
+La cola inicial conserva cinco candidatos y cuatro aprobaciones críticas
+abiertas. Una fila aprobada que contradiga `source_registry.csv` hace fallar
+el reporte: la evidencia de permiso y la gobernanza deben coincidir antes de
+activar una fuente. La vista web está disponible en `/dashboard/approvals`.
+
 ## Readiness Del Scorecard Publico
 
 Antes de producir una corrida real se debe revisar si existen fuentes

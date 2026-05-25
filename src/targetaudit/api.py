@@ -18,12 +18,18 @@ from . import METHODOLOGY_VERSION, __version__
 from .dashboard_web import (
     financials_scorecard_html,
     operations_quality_html,
+    provider_approvals_html,
     release_center_html,
     scorecard_readiness_html,
     source_governance_html,
 )
 from .models import Evaluation
 from .operations_quality import build_quality_snapshot
+from .provider_approvals import (
+    ProviderApprovalDataError,
+    build_approval_queue,
+    load_provider_approvals,
+)
 from .release_center import build_release_decision
 from .reporting import wilson_interval
 from .scorecard_readiness import build_scorecard_readiness
@@ -38,11 +44,13 @@ from .storage import (
 
 DEFAULT_DATABASE_PATH = "build/live/targetaudit.duckdb"
 DEFAULT_SOURCE_REGISTRY_PATH = "data/samples/source_registry.csv"
+DEFAULT_PROVIDER_APPROVALS_PATH = "data/samples/provider_approval_queue.csv"
 
 
 def create_app(
     database_path: str | Path | None = None,
     source_registry_path: str | Path | None = None,
+    provider_approvals_path: str | Path | None = None,
 ) -> FastAPI:
     database = Path(
         database_path or os.environ.get("TARGETAUDIT_DATABASE", DEFAULT_DATABASE_PATH)
@@ -50,6 +58,10 @@ def create_app(
     registry = Path(
         source_registry_path
         or os.environ.get("TARGETAUDIT_SOURCE_REGISTRY", DEFAULT_SOURCE_REGISTRY_PATH)
+    )
+    approval_queue = Path(
+        provider_approvals_path
+        or os.environ.get("TARGETAUDIT_PROVIDER_APPROVALS", DEFAULT_PROVIDER_APPROVALS_PATH)
     )
     application = FastAPI(
         title="TargetAudit API",
@@ -91,6 +103,12 @@ def create_app(
     def release_center() -> str:
         return release_center_html()
 
+    @application.get(
+        "/dashboard/approvals", response_class=HTMLResponse, include_in_schema=False
+    )
+    def provider_approval_page() -> str:
+        return provider_approvals_html()
+
     @application.get("/api/v1/health")
     def health() -> dict[str, object]:
         return {
@@ -99,6 +117,7 @@ def create_app(
             "methodology_version": METHODOLOGY_VERSION,
             "database_available": database.is_file(),
             "source_registry_available": registry.is_file(),
+            "provider_approvals_available": approval_queue.is_file(),
         }
 
     @application.get("/api/v1/governance/sources")
@@ -141,6 +160,20 @@ def create_app(
             as_of = max((item.reviewed_on for item in providers), default=date.today())
             return build_scorecard_readiness(providers, as_of)
         except SourceRegistryDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @application.get("/api/v1/governance/approvals")
+    def governance_approvals() -> dict[str, object]:
+        providers = _read_sources(registry)
+        try:
+            approvals = load_provider_approvals(approval_queue)
+            as_of = max(
+                [item.reviewed_on for item in providers]
+                + [item.reviewed_on for item in approvals],
+                default=date.today(),
+            )
+            return build_approval_queue(providers, approvals, as_of)
+        except (ProviderApprovalDataError, SourceRegistryDataError, OSError) as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     @application.get("/api/v1/runs")

@@ -104,6 +104,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   y monitor local recurrente del warehouse live.
 - [x] Release Center que combina derechos de fuentes, linaje de targets,
   procedencia de activos y calidad pública en una decisión reproducible.
+- [x] Cola de aprobación de proveedores que documenta evidencia y criterio de
+  promoción de los candidatos críticos sin autoautorizar publicación.
 - [ ] Revision legal del producto y de sus disclaimers.
 
 ## Decisiones Pendientes

@@ -18,6 +18,12 @@ La clasificación legible por máquina vive en
 Conserva por fuente su modo de acceso, estado técnico, revisión de términos o
 licencia, política de publicación y referencia revisada.
 
+El expediente de trabajo complementario vive en
+`data/samples/provider_approval_queue.csv` y se renderiza con
+`provider-approvals`. Mantiene la evidencia pendiente y el criterio de
+promoción para los candidatos del scorecard; no modifica automáticamente la
+política de una fuente.
+
 Al `2026-05-24`, el inventario contiene 21 fuentes: 15 conectores o fixtures
 implementados, 14 fuentes que aun exigen revision de terminos/licencia para
 uso público real, 1 integracion limitada a descarga manual y 1 referencia

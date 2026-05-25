@@ -88,6 +88,12 @@ demo:
 		--report build/demo/source-registry.md \
 		--html build/demo/source-registry.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit provider-approvals \
+		--registry data/samples/source_registry.csv \
+		--approvals data/samples/provider_approval_queue.csv \
+		--report build/demo/provider-approvals.md \
+		--html build/demo/provider-approvals.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit scorecard-readiness \
 		--registry data/samples/source_registry.csv \
 		--report build/demo/scorecard-readiness.md \

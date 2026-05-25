@@ -83,7 +83,7 @@ def financials_scorecard_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Scorecard / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav>TargetAudit / U.S. Financials / Scorecard / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Price targets,<br>measured in daylight.</h1>
     <p class="lead">Auditable analyst-target research with visible sample size, uncertainty, benchmark context and exclusions. A hit is evidence of a reached target, not investment advice.</p>
     <p class="meta" id="run-meta">Loading latest stored research run...</p>
@@ -386,7 +386,7 @@ def source_governance_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav>TargetAudit / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Open code.<br>Controlled data.</h1>
     <p class="lead">Publication rights are part of the evidence. This page separates sources already usable under documented policy from data that still requires terms, licensing or manual controls.</p>
     <p class="meta" id="reviewed">Loading source registry...</p>
@@ -584,7 +584,7 @@ def operations_quality_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/governance">Source Governance</a></nav>
+    <nav>TargetAudit / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a></nav>
     <h1>Ship evidence,<br>not surprises.</h1>
     <p class="lead">Operational quality gates for stored evaluation runs: reproducibility stamps, required inputs, provider lineage and anomalous exclusion rates.</p>
     <p class="meta" id="scope">Refreshable quality view over stored evaluation runs</p>
@@ -732,7 +732,7 @@ def scorecard_readiness_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Readiness / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav>TargetAudit / U.S. Financials / Readiness / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Earn the right<br>to publish.</h1>
     <p class="lead">Readiness for a real public Financials scorecard. Demo fixtures can test the system; only approved production sources can enable release.</p>
     <p class="meta" id="reviewed">Loading readiness controls...</p>
@@ -867,7 +867,7 @@ def release_center_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Release Center / <a href="/dashboard/financials">Scorecard</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/operations">Operations Quality</a> / <a href="/dashboard/governance">Governance</a></nav>
+    <nav>TargetAudit / U.S. Financials / Release Center / <a href="/dashboard/financials">Scorecard</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a> / <a href="/dashboard/governance">Governance</a></nav>
     <h1>Release only<br>what is defensible.</h1>
     <p class="lead">One publication decision for one candidate run. Approved source rights and complete run evidence must both pass before a real scorecard can be released.</p>
     <p class="meta" id="reviewed">Select a candidate run to review...</p>
@@ -952,6 +952,151 @@ def release_center_html() -> str:
     }
     $("apply").addEventListener("click", refresh);
     $("run").addEventListener("change", refresh);
+    initialize();
+  </script>
+</body>
+</html>"""
+
+
+def provider_approvals_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Provider Approvals</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --panel2:#14242d; --line:#20343d;
+      --text:#edf1ef; --muted:#98abb0; --mint:#56daac; --gold:#f0bc62;
+      --blue:#62a6ff; --red:#ff7d72;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1240px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(38px,5vw,58px); line-height:1.05; margin:38px 0 14px; }
+    h2 { margin:42px 0 16px; font-size:22px; }
+    h3 { margin:0 0 12px; font-size:16px; }
+    .lead { color:var(--muted); font-size:17px; max-width:900px; }
+    .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold);
+      border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.table-wrap,.detail { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:17px 20px; }
+    .card p { color:var(--muted); margin:0; }
+    .card strong { display:block; font-size:35px; color:var(--mint); margin-top:4px; }
+    .card strong.no { color:var(--red); }
+    .card small { color:var(--muted); }
+    .controls-table { margin-bottom:32px; overflow:hidden; }
+    .layout { display:grid; grid-template-columns:minmax(650px,1fr) 390px; gap:18px; }
+    .table-wrap { overflow:hidden; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); text-transform:uppercase; font-size:12px; font-weight:500; }
+    td small { display:block; color:var(--muted); }
+    tr[data-provider] { cursor:pointer; }
+    tr[data-provider]:hover { background:var(--panel2); }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; white-space:nowrap; }
+    .critical,.rejected_public_output { color:var(--red); background:rgba(255,125,114,.12); }
+    .high,.pending_terms_review,.pending_license_quote,.pending_written_permission,.pending_approval,.missing_queue_record {
+      color:var(--gold); background:rgba(240,188,98,.12);
+    }
+    .normal { color:var(--blue); background:rgba(98,166,255,.12); }
+    .approved,.approved_public_output { color:var(--mint); background:rgba(86,218,172,.12); }
+    .detail { padding:18px; min-height:355px; }
+    .detail p { color:var(--muted); }
+    .fact { background:var(--panel2); border-radius:9px; padding:11px; margin:10px 0; }
+    .fact small { display:block; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px; }
+    #error { display:none; border-left-color:var(--red); color:var(--red); }
+    @media(max-width:1000px) {
+      .cards,.layout { grid-template-columns:1fr; }
+      .table-wrap { overflow-x:auto; }
+      table { min-width:650px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>TargetAudit / Governance / Provider Approvals / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/governance">Sources</a></nav>
+    <h1>Permission before<br>production data.</h1>
+    <p class="lead">A documented review queue for providers that could unlock the public U.S. Financials scorecard. Technical access never stands in for publishing rights.</p>
+    <p class="meta" id="reviewed">Loading approval work queue...</p>
+    <section class="cards">
+      <article class="card"><p>Tracked</p><strong id="tracked">-</strong><small>Provider dossiers</small></article>
+      <article class="card"><p>Critical open</p><strong id="critical">-</strong><small>Required controls blocked</small></article>
+      <article class="card"><p>Approved</p><strong id="approved">-</strong><small>Public output permission</small></article>
+      <article class="card"><p>Activation ready</p><strong id="activation" class="no">-</strong><small>All controls licensed</small></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice" id="publication-note">Loading publication control...</p>
+    <p id="error" class="notice"></p>
+    <h2>Scorecard Controls</h2>
+    <div class="table-wrap controls-table">
+      <table>
+        <thead><tr><th>Required Control</th><th>Status</th><th>Candidates</th><th>Blocker</th></tr></thead>
+        <tbody id="controls"><tr><td colspan="4">Loading required controls...</td></tr></tbody>
+      </table>
+    </div>
+    <h2>Approval Work Queue</h2>
+    <section class="layout">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Priority</th><th>Provider</th><th>Approval Status</th><th>Evidence Needed</th></tr></thead>
+          <tbody id="queue"><tr><td colspan="4">Loading provider dossiers...</td></tr></tbody>
+        </table>
+      </div>
+      <aside id="detail" class="detail">
+        <h3>Provider Dossier</h3>
+        <p>Select a provider to inspect its requested use and the evidence required for promotion.</p>
+      </aside>
+    </section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let providers = [];
+    function text(value) {
+      return String(value == null || value === "" ? "-" : value)
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    }
+    function href(value) {
+      try {
+        const parsed = new URL(value);
+        return parsed.protocol === "https:" ? text(value) : "#";
+      } catch (_) { return "#"; }
+    }
+    async function json(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+      return response.json();
+    }
+    function fail(message) {
+      $("error").style.display = "block";
+      $("error").textContent = message;
+    }
+    async function initialize() {
+      try {
+        const data = await json("/api/v1/governance/approvals");
+        providers = data.items;
+        $("reviewed").textContent = `${data.market_focus} / approval review as of ${data.as_of}`;
+        $("tracked").textContent = data.queue_count;
+        $("critical").textContent = data.critical_open_count;
+        $("approved").textContent = data.approved_count;
+        $("activation").textContent = data.public_activation_ready ? "Yes" : "No";
+        $("activation").className = data.public_activation_ready ? "" : "no";
+        $("publication-note").textContent = data.publication_note;
+        $("controls").innerHTML = data.controls.map((control) => `<tr><td><strong>${text(control.label)}</strong><small>${text(control.data_class)}</small></td><td><span class="pill ${text(control.status)}">${text(control.status)}</span></td><td>${control.candidate_count}</td><td>${text(control.blocker || "Approved public provider recorded.")}</td></tr>`).join("");
+        $("queue").innerHTML = providers.map((provider) => `<tr data-provider="${text(provider.provider_id)}"><td><span class="pill ${text(provider.priority)}">${text(provider.priority)}</span></td><td><strong>${text(provider.provider_name)}</strong><small>${text(provider.data_class)}</small></td><td><span class="pill ${text(provider.approval_status)}">${text(provider.approval_status)}</span></td><td>${text(provider.required_evidence)}</td></tr>`).join("");
+        document.querySelectorAll("tr[data-provider]").forEach((row) => row.addEventListener("click", () => showProvider(row.dataset.provider)));
+        showProvider(providers[0].provider_id);
+      } catch (error) { fail(error.message); }
+    }
+    function showProvider(providerId) {
+      const provider = providers.find((item) => item.provider_id === providerId);
+      $("detail").innerHTML = `<h3>${text(provider.provider_name)}</h3><p>${text(provider.provider_id)} / ${text(provider.data_class)} / source state <span class="pill ${text(provider.deployment_state)}">${text(provider.deployment_state)}</span></p><div class="fact"><small>Requested use</small>${text(provider.requested_use)}</div><div class="fact"><small>Required evidence</small>${text(provider.required_evidence)}</div><div class="fact"><small>Promotion criteria</small>${text(provider.promotion_criteria)}</div><p>${text(provider.review_note)}</p><a href="${href(provider.evidence_url)}" target="_blank" rel="noopener">Review evidence source</a>`;
+    }
     initialize();
   </script>
 </body>

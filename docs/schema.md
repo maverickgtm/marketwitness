@@ -213,6 +213,24 @@ La vista deriva estados operativos: `usable_with_policy`, `review_required`,
 implementado y aun así requerir revisión antes de usarse en un dashboard
 público con datos reales.
 
+## `provider_approval_queue.csv`
+
+Expediente de permisos de proveedores candidatos para el scorecard público.
+No reemplaza `source_registry.csv`: un estado aprobado solo pasa la validación
+si el registro de fuentes también permite salida pública.
+
+| Columna | Requerida | Descripcion |
+|---|---:|---|
+| `provider_id` | Si | Identificador existente en `source_registry.csv` |
+| `approval_status` | Si | `pending_terms_review`, `pending_license_quote`, `pending_written_permission`, `approved_public_output` o `rejected_public_output` |
+| `priority` | Si | `critical`, `high` o `normal` |
+| `requested_use` | Si | Uso preciso solicitado para el producto |
+| `required_evidence` | Si | Documento o autorización todavía requerido |
+| `promotion_criteria` | Si | Condición verificable para poder promover la fuente |
+| `evidence_url` | Si | Página HTTPS oficial donde tramitar o verificar el permiso |
+| `reviewed_on` | Si | Fecha ISO de la revisión |
+| `review_note` | Si | Estado y siguiente acción del expediente |
+
 ## `ipo_watch.csv`
 
 Registro auditable para la pagina `IPO Watch`. A diferencia de los targets, no

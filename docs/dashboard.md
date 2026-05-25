@@ -64,6 +64,22 @@ vista muestra el control de publicacion enlazado en cada exclusion o pendiente.
 Entradas historicas sin ese linaje permanecen visibles como `unlinked`, sin
 inferir una fuente por la URL.
 
+## Vista De Aprobacion: Provider Approvals
+
+Objetivo: convertir fuentes candidatas en una cola revisable de permisos antes
+de permitir datos reales en una salida pública.
+
+- La ruta web `/dashboard/approvals` consume
+  `/api/v1/governance/approvals`.
+- Muestra expedientes de Benzinga, Alpha Vantage, Nasdaq Daily List, NYSE y
+  S&P DJI con evidencia requerida y criterio de promoción.
+- Marca como críticos los candidatos necesarios para targets, precios,
+  acciones corporativas y membresía histórica del universo.
+- Un expediente `approved_public_output` solo es válido si el registro de
+  fuentes también declara una política compatible con salida pública.
+- La cola documenta trabajo pendiente; no aprueba ni conecta una fuente
+  automáticamente.
+
 ## Vista De Preparacion: Scorecard Readiness
 
 Objetivo: impedir que un dashboard tecnicamente funcional sea confundido con

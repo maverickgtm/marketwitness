@@ -218,6 +218,13 @@ from .release_center import (
     write_release_html,
     write_release_report,
 )
+from .provider_approvals import (
+    ProviderApprovalDataError,
+    build_approval_queue,
+    load_provider_approvals,
+    write_approval_html,
+    write_approval_report,
+)
 from .reporting import write_markdown_report
 from .storage import EvaluationRun, WarehouseError, generated_run_id, store_evaluation_run
 
@@ -420,6 +427,19 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Governance review cutoff in YYYY-MM-DD format.",
+    )
+    approval_parser = subparsers.add_parser(
+        "provider-approvals",
+        help="Render documented provider permission work before public activation.",
+    )
+    approval_parser.add_argument("--registry", required=True, help="Provider registry CSV.")
+    approval_parser.add_argument("--approvals", required=True, help="Provider approval queue CSV.")
+    approval_parser.add_argument("--report", required=True, help="Markdown approval queue path.")
+    approval_parser.add_argument("--html", help="Optional approval queue HTML output path.")
+    approval_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Approval queue review cutoff in YYYY-MM-DD format.",
     )
     readiness_parser = subparsers.add_parser(
         "scorecard-readiness",
@@ -1059,6 +1079,24 @@ def main() -> int:
         print(
             f"Wrote source governance for {len(providers)} providers "
             f"to {args.report}."
+        )
+        return 0
+
+    if args.command == "provider-approvals":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            providers = load_source_registry(args.registry)
+            approvals = load_provider_approvals(args.approvals)
+            snapshot = build_approval_queue(providers, approvals, as_of)
+            write_approval_report(args.report, snapshot)
+            if args.html:
+                write_approval_html(args.html, snapshot)
+        except (ProviderApprovalDataError, SourceRegistryDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote approval queue for {snapshot['queue_count']} providers; "
+            f"{snapshot['critical_open_count']} critical approvals remain open. "
+            f"Report written to {args.report}."
         )
         return 0
 
