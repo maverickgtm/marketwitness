@@ -39,6 +39,20 @@ comprar datos comerciales.
 - El ranking real de analistas permanece como ampliación voluntaria y nunca
   como condición para usar la edición pública.
 
+## Pagina: Market Context
+
+Objetivo: dar contexto visual del benchmark financiero sin crear una nueva
+fuente de datos del motor auditable.
+
+- La ruta `/dashboard/market-context` incrusta el widget oficial `Advanced
+  Chart` de TradingView para `AMEX:XLF`.
+- Mantiene visible la atribucion `by TradingView` y enlaza la pagina oficial
+  del simbolo.
+- Declara que el widget es display externo: TargetAudit no almacena, exporta
+  ni utiliza sus datos para puntuar targets.
+- La pagina requiere Internet para cargar el tercero, pero no exige clave ni
+  suscripcion de datos a los usuarios de TargetAudit.
+
 ## Pagina: Public Use Policy
 
 Objetivo: presentar en el propio dashboard los limites de interpretacion y
@@ -71,8 +85,8 @@ confundir un precio disponible con derechos de publicacion publica.
   no como feed historico confirmado para ingestion.
 - Registra Finnhub y Financial Modeling Prep como rutas programaticas futuras,
   mostrando que los derechos de display o redistribucion requieren acuerdo.
-- Mantiene TradingView como posible widget de contexto visual atribuido,
-  separado de la ingesta de targets y del ranking.
+- Enlaza `Market Context`, donde TradingView ya se usa como widget atribuido
+  de display separado de la ingesta de targets y del ranking.
 - Mantiene `xStocks / Backed`, `Ondo` y sus venues fuera de esta pagina:
   pertenecen a un eventual monitor `RWA Watch`, no a las fuentes de price
   targets de analistas.

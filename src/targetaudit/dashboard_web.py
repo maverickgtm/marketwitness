@@ -37,6 +37,7 @@ def open_edition_html() -> str:
     .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; white-space:nowrap; }
     .bundled_offline_demo { color:var(--blue); background:rgba(98,166,255,.12); }
     .public_source_no_key { color:var(--mint); background:rgba(86,218,172,.12); }
+    .attributed_external_widget { color:var(--mint); background:rgba(86,218,172,.12); }
     .bring_authorized_data { color:var(--gold); background:rgba(240,188,98,.12); }
     .modes { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
     .mode { padding:18px; }
@@ -47,7 +48,7 @@ def open_edition_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Open Edition / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/extensions">Licensed Extensions</a> / <a href="/dashboard/financials">Financials Sandbox</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Governance</a></nav>
+    <nav>TargetAudit / Open Edition / <a href="/dashboard/market-context">Market Context</a> / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/extensions">Licensed Extensions</a> / <a href="/dashboard/financials">Financials Sandbox</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Governance</a></nav>
     <h1>Market research.<br>No paid data required.</h1>
     <p class="lead" id="promise">Loading the zero-cost product profile...</p>
     <p class="meta" id="reviewed">Loading source controls...</p>
@@ -231,6 +232,84 @@ def licensed_extensions_html() -> str:
 </html>"""
 
 
+def market_context_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Market Context</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --line:#20343d; --text:#edf1ef;
+      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1240px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(38px,5vw,60px); line-height:1.04; margin:38px 0 14px; }
+    h2 { font-size:22px; margin:40px 0 16px; }
+    .lead { color:var(--muted); font-size:18px; max-width:930px; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.notice,.chart-shell { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:17px 20px; }
+    .card p { color:var(--muted); margin:0; }
+    .card strong { display:block; color:var(--mint); margin-top:5px; font-size:16px; }
+    .notice { border-left:3px solid var(--gold); color:var(--muted); padding:15px 18px; margin:18px 0; }
+    .chart-shell { padding:18px; height:min(680px, calc(100vh - 230px)); min-height:520px; }
+    .tradingview-widget-container { height:100%; width:100%; }
+    .tradingview-widget-container__widget { height:calc(100% - 32px); width:100%; }
+    .tradingview-widget-copyright { font-size:13px; line-height:32px; color:var(--muted); text-align:left; }
+    .tradingview-widget-copyright .blue-text { color:var(--blue); }
+    @media(max-width:900px) { .cards { grid-template-columns:1fr 1fr; } .chart-shell { height:560px; } }
+    @media(max-width:570px) { .cards { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav><a href="/dashboard/open">Open Edition</a> / Market Context / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/financials">Financials Sandbox</a></nav>
+    <h1>Sector context.<br>Separate from scoring.</h1>
+    <p class="lead">A visual chart for the Financials benchmark, embedded from TradingView with attribution intact. TargetAudit does not collect, normalize or export widget data.</p>
+    <p class="meta">External attributed display / default symbol: AMEX:XLF</p>
+    <section class="cards">
+      <article class="card"><p>Role</p><strong>Context only</strong></article>
+      <article class="card"><p>Data collection</p><strong>None</strong></article>
+      <article class="card"><p>Scorecard input</p><strong>Never</strong></article>
+      <article class="card"><p>Attribution</p><strong>TradingView visible</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice">This third-party chart is for visual context only. It is not investment advice, a TargetAudit data source, a verified real-time record or evidence for analyst ranking results.</p>
+    <h2>XLF Visual Context</h2>
+    <section class="chart-shell">
+      <!-- TradingView Widget BEGIN -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/AMEX-XLF/" rel="noopener nofollow" target="_blank"><span class="blue-text">XLF chart</span></a><span class="trademark"> by TradingView</span></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+        {
+          "autosize": true,
+          "symbol": "AMEX:XLF",
+          "interval": "D",
+          "timezone": "Etc/UTC",
+          "theme": "dark",
+          "style": "1",
+          "locale": "en",
+          "allow_symbol_change": true,
+          "calendar": false,
+          "support_host": "https://www.tradingview.com"
+        }
+        </script>
+      </div>
+      <!-- TradingView Widget END -->
+    </section>
+  </main>
+</body>
+</html>"""
+
+
 def public_use_policy_html() -> str:
     return """<!doctype html>
 <html lang="en">
@@ -267,6 +346,7 @@ def public_use_policy_html() -> str:
     .redistributable_demo { color:var(--blue); background:rgba(98,166,255,.12); }
     .evidence_only { color:var(--mint); background:rgba(86,218,172,.12); }
     .permission_required { color:var(--gold); background:rgba(240,188,98,.12); }
+    .external_display_only { color:var(--blue); background:rgba(98,166,255,.12); }
     .layout { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
     .panel { padding:18px; }
     .panel ul { margin:0; padding-left:20px; }

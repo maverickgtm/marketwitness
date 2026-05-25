@@ -83,9 +83,9 @@ Las alternativas pagadas y sus limites se documentan en
 `docs/licensed-extensions.md`.
 
 TradingView queda fuera de la tabla de targets porque su oportunidad es
-distinta: ofrece widgets gratuitos que pueden integrarse en una pagina
-publica manteniendo la atribucion original. Es adecuado para contexto visual
-de mercado, no para almacenar o puntuar historial de analistas:
+distinta: su widget atribuido ya se integra en `/dashboard/market-context`
+como contexto visual de `XLF`. Es adecuado para display externo, no para
+almacenar o puntuar historial de analistas:
 <https://www.tradingview.com/widget-docs/widgets/charts/> y
 <https://www.tradingview.com/policies/>.
 

@@ -30,6 +30,10 @@ class PublicUsePolicyTests(unittest.TestCase):
             "Do not automatically collect",
             " ".join(policy["publication_rules"]),
         )
+        external = next(
+            item for item in policy["data_layers"] if item["status"] == "external_display_only"
+        )
+        self.assertIn("does not store or score", external["description"])
 
     def test_rejects_sources_reviewed_after_policy_cutoff(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))

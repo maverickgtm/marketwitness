@@ -99,7 +99,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
   pagadas sin volverlas requisito ni confundirlas con permiso de publicacion.
 - [x] Clasificacion de APIs freemium de targets/consenso (Finnhub y FMP) como
   opciones contractuales pendientes de derechos de output publico.
-- [ ] Widget atribuido de TradingView para contexto visual de mercado, sin
+- [x] Widget atribuido de TradingView para contexto visual de mercado, sin
   usarlo como fuente de datos del scorecard.
 - [x] Mapa inicial `RWA Watch` de los 20 CEX lideres por Trust Score y
   Pepperstone, separando emisores, venues y CFD.

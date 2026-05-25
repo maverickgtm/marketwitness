@@ -95,9 +95,9 @@ Por lo tanto:
 
 TradingView ofrece widgets de graficos para incrustar gratuitamente en un
 sitio web. Sus terminos exigen conservar la atribucion tal como fue disenada.
-Puede ser una mejora futura para contexto de mercado en el dashboard, pero el
-widget no entrega la historia de targets necesaria para evaluar analistas ni
-debe convertirse en almacenamiento de datos.
+La pagina `/dashboard/market-context` ya usa ese camino para visualizar `XLF`,
+pero el widget no entrega la historia de targets necesaria para evaluar
+analistas ni debe convertirse en almacenamiento de datos.
 
 
 El catalogo versionado vive en `data/samples/licensed_extensions.csv` y se

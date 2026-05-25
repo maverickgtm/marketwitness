@@ -68,6 +68,14 @@ def build_public_use_policy(
                     "Public output stays disabled until appropriate rights are documented."
                 ),
             },
+            {
+                "title": "Attributed external display",
+                "status": "external_display_only",
+                "description": (
+                    "Third-party widgets may show visual market context with their "
+                    "attribution intact; TargetAudit does not store or score their data."
+                ),
+            },
         ],
         "publication_rules": [
             "Do not publish real analyst rankings unless every required input source is approved for public output.",

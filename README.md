@@ -50,9 +50,9 @@ de targets confirmado para el motor.
 Finnhub y Financial Modeling Prep ofrecen rutas programaticas potenciales
 para consenso o targets, pero sus paginas oficiales no convierten el plan
 gratis en permiso de publicacion: Finnhub situa redistribucion en Enterprise
-y FMP exige un acuerdo especifico de display/licencia. TradingView puede
-anadirse mas adelante como widget gratuito atribuido para contexto visual, no
-como fuente de historial de analistas.
+y FMP exige un acuerdo especifico de display/licencia. TradingView ya se
+integra mediante su widget gratuito atribuido en `Market Context` para
+visualizar `XLF`, no como fuente de historial de analistas.
 
 Tambien se realizo un barrido internacional en Reino Unido, Japon, Australia,
 Hong Kong, Singapur y China continental. No aparecio un historial gratuito
@@ -837,6 +837,9 @@ distingue capacidades gratuitas y extensiones opcionales. La ruta
 son investigacion y no recomendaciones de inversion, y la revision legal
 externa aun es un pendiente antes de operar un servicio publico con datos
 reales. La ruta
+`/dashboard/market-context` muestra el benchmark `XLF` en un widget atribuido
+de TradingView que no alimenta el scorecard ni se almacena como evidencia. La
+ruta
 `/dashboard/extensions` presenta proveedores que un usuario puede contratar
 por su cuenta, sus precios visibles y los derechos que aun bloquean la
 publicacion de rankings reales. La ruta
@@ -910,6 +913,7 @@ Endpoints iniciales:
 | `/dashboard/open` | Portada de la edición gratuita de GitHub |
 | `/api/v1/policy/public-use` | Politica estructurada de uso responsable, capas de datos y fuentes bloqueadas |
 | `/dashboard/policy` | Pagina publica de no-recomendacion y derechos de datos pendientes |
+| `/dashboard/market-context` | Widget atribuido de TradingView para contexto visual de `XLF`, fuera del scorecard |
 | `/api/v1/extensions/licensed` | Opciones de datos pagados por el usuario, precio visible y restricciones de publicación |
 | `/dashboard/extensions` | Página de extensiones opcionales `bring your own license` |
 | `/dashboard/ipo-watch` | Reporte generado de vigilancia SEC de filings IPO |

@@ -67,7 +67,7 @@ cuenta:
 | Producto | Evidencia Oficial | Decision |
 |---|---|---|
 | Share CFDs | Mas de 1,100 CFD de acciones en 23 paises; el instrumento no entrega propiedad de la accion | No usar como activo tokenizado ni como precio objetivo |
-| TradingView | Integracion con una cuenta Pepperstone gratuita y miles de simbolos | Posible referencia visual privada, no fuente de redistribucion |
+| TradingView | Widget atribuido integrado en `Market Context` y compatibilidad visible con miles de simbolos | Contexto visual externo, no fuente de redistribucion ni de RWA scoring |
 | Trading API | REST API para pricing, liquidez y datos de cuenta | Integracion opcional del usuario; no se confirmo feed abierto publicable |
 
 ## Prioridad Tecnica

@@ -61,6 +61,16 @@ CAPABILITIES = (
         "limitation": "No live token data is collected; real issuer or venue feeds require written rights.",
     },
     {
+        "key": "market_context_widget",
+        "title": "Market Context",
+        "status": "attributed_external_widget",
+        "cost": "No data fee",
+        "provider_ids": (),
+        "output": "Attributed TradingView chart for visual XLF market context",
+        "route": "/dashboard/market-context",
+        "limitation": "Display only: widget data is not stored, exported or used to score analyst targets.",
+    },
+    {
         "key": "real_analyst_rankings",
         "title": "Real Analyst Rankings",
         "status": "bring_authorized_data",
@@ -92,10 +102,13 @@ def build_open_edition_snapshot(
             "authorized targets are optional extensions, never a requirement."
         ),
         "zero_cost_available_count": (
-            counts["bundled_offline_demo"] + counts["public_source_no_key"]
+            counts["bundled_offline_demo"]
+            + counts["public_source_no_key"]
+            + counts["attributed_external_widget"]
         ),
         "offline_ready_count": counts["bundled_offline_demo"],
         "public_data_ready_count": counts["public_source_no_key"],
+        "attributed_widget_count": counts["attributed_external_widget"],
         "optional_extension_count": counts["bring_authorized_data"],
         "capabilities": capabilities,
         "setup_modes": [
@@ -212,10 +225,11 @@ def render_open_edition_html(snapshot: dict[str, Any]) -> str:
 <title>TargetAudit | Open Edition</title><style>
 :root{{--bg:#071016;--panel:#0f1c24;--line:#20343d;--text:#edf1ef;--muted:#98abb0;--mint:#56daac;--gold:#f0bc62;--blue:#62a6ff;}}
 *{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,Arial,sans-serif}}header,main{{max-width:1180px;margin:auto;padding:30px 28px}}nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:13px}}h1{{font-size:clamp(38px,5vw,60px);line-height:1.04;margin:38px 0 15px}}h2{{margin:44px 0 18px}}h3{{margin:12px 0 8px}}.lead{{color:var(--muted);font-size:18px;max-width:920px}}.cards{{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:34px 0}}.card,.feature,.mode,.notice{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{padding:18px 20px}}.card p{{margin:0;color:var(--muted)}}.card strong{{font-size:38px;color:var(--mint);display:block}}.notice{{padding:15px 18px;border-left:3px solid var(--mint);color:var(--muted)}}.features{{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}}.feature{{padding:18px}}.feature strong{{display:block;color:var(--mint);margin:8px 0}}.feature p,.feature small,.mode small{{color:var(--muted);display:block}}.pill{{display:inline-block;border-radius:999px;padding:5px 9px;font-size:12px}}.bundled_offline_demo{{color:var(--blue);background:rgba(98,166,255,.12)}}.public_source_no_key{{color:var(--mint);background:rgba(86,218,172,.12)}}.bring_authorized_data{{color:var(--gold);background:rgba(240,188,98,.12)}}.modes{{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}}.mode{{padding:18px}}.mode p{{color:var(--mint)}}@media(max-width:900px){{.cards,.features,.modes{{grid-template-columns:1fr}}}}
+.attributed_external_widget{{color:var(--mint);background:rgba(86,218,172,.12)}}
 </style></head><body><header><nav>TargetAudit / Open Edition</nav><h1>Market research.<br>No paid data required.</h1>
 <p class="lead">{escape(snapshot['promise'])}</p><p class="meta">Reviewed as of {escape(snapshot['as_of'])}</p>
 <section class="cards"><article class="card"><p>No-cost capabilities</p><strong>{snapshot['zero_cost_available_count']}</strong></article><article class="card"><p>Offline demo</p><strong>{snapshot['offline_ready_count']}</strong></article><article class="card"><p>Public-data monitors</p><strong>{snapshot['public_data_ready_count']}</strong></article><article class="card"><p>Optional extensions</p><strong>{snapshot['optional_extension_count']}</strong></article></section></header>
-<main><p class="notice">The GitHub product works without commercial subscriptions. Real analyst ranking inputs remain optional and must be supplied with usage rights.</p><h2>Included Capabilities</h2><section class="features">{capability_cards}</section><h2>Run Modes</h2><section class="modes">{modes}</section></main></body></html>"""
+<main><p class="notice">The GitHub product works without commercial subscriptions. Real analyst ranking inputs remain optional and must be supplied with usage rights. Any attributed external widget is display-only context and never an audit input.</p><h2>Included Capabilities</h2><section class="features">{capability_cards}</section><h2>Run Modes</h2><section class="modes">{modes}</section></main></body></html>"""
 
 
 def write_open_edition_html(path: str | Path, snapshot: dict[str, Any]) -> None:

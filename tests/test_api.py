@@ -202,11 +202,23 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("/api/v1/open-edition", page.text)
         self.assertEqual(snapshot.status_code, 200)
-        self.assertEqual(snapshot.json()["zero_cost_available_count"], 5)
+        self.assertEqual(snapshot.json()["zero_cost_available_count"], 6)
         self.assertEqual(snapshot.json()["offline_ready_count"], 2)
         self.assertEqual(snapshot.json()["public_data_ready_count"], 3)
+        self.assertEqual(snapshot.json()["attributed_widget_count"], 1)
         self.assertEqual(snapshot.json()["optional_extension_count"], 1)
         self.assertIn("/dashboard/policy", page.text)
+        self.assertIn("/dashboard/market-context", page.text)
+
+    def test_serves_attributed_market_context_without_a_data_endpoint(self) -> None:
+        page = self.client.get("/dashboard/market-context")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Sector context.", page.text)
+        self.assertIn("AMEX:XLF", page.text)
+        self.assertIn("by TradingView", page.text)
+        self.assertIn("embed-widget-advanced-chart.js", page.text)
+        self.assertIn("does not collect, normalize or export widget data", page.text)
 
     def test_serves_public_use_policy_with_blocked_source_boundaries(self) -> None:
         page = self.client.get("/dashboard/policy")

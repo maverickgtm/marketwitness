@@ -18,6 +18,9 @@ El sandbox de Financials corre con fixtures propios. La operación live sin
 cuota utiliza SEC EDGAR para IPO Watch y SEC N-PORT para evidencia periódica
 ETF; la SEC requiere un `User-Agent` con contacto, pero no una API key de pago.
 Los proveedores comerciales se conservan como extensiones opcionales.
+`/dashboard/market-context` carga un widget atribuido de TradingView como
+display externo de `XLF`; no genera archivos, no alimenta rankings y requiere
+Internet solo para visualizar ese tercero.
 
 ## Objetivo
 

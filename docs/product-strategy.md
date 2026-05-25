@@ -44,7 +44,7 @@ Competidores observados al `2026-05-24`:
 | WallStreetZen | Ranking propio sobre mas de 4,000 analistas | Benchmark metodologico privado, no feed historico confirmado |
 | Yahoo Finance / Investing.com | Consulta visual de ratings y targets | Referencia manual solamente; sus terminos no sustentan ingestion o redistribucion |
 | Finnhub / FMP | Endpoints programaticos de tendencia o consenso de target | Conectores futuros solo bajo licencia explicita de display/redistribucion |
-| TradingView | Widgets gratuitos con atribucion conservada | Contexto visual publico futuro, separado del motor de targets |
+| TradingView | Widgets gratuitos con atribucion conservada | `Market Context` implementado para `XLF`, separado del motor de targets |
 | xStocks / Ondo / venues CEX | Emisores de activos tokenizados y mercados como Bybit, Kraken, Gate y Bitget | `RWA Watch Sandbox` ya demuestra el modelo; xStocks queda bloqueado por terminos y ningun venue suministra analyst targets |
 | Quiver Quantitative | Desempeno historico de analistas usando datos Benzinga | Examinar firmas especialistas contra generalistas dentro de financials |
 | AnaChart | Charts y hit ratios de price targets publicos | Comparar precision con benchmark sectorial y versionar reglas |

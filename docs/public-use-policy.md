@@ -24,6 +24,7 @@ bloqueados se derivan de `data/samples/source_registry.csv`.
 | Sandbox creado por el proyecto | Fixtures y resultados reproducibles de demostracion | No son hallazgos reales de mercado ni resultados de firmas reales |
 | Monitores regulatorios publicos | Filings, prospectos, confirmaciones documentales y holdings reportados bajo la politica registrada | Un documento o filing no es una recomendacion, una cotizacion completada ni una senal en tiempo real |
 | Extensiones autorizadas | Analisis local sobre archivos aportados por un usuario con derechos documentados | No activa publicacion de rankings reales sin permiso de output publico para todos los insumos |
+| Display externo atribuido | Widget TradingView de contexto visual `XLF` | TargetAudit no almacena, exporta ni puntua el contenido del widget |
 
 ## Reglas De Publicacion
 

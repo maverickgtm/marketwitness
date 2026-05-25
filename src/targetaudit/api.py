@@ -18,6 +18,7 @@ from . import METHODOLOGY_VERSION, __version__
 from .dashboard_web import (
     financials_scorecard_html,
     licensed_extensions_html,
+    market_context_html,
     open_edition_html,
     operations_quality_html,
     provider_approvals_html,
@@ -130,6 +131,12 @@ def create_app(
     )
     def rwa_watch_report() -> str:
         return _generated_html(reports, "rwa-watch.html")
+
+    @application.get(
+        "/dashboard/market-context", response_class=HTMLResponse, include_in_schema=False
+    )
+    def market_context_page() -> str:
+        return market_context_html()
 
     @application.get(
         "/dashboard/financials", response_class=HTMLResponse, include_in_schema=False

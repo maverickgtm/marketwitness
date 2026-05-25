@@ -34,9 +34,10 @@ los monitores son evidencia para investigacion y no recomendaciones de
 inversion, muestra las fuentes bloqueadas desde el registro validado y declara
 que la revision legal externa continua pendiente.
 
-Un widget oficial de TradingView podria anadirse como contexto visual de
-mercado conservando su atribucion. Ese componente no alimentaria el ranking
-ni reemplazaria una licencia de historial de targets.
+La ruta `/dashboard/market-context` integra el widget oficial atribuido de
+TradingView para contexto visual de `XLF`. El componente carga directamente
+desde TradingView; TargetAudit no almacena, exporta ni usa esos datos en el
+ranking, y el widget no reemplaza una licencia de historial de targets.
 
 La investigacion inicial de `RWA Watch` mapea 20 exchanges centralizados y
 Pepperstone. Los terminos revisados bloquean la recoleccion/republicacion
@@ -92,6 +93,13 @@ permiso explicito de output publico.
 - No recolecta datos de xStocks, Ondo o exchanges mientras sus derechos de
   output publico no esten documentados.
 
+### Market Context
+
+- Incrusta el widget oficial gratuito de TradingView con atribucion visible.
+- Muestra `XLF` como contexto visual del benchmark sectorial.
+- No convierte contenido del widget en dataset, evidencia o input del
+  scorecard.
+
 ## Ejecutar Sin Costos
 
 ```bash
@@ -109,6 +117,8 @@ Desde ella se abren `/dashboard/ipo-watch`, `/dashboard/etf-regulatory` y
 producidos por `make demo`.
 La portada tambien enlaza `/dashboard/policy`, que debe revisarse antes de
 habilitar datos live o publicar resultados.
+Tambien enlaza `/dashboard/market-context`, cuya carga de TradingView requiere
+conexion a Internet pero no suscripcion de datos de TargetAudit.
 
 Para recolectar datos SEC públicos en vez de utilizar fixtures:
 
