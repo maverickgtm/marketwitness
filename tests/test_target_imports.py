@@ -26,6 +26,7 @@ class TargetImportsTests(unittest.TestCase):
 
         self.assertEqual(len(observations), 3)
         self.assertEqual(observations[0].observation_id, "authorized-demo:exp-001")
+        self.assertEqual(observations[0].provider_id, "authorized-demo")
         self.assertEqual(observations[0].benchmark_symbol, "XLF")
         self.assertEqual(decisions[3].reason, "missing_or_invalid_source_url")
         self.assertIn("Rows rejected: `1`", render_import_report(manifest, decisions, date(2026, 5, 24)))
@@ -45,6 +46,7 @@ class TargetImportsTests(unittest.TestCase):
 
         self.assertEqual(len(imported), 3)
         self.assertEqual(imported[1].source_provider, "authorized_demo_export")
+        self.assertEqual(imported[1].provider_id, "authorized-demo")
 
     def test_rejects_manifest_without_internal_research_authorization(self) -> None:
         payload = json.loads(

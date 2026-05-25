@@ -19,6 +19,7 @@ Una fila por price target publicado.
 | `benchmark_symbol` | No | Benchmark, por defecto `SPY` recomendado |
 | `source_provider` | Si | Proveedor o fuente primaria |
 | `source_url` | Si | Referencia verificable |
+| `provider_id` | Si para nuevas corridas gobernadas | Identificador estable que enlaza la observacion con `source_registry.csv`; entradas historicas sin este campo quedan visibles como `unlinked` |
 
 ## Manifiesto De Importacion Autorizada
 
@@ -28,7 +29,7 @@ publicables; una exportacion real debe vivir en `data/private/` o `data/raw/`.
 
 | Campo JSON | Requerido | Descripcion |
 |---|---:|---|
-| `provider_id` | Si | Prefijo estable usado en `observation_id` |
+| `provider_id` | Si | Prefijo estable usado en `observation_id` y escrito como linaje de la fila normalizada |
 | `provider_name` | Si | Nombre legible del proveedor/exportacion |
 | `source_provider` | Si | Valor escrito en las filas normalizadas |
 | `exported_on` | Si | Fecha ISO de la exportacion |
@@ -172,6 +173,9 @@ El `run_id` no puede sobreescribirse: una ejecucion corregida se registra como
 una nueva corrida. El esquema usa tablas y tipos compatibles con una futura
 migracion a PostgreSQL para la API publica; DuckDB es el almacen local de
 analisis, no una autorizacion para publicar los datos guardados.
+`evaluations.provider_id` conserva el enlace declarado por la observacion al
+registro de fuentes; las bases creadas antes de este campo reciben una columna
+vacia al volver a escribir y se presentan como linaje no enlazado.
 
 ## `source_registry.csv`
 

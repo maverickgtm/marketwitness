@@ -561,8 +561,9 @@ exclusiones. La ficha de ticker incluye una linea temporal de hitos retenidos
 una serie diaria de mercado. El demo almacena corridas separadas para el
 scorecard principal, targets revisados y guardas por acciones corporativas.
 La ruta `/dashboard/governance` presenta controles de fuente y observaciones
-excluidas o pendientes por corrida, sin atribuirles un proveedor hasta que
-esa linea de origen se persista en el almacen.
+excluidas o pendientes por corrida. Las nuevas evaluaciones conservan
+`provider_id` y enlazan su control de publicacion; resultados historicos sin
+ese campo se identifican como `unlinked` en vez de inferirlo por la URL.
 
 Endpoints iniciales:
 

@@ -51,10 +51,10 @@ fuentes aún requieren términos, licencia o exclusión expresa.
 - Filtros por clase de dato y estado operativo, junto a la vista por corrida
   de observaciones excluidas y pendientes.
 
-La corrida guarda actualmente el enlace de evidencia de cada observacion, no
-el `provider_id` del registro de fuentes. Por eso ambas auditorias se muestran
-sin afirmar una relacion automatica; esa trazabilidad debe persistirse antes
-de unirlas fila por fila en produccion.
+Las nuevas corridas guardan `provider_id` junto al enlace de evidencia y la
+vista muestra el control de publicacion enlazado en cada exclusion o pendiente.
+Entradas historicas sin ese linaje permanecen visibles como `unlinked`, sin
+inferir una fuente por la URL.
 
 ## Pagina 1: Financials Scorecard
 

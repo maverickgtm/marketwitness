@@ -387,14 +387,15 @@ def source_governance_html() -> str:
     </section>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Observation</th><th>Firm / Ticker</th><th>Status</th><th>Reason</th><th>Evidence</th></tr></thead>
-        <tbody id="exclusions"><tr><td colspan="5">Loading exclusions...</td></tr></tbody>
+        <thead><tr><th>Observation</th><th>Firm / Ticker</th><th>Status</th><th>Reason</th><th>Provider Control</th><th>Evidence</th></tr></thead>
+        <tbody id="exclusions"><tr><td colspan="6">Loading exclusions...</td></tr></tbody>
       </table>
     </div>
   </main>
   <script>
     const $ = (id) => document.getElementById(id);
     const base = "/api/v1";
+    let sourceById = {};
     function text(value) {
       return String(value == null || value === "" ? "-" : value)
         .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
@@ -417,6 +418,7 @@ def source_governance_html() -> str:
     async function initialize() {
       try {
         const [sources, runs] = await Promise.all([json(`${base}/governance/sources`), json(`${base}/runs`)]);
+        sourceById = Object.fromEntries(sources.sources.map((source) => [source.provider_id, source]));
         $("reviewed").textContent = `Source registry reviewed as of ${sources.reviewed_as_of}`;
         $("providers").textContent = sources.provider_count;
         $("implemented").textContent = sources.implemented_count;
@@ -461,12 +463,16 @@ def source_governance_html() -> str:
     }
     async function loadExclusions() {
       if (!$("run").value) {
-        $("exclusions").innerHTML = '<tr><td colspan="5">No evaluation runs stored.</td></tr>';
+        $("exclusions").innerHTML = '<tr><td colspan="6">No evaluation runs stored.</td></tr>';
         return;
       }
       try {
         const audit = await json(`${base}/runs/${encodeURIComponent($("run").value)}/audit/exclusions`);
-        $("exclusions").innerHTML = audit.observations.length ? audit.observations.map((row) => `<tr><td>${text(row.observation_id)}</td><td><strong>${text(row.firm)}</strong><small>${text(row.ticker)}</small></td><td><span class="pill review_required">${text(row.status)}</span></td><td>${text(row.reason)}</td><td><a href="${href(row.source_url)}" target="_blank" rel="noopener">Source</a></td></tr>`).join("") : '<tr><td colspan="5">No excluded or pending observations in this run.</td></tr>';
+        $("exclusions").innerHTML = audit.observations.length ? audit.observations.map((row) => {
+          const provider = sourceById[row.provider_id];
+          const control = provider ? `<strong>${text(provider.provider_name)}</strong><small><span class="pill ${text(provider.deployment_state)}">${text(provider.deployment_state)}</span></small>` : `<span class="pill review_required">unlinked</span><small>${text(row.provider_id || "missing provider_id")}</small>`;
+          return `<tr><td>${text(row.observation_id)}</td><td><strong>${text(row.firm)}</strong><small>${text(row.ticker)}</small></td><td><span class="pill review_required">${text(row.status)}</span></td><td>${text(row.reason)}</td><td>${control}</td><td><a href="${href(row.source_url)}" target="_blank" rel="noopener">Source</a></td></tr>`;
+        }).join("") : '<tr><td colspan="6">No excluded or pending observations in this run.</td></tr>';
       } catch (error) { fail(error.message); }
     }
     $("apply").addEventListener("click", filterSources);

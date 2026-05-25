@@ -18,8 +18,8 @@ La clasificación legible por máquina vive en
 Conserva por fuente su modo de acceso, estado técnico, revisión de términos o
 licencia, política de publicación y referencia revisada.
 
-Al `2026-05-24`, el inventario contiene 19 fuentes: 14 conectores o fixtures
-implementados, 12 fuentes que aun exigen revision de terminos/licencia para
+Al `2026-05-24`, el inventario contiene 20 fuentes: 15 conectores o fixtures
+implementados, 13 fuentes que aun exigen revision de terminos/licencia para
 uso público real, 1 integracion limitada a descarga manual y 1 referencia
 bloqueada para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto

@@ -62,7 +62,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
   historicos publicos.
 - [x] Pagina de auditoria de fuentes, controles de publicacion y observaciones
   excluidas o pendientes por corrida.
-- [ ] Persistir `provider_id` por observacion para enlazar resultados y
+- [x] Persistir `provider_id` por observacion para enlazar resultados y
   gobernanza de fuentes sin inferencias por URL.
 - [x] Pagina `ETF Holdings Activity` con comparador de snapshots, diferencias
   de posiciones, sello de fecha/frecuencia y demo sintetica reproducible.

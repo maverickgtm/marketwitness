@@ -20,6 +20,7 @@ class TargetObservation:
     benchmark_symbol: str
     source_provider: str
     source_url: str
+    provider_id: str = ""
 
 
 @dataclass(frozen=True)
@@ -42,6 +43,7 @@ class Evaluation:
     price_target: Decimal | None
     source_url: str
     status: str
+    provider_id: str = ""
     reason: str = ""
     direction: str = ""
     reference_date: str = ""
@@ -81,6 +83,7 @@ class Evaluation:
             "published_date": self.published_date,
             "price_target": _decimal_text(self.price_target),
             "source_url": self.source_url,
+            "provider_id": self.provider_id,
             "status": self.status,
             "reason": self.reason,
             "direction": self.direction,

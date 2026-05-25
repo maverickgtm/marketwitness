@@ -38,6 +38,7 @@ class ApiTests(unittest.TestCase):
                 price_target=Decimal("120"),
                 source_url="https://example.invalid/hit",
                 status="evaluated",
+                provider_id="synthetic-demo",
                 direction="up",
                 reference_date="2023-01-03",
                 reference_price=Decimal("100"),
@@ -65,6 +66,7 @@ class ApiTests(unittest.TestCase):
                 price_target=Decimal("90"),
                 source_url="https://example.invalid/miss",
                 status="evaluated",
+                provider_id="synthetic-demo",
                 direction="down",
                 hit=False,
                 terminal_absolute_error_pct=Decimal("0.10"),
@@ -80,6 +82,7 @@ class ApiTests(unittest.TestCase):
                 price_target=Decimal("100"),
                 source_url="https://example.invalid/excluded",
                 status="excluded",
+                provider_id="synthetic-demo",
                 reason="missing_reference_price",
             ),
         ]
@@ -151,7 +154,8 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Open code.", page.text)
         self.assertIn("Run Exclusions And Pending", page.text)
-        self.assertEqual(sources.json()["provider_count"], 19)
+        self.assertIn("Provider Control", page.text)
+        self.assertEqual(sources.json()["provider_count"], 20)
         self.assertGreater(sources.json()["open_review_count"], 0)
         self.assertEqual(blocked.json()["sources"][0]["provider_id"], "tipranks-reference")
         self.assertEqual(len(holdings.json()["sources"]), 3)
@@ -166,6 +170,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(ticker.json()["ticker"], "AAA")
         self.assertEqual(len(ticker.json()["observations"]), 2)
         self.assertEqual(audit.json()["counts_by_reason"], {"missing_reference_price": 1})
+        self.assertEqual(audit.json()["observations"][0]["provider_id"], "synthetic-demo")
 
     def test_serves_ticker_evidence_timeline_without_claiming_daily_prices(self) -> None:
         response = self.client.get("/api/v1/runs/api-demo/tickers/aaa/timeline")
@@ -191,6 +196,8 @@ class ApiTests(unittest.TestCase):
             observations.headers["content-disposition"],
         )
         self.assertIn("observation_id", observations.text)
+        self.assertIn("provider_id", observations.text)
+        self.assertIn("synthetic-demo", observations.text)
         self.assertIn("hit", observations.text)
         self.assertIn("Example Firm", ranking.text)
         self.assertNotIn("Other Firm", ranking.text)

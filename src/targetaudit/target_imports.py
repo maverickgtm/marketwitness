@@ -179,6 +179,7 @@ def import_authorized_targets(
                 benchmark_symbol=_field_or_default(row, manifest, "benchmark_symbol").upper(),
                 source_provider=manifest.source_provider,
                 source_url=source_url,
+                provider_id=manifest.provider_id,
             )
             observations.append(observation)
             decisions.append(
@@ -248,6 +249,7 @@ def write_normalized_targets(path: str | Path, observations: list[TargetObservat
         "benchmark_symbol",
         "source_provider",
         "source_url",
+        "provider_id",
     ]
     with destination.open("w", newline="", encoding="utf-8") as target:
         writer = csv.DictWriter(target, fieldnames=columns)
@@ -270,6 +272,7 @@ def write_normalized_targets(path: str | Path, observations: list[TargetObservat
                     "benchmark_symbol": item.benchmark_symbol,
                     "source_provider": item.source_provider,
                     "source_url": item.source_url,
+                    "provider_id": item.provider_id,
                 }
             )
 

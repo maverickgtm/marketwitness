@@ -167,8 +167,18 @@ def read_evaluations(
 ) -> list[Evaluation]:
     connection = _connect_reader(database_path)
     try:
+        columns = {
+            row[1]
+            for row in connection.execute("PRAGMA table_info('evaluations')").fetchall()
+        }
+        selected_columns = [
+            "'' AS provider_id"
+            if column == "provider_id" and column not in columns
+            else column
+            for column in _EVALUATION_COLUMNS[2:]
+        ]
         query = f"""
-            SELECT {', '.join(_EVALUATION_COLUMNS[2:])}
+            SELECT {', '.join(selected_columns)}
             FROM evaluations
             WHERE run_id = ?
         """
@@ -260,6 +270,7 @@ def _initialize_schema(connection: Any) -> None:
             published_date DATE,
             price_target DECIMAL(24, 6),
             source_url VARCHAR NOT NULL,
+            provider_id VARCHAR NOT NULL,
             status VARCHAR NOT NULL,
             reason VARCHAR NOT NULL,
             direction VARCHAR NOT NULL,
@@ -294,6 +305,9 @@ def _initialize_schema(connection: Any) -> None:
         )
         """
     )
+    connection.execute(
+        "ALTER TABLE evaluations ADD COLUMN IF NOT EXISTS provider_id VARCHAR DEFAULT ''"
+    )
 
 
 def _asset_row(run_id: str, role: str, asset_path: str | Path) -> list[Any]:
@@ -319,6 +333,7 @@ def _evaluation_row(run_id: str, row_number: int, item: Evaluation) -> list[Any]
         _optional_date(item.published_date),
         item.price_target,
         item.source_url,
+        item.provider_id,
         item.status,
         item.reason,
         item.direction,
@@ -394,6 +409,7 @@ _EVALUATION_COLUMNS = [
     "published_date",
     "price_target",
     "source_url",
+    "provider_id",
     "status",
     "reason",
     "direction",

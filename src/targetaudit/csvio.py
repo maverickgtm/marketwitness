@@ -53,6 +53,7 @@ def load_targets(path: str | Path) -> list[TargetObservation]:
                     benchmark_symbol=row.get("benchmark_symbol", "").strip().upper(),
                     source_provider=row["source_provider"].strip(),
                     source_url=row["source_url"].strip(),
+                    provider_id=row.get("provider_id", "").strip(),
                 )
             )
         return rows

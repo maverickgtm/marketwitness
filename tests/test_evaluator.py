@@ -30,6 +30,7 @@ class EvaluatorTests(unittest.TestCase):
         result = evaluate_all([observation], prices, date(2025, 1, 1))[0]
 
         self.assertEqual(result.status, "evaluated")
+        self.assertEqual(result.provider_id, "synthetic-demo")
         self.assertEqual(result.direction, "up")
         self.assertTrue(result.hit)
         self.assertEqual(result.days_to_target, 149)
@@ -367,6 +368,7 @@ def _target(identifier: str, ticker: str, target: Decimal, benchmark: str) -> Ta
         benchmark_symbol=benchmark,
         source_provider="synthetic",
         source_url=f"https://example.invalid/{identifier}",
+        provider_id="synthetic-demo",
     )
 
 

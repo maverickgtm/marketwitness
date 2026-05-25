@@ -313,6 +313,7 @@ def _base_fields(
         else observation.published_date.isoformat(),
         "price_target": observation.price_target,
         "source_url": observation.source_url,
+        "provider_id": observation.provider_id,
     }
 
 
