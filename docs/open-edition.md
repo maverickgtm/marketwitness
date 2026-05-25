@@ -44,6 +44,9 @@ alimenta analyst targets. Ver
 Bybit tambien permanece como referencia bloqueada: su producto xStocks tiene
 restricciones jurisdiccionales incompatibles con tratarlo como feed publico
 global del repositorio.
+Kraken queda en la misma categoria porque sus divulgaciones xStocks excluyen
+Estados Unidos. Gate y Bitget solo se conservan como referencias pendientes de
+permiso explicito de output publico.
 
 ## Capacidades Incluidas
 

@@ -39,11 +39,11 @@ conectores duplicados para productos basados en la misma emision.
 |---:|---|---|---|
 | 1 | Coinbase Exchange | Coinbase Capital Markets ofrece stocks y funds para clientes elegibles de EE. UU. | Referencia de brokerage; no se confirmo feed RWA publico |
 | 2 | Binance | No se confirmo una ruta vigente de acciones tokenizadas centralizadas en la revision focalizada | Monitorear, sin conector |
-| 3 | Kraken | `xStocks` respaldados 1:1, con mas de 100 acciones y ETF tokenizados | Venue secundario candidato; priorizar API del emisor xStocks |
+| 3 | Kraken | `xStocks` respaldados 1:1; su divulgacion oficial declara que no estan disponibles en Estados Unidos | Referencia secundaria bloqueada para dashboard publico global |
 | 4 | Bitstamp by Robinhood | Robinhood publica stock tokens para clientes europeos; no se atribuye ese producto a una API de Bitstamp sin evidencia | Referencia solamente |
 | 5 | OKX | Wallet/DEX ofrece rutas xStocks y Ondo; su ayuda indica que no estan disponibles en OKX CEX | Contexto DEX, no ingestion CEX |
-| 6 | Gate | Publica `xStocks` y `Ondo Stocks` | Venue secundario candidato, pendiente de terminos |
-| 7 | Bitget | Publica activos tokenizados Ondo de acciones y ETF de EE. UU. | Venue secundario candidato, pendiente de terminos |
+| 6 | Gate | Publica `xStocks` y `Ondo Stocks` | Referencia secundaria; no se confirmo permiso de output publico |
+| 7 | Bitget | Publica activos tokenizados Ondo de acciones y ETF de EE. UU.; sus terminos API son limitados y revocables | Referencia secundaria; no se confirmo permiso de output publico |
 | 8 | Bitvavo | No se confirmo ruta oficial de acciones tokenizadas en la revision focalizada | Sin conector ahora |
 | 9 | Bybit | `xStocks` Spot y API V5 con `symbolType=xstocks` y `xstockMultiplier`; sus terminos excluyen Estados Unidos y otras jurisdicciones | Referencia secundaria bloqueada para dashboard publico |
 | 10 | BingX | Publica material sobre activos RWA, sin feed de acciones confirmado | Referencia solamente |
@@ -79,9 +79,9 @@ cuenta:
 3. Confirmar contrato/onboarding y derechos de salida de `Ondo Global Markets`;
    sus endpoints de precios estan documentados para display, pero requieren
    API key.
-4. Investigar derechos especificos de Kraken, Gate y Bitget como venues
-   secundarios; Bybit ya queda bloqueado para la edicion publica y LBank esta
-   pendiente de confirmar API.
+4. Mantener Bybit y Kraken bloqueados para la edicion publica global, y pedir
+   confirmacion contractual antes de usar Gate o Bitget como venues
+   secundarios; LBank esta pendiente de confirmar API.
 5. Mantener CFDs y productos de brokerage fuera de cualquier comparacion que
    sugiera propiedad de acciones o historial de analistas.
 
@@ -100,8 +100,13 @@ cuenta:
 - Bybit V5 instruments: <https://bybit-exchange.github.io/docs/v5/market/instrument>
 - Bybit xStocks terms: <https://www.bybit.com/en/help-center/article/Terms-and-Conditions-xStocks>
 - Kraken xStocks: <https://www.kraken.com/xstocks>
+- Kraken xStocks risk disclosure: <https://www.kraken.com/legal/xstocks>
 - Gate xStocks: <https://www.gate.com/xstocks>
+- Gate tokenized stocks: <https://www.gate.com/es/tokenized-stocks>
+- Gate user agreement: <https://www.gate.com/docs/agreement.pdf>
 - Bitget Ondo announcement: <https://www.bitget.com/support/articles/12560603838361>
+- Bitget Ondo expansion: <https://www.bitget.com/blog/articles/bitget-tokenized-stocks-etfs-ondo-expansion>
+- Bitget API key terms: <https://www.bitget.com/support/articles/12560603797947>
 - LBank xStocks announcement: <https://www.lbank.com/support/articles/21431592927001>
 - Gemini tokenized stocks: <https://support.gemini.com/hc/en-us/articles/45788732343963-Tokenized-Stocks-Overview>
 - OKX xStocks help: <https://web3.okx.com/en-eu/help/what-are-xstocks>

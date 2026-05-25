@@ -286,12 +286,17 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Open code.", page.text)
         self.assertIn("Run Exclusions And Pending", page.text)
         self.assertIn("Provider Control", page.text)
-        self.assertEqual(sources.json()["provider_count"], 26)
+        self.assertEqual(sources.json()["provider_count"], 29)
         self.assertGreater(sources.json()["open_review_count"], 0)
-        self.assertEqual(sources.json()["blocked_count"], 3)
+        self.assertEqual(sources.json()["blocked_count"], 4)
         self.assertEqual(
             {item["provider_id"] for item in blocked.json()["sources"]},
-            {"tipranks-reference", "xstocks-backing-api", "bybit-xstocks-v5"},
+            {
+                "tipranks-reference",
+                "xstocks-backing-api",
+                "bybit-xstocks-v5",
+                "kraken-xstocks",
+            },
         )
         self.assertEqual(len(holdings.json()["sources"]), 3)
         self.assertIn("publication_policy", sources.json()["sources"][0])

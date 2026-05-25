@@ -41,9 +41,9 @@ copias revisadas de ambos registros y su auditoría. El fixture inicial
 documenta que la página premium de Alpha Vantage todavía no demuestra permiso
 de salida pública y por eso conserva el expediente pendiente.
 
-Al `2026-05-24`, el inventario contiene 26 fuentes: 15 conectores o fixtures
-implementados, 17 fuentes que aun exigen revision de terminos/licencia para
-uso público real, 1 integracion limitada a descarga manual y 3 referencias
+Al `2026-05-24`, el inventario contiene 29 fuentes: 15 conectores o fixtures
+implementados, 19 fuentes que aun exigen revision de terminos/licencia para
+uso público real, 1 integracion limitada a descarga manual y 4 referencias
 bloqueadas para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto
 público".
@@ -102,7 +102,8 @@ activo y usar exchanges solamente como venues secundarios.
 | `xStocks / Backed Public API` | Recursos sin autenticacion para metadatos, precio subyacente/mercado, documentacion legal y proof of reserves | Referencia tecnica bloqueada: los terminos revisados no autorizan recoleccion/republicacion publica automatizada |
 | `Ondo Global Markets` | API autenticada para datos de mercado orientados a aplicaciones; requiere onboarding y `x-api-key` | Candidato autorizado, no fuente gratis abierta; pendiente de derechos publicos |
 | Bybit | Venue xStocks y campos V5 documentados; sus terminos excluyen Estados Unidos y otras jurisdicciones | Referencia bloqueada para el dashboard GitHub publico |
-| Kraken, Gate y Bitget | Venues oficiales que anuncian xStocks u Ondo tokenizados | Referencias secundarias pendientes de revision propia |
+| Kraken | Venue xStocks oficial; sus divulgaciones indican que xStocks no esta disponible en Estados Unidos | Referencia bloqueada para un dashboard publico global |
+| Gate y Bitget | Venues oficiales que anuncian xStocks u Ondo tokenizados | Referencias secundarias pendientes de permiso explicito de output publico |
 | LBank | Zona xStocks anunciada con activos impulsados por Backed | Referencia de venue hasta confirmar API |
 | Gemini y OKX | Gemini declara que su producto no esta disponible via API; OKX dirige estos activos a DEX/wallet y no a su CEX | Referencia de cobertura, no conectores |
 | Pepperstone | CFDs de acciones y APIs vinculadas a cuenta | Contexto privado de derivados, excluido de la capa emisora |
@@ -122,6 +123,11 @@ hasta recibir condiciones suficientes para este uso.
 Bybit tambien queda fuera de la ingestion publica: aunque su API V5 documenta
 campos xStocks, los terminos del producto excluyen jurisdicciones como Estados
 Unidos y no habilitan un dashboard mundial redistribuible.
+Kraken tiene el mismo problema operativo para la edicion global: su
+divulgacion oficial xStocks declara indisponibilidad en Estados Unidos. Gate y
+Bitget quedan solamente como candidatos documentales hasta confirmar derechos
+de salida publica; un anuncio de producto o terminos de API individual no son
+una licencia de redistribucion.
 
 ## Precios Ajustados Y Mercado
 
@@ -430,8 +436,13 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - Ondo terms of service: <https://docs.ondo.finance/legal/terms-of-service>
 - Ondo important notes: <https://docs.ondo.finance/ondo-global-markets/important-notes>
 - Kraken xStocks: <https://www.kraken.com/xstocks>
+- Kraken xStocks risk disclosure: <https://www.kraken.com/legal/xstocks>
 - Gate xStocks: <https://www.gate.com/xstocks>
+- Gate tokenized stocks: <https://www.gate.com/es/tokenized-stocks>
+- Gate user agreement: <https://www.gate.com/docs/agreement.pdf>
 - Bitget Ondo announcement: <https://www.bitget.com/support/articles/12560603838361>
+- Bitget Ondo expansion: <https://www.bitget.com/blog/articles/bitget-tokenized-stocks-etfs-ondo-expansion>
+- Bitget API key terms: <https://www.bitget.com/support/articles/12560603797947>
 - LBank xStocks announcement: <https://www.lbank.com/support/articles/21431592927001>
 - Gemini tokenized stocks: <https://support.gemini.com/hc/en-us/articles/45788732343963-Tokenized-Stocks-Overview>
 - OKX xStocks help: <https://web3.okx.com/en-eu/help/what-are-xstocks>

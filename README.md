@@ -60,9 +60,11 @@ metadatos, precios, documentos legales y proof of reserves, pero sus terminos
 revisados no sustentan recoleccion/republicacion automatizada en un producto
 publico. Por eso TargetAudit incorpora un `RWA Watch Sandbox` con datos
 sinteticos y mantiene xStocks/Backed y el venue Bybit bloqueados hasta
-autorizacion escrita. `Ondo
+autorizacion escrita; Kraken tambien queda como referencia bloqueada por su
+indisponibilidad oficial en Estados Unidos. `Ondo
 Global Markets` documenta datos para display en aplicaciones, pero exige
 onboarding y API key, asi que permanece como extension autorizada pendiente.
+Gate y Bitget quedan como referencias pendientes de derechos de output.
 Ver
 [RWA Watch: Exchanges Y Fuentes Base](docs/rwa-watch-sources.md). Esta linea
 no suministra ratings, price targets ni recomendaciones.
