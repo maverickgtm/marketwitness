@@ -63,7 +63,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Pagina de auditoria de fuentes, controles de publicacion y observaciones
   excluidas o pendientes por corrida.
 - [x] Pagina `Scorecard Readiness` para separar fixtures, uso interno y
-  requisitos productivos antes de habilitar rankings publicos.
+  requisitos productivos, incluido el universo historico punto-en-el-tiempo,
+  antes de habilitar rankings publicos.
 - [x] Persistir `provider_id` por observacion para enlazar resultados y
   gobernanza de fuentes sin inferencias por URL.
 - [x] Pagina `ETF Holdings Activity` con comparador de snapshots, diferencias

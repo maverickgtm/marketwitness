@@ -61,9 +61,9 @@ PYTHONPATH=src python3 -m targetaudit scorecard-readiness \
 ```
 
 El demo prueba el flujo, pero no cuenta como fuente productiva. Mientras no
-existan targets históricos, precios ajustados y cobertura de acciones
-corporativas aprobados para salida pública, el scorecard real permanece
-deshabilitado.
+existan targets históricos, precios ajustados, cobertura de acciones
+corporativas y membresía histórica del universo aprobados para salida pública,
+el scorecard real permanece deshabilitado.
 
 ### Auditoria De Acciones Corporativas
 

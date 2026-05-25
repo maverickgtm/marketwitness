@@ -71,7 +71,8 @@ un producto listo para publicar resultados reales.
 
 - La ruta web `/dashboard/readiness` consume `/api/v1/readiness/scorecard`.
 - Evalua los requisitos productivos de `Analyst targets`, `Adjusted price
-  bars` y `Corporate actions` para el enfoque `U.S. Financials`.
+  bars`, `Corporate actions` y `Historical universe membership` para el
+  enfoque `U.S. Financials`.
 - Excluye expresamente los fixtures del demo como fuentes productivas.
 - Distingue una integración `internal_only` de una fuente
   `public_ready` con política de publicación aprobada.

@@ -181,8 +181,9 @@ PYTHONPATH=src python3 -m targetaudit scorecard-readiness \
 ```
 
 El reporte diferencia `public_ready`, `internal_only`, `integration_pending`
-y `missing_source`. Los fixtures `synthetic-demo` y `authorized-demo` prueban
-la aplicación, pero nunca habilitan publicación real. La API
+y `missing_source` para targets, precios, acciones corporativas y membresía
+histórica del universo. Los fixtures `synthetic-demo` y `authorized-demo`
+prueban la aplicación, pero nunca habilitan publicación real. La API
 `/api/v1/readiness/scorecard` y la página `/dashboard/readiness` exponen este
 estado antes de correr o distribuir un ranking.
 

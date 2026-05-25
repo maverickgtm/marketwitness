@@ -39,6 +39,12 @@ REQUIREMENTS = (
         "Corporate actions",
         "Release safeguard for splits and ticker changes in target horizons.",
     ),
+    ScorecardRequirement(
+        "historical_universe",
+        "Point-in-time Financials universe",
+        "Historical universe membership",
+        "Membership control that prevents survivor-biased historical rankings.",
+    ),
 )
 
 
@@ -63,7 +69,7 @@ def build_scorecard_readiness(
             item["status"] == "public_ready" for item in requirements
         ),
         "internal_research_ready": all(
-            item["internal_ready"] for item in requirements[:2]
+            item["internal_ready"] for item in requirements
         ),
         "requirement_count": len(requirements),
         "public_ready_count": statuses["public_ready"],

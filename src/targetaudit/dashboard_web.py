@@ -732,7 +732,7 @@ def scorecard_readiness_html() -> str:
     <p class="lead">Readiness for a real public Financials scorecard. Demo fixtures can test the system; only approved production sources can enable release.</p>
     <p class="meta" id="reviewed">Loading readiness controls...</p>
     <section class="cards">
-      <article class="card"><p>Required controls</p><strong id="requirements">-</strong><small>Targets, prices, safeguards</small></article>
+      <article class="card"><p>Required controls</p><strong id="requirements">-</strong><small>Targets, prices, events, universe</small></article>
       <article class="card"><p>Public ready</p><strong id="public-ready">-</strong><small>Approved controls</small></article>
       <article class="card"><p>Internal only</p><strong id="internal-only">-</strong><small>Not publishable</small></article>
       <article class="card"><p>Release enabled</p><strong id="release" class="no">-</strong><small>Public scorecard</small></article>

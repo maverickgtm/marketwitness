@@ -18,8 +18,8 @@ La clasificación legible por máquina vive en
 Conserva por fuente su modo de acceso, estado técnico, revisión de términos o
 licencia, política de publicación y referencia revisada.
 
-Al `2026-05-24`, el inventario contiene 20 fuentes: 15 conectores o fixtures
-implementados, 13 fuentes que aun exigen revision de terminos/licencia para
+Al `2026-05-24`, el inventario contiene 21 fuentes: 15 conectores o fixtures
+implementados, 14 fuentes que aun exigen revision de terminos/licencia para
 uso público real, 1 integracion limitada a descarga manual y 1 referencia
 bloqueada para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto
@@ -69,6 +69,11 @@ calcula `adjusted_high` y `adjusted_low` aplicando por fila
 un dataset real y resultados derivados no se publicaran hasta aprobar terminos
 y derechos del plan contratado.
 
+La documentación oficial de Alpha Vantage consultada el `2026-05-24`
+mantiene `TIME_SERIES_DAILY_ADJUSTED` como función `Premium` y describe que
+entrega OHLCV operado, cierre ajustado y eventos históricos de split/dividendo:
+<https://www.alphavantage.co/documentation/>.
+
 ## Universo Historico
 
 El scorecard admite `historical_universe.csv` para impedir que una muestra
@@ -76,6 +81,12 @@ retrospectiva seleccione solo companias que hoy continúan visibles. El fixture
 del repositorio es sintetico. Para publicar resultados reales se requerira una
 fuente autorizada de integrantes historicos que identifique ventanas de
 membresia, ticker y sector vigentes en la fecha de cada target.
+
+S&P Dow Jones Indices identifica oficialmente paquetes licenciados de datos de
+constituyentes y de acciones corporativas. Como el universo inicial deseado es
+Financials dentro del `S&P 500`, `sp-dji-constituents` queda registrado como
+candidato de producción sujeto a derechos explícitos, no como fuente gratuita
+ya habilitada: <https://www.spglobal.com/spdji/en/about-us/data-index-licensing/>.
 
 ## Acciones Corporativas
 
@@ -91,6 +102,17 @@ El demo de `corporate-actions-check` no declara eventos reales: emplea dos
 acciones sintéticas para probar que un target que atraviesa un split o cambio
 de ticker queda fuera del scoring protegido. La aplicación de factores reales
 requerirá evidencia y una política de normalización explícita.
+
+Nasdaq describe su `Daily List` como un producto de datos de acciones
+corporativas con cambios de nombre/símbolo, dividendos y stock splits:
+<https://nasdaqtrader.com/Trader.aspx?id=DailyListPD>. La disponibilidad de
+la descripción técnica no equivale a licencia de distribución.
+
+SEC `data.sec.gov` permanece útil para corroborar disclosures o filings
+puntuales mediante APIs públicas sin clave, siguiendo Fair Access. Sus APIs
+documentadas cubren submissions y datos XBRL extraídos, no un feed completo
+de precios ajustados ni un historial de membresía sectorial:
+<https://www.sec.gov/search-filings/edgar-application-programming-interfaces>.
 
 ## Fuentes Publicas Complementarias
 

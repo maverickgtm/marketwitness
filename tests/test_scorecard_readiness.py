@@ -20,13 +20,17 @@ class ScorecardReadinessTests(unittest.TestCase):
         self.assertFalse(snapshot["internal_research_ready"])
         self.assertEqual(snapshot["public_ready_count"], 0)
         self.assertEqual(snapshot["internal_only_count"], 1)
-        self.assertEqual(snapshot["integration_pending_count"], 2)
+        self.assertEqual(snapshot["integration_pending_count"], 3)
+        self.assertEqual(snapshot["requirement_count"], 4)
         targets = snapshot["requirements"][0]
         self.assertEqual(targets["status"], "integration_pending")
         fixture = next(
             provider for provider in targets["providers"] if provider["provider_id"] == "authorized-demo"
         )
         self.assertFalse(fixture["production_eligible"])
+        universe = snapshot["requirements"][3]
+        self.assertEqual(universe["status"], "integration_pending")
+        self.assertEqual(universe["providers"][0]["provider_id"], "sp-dji-constituents")
 
         report = render_readiness_report(snapshot)
         page = render_readiness_html(snapshot)
@@ -39,13 +43,14 @@ class ScorecardReadinessTests(unittest.TestCase):
             _public_provider("targets", "Analyst targets"),
             _public_provider("prices", "Adjusted price bars"),
             _public_provider("actions", "Corporate actions"),
+            _public_provider("universe", "Historical universe membership"),
         ]
 
         snapshot = build_scorecard_readiness(providers, date(2026, 5, 24))
 
         self.assertTrue(snapshot["public_release_ready"])
         self.assertTrue(snapshot["internal_research_ready"])
-        self.assertEqual(snapshot["public_ready_count"], 3)
+        self.assertEqual(snapshot["public_ready_count"], 4)
         self.assertFalse(snapshot["blockers"])
 
 
