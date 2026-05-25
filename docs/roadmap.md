@@ -121,7 +121,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   histórico, y revisión visible de exclusiones anormales.
 - [x] Versionado de datasets y metodologia por corrida, con huella estable de
   entradas y comparacion visible en API/dashboard.
-- [ ] Informes periodicos reproducibles.
+- [x] Informes periodicos reproducibles mediante GitHub Actions, construidos
+  solo con fixtures redistribuibles y publicados como artefactos temporales.
 - [x] Informe operativo reproducible de calidad, disponible por CLI, dashboard
   y monitor local recurrente del warehouse live.
 - [x] Release Center que combina derechos de fuentes, linaje de targets,

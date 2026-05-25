@@ -861,7 +861,21 @@ ticker, fecha de evento y fecha de verificacion. No rastrea titulares
 generales ni promueve rumores: confirma solamente el hito que declara el
 comunicado oficial revisado.
 
-## Despliegue Futuro En GitHub
+## Reporte Reproducible En GitHub
+
+La Open Edition ya tiene una tarea programada publicable en
+`.github/workflows/open-edition-report.yml`. Corre cada lunes a las
+`12:17 UTC` y tambien admite ejecucion manual. Su unica entrada son fixtures
+redistribuibles del repositorio: ejecuta `make verify`, genera todas las
+paginas de `build/demo/`, construye el wheel en `build/dist/` y sube ambos
+directorios como artefacto de GitHub Actions conservado por 30 dias.
+
+Este reporte verifica que la aplicacion abierta sigue siendo instalable y
+reproducible sin costo de datos. No solicita APIs live, no lee secrets y no
+debe interpretarse como una actualizacion del mercado ni como un ranking real
+de analistas.
+
+## Despliegue Live Futuro En GitHub
 
 - Entrada: indices diarios SEC, feeds HKEXnews y comunicados oficiales.
 - Salida: eventos nuevos, entidades promovidas, retiros y cambios de estado.
@@ -870,7 +884,8 @@ comunicado oficial revisado.
   permitidas; normalmente una solicitud diaria de indice y solicitudes
   puntuales de documentos a revisar.
 
-En un repositorio GitHub publico, `TARGETAUDIT_SEC_USER_AGENT` se configurara
+Para habilitar esa fase live en un repositorio GitHub publico,
+`TARGETAUDIT_SEC_USER_AGENT` se configurara
 como `Actions secret`, nunca escrito en el codigo ni en los reportes.
 Antes de abrir contribuciones, habilita `Private vulnerability reporting` en
 GitHub para que los reportes descritos en `SECURITY.md` no expongan secretos ni

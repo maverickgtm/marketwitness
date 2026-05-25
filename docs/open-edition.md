@@ -120,6 +120,21 @@ habilitar datos live o publicar resultados.
 Tambien enlaza `/dashboard/market-context`, cuya carga de TradingView requiere
 conexion a Internet pero no suscripcion de datos de TargetAudit.
 
+## Reporte Periodico En GitHub
+
+El workflow `.github/workflows/open-edition-report.yml` genera una copia
+probada de la Open Edition cada lunes a las `12:17 UTC` y tambien puede
+ejecutarse manualmente desde GitHub Actions. Ejecuta `make verify` y conserva,
+durante 30 dias, un artefacto descargable con:
+
+- las paginas, CSV y base DuckDB demostrativa de `build/demo/`;
+- el wheel instalable producido en `build/dist/`.
+
+La ejecucion no necesita secrets, claves API ni suscripciones porque procesa
+exclusivamente fixtures redistribuibles incluidos en el repositorio. No
+consulta filings live, no incluye holdings reales de emisores y no publica un
+ranking real de analistas.
+
 Para recolectar datos SEC públicos en vez de utilizar fixtures:
 
 ```bash

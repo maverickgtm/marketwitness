@@ -1,0 +1,42 @@
+name: Open Edition Report
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 12 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  reproducible-report:
+    name: Reproducible report bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install application dependencies
+        run: python -m pip install ".[application]"
+      - name: Generate tested Open Edition bundle
+        run: make verify
+      - name: Describe publication scope
+        run: |
+          {
+            echo "## TargetAudit Open Edition report"
+            echo ""
+            echo "- Generated from redistributable repository fixtures."
+            echo "- Includes the tested dashboard reports and installable wheel."
+            echo "- Does not collect live filings, licensed analyst targets or private API data."
+            echo "- Not investment advice and not a real analyst ranking release."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload reproducible report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: targetaudit-open-edition-${{ github.run_number }}
+          path: |
+            build/demo/
+            build/dist/
+          if-no-files-found: error
+          retention-days: 30

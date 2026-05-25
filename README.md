@@ -32,6 +32,11 @@ PYTHONPATH=src python3 -m targetaudit open-edition \
 Ver [Open Edition](docs/open-edition.md) para el alcance gratuito y sus
 límites metodológicos.
 
+GitHub Actions tambien genera semanalmente un paquete comprobado de Open
+Edition mediante `.github/workflows/open-edition-report.yml`. El artefacto
+incluye los reportes demo y el wheel instalable, se conserva 30 dias y no usa
+claves, datos live ni fuentes comerciales.
+
 Quien decida pagar por datos reales puede revisar
 [Extensiones Licenciadas Opcionales](docs/licensed-extensions.md). La opcion
 con precio publico encontrada es Massive / Benzinga Analyst Ratings Expansion,
