@@ -349,6 +349,30 @@ fuera de Git hasta contar con autorizacion aplicable. Al procesar la primera
 descarga autorizada se deben confirmar los encabezados locales frente al
 contrato documentado; el importador se detiene si faltan campos requeridos.
 
+### Importacion Manual iShares/IYF
+
+`IYF` agrega cobertura de otro ETF concentrado en acciones financieras
+estadounidenses. El operador puede descargar el archivo desde la pagina
+oficial y normalizarlo localmente:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit ishares-holdings-import \
+  --snapshot data/raw/etf/IYF_HOLDINGS.csv \
+  --fund-symbol IYF \
+  --fund-name "iShares U.S. Financials ETF" \
+  --captured-on YYYY-MM-DD \
+  --output data/raw/etf/iyf-normalized.csv \
+  --report build/live/iyf-import.md
+```
+
+El importador detecta la fecha declarada del holdings file, procesa
+posiciones equity con acciones y peso, y reporta filas no equity omitidas.
+La evidencia real se marca `official_snapshot` y no `daily_official`, porque
+el sitio publica una captura fechada sin que TargetAudit asuma frecuencia.
+No existe automatizacion para iShares: los terminos BlackRock prohíben que un
+agente automatico monitorice o copie sus materiales sin permiso. La salida
+real queda local y no se publica.
+
 ### Evidencia Regulatoria SEC N-PORT
 
 Para consultar submissions recientes del registrante en EDGAR, confirmar la

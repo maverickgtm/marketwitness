@@ -18,11 +18,12 @@ La clasificación legible por máquina vive en
 Conserva por fuente su modo de acceso, estado técnico, revisión de términos o
 licencia, política de publicación y referencia revisada.
 
-Al `2026-05-24`, el inventario contiene 18 fuentes: 13 conectores o fixtures
+Al `2026-05-24`, el inventario contiene 19 fuentes: 14 conectores o fixtures
 implementados, 12 fuentes que aun exigen revision de terminos/licencia para
-uso público real y 1 referencia bloqueada para colección automatizada. Esta
-separación evita confundir "el endpoint responde" con "sus datos se pueden
-redistribuir en un producto público".
+uso público real, 1 integracion limitada a descarga manual y 1 referencia
+bloqueada para colección automatizada. Esta separación evita confundir "el
+endpoint responde" con "sus datos se pueden redistribuir en un producto
+público".
 
 ## Targets Y Ratings
 
@@ -207,7 +208,7 @@ sus holdings reales. Las fuentes reales se separan en dos capas:
 | SEC `N-PORT` | Registro regulatorio publico; submissions recientes por CIK y datasets actualizados trimestralmente, no intradia | Catalogo/descarga local de ZIP, sincronizacion incremental, importador XML, colector EDGAR y backfill tabular implementados para posiciones en acciones |
 | ARK ETF holdings | ARK declara actualizacion diaria de holdings en su sitio | Importador CSV local implementado; publicacion real pendiente de permiso |
 | State Street SPDR holdings | La pagina oficial `XLF` indica `Download All Holdings: Daily` | Importador local `XLF` implementado; publicacion real pendiente de consentimiento escrito |
-| iShares holdings | Paginas oficiales exponen `Download Holdings` con fecha de observacion | Conector por emisor tras verificar terminos y formato estable |
+| iShares `IYF` holdings | La pagina oficial expone holdings de un ETF de acciones financieras estadounidenses con fecha de observacion | Importador local implementado; descarga automatica prohibida sin permiso conforme a terminos BlackRock |
 
 El dashboard mostrara cambios entre snapshots, por ejemplo aumento o
 reduccion de acciones reportadas y de peso. No afirmara automaticamente que
@@ -256,6 +257,14 @@ publicados por primera vez desde esa linea base. Puede regenerar la serie
 N-PORT de un fondo con los trimestres ya disponibles localmente.
 En la verificacion del `2026-05-24`, el catalogo oficial publico `26`
 releases, desde `2019q4` hasta `2026q1`.
+
+El importador `ishares-holdings-import` procesa un archivo `IYF` descargado
+manualmente, detecta la fecha `Holdings as of`, normaliza posiciones equity y
+registra posiciones no equity omitidas. La pagina oficial de `IYF` muestra
+holdings, acciones y peso, pero los terminos BlackRock revisados el
+`2026-05-24` prohíben el uso de agentes automaticos para monitorizar o copiar
+materiales del sitio sin permiso; por tanto no existe un fetch ni una tarea
+recurrente iShares en TargetAudit.
 
 El filing oficial `NPORT-P` de `SELECT SECTOR SPDR TRUST` consultado para
 esta integracion identifica a `The Financial Select Sector SPDR Fund`

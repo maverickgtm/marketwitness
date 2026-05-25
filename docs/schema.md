@@ -410,8 +410,8 @@ snapshot contiene: `issuer`, `fund_symbol`, `fund_name`, `effective_date`,
 `captured_on`, `position_ticker`, `position_name`, `shares`, `weight_pct`,
 `source_frequency` y `source_url`.
 
-`source_frequency` admite `synthetic_demo`, `daily_official` o
-`regulatory_periodic`. La fecha de captura no puede exceder el corte del
+`source_frequency` admite `synthetic_demo`, `daily_official`,
+`official_snapshot` o `regulatory_periodic`. La fecha de captura no puede exceder el corte del
 reporte, un snapshot no puede repetir ticker y la comparacion rechaza mezclar
 capas de frecuencia distintas. `effective_date` puede ser posterior a
 `captured_on` cuando la fuente declara esa convencion, como en el CSV ARK que
@@ -448,6 +448,22 @@ El demo usa `XLF-DEMO` y `--synthetic-fixture`; nunca presenta esos registros
 como holdings reales del fondo. Para evidencia oficial, la pagina `XLF`
 declara descarga completa diaria, mientras la publicacion de sus datos queda
 sujeta a revision y consentimiento aplicable.
+
+## iShares IYF Holdings Import
+
+`ishares-holdings-import` acepta un archivo de holdings descargado
+manualmente de iShares. Busca una fila `Holdings as of` para establecer
+`effective_date` y una tabla con `Ticker`, `Name`, `Asset Class`,
+`Weight (%)` y `Shares` o `Quantity`.
+
+La normalizacion inicial incluye solo filas de clase `Equity` o `Stock` y
+cuenta filas omitidas, por ejemplo efectivo. El demo usa `IYF-DEMO` y
+`--synthetic-fixture`. Para datos reales, el estado de gobernanza es
+`manual_only`: los terminos BlackRock impiden recoleccion automatizada sin
+permiso y la salida no debe redistribuir holdings oficiales. Los archivos
+manuales reales se etiquetan `official_snapshot`, no `daily_official`, porque
+la pagina confirma una fecha de holdings pero no se adopta como feed diario.
+El importador rechaza una fecha efectiva posterior a `captured_on`.
 
 ## SEC N-PORT Import
 

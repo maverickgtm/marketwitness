@@ -118,6 +118,13 @@ from .providers.spdr import (
     write_import_report as write_spdr_import_report,
     write_normalized_holdings as write_spdr_normalized_holdings,
 )
+from .providers.ishares import (
+    ISHARES_IYF_URL,
+    IsharesHoldingsDataError,
+    load_ishares_holdings_snapshot,
+    write_import_report as write_ishares_import_report,
+    write_normalized_holdings as write_ishares_normalized_holdings,
+)
 from .providers.tsx import (
     TsxDataError,
     fetch_tsx_new_listings,
@@ -424,6 +431,26 @@ def main() -> int:
     )
     spdr_parser.add_argument("--output", required=True, help="Normalized ETF holdings CSV path.")
     spdr_parser.add_argument("--report", required=True, help="Import audit Markdown report path.")
+    ishares_parser = subparsers.add_parser(
+        "ishares-holdings-import",
+        help="Normalize a manually downloaded iShares holdings file for local comparison.",
+    )
+    ishares_parser.add_argument("--snapshot", required=True, help="Downloaded iShares holdings CSV.")
+    ishares_parser.add_argument("--fund-symbol", required=True, help="iShares fund symbol.")
+    ishares_parser.add_argument("--fund-name", required=True, help="Readable iShares fund name.")
+    ishares_parser.add_argument("--captured-on", required=True, help="Capture date in YYYY-MM-DD.")
+    ishares_parser.add_argument(
+        "--source-url",
+        default=ISHARES_IYF_URL,
+        help="Official fund page retained with normalized rows.",
+    )
+    ishares_parser.add_argument(
+        "--synthetic-fixture",
+        action="store_true",
+        help="Mark project-authored format fixtures as synthetic instead of official evidence.",
+    )
+    ishares_parser.add_argument("--output", required=True, help="Normalized ETF holdings CSV path.")
+    ishares_parser.add_argument("--report", required=True, help="Import audit Markdown report path.")
     nport_parser = subparsers.add_parser(
         "sec-nport-import",
         help="Normalize a public SEC NPORT-P XML filing for periodic ETF comparison.",
@@ -977,6 +1004,27 @@ def main() -> int:
             parser.error(str(exc))
         print(
             f"Imported {len(imported.holdings)} SPDR-format holdings for "
+            f"{imported.fund_symbol} to {args.output}."
+        )
+        return 0
+
+    if args.command == "ishares-holdings-import":
+        try:
+            captured_on = date.fromisoformat(args.captured_on)
+            imported = load_ishares_holdings_snapshot(
+                args.snapshot,
+                args.fund_symbol,
+                args.fund_name,
+                captured_on,
+                args.source_url,
+                args.synthetic_fixture,
+            )
+            write_ishares_normalized_holdings(args.output, imported)
+            write_ishares_import_report(args.report, imported)
+        except (IsharesHoldingsDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Imported {len(imported.holdings)} iShares-format equity holdings for "
             f"{imported.fund_symbol} to {args.output}."
         )
         return 0

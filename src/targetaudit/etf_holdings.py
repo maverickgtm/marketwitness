@@ -21,7 +21,12 @@ HOLDING_COLUMNS = {
     "source_frequency",
     "source_url",
 }
-SOURCE_FREQUENCIES = {"daily_official", "regulatory_periodic", "synthetic_demo"}
+SOURCE_FREQUENCIES = {
+    "daily_official",
+    "official_snapshot",
+    "regulatory_periodic",
+    "synthetic_demo",
+}
 
 
 class EtfHoldingsDataError(ValueError):

@@ -137,6 +137,31 @@ demo:
 		--report build/demo/etf-holdings-activity.md \
 		--html build/demo/etf-holdings-activity.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ishares-holdings-import \
+		--snapshot data/samples/ishares-iyf-holdings-previous.csv \
+		--fund-symbol IYF-DEMO \
+		--fund-name "Synthetic iShares Financials ETF" \
+		--captured-on 2026-05-24 \
+		--source-url https://example.invalid/ishares/iyf/2026-05-22 \
+		--synthetic-fixture \
+		--output build/demo/ishares-iyf-holdings-previous.csv \
+		--report build/demo/ishares-iyf-holdings-previous-import.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ishares-holdings-import \
+		--snapshot data/samples/ishares-iyf-holdings-current.csv \
+		--fund-symbol IYF-DEMO \
+		--fund-name "Synthetic iShares Financials ETF" \
+		--captured-on 2026-05-24 \
+		--source-url https://example.invalid/ishares/iyf/2026-05-23 \
+		--synthetic-fixture \
+		--output build/demo/ishares-iyf-holdings-current.csv \
+		--report build/demo/ishares-iyf-holdings-current-import.md
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
+		--previous build/demo/ishares-iyf-holdings-previous.csv \
+		--current build/demo/ishares-iyf-holdings-current.csv \
+		--output build/demo/etf-holdings-iyf-activity.csv \
+		--report build/demo/etf-holdings-iyf-activity.md \
+		--html build/demo/etf-holdings-iyf-activity.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-import \
 		--snapshot data/samples/nport-xlf-previous.xml \
 		--fund-symbol XLF-REG-DEMO \

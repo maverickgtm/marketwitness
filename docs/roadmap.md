@@ -60,9 +60,11 @@ verificables de cotizaciones tecnologicas/estrategicas.
   politica de no redistribucion de holdings reales pendiente de permiso.
 - [x] Importador local State Street SPDR/XLF para holdings diarios y demo
   `XLF-DEMO` alineado a Financials.
+- [x] Importador local iShares/IYF para un segundo ETF financiero, con demo
+  `IYF-DEMO` y bloqueo explicito de descarga automatizada por terminos.
 - [ ] Conectores de snapshots diarios oficiales por emisor para la pagina
-  `ETF Holdings Activity`, incluyendo automatizacion autorizada y permisos de
-  publicacion para ARK y SPDR.
+  `ETF Holdings Activity`, incluyendo autorizacion y permisos de publicacion
+  para ARK, SPDR e iShares.
 - [x] Respaldo regulatorio ETF mediante SEC `N-PORT` para periodos publicados,
   separado de las descargas diarias del emisor y limitado inicialmente a
   posiciones en acciones.

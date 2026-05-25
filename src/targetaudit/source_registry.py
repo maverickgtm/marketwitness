@@ -21,6 +21,7 @@ INTEGRATION_STATUSES = {"implemented", "manual_verified", "candidate", "excluded
 LICENSE_STATUSES = {
     "public_access_rules_documented",
     "terms_review_required",
+    "manual_download_only",
     "restricted_no_collection",
     "project_owned_synthetic",
 }
@@ -68,6 +69,8 @@ class SourceProvider:
     def deployment_state(self) -> str:
         if self.license_status == "restricted_no_collection":
             return "blocked"
+        if self.license_status == "manual_download_only":
+            return "manual_only"
         if self.publication_policy == "internal_evaluation_pending_license":
             return "license_required"
         if self.license_status == "terms_review_required":
@@ -165,6 +168,7 @@ def render_source_registry_report(providers: list[SourceProvider], as_of: date) 
         f"- Providers recorded: `{len(providers)}`",
         f"- Implemented integrations: `{integration['implemented']}`",
         f"- Terms or license reviews outstanding: `{deployment['review_required'] + deployment['license_required']}`",
+        f"- Manual-download-only integrations: `{deployment['manual_only']}`",
         f"- Blocked from automated collection: `{deployment['blocked']}`",
         "",
         "This registry controls ingestion and publication decisions. A public URL",
@@ -225,12 +229,12 @@ def render_source_registry_html(providers: list[SourceProvider], as_of: date) ->
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TargetAudit | Source Governance</title><style>
 :root{{--bg:#071016;--panel:#0f1c24;--line:#20343d;--text:#edf1ef;--muted:#98abb0;--mint:#56daac;--gold:#f0bc62;--blue:#62a6ff;--red:#ff7d72;}}
-*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,Arial,sans-serif}}header,main{{max-width:1200px;margin:auto;padding:30px 28px}}nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:13px}}h1{{font-size:clamp(34px,5vw,54px);line-height:1.06;margin:38px 0 14px}}.lead{{color:var(--muted);font-size:17px;max-width:840px}}.cards{{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:35px 0}}.card,.notice,.table-wrap{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{padding:18px 20px}}.card p{{margin:0;color:var(--muted)}}.card strong{{font-size:38px;color:var(--mint);display:block}}.notice{{border-left:3px solid var(--gold);color:var(--muted);padding:15px 18px}}h2{{margin-top:42px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}th{{text-transform:uppercase;font-size:12px;color:var(--muted);font-weight:500}}td small{{display:block;color:var(--muted);max-width:250px}}a{{color:var(--mint);text-decoration:none}}.badge,.state{{display:inline-block;border-radius:999px;padding:5px 9px;font-size:12px;white-space:nowrap}}.implemented,.usable_with_policy{{color:var(--mint);background:rgba(86,218,172,.12)}}.manual_verified,.review_required{{color:var(--gold);background:rgba(240,188,98,.12)}}.candidate,.license_required{{color:var(--blue);background:rgba(98,166,255,.12)}}.excluded,.blocked{{color:var(--red);background:rgba(255,125,114,.12)}}
+*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,Arial,sans-serif}}header,main{{max-width:1200px;margin:auto;padding:30px 28px}}nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:13px}}h1{{font-size:clamp(34px,5vw,54px);line-height:1.06;margin:38px 0 14px}}.lead{{color:var(--muted);font-size:17px;max-width:840px}}.cards{{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin:35px 0}}.card,.notice,.table-wrap{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{padding:18px 20px}}.card p{{margin:0;color:var(--muted)}}.card strong{{font-size:38px;color:var(--mint);display:block}}.notice{{border-left:3px solid var(--gold);color:var(--muted);padding:15px 18px}}h2{{margin-top:42px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}th{{text-transform:uppercase;font-size:12px;color:var(--muted);font-weight:500}}td small{{display:block;color:var(--muted);max-width:250px}}a{{color:var(--mint);text-decoration:none}}.badge,.state{{display:inline-block;border-radius:999px;padding:5px 9px;font-size:12px;white-space:nowrap}}.implemented,.usable_with_policy{{color:var(--mint);background:rgba(86,218,172,.12)}}.manual_verified,.review_required,.manual_only{{color:var(--gold);background:rgba(240,188,98,.12)}}.candidate,.license_required{{color:var(--blue);background:rgba(98,166,255,.12)}}.excluded,.blocked{{color:var(--red);background:rgba(255,125,114,.12)}}
 @media(max-width:840px){{.cards{{grid-template-columns:repeat(2,1fr)}}.table-wrap{{background:transparent;border:0;overflow:visible}}thead{{display:none}}table,tbody,tr,td{{display:block;width:100%}}tr{{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;padding:10px 15px}}td{{border:0;padding:9px 0 9px 120px;min-height:39px;position:relative}}td::before{{content:attr(data-label);position:absolute;left:0;top:10px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}}}}
 </style></head><body><header><nav>TargetAudit / Governance / Sources</nav>
 <h1>Open code.<br>Controlled data.</h1><p class="lead">A registry of the providers considered by TargetAudit, showing what is connected and what still requires terms or license review before public use.</p>
-<p class="meta">Reviewed as of {escape(as_of.isoformat())}</p><section class="cards"><article class="card"><p>Providers</p><strong>{len(providers)}</strong></article><article class="card"><p>Implemented</p><strong>{integration['implemented']}</strong></article><article class="card"><p>Reviews open</p><strong>{deployment['review_required'] + deployment['license_required']}</strong></article><article class="card"><p>Blocked</p><strong>{deployment['blocked']}</strong></article></section></header>
-<main><p class="notice">Public accessibility is not a license to republish a dataset. Sources marked review_required or license_required cannot supply a public real-data scorecard until their use is approved.</p>
+<p class="meta">Reviewed as of {escape(as_of.isoformat())}</p><section class="cards"><article class="card"><p>Providers</p><strong>{len(providers)}</strong></article><article class="card"><p>Implemented</p><strong>{integration['implemented']}</strong></article><article class="card"><p>Reviews open</p><strong>{deployment['review_required'] + deployment['license_required']}</strong></article><article class="card"><p>Manual only</p><strong>{deployment['manual_only']}</strong></article><article class="card"><p>Blocked</p><strong>{deployment['blocked']}</strong></article></section></header>
+<main><p class="notice">Public accessibility is not a license to republish a dataset. Sources marked review_required or license_required cannot supply a public real-data scorecard until their use is approved; manual_only sources cannot be automatically collected.</p>
 <h2>Provider controls</h2><div class="table-wrap"><table><thead><tr><th>Provider</th><th>Integration</th><th>Release state</th><th>Publication</th><th>Evidence</th></tr></thead><tbody>{rows}</tbody></table></div></main></body></html>"""
 
 

@@ -197,8 +197,10 @@ con la frecuencia real de cada fuente.
   conservando fecha efectiva y frecuencia diaria declarada.
 - Implementado: importador local State Street SPDR/XLF y fixture
   `XLF-DEMO`, alineado al benchmark Financials.
+- Implementado: importador manual iShares/IYF y fixture `IYF-DEMO`; los
+  terminos oficiales impiden convertirlo en colector automatico sin permiso.
 - Pendiente de conexion/publicacion: automatizacion autorizada y permisos de
-  salidas reales de ARK y State Street SPDR.
+  salidas reales de ARK, State Street SPDR e iShares.
 - Implementado: importador XML `SEC NPORT-P` y salida regulatoria separada;
   es auditable pero no equivale a datos intradia ni a un feed diario.
 - Implementado: colector EDGAR de filings recientes por `CIK`/`seriesId`,

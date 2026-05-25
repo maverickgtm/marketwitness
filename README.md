@@ -369,6 +369,25 @@ diaria y muestra acciones mantenidas y peso. La misma pagina restringe
 reproduccion sin consentimiento escrito, por lo que el repositorio usa
 fixtures sinteticos y mantiene salidas reales solo en almacenamiento local.
 
+Como segundo ETF financiero, el proyecto admite archivos descargados
+manualmente de `IYF`, iShares U.S. Financials ETF:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit ishares-holdings-import \
+  --snapshot data/raw/etf/IYF_HOLDINGS.csv \
+  --fund-symbol IYF \
+  --fund-name "iShares U.S. Financials ETF" \
+  --captured-on YYYY-MM-DD \
+  --output data/raw/etf/iyf-normalized.csv \
+  --report build/live/iyf-import.md
+```
+
+La pagina oficial de iShares describe `IYF` como exposicion a acciones
+financieras estadounidenses y publica holdings con acciones y peso. Sus
+terminos prohíben a agentes automaticos monitorizar o copiar materiales sin
+permiso, por lo que TargetAudit solo implementa importacion manual local y no
+programa descargas de iShares.
+
 La capa historica regulatoria tambien esta implementada mediante filings
 publicos `SEC NPORT-P` en XML. Para recolectar el filing reciente de una
 serie desde EDGAR y conservar una copia local validada:
@@ -480,6 +499,8 @@ auditados en desarrollo:
   bloqueada la redistribucion publica de datos oficiales hasta revisar permiso.
 - Normaliza descargas locales SPDR/XLF y usa un fixture `XLF-DEMO` para probar
   actividad ETF alineada con la especializacion en financials.
+- Normaliza descargas manuales iShares/IYF y usa un fixture `IYF-DEMO`, dejando
+  bloqueada la recoleccion automatica por los terminos oficiales.
 - Normaliza filings publicos `SEC NPORT-P` en una salida regulatoria ETF
   separada, los recolecta por `CIK`/`seriesId` desde EDGAR y omite
   instrumentos aun no modelados de forma visible.
