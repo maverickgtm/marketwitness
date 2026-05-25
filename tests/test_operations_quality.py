@@ -70,6 +70,16 @@ class OperationsQualityTests(unittest.TestCase):
             self.assertEqual(focused["selected_run_id"], "quality-pass")
             self.assertEqual(focused["run_count"], 1)
             self.assertEqual(focused["quality_pass_count"], 1)
+            public_release = build_quality_snapshot(
+                database, Decimal("0.50"), "quality-pass", True
+            )
+            public_run = public_release["runs"][0]
+            self.assertEqual(public_release["quality_scope"], "public_release")
+            self.assertEqual(public_run["quality_status"], "blocked")
+            self.assertIn(
+                "required_input_missing",
+                [finding["code"] for finding in public_run["findings"]],
+            )
 
     def test_cli_release_gate_writes_report_and_fails_reviewed_run(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -84,7 +94,7 @@ class OperationsQualityTests(unittest.TestCase):
                     minimum_sample=2,
                     transaction_cost_bps_per_side=Decimal("10"),
                     universe_id="financials",
-                    asset_paths=_assets(root),
+                    asset_paths=_release_assets(root),
                     dataset_label="Review gate fixture",
                 ),
                 [_evaluation("scored", "evaluated", "synthetic-demo")],
@@ -98,6 +108,7 @@ class OperationsQualityTests(unittest.TestCase):
                 str(report),
                 "--run-id",
                 "review-gate",
+                "--public-release",
                 "--require-quality-pass",
                 "--as-of",
                 "2026-05-24",
@@ -115,6 +126,15 @@ class OperationsQualityTests(unittest.TestCase):
             missing_scope.remove("review-gate")
             with (
                 patch("sys.argv", missing_scope),
+                redirect_stderr(io.StringIO()),
+                self.assertRaises(SystemExit),
+            ):
+                main()
+
+            missing_release_mode = argv[:]
+            missing_release_mode.remove("--public-release")
+            with (
+                patch("sys.argv", missing_release_mode),
                 redirect_stderr(io.StringIO()),
                 self.assertRaises(SystemExit),
             ):
@@ -162,13 +182,14 @@ class OperationsQualityTests(unittest.TestCase):
                     minimum_sample=1,
                     transaction_cost_bps_per_side=Decimal("10"),
                     universe_id="financials",
-                    asset_paths=_assets(root),
+                    asset_paths=_release_assets(root),
                     dataset_label="Rendered quality fixture",
                 ),
                 [_evaluation("scored", "evaluated", "synthetic-demo")],
             )
 
             snapshot = build_quality_snapshot(database)
+            release_snapshot = build_quality_snapshot(database, Decimal("0.50"), "render", True)
             report = render_quality_report(snapshot, date(2026, 5, 24))
             page = render_quality_html(snapshot, date(2026, 5, 24))
 
@@ -177,6 +198,7 @@ class OperationsQualityTests(unittest.TestCase):
             self.assertIn("does not grant data publication rights", report)
             self.assertIn("Ship evidence,", page)
             self.assertIn("quality_pass", page)
+            self.assertEqual(release_snapshot["quality_pass_count"], 1)
 
     def test_rejects_invalid_exclusion_threshold(self) -> None:
         with self.assertRaisesRegex(ValueError, "between zero and one"):
@@ -189,6 +211,17 @@ def _assets(root: Path) -> dict[str, Path]:
     targets.write_text("targets\n", encoding="utf-8")
     prices.write_text("prices\n", encoding="utf-8")
     return {"targets": targets, "prices": prices}
+
+
+def _release_assets(root: Path) -> dict[str, Path]:
+    assets = _assets(root)
+    corporate_actions = root / "corporate-actions.csv"
+    universe_membership = root / "universe-membership.csv"
+    corporate_actions.write_text("actions\n", encoding="utf-8")
+    universe_membership.write_text("universe\n", encoding="utf-8")
+    assets["corporate_actions"] = corporate_actions
+    assets["universe_membership"] = universe_membership
+    return assets
 
 
 def _evaluation(identifier: str, status: str, provider_id: str) -> Evaluation:

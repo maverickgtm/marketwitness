@@ -95,7 +95,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [ ] Licencia de datos apta para mostrar resultados publicamente.
 - [ ] Actualizaciones programadas del scorecard con fuentes publicables.
 - [x] Monitoreo de calidad por corrida con bloqueo de entradas/linaje
-  incompletos y revision visible de exclusiones anormales.
+  incompletos, modo de publicación que exige acciones corporativas y universo
+  histórico, y revisión visible de exclusiones anormales.
 - [x] Versionado de datasets y metodologia por corrida, con huella estable de
   entradas y comparacion visible en API/dashboard.
 - [ ] Informes periodicos reproducibles.

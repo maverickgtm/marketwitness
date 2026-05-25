@@ -14,13 +14,18 @@ from .storage import (
     read_run_summary,
 )
 
-REQUIRED_INPUT_ROLES = {"prices", "targets"}
+OPERATIONAL_REQUIRED_INPUT_ROLES = {"prices", "targets"}
+PUBLIC_RELEASE_REQUIRED_INPUT_ROLES = OPERATIONAL_REQUIRED_INPUT_ROLES | {
+    "corporate_actions",
+    "universe_membership",
+}
 
 
 def build_quality_snapshot(
     database_path: str | Path,
     maximum_excluded_rate: Decimal = Decimal("0.50"),
     run_id: str = "",
+    public_release: bool = False,
 ) -> dict[str, Any]:
     if maximum_excluded_rate < 0 or maximum_excluded_rate > 1:
         raise ValueError("Maximum excluded rate must be between zero and one.")
@@ -29,18 +34,28 @@ def build_quality_snapshot(
         if run_id
         else list_run_summaries(database_path)
     )
+    quality_scope = "public_release" if public_release else "operational"
+    required_input_roles = (
+        PUBLIC_RELEASE_REQUIRED_INPUT_ROLES
+        if public_release
+        else OPERATIONAL_REQUIRED_INPUT_ROLES
+    )
     runs = [
         _assess_run(
             run,
             read_run_assets(database_path, run["run_id"]),
             read_evaluations(database_path, run["run_id"]),
             maximum_excluded_rate,
+            required_input_roles,
+            quality_scope,
         )
         for run in summaries
     ]
     statuses = Counter(run["quality_status"] for run in runs)
     return {
         "selected_run_id": run_id or None,
+        "quality_scope": quality_scope,
+        "required_input_roles": sorted(required_input_roles),
         "maximum_excluded_rate": float(maximum_excluded_rate),
         "run_count": len(runs),
         "quality_pass_count": statuses["quality_pass"],
@@ -59,10 +74,12 @@ def _assess_run(
     assets: list[dict[str, Any]],
     evaluations: list[Any],
     maximum_excluded_rate: Decimal,
+    required_input_roles: set[str],
+    quality_scope: str,
 ) -> dict[str, Any]:
     findings: list[dict[str, str]] = []
     asset_roles = sorted(asset["asset_role"] for asset in assets)
-    missing_roles = sorted(REQUIRED_INPUT_ROLES - set(asset_roles))
+    missing_roles = sorted(required_input_roles - set(asset_roles))
     unlinked = sum(not item.provider_id for item in evaluations)
     observations = run["observation_count"]
     excluded_rate = (
@@ -78,11 +95,16 @@ def _assess_run(
     if not run["dataset_label"]:
         _finding(findings, "review", "dataset_label_missing", "Dataset label is missing.")
     if missing_roles:
+        prefix = (
+            "Public-release input assets"
+            if quality_scope == "public_release"
+            else "Required input assets"
+        )
         _finding(
             findings,
             "blocked",
             "required_input_missing",
-            f"Required input assets missing: {', '.join(missing_roles)}.",
+            f"{prefix} missing: {', '.join(missing_roles)}.",
         )
     if unlinked:
         _finding(
@@ -149,6 +171,8 @@ def render_quality_report(snapshot: dict[str, Any], as_of: date) -> str:
         f"- Quality pass: `{snapshot['quality_pass_count']}`",
         f"- Review required: `{snapshot['review_required_count']}`",
         f"- Blocked: `{snapshot['blocked_count']}`",
+        f"- Quality scope: `{snapshot['quality_scope']}`",
+        f"- Required input assets: `{', '.join(snapshot['required_input_roles'])}`",
         f"- Maximum excluded rate before review: `{snapshot['maximum_excluded_rate']:.2%}`",
         "",
         snapshot["publication_note"],
@@ -205,7 +229,7 @@ def render_quality_html(snapshot: dict[str, Any], as_of: date) -> str:
 *{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,Arial,sans-serif}}header,main{{max-width:1160px;margin:auto;padding:30px 28px}}nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:13px}}h1{{font-size:clamp(36px,5vw,56px);line-height:1.06;margin:38px 0 14px}}.lead{{color:var(--muted);font-size:17px;max-width:840px}}.cards{{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:35px 0}}.card,.notice,.table-wrap{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{padding:18px 20px}}.card p{{margin:0;color:var(--muted)}}.card strong{{font-size:38px;color:var(--mint);display:block}}.notice{{border-left:3px solid var(--gold);color:var(--muted);padding:15px 18px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}th{{text-transform:uppercase;font-size:12px;color:var(--muted);font-weight:500}}td small{{display:block;color:var(--muted)}}.pill{{display:inline-block;border-radius:999px;padding:5px 9px;font-size:12px}}.quality_pass{{color:var(--mint);background:rgba(86,218,172,.12)}}.review_required{{color:var(--gold);background:rgba(240,188,98,.12)}}.blocked{{color:var(--red);background:rgba(255,125,114,.12)}}.table-wrap{{overflow:hidden;margin-top:18px}}@media(max-width:820px){{.cards{{grid-template-columns:repeat(2,1fr)}}.table-wrap{{overflow-x:auto}}table{{min-width:700px}}}}
 </style></head><body><header><nav>TargetAudit / Operations / Quality</nav><h1>Ship evidence,<br>not surprises.</h1>
 <p class="lead">Quality gates for stored evaluation runs: reproducibility stamps, required inputs, provider lineage and anomalous exclusion rates.</p>
-<p class="meta">Generated as of {escape(as_of.isoformat())} / Exclusion review threshold {snapshot['maximum_excluded_rate']:.2%}</p>
+<p class="meta">Generated as of {escape(as_of.isoformat())} / Scope {escape(snapshot['quality_scope'])} / Exclusion review threshold {snapshot['maximum_excluded_rate']:.2%}</p>
 <section class="cards"><article class="card"><p>Runs</p><strong>{snapshot['run_count']}</strong></article><article class="card"><p>Pass</p><strong>{snapshot['quality_pass_count']}</strong></article><article class="card"><p>Review</p><strong>{snapshot['review_required_count']}</strong></article><article class="card"><p>Blocked</p><strong>{snapshot['blocked_count']}</strong></article></section></header>
 <main><p class="notice">{escape(snapshot['publication_note'])}</p><h2>Stored Run Quality</h2><div class="table-wrap"><table><thead><tr><th>Run</th><th>Status</th><th>Evaluated</th><th>Excluded Rate</th><th>Findings</th></tr></thead><tbody>{rows}</tbody></table></div></main></body></html>"""
 

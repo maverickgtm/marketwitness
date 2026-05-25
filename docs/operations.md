@@ -126,28 +126,33 @@ PYTHONPATH=src python3 -m targetaudit operations-quality \
   --report build/live/operations-quality.md \
   --html build/live/operations-quality.html \
   --maximum-excluded-rate 0.50 \
+  --public-release \
   --require-quality-pass \
   --as-of YYYY-MM-DD
 ```
 
-El control marca `blocked` si falta la version metodologica, la huella de
-entradas, archivos mínimos (`targets` y `prices`) o linaje `provider_id`.
+El alcance operativo normal marca `blocked` si falta la version metodologica,
+la huella de entradas, archivos mínimos (`targets` y `prices`) o linaje
+`provider_id`. Con `--public-release`, la corrida candidata también debe
+conservar `corporate_actions` y `universe_membership`; así un ranking no puede
+liberarse omitiendo las guardas que ya exige `Scorecard Readiness`.
 Marca `review_required` si la tasa de exclusiones excede el umbral o la
 muestra evaluada no alcanza el mínimo del ranking. `quality_pass` significa
 que la corrida pasó verificaciones operativas; no sustituye la revisión de
 licencias y permisos en Source Governance.
 
 Con `--run-id` una ejecución automatizada verifica únicamente la corrida que
-intenta distribuir. `--require-quality-pass` conserva los reportes de
+intenta distribuir. `--require-quality-pass` exige además `--public-release`,
+conserva los reportes de
 evidencia, pero finaliza con código `2` si la corrida queda `blocked` o
 `review_required`, impidiendo que un pipeline publique resultados sin revisión.
 La compuerta exige `--run-id`: nunca aprueba por accidente una corrida antigua
 solo porque el warehouse contiene resultados previos.
 
 La API sirve el mismo cálculo en
-`/api/v1/operations/quality?run_id=RUN-ID` y la página
-`/dashboard/operations` lo presenta para seguimiento durante ejecuciones
-recurrentes.
+`/api/v1/operations/quality?run_id=RUN-ID&public_release=true` y la página
+`/dashboard/operations` permite activar `Public release inputs` para ver el
+bloqueo antes de una distribución.
 
 ## Registro De Fuentes Y Licencias
 

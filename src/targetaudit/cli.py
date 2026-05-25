@@ -426,6 +426,11 @@ def main() -> int:
         help="Optional stored run identifier to quality-check in isolation.",
     )
     quality_parser.add_argument(
+        "--public-release",
+        action="store_true",
+        help="Require corporate-action and point-in-time universe assets for public release.",
+    )
+    quality_parser.add_argument(
         "--maximum-excluded-rate",
         type=Decimal,
         default=Decimal("0.50"),
@@ -1030,12 +1035,18 @@ def main() -> int:
         return 0
 
     if args.command == "operations-quality":
-        if args.require_quality_pass and not args.run_id:
-            parser.error("--require-quality-pass requires --run-id for the candidate run.")
+        if args.require_quality_pass and (not args.run_id or not args.public_release):
+            parser.error(
+                "--require-quality-pass requires --run-id and --public-release "
+                "for the candidate run."
+            )
         try:
             as_of = date.fromisoformat(args.as_of)
             snapshot = build_quality_snapshot(
-                args.database, args.maximum_excluded_rate, args.run_id
+                args.database,
+                args.maximum_excluded_rate,
+                args.run_id,
+                args.public_release,
             )
             write_quality_report(args.report, snapshot, as_of)
             if args.html:
@@ -1043,7 +1054,8 @@ def main() -> int:
         except (WarehouseError, ValueError) as exc:
             parser.error(str(exc))
         print(
-            f"Checked {snapshot['run_count']} stored evaluation runs; "
+            f"Checked {snapshot['run_count']} stored evaluation runs "
+            f"in {snapshot['quality_scope']} scope; "
             f"{snapshot['blocked_count']} blocked and "
             f"{snapshot['review_required_count']} require review. "
             f"Report written to {args.report}."

@@ -183,6 +183,9 @@ class ApiTests(unittest.TestCase):
     def test_serves_operations_quality_monitor_and_dashboard(self) -> None:
         response = self.client.get("/api/v1/operations/quality")
         selected = self.client.get("/api/v1/operations/quality?run_id=api-demo")
+        release = self.client.get(
+            "/api/v1/operations/quality?run_id=api-demo&public_release=true"
+        )
         missing = self.client.get("/api/v1/operations/quality?run_id=not-present")
         page = self.client.get("/dashboard/operations")
 
@@ -194,10 +197,13 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(selected.status_code, 200)
         self.assertEqual(selected.json()["selected_run_id"], "api-demo")
         self.assertEqual(selected.json()["run_count"], 1)
+        self.assertEqual(release.json()["quality_scope"], "public_release")
+        self.assertEqual(release.json()["blocked_count"], 1)
         self.assertEqual(missing.status_code, 404)
         self.assertEqual(page.status_code, 200)
         self.assertIn("Ship evidence,", page.text)
         self.assertIn("operations/quality", page.text)
+        self.assertIn("public_release", page.text)
 
     def test_serves_governance_dashboard_and_filtered_source_controls(self) -> None:
         page = self.client.get("/dashboard/governance")

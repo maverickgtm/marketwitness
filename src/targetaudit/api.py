@@ -143,11 +143,12 @@ def create_app(
     def quality_monitor(
         maximum_excluded_rate: Decimal = Query(default=Decimal("0.50"), ge=0, le=1),
         run_id: str = "",
+        public_release: bool = False,
     ) -> dict[str, object]:
         if run_id:
             _read_run(database, run_id)
         return _warehouse_call(
-            build_quality_snapshot, database, maximum_excluded_rate, run_id
+            build_quality_snapshot, database, maximum_excluded_rate, run_id, public_release
         )
 
     @application.get("/api/v1/runs/compare")

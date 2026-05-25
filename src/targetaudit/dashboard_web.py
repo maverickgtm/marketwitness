@@ -551,9 +551,11 @@ def operations_quality_html() -> str:
     .card p { color:var(--muted); margin:0; }
     .card strong { display:block; font-size:35px; color:var(--mint); margin-top:4px; }
     .card small { color:var(--muted); }
-    .controls { padding:17px; display:grid; grid-template-columns:260px auto; gap:12px; align-items:end; margin-bottom:18px; }
+    .controls { padding:17px; display:grid; grid-template-columns:260px 260px auto; gap:12px; align-items:end; margin-bottom:18px; }
     label { display:block; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
     input { width:100%; height:43px; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:9px; padding:0 11px; }
+    .toggle { height:43px; display:flex; align-items:center; gap:10px; margin:0; padding:0 12px; background:var(--panel2); border:1px solid var(--line); border-radius:9px; color:var(--text); }
+    .toggle input { width:auto; height:auto; padding:0; margin:0; }
     button { height:43px; border:0; border-radius:9px; color:#061117; background:var(--mint); padding:0 20px; font-weight:600; cursor:pointer; }
     .layout { display:grid; grid-template-columns:minmax(680px,1fr) 335px; gap:18px; }
     .table-wrap { overflow:hidden; }
@@ -585,7 +587,7 @@ def operations_quality_html() -> str:
     <nav>TargetAudit / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/governance">Source Governance</a></nav>
     <h1>Ship evidence,<br>not surprises.</h1>
     <p class="lead">Operational quality gates for stored evaluation runs: reproducibility stamps, required inputs, provider lineage and anomalous exclusion rates.</p>
-    <p class="meta">Refreshable quality view over stored evaluation runs</p>
+    <p class="meta" id="scope">Refreshable quality view over stored evaluation runs</p>
     <section class="cards">
       <article class="card"><p>Runs</p><strong id="runs">-</strong><small>Stored evaluations</small></article>
       <article class="card"><p>Quality Pass</p><strong id="pass">-</strong><small>Still subject to licensing</small></article>
@@ -599,6 +601,7 @@ def operations_quality_html() -> str:
     <h2>Run Quality Monitor</h2>
     <section class="controls" aria-label="Quality controls">
       <div><label for="threshold">Maximum excluded rate</label><input id="threshold" type="number" min="0" max="1" step="0.05" value="0.50"></div>
+      <label class="toggle"><input id="public-release" type="checkbox"> Public release inputs</label>
       <button id="apply">Apply Quality Gate</button>
     </section>
     <section class="layout">
@@ -636,13 +639,15 @@ def operations_quality_html() -> str:
       $("error").style.display = "none";
       try {
         const threshold = $("threshold").value || "0.50";
-        const data = await json(`${base}/operations/quality?maximum_excluded_rate=${encodeURIComponent(threshold)}`);
+        const release = $("public-release").checked ? "&public_release=true" : "";
+        const data = await json(`${base}/operations/quality?maximum_excluded_rate=${encodeURIComponent(threshold)}${release}`);
         currentRows = data.runs;
         $("runs").textContent = data.run_count;
         $("pass").textContent = data.quality_pass_count;
         $("review").textContent = data.review_required_count;
         $("blocked").textContent = data.blocked_count;
         $("publication-note").textContent = data.publication_note;
+        $("scope").textContent = `Scope ${data.quality_scope} / Required inputs: ${data.required_input_roles.join(", ")}`;
         renderRows(data.runs);
       } catch (error) { fail(error.message); }
     }

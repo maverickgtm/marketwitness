@@ -604,12 +604,16 @@ PYTHONPATH=src python3 -m targetaudit operations-quality \
   --run-id RUN-ID \
   --report build/live/operations-quality.md \
   --html build/live/operations-quality.html \
+  --public-release \
   --require-quality-pass \
   --as-of YYYY-MM-DD
 ```
 
 El informe se escribe aunque la compuerta falle; un estado `blocked` o
 `review_required` devuelve código de salida `2` para detener el pipeline.
+El modo `--public-release` exige que la corrida conserve `targets`, `prices`,
+`corporate_actions` y `universe_membership`; pasarla tampoco reemplaza la
+aprobación de fuentes en `Scorecard Readiness`.
 
 Endpoints iniciales:
 
@@ -630,7 +634,7 @@ Endpoints iniciales:
 | `/dashboard/governance` | Pagina de auditoria de fuentes y observaciones excluidas |
 | `/api/v1/readiness/scorecard` | Requisitos de fuentes productivas para publicar el Financials Scorecard |
 | `/dashboard/readiness` | Pagina de preparación y bloqueos de publicación del scorecard |
-| `/api/v1/operations/quality?run_id=RUN-ID` | Monitor de calidad global o de una corrida candidata, con umbral configurable de exclusiones |
+| `/api/v1/operations/quality?run_id=RUN-ID&public_release=true` | Monitor operativo o compuerta de publicación de una corrida candidata, con umbral configurable de exclusiones |
 | `/dashboard/operations` | Pagina operativa de corridas aprobadas, en revision o bloqueadas |
 
 La documentación interactiva local queda disponible en `/docs` al iniciar el

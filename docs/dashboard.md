@@ -88,6 +88,9 @@ incompleta sin hacer visible el problema.
   `/api/v1/operations/quality?maximum_excluded_rate=...`.
 - Valida que cada corrida tenga version metodologica y huella del dataset.
 - Exige activos de entrada `targets` y `prices` antes de considerarla completa.
+- El control `Public release inputs` exige además activos
+  `corporate_actions` y `universe_membership` para una corrida candidata a
+  distribución.
 - Bloquea resultados con observaciones sin `provider_id` declarado.
 - Envia a revision corridas cuya tasa de exclusiones supera el umbral
   operativo o cuya muestra evaluada no alcanza el minimo configurado.
