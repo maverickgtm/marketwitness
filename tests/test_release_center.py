@@ -39,7 +39,9 @@ class ReleaseCenterTests(unittest.TestCase):
             self.assertEqual(snapshot["lineage_gate_status"], "blocked")
             self.assertIn("synthetic-demo", " ".join(snapshot["blockers"]))
             self.assertIn("Release status: `blocked`", render_release_report(snapshot))
-            self.assertIn("Release only", render_release_html(snapshot))
+            page = render_release_html(snapshot)
+            self.assertIn("Release only", page)
+            self.assertIn('href="/dashboard/financials-evidence">Financials Evidence Center</a>', page)
 
     def test_releases_only_with_public_sources_complete_assets_and_matching_lineage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

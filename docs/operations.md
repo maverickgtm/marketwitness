@@ -287,6 +287,9 @@ recorrer en el dashboard por rutas fijas: `/dashboard/audit/target-import`,
 `/dashboard/audit/operations-quality` y
 `/dashboard/audit/release-decision`. La pagina de decision del demo documenta
 el bloqueo; no autoriza publicar rankings reales.
+La portada `/dashboard/financials-evidence` los reúne con readiness,
+gobernanza, calidad y release para revisar el recorrido completo antes de
+interpretar cualquier salida del sandbox.
 
 Para auditar el estado exacto incluido en un bundle, las rutas
 `/dashboard/governance-report/open-edition`,

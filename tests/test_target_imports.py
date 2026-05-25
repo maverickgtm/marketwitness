@@ -30,7 +30,9 @@ class TargetImportsTests(unittest.TestCase):
         self.assertEqual(observations[0].benchmark_symbol, "XLF")
         self.assertEqual(decisions[3].reason, "missing_or_invalid_source_url")
         self.assertIn("Rows rejected: `1`", render_import_report(manifest, decisions, date(2026, 5, 24)))
-        self.assertIn("internal_only", render_import_html(manifest, decisions, date(2026, 5, 24)))
+        page = render_import_html(manifest, decisions, date(2026, 5, 24))
+        self.assertIn("internal_only", page)
+        self.assertIn('href="/dashboard/financials-evidence">Financials Evidence Center</a>', page)
 
     def test_writes_targets_compatible_with_evaluator_input(self) -> None:
         manifest = load_target_import_manifest(

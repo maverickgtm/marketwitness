@@ -31,6 +31,7 @@ class CorporateActionsTests(unittest.TestCase):
         self.assertIn("`ticker_change`", report)
         self.assertIn("Affected observations are excluded", page)
         self.assertIn("Evidence", page)
+        self.assertIn('href="/dashboard/financials-evidence">Financials Evidence Center</a>', page)
         self.assertIn("corporate-actions/demo-symbol-001", output.read_text(encoding="utf-8"))
 
     def test_rejects_split_without_ratio(self) -> None:

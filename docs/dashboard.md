@@ -62,6 +62,9 @@ general al directorio de reportes construidos.
   ajustados, acciones corporativas, calidad operativa y decision de release
   generadas por el demo; el reporte final permanece bloqueado para claims
   publicos de datos reales.
+- `Financials Evidence Center` en `/dashboard/financials-evidence` ordena
+  esos cinco reportes junto con los controles interactivos, sin presentarlos
+  como historial real de analistas.
 - `Governance Snapshots` conserva las paginas generadas de Open Edition,
   extensiones licenciadas opcionales, registro de fuentes, cola de permisos,
   resultados de revision y readiness;
@@ -71,7 +74,8 @@ general al directorio de reportes construidos.
   bundle desde su manifiesto generado, no solo desde la portada interactiva.
 - Explica que el artefacto periodico generado en GitHub Actions usa fixtures
   redistribuibles, no consultas live ni rankings reales.
-- Enlaza controles operativos de IPO Watch Center, ETF Evidence Center, politica, gobernanza y Release Center para
+- Enlaza controles operativos de IPO Watch Center, ETF Evidence Center,
+  Financials Evidence Center, politica, gobernanza y Release Center para
   que los limites de cada reporte queden visibles durante su lectura.
 - No agrega un endpoint de archivos: cada enlace corresponde a una ruta fija
   servida por la API.

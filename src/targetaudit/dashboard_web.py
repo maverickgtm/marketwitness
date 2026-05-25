@@ -191,9 +191,82 @@ def report_center_html() -> str:
     <section class="controls">
       <article class="control"><h3>IPO Watch Center</h3><p>Follow discovery, reviewed status and international listing evidence without blending milestones.</p><a href="/dashboard/ipo">Open IPO workflow</a></article>
       <article class="control"><h3>ETF Evidence Center</h3><p>Separate synthetic comparisons from periodic SEC N-PORT evidence before reading changes.</p><a href="/dashboard/etf">Open ETF evidence</a></article>
+      <article class="control"><h3>Financials Evidence Center</h3><p>Trace controlled inputs, scoring guards and release blockers before opening a ranking.</p><a href="/dashboard/financials-evidence">Open financials evidence</a></article>
       <article class="control"><h3>Public Use Policy</h3><p>See data boundaries, blocked sources and no-recommendation rules.</p><a href="/dashboard/policy">Open policy</a></article>
       <article class="control"><h3>Source Governance</h3><p>Inspect provider states, rights review and excluded observations.</p><a href="/dashboard/governance">Open governance</a></article>
       <article class="control"><h3>Release Center</h3><p>Review why demo evidence cannot become a public real-data scorecard.</p><a href="/dashboard/release">Open release controls</a></article>
+    </section>
+  </main>
+</body>
+</html>"""
+
+
+def financials_evidence_center_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Financials Evidence Center</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --line:#20343d; --text:#edf1ef;
+      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header,main { max-width:1220px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(40px,5vw,62px); line-height:1.04; margin:38px 0 14px; }
+    h2 { margin:42px 0 16px; font-size:22px; }
+    h3 { margin:10px 0 8px; }
+    .lead { color:var(--muted); font-size:18px; max-width:920px; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.view,.notice { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:18px 20px; }
+    .card p,.view p,.view small { color:var(--muted); margin:0; display:block; }
+    .card strong { color:var(--mint); display:block; font-size:27px; margin-top:5px; }
+    .blocked { color:var(--gold)!important; }
+    .notice { border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); }
+    .views { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+    .view { padding:18px; }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; }
+    .fixture { color:var(--blue); background:rgba(98,166,255,.12); }
+    .gate { color:var(--mint); background:rgba(86,218,172,.12); }
+    @media(max-width:900px) { .cards,.views { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav><a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/reports">Report Center</a> / Financials Evidence Center</nav>
+    <h1>Financials evidence.<br>Audit before ranking.</h1>
+    <p class="lead">Trace the U.S. Financials sandbox from controlled target input through publication decision, without presenting fixture outcomes as actual analyst performance.</p>
+    <section class="cards">
+      <article class="card"><p>Generated audit reports</p><strong>5</strong></article>
+      <article class="card"><p>Interactive controls</p><strong>6</strong></article>
+      <article class="card"><p>Public real-data scorecard</p><strong class="blocked">Blocked</strong></article>
+      <article class="card"><p>Required paid data for demo</p><strong>None</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice"><strong>Publication boundary:</strong> this demonstration does not publish real analyst track records or a ranking of Roth MKM, UBS, Barclays, Citi or other firms. Authorized target publication rights and approved production-source lineage are still required.</p>
+    <h2>Generated Audit Trail</h2>
+    <section class="views">
+      <article class="view"><span class="pill fixture">1 / controlled input</span><h3>Target Import Audit</h3><p>Review accepted and rejected rows from an authorized-export fixture.</p><small>Internal demonstration evidence.</small><a href="/dashboard/audit/target-import">Open report</a></article>
+      <article class="view"><span class="pill fixture">2 / provenance</span><h3>Adjusted Price Evidence</h3><p>Inspect normalized price bounds and the disclosed data-source limitation.</p><small>No public output license is implied.</small><a href="/dashboard/audit/adjusted-prices">Open report</a></article>
+      <article class="view"><span class="pill gate">3 / scoring guard</span><h3>Corporate Actions Audit</h3><p>Exclude targets crossed by unresolved splits or ticker transitions.</p><small>Guarded scoring before ranking.</small><a href="/dashboard/audit/corporate-actions">Open report</a></article>
+      <article class="view"><span class="pill gate">4 / quality gate</span><h3>Operations Quality Snapshot</h3><p>Verify inputs, lineage, reproducibility and exclusion-review state.</p><small>A pass does not grant publishing rights.</small><a href="/dashboard/audit/operations-quality">Open report</a></article>
+      <article class="view"><span class="pill gate">5 / release gate</span><h3>Release Decision Snapshot</h3><p>Combine rights, lineage and quality into a visible release decision.</p><small>The bundled demo remains blocked for real-data claims.</small><a href="/dashboard/audit/release-decision">Open report</a></article>
+    </section>
+    <h2>Interactive Controls</h2>
+    <section class="views">
+      <article class="view"><h3>Financials Sandbox</h3><p>Explore scored fixture runs and auditable exclusions.</p><a href="/dashboard/financials">Open scorecard</a></article>
+      <article class="view"><h3>Scorecard Readiness</h3><p>Inspect the source requirements for any future public ranking.</p><a href="/dashboard/readiness">Open readiness</a></article>
+      <article class="view"><h3>Release Center</h3><p>Evaluate a candidate run against publication controls.</p><a href="/dashboard/release">Open release controls</a></article>
+      <article class="view"><h3>Source Governance</h3><p>Read registered source policies and linked evidence status.</p><a href="/dashboard/governance">Open governance</a></article>
+      <article class="view"><h3>Provider Approvals</h3><p>Track permissions that cannot be inferred from technical access.</p><a href="/dashboard/approvals">Open approvals</a></article>
+      <article class="view"><h3>Operations Quality</h3><p>Review current stored-run checks interactively.</p><a href="/dashboard/operations">Open quality controls</a></article>
     </section>
   </main>
 </body>
@@ -741,7 +814,7 @@ def financials_scorecard_html() -> str:
 </head>
 <body>
   <header>
-    <nav><a href="/dashboard/open">Open Edition</a> / U.S. Financials / Scorecard / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / U.S. Financials / <a href="/dashboard/financials-evidence">Evidence Center</a> / Scorecard / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Price targets,<br>measured in daylight.</h1>
     <p class="lead">Auditable analyst-target research with visible sample size, uncertainty, benchmark context and exclusions. A hit is evidence of a reached target, not investment advice.</p>
     <p class="meta" id="run-meta">Loading latest stored research run...</p>
@@ -1044,7 +1117,7 @@ def source_governance_html() -> str:
 </head>
 <body>
   <header>
-    <nav><a href="/dashboard/open">Open Edition</a> / Governance / Sources / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / Governance / Sources / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/financials-evidence">Financials Evidence</a> / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Open code.<br>Controlled data.</h1>
     <p class="lead">Publication rights are part of the evidence. This page separates sources already usable under documented policy from data that still requires terms, licensing or manual controls.</p>
     <p class="meta" id="reviewed">Loading source registry...</p>
@@ -1242,7 +1315,7 @@ def operations_quality_html() -> str:
 </head>
 <body>
   <header>
-    <nav><a href="/dashboard/open">Open Edition</a> / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / Operations / Quality / <a href="/dashboard/financials-evidence">Financials Evidence</a> / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a></nav>
     <h1>Ship evidence,<br>not surprises.</h1>
     <p class="lead">Operational quality gates for stored evaluation runs: reproducibility stamps, required inputs, provider lineage and anomalous exclusion rates.</p>
     <p class="meta" id="scope">Refreshable quality view over stored evaluation runs</p>
@@ -1390,7 +1463,7 @@ def scorecard_readiness_html() -> str:
 </head>
 <body>
   <header>
-    <nav><a href="/dashboard/open">Open Edition</a> / U.S. Financials / Readiness / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / U.S. Financials / Readiness / <a href="/dashboard/financials-evidence">Evidence Center</a> / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Earn the right<br>to publish.</h1>
     <p class="lead">Readiness for a real public Financials scorecard. Demo fixtures can test the system; only approved production sources can enable release.</p>
     <p class="meta" id="reviewed">Loading readiness controls...</p>
@@ -1525,7 +1598,7 @@ def release_center_html() -> str:
 </head>
 <body>
   <header>
-    <nav><a href="/dashboard/open">Open Edition</a> / U.S. Financials / Release Center / <a href="/dashboard/financials">Scorecard</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a> / <a href="/dashboard/governance">Governance</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / U.S. Financials / Release Center / <a href="/dashboard/financials-evidence">Evidence Center</a> / <a href="/dashboard/financials">Scorecard</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a> / <a href="/dashboard/governance">Governance</a></nav>
     <h1>Release only<br>what is defensible.</h1>
     <p class="lead">One publication decision for one candidate run. Approved source rights and complete run evidence must both pass before a real scorecard can be released.</p>
     <p class="meta" id="reviewed">Select a candidate run to review...</p>
@@ -1677,7 +1750,7 @@ def provider_approvals_html() -> str:
 </head>
 <body>
   <header>
-    <nav><a href="/dashboard/open">Open Edition</a> / Governance / Provider Approvals / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/governance">Sources</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / Governance / Provider Approvals / <a href="/dashboard/financials-evidence">Financials Evidence</a> / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/governance">Sources</a></nav>
     <h1>Permission before<br>production data.</h1>
     <p class="lead">A documented review queue for providers that could unlock the public U.S. Financials scorecard. Technical access never stands in for publishing rights.</p>
     <p class="meta" id="reviewed">Loading approval work queue...</p>

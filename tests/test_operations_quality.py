@@ -198,6 +198,7 @@ class OperationsQualityTests(unittest.TestCase):
             self.assertIn("does not grant data publication rights", report)
             self.assertIn("Ship evidence,", page)
             self.assertIn("quality_pass", page)
+            self.assertIn('href="/dashboard/financials-evidence">Financials Evidence Center</a>', page)
             self.assertEqual(release_snapshot["quality_pass_count"], 1)
 
     def test_rejects_invalid_exclusion_threshold(self) -> None:

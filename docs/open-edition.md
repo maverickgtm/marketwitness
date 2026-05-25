@@ -62,6 +62,8 @@ permiso explicito de output publico.
 - Demuestra evaluación de targets, exclusiones, comparaciones, linaje,
   operaciones de calidad y Release Center.
 - Sus resultados nunca se presentan como desempeño real de una firma.
+- La portada `/dashboard/financials-evidence` conecta el input controlado,
+  las guardas de scoring y la decision de release bloqueada.
 
 ### U.S. IPO Filing Watch
 
@@ -130,7 +132,8 @@ Desde ella se abre `/dashboard/reports`, un indice de
 `/dashboard/document-checks`, `/dashboard/rwa-watch`,
 `/dashboard/global-listings`, `/dashboard/global-alerts` y
 `/dashboard/issuer-confirmations`, ademas del paquete fijo
-`/dashboard/audit/{report}` para evidencia Financials del demo; estas rutas
+`/dashboard/financials-evidence` y `/dashboard/audit/{report}` para evidencia
+Financials del demo; estas rutas
 solo sirven artefactos HTML conocidos producidos por `make demo`. El paquete
 `/dashboard/governance-report/{snapshot}` expone exclusivamente los snapshots
 generados de manifiesto, extensiones licenciadas, fuentes, permisos,

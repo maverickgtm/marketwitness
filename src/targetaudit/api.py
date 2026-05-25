@@ -17,6 +17,7 @@ from fastapi.responses import HTMLResponse, Response
 from . import METHODOLOGY_VERSION, __version__
 from .dashboard_web import (
     etf_evidence_center_html,
+    financials_evidence_center_html,
     financials_scorecard_html,
     ipo_watch_center_html,
     licensed_extensions_html,
@@ -187,6 +188,12 @@ def create_app(
     )
     def etf_evidence_center() -> str:
         return etf_evidence_center_html()
+
+    @application.get(
+        "/dashboard/financials-evidence", response_class=HTMLResponse, include_in_schema=False
+    )
+    def financials_evidence_center() -> str:
+        return financials_evidence_center_html()
 
     @application.get(
         "/dashboard/etf-regulatory", response_class=HTMLResponse, include_in_schema=False

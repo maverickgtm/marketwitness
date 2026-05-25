@@ -255,6 +255,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Export observations CSV", page.text)
         self.assertIn("renderTimeline", page.text)
         self.assertIn("Compare Stored Runs", page.text)
+        self.assertIn("/dashboard/financials-evidence", page.text)
         self.assertEqual(facets.status_code, 200)
         self.assertEqual(facets.json()["sectors"], ["Financials"])
         self.assertEqual(facets.json()["tickers"], ["AAA", "BBB"])
@@ -310,6 +311,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/audit/corporate-actions", page.text)
         self.assertIn("/dashboard/audit/operations-quality", page.text)
         self.assertIn("/dashboard/audit/release-decision", page.text)
+        self.assertIn('href="/dashboard/financials-evidence"', page.text)
+        self.assertIn("Financials Evidence Center", page.text)
         self.assertIn("/dashboard/governance-report/open-edition", page.text)
         self.assertIn("/dashboard/governance-report/licensed-extensions", page.text)
         self.assertIn("/dashboard/governance-report/source-registry", page.text)
@@ -317,6 +320,28 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/governance-report/approval-review", page.text)
         self.assertIn("/dashboard/governance-report/scorecard-readiness", page.text)
         self.assertIn("not live market alerts", page.text)
+
+    def test_serves_financials_evidence_center_without_real_analyst_claims(self) -> None:
+        page = self.client.get("/dashboard/financials-evidence")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Audit before ranking.", page.text)
+        for route in (
+            "/dashboard/audit/target-import",
+            "/dashboard/audit/adjusted-prices",
+            "/dashboard/audit/corporate-actions",
+            "/dashboard/audit/operations-quality",
+            "/dashboard/audit/release-decision",
+            "/dashboard/financials",
+            "/dashboard/readiness",
+            "/dashboard/release",
+            "/dashboard/governance",
+            "/dashboard/approvals",
+            "/dashboard/operations",
+        ):
+            self.assertIn(route, page.text)
+        self.assertIn("does not publish real analyst track records", page.text)
+        self.assertIn("Public real-data scorecard", page.text)
 
     def test_serves_ipo_watch_center_without_promoting_discovered_evidence(self) -> None:
         page = self.client.get("/dashboard/ipo")

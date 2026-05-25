@@ -877,6 +877,9 @@ revision; e `Issuer Confirmations`, que conserva hitos primarios revisados.
 Tambien expone cinco reportes fijos `Financials Audit Evidence` para recorrer
 la importacion, precios, acciones corporativas, calidad y decision de release
 del demo sin confundirlo con resultados reales.
+La ruta `/dashboard/financials-evidence` funciona como indice propio de esa
+cadena y enlaza los controles interactivos que mantienen bloqueada una
+publicacion real mientras falten derechos aprobados.
 Tambien incorpora seis `Governance Snapshots` que preservan el estado
 generado de Open Edition, extensiones licenciadas, fuentes, permisos,
 decisiones y readiness,
@@ -977,6 +980,7 @@ Endpoints iniciales:
 | `/dashboard/global-alerts` | Cola comparada de cambios en señales de listings y documentos internacionales |
 | `/dashboard/issuer-confirmations` | Hitos de cotización verificados desde comunicados oficiales revisados |
 | `/dashboard/global/{monitor}` | Monitor permitido: `hkex`, `lse-upcoming`, `asx`, `tsx`, `jpx`, `edinet`, `cvm`, `esma`, `opendart` o `sgx` |
+| `/dashboard/financials-evidence` | Centro de evidencia Financials para recorrer inputs, guardas y decision de release del sandbox |
 | `/dashboard/audit/{report}` | Evidencia Financials permitida: `target-import`, `adjusted-prices`, `corporate-actions`, `operations-quality` o `release-decision` |
 | `/dashboard/governance-report/{snapshot}` | Snapshot permitido: `open-edition`, `licensed-extensions`, `source-registry`, `provider-approvals`, `approval-review` o `scorecard-readiness` |
 | `/api/v1/runs` | Corridas almacenadas |

@@ -30,6 +30,7 @@ class AlphaVantageProviderTests(unittest.TestCase):
         page = render_prices_html(imported, date(2026, 5, 24))
         self.assertIn("adjusted_close / raw_close", report)
         self.assertIn("currently marks this daily-adjusted API as premium", page)
+        self.assertIn('href="/dashboard/financials-evidence">Financials Evidence Center</a>', page)
 
     def test_writes_csv_accepted_by_price_loader(self) -> None:
         imported = load_alpha_vantage_snapshot(

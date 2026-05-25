@@ -63,6 +63,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   de firmas, acciones y auditoria de exclusiones.
 - [x] Dashboard web inicial `Financials Scorecard` con filtros, ranking,
   detalle por firma/ticker y auditoria de exclusiones sobre la API.
+- [x] Centro navegable `Financials Evidence Center` que reúne input,
+  controles de scoring y decision de release del sandbox.
 - [x] Linea temporal visual de evidencia por ticker y exportaciones CSV del
   ranking filtrado y las observaciones de una corrida.
 - [ ] Serie diaria completa de precios/targets autorizada para graficos
