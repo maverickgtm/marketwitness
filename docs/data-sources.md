@@ -100,7 +100,7 @@ tres caminos relevantes para ampliar el producto sin costo:
 |---|---|---|
 | FSA `EDINET` Documents API (Japon) | API oficial gratuita de documentos regulatorios, incluidos securities registration statements; requiere clave | Monitor documental y diff diario implementados con atribucion y acceso responsable |
 | `EDINET DB` (Japon) | Enriquecimiento financiero japones; declara display publico atribuido en sus planes | Candidato secundario; la ruta principal debe conservar la fuente oficial |
-| `MAS OPERA` y Singapore Open Data Licence | Prospectos/ofertas oficiales de Singapur; la licencia abierta autoriza usos y derivados de datasets cubiertos con atribucion | Falta confirmar el dataset/API OPERA concreto aplicable |
+| `MAS OPERA` Public Offers | Repositorio oficial de prospectos/ofertas de Singapur | Revision cerrada sin collector: la busqueda exige security code y los terminos OPERA restringen robots, caching y deep links; no se encontro dataset de prospectos bajo Open Data Licence |
 | JPX `J-Quants API` | OHLC japones ajustado, listado de valores y fundamentales; plan gratis con dos anos y 12 semanas de retraso | Falta confirmar derechos de publicar precios/outputs del plan gratuito |
 
 Australia, LSE, HKEX, SGX y SSE/CIIS ofrecen productos oficiales muy utiles
@@ -301,7 +301,7 @@ Revision inicial al `2026-05-24`; ampliaciones internacionales al `2026-05-25`:
 | Hong Kong | HKEX/HKEXnews New Listings - AP & PHIP | JSON oficiales de Active AP, Active PHIP, Inactive, Listed y Returned | Feed oficial implementado |
 | Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida, fecha anticipada y retiros | Feed HTML oficial implementado |
 | Canada | TSX New Company Listings | Nuevas companias ya listadas | Feed HTML oficial implementado como confirmación; `SEDAR+` bloqueado para automatizacion publica |
-| Singapur | SGX IPO Prospectus API | Prospectos IPO publicados | Feed JSON oficial implementado |
+| Singapur | SGX IPO Prospectus API; MAS OPERA Public Offers | Prospectos IPO publicados | SGX feed JSON implementado; OPERA es referencia manual bloqueada por security code y restricciones de recoleccion/enlaces |
 | Japon / Tokio | FSA `EDINET` Documents API y JPX `New Listings` | Documentos de ofertas mas fechas oficiales de aprobacion/listing TSE | EDINET filing watch, JPX y diff diario conjunto implementados |
 | Brasil | CVM `Ofertas Públicas de Distribuição` | Ofertas de acciones en ZIP diario abierto | Feed oficial implementado con atribucion ODbL; requiere B3 para confirmar cotizacion |
 | UE: Alemania, Paises Bajos e Italia | ESMA `Prospectus III Securities` | Prospectos y eventos oferta/admisión de valores `SHRS` | Feed oficial implementado con atribucion; no confirma primera negociacion |
@@ -556,6 +556,8 @@ primer fondo regulatorio configurado para ejecucion operativa.
 - ASX Upcoming floats and listings: <https://www.asx.com.au/listings/upcoming-floats-and-listings>
 - TSX New Company Listings: <https://www.tsx.com/en/news/new-company-listings>
 - SGX IPO Prospectus: <https://www.sgx.com/securities/ipo-prospectus>
+- MAS OPERA: <https://eservices.mas.gov.sg/opera/Public/WelcomePage.aspx>
+- MAS OPERA Terms of Use: <https://eservices.mas.gov.sg/opera/MASUserTerms.aspx>
 - CVM Ofertas Publicas de Distribuicao: <https://dados.cvm.gov.br/dataset/oferta-distrib>
 - SEC Form N-PORT: <https://www.sec.gov/files/formn-port.pdf>
 - SEC Form N-PORT Data Sets: <https://www.sec.gov/data-research/sec-markets-data/form-n-port-data-sets>

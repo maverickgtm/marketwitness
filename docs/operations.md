@@ -832,6 +832,15 @@ El monitor SGX conserva `prospectus_published`, porque su fuente publica
 documentos de prospecto. Es una señal documental para revisión, no una
 confirmación automática de trading.
 
+## Revision MAS OPERA De Singapur
+
+`MAS OPERA` es un repositorio oficial, pero no un conector live de la Open
+Edition. La pagina `Public Offers` exige un security code y sus terminos,
+actualizados el `2026-04-18`, restringen retrieval automatizado, caching y
+deep links sin permiso escrito. El sistema no debe hacer scraping de OPERA ni
+archivar sus documentos; para monitor automatico de prospectos de Singapur se
+utiliza `SGX IPO Prospectus`.
+
 ## Confirmaciones Oficiales Del Emisor
 
 Los comunicados revisados manualmente se normalizan en un registro separado:

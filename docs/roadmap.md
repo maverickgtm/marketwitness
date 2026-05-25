@@ -150,8 +150,10 @@ verificables de cotizaciones tecnologicas/estrategicas.
   añadir ofertas de acciones brasileñas al diff sin promoverlas a listing B3.
 - [x] Implementar `ESMA Equity Prospectus Watch` para valores `SHRS` de
   Alemania, Paises Bajos e Italia con atribucion y sin afirmar trading.
-- [ ] Validar un conector adicional de ofertas de Singapur sobre datasets/API
-  de `MAS OPERA`.
+- [x] Revisar `MAS OPERA` de Singapur y excluir ingesta automatica: la
+  busqueda Public Offers exige security code y sus terminos restringen
+  robots, caching y deep links; conservar `SGX IPO Prospectus` como ruta
+  automatizada.
 - [x] Implementar `Korea OpenDART Equity Offering Watch` para emisiones
   `C001`/`C006` con clave gratuita, e integrar su diff sin afirmar listing.
 - [x] Revisar `KRX OPEN API` y excluir su output del dashboard público porque

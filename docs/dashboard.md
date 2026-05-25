@@ -314,7 +314,7 @@ Unidos sin aplicar reglas SEC a jurisdicciones distintas.
 | Hong Kong HKEX | HKEX/HKEXnews AP/PHIP JSON feeds | Feed oficial implementado |
 | Australian Securities Exchange | ASX `Upcoming floats and listings` | Feed HTML oficial implementado |
 | Toronto Stock Exchange | TSX `New Company Listings` | Feed HTML oficial implementado para listings completados; `SEDAR+` no automatizable sin permiso |
-| Singapore Exchange | SGX `IPO Prospectus` | Feed JSON oficial implementado para prospectos publicados |
+| Singapore Exchange | SGX `IPO Prospectus`; MAS `OPERA` | SGX feed JSON implementado para prospectos publicados; OPERA revisado como referencia manual bloqueada |
 | Tokio / Japon | FSA `EDINET` Documents API y JPX `New Listings` | Monitores y diff diario implementados; EDINET permanece como filing y JPX como confirmacion |
 | Brasil | CVM `Ofertas Públicas de Distribuição` | Monitor ZIP diario ODbL implementado para ofertas de acciones; B3 debe confirmar listing |
 | Union Europea | ESMA `Prospectus III Securities` | Monitor oficial implementado para valores `SHRS` en Alemania, Paises Bajos e Italia |
@@ -335,6 +335,8 @@ Cada jurisdiccion conserva sus propias etapas:
   restringe scraping y almacenamiento en bases para el monitor público.
 - Singapur: el feed implementado documenta prospectos publicados; cada
   documento debe revisarse antes de afirmar admision o inicio de negociacion.
+  `MAS OPERA Public Offers` no se automatiza: su busqueda exige security code
+  y sus terminos restringen robots, caching y deep links sin permiso.
 - Tokio: `EDINET` ya captura filings de oferta mediante API oficial con clave
   gratuita, y `JPX New Listings` confirma hitos de aprobacion/listing mediante
   pagina y CSV.
@@ -373,7 +375,8 @@ Cada jurisdiccion conserva sus propias etapas:
   securities registration statements, enmiendas y retiros; la demo es
   sintética y el modo en vivo exige clave gratuita personal.
 - `SGX IPO Prospectus Monitor`: pagina de documentos publicados en el
-  catalogo oficial SGX; funciona como señal documental para revision.
+  catalogo oficial SGX; funciona como senal documental para revision. No
+  extrae `MAS OPERA`, conservado solo como referencia manual.
 - `CVM Equity Offering Watch`: pagina brasileña que filtra ofertas de
   acciones del ZIP diario ODbL y exige confirmacion posterior en B3.
 - `ESMA Equity Prospectus Watch`: pagina europea que filtra valores `SHRS`

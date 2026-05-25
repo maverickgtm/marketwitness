@@ -27,6 +27,7 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertIn("European Union Prospectus Register", report)
         self.assertIn("Korea Exchange / OpenDART", report)
         self.assertIn("Moscow Exchange / Bank of Russia", report)
+        self.assertIn("keep MAS OPERA as manual reference only", report)
         self.assertIn("Live official feeds: `9`", report)
         self.assertIn("Verified snapshots: `0`", report)
         self.assertIn("Priority connectors: `0`", report)

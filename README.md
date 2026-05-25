@@ -60,7 +60,10 @@ publicable de targets individuales de firmas estadounidenses; si surgieron
 rutas prometedoras para ampliar monitores regulatorios: el API oficial
 gratuito de documentos de Japon (`EDINET`) ya cuenta con collector de ofertas
 autenticado por clave gratuita, y
-Singapur (`MAS OPERA`) requiere confirmar un endpoint abierto concreto. Tambien
+Singapur ya cuenta con el collector oficial `SGX IPO Prospectus`; `MAS OPERA`
+fue revisado y queda solo como referencia manual porque su busqueda exige
+security code y sus terminos restringen automatizacion, caching y deep links.
+Tambien
 surgio un laboratorio de precios japoneses
 mediante el plan gratis de JPX `J-Quants`, sujeto a confirmar derechos de
 output. Ver
@@ -359,7 +362,8 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `HKEX` / Hong Kong: documentos de nuevas solicitudes y `PHIP`.
 - `ASX` / Australia: monitor HTML oficial de upcoming floats and listings.
 - `TSX` / Canada: monitor HTML oficial de nuevas companias ya listadas.
-- `SGX` / Singapur: catalogo oficial de prospectos IPO.
+- `SGX` / Singapur: catalogo oficial de prospectos IPO; `MAS OPERA` queda
+  documentado como referencia manual no automatizable sin permiso.
 - `JPX` / Japon: monitores `JPX New Listings` y `EDINET` con diff diario separado para confirmaciones de Tokio y filings de oferta con clave gratuita.
 - `CVM` / Brasil: monitor oficial ODbL de ofertas publicas de acciones y diff diario; requiere evidencia B3 separada para confirmar listing.
 - `ESMA` / Union Europea: monitor oficial atribuible de prospectos para acciones en Alemania, Paises Bajos e Italia; no confirma primera negociacion.
@@ -378,7 +382,9 @@ completadas; no lo usa para predecir solicitudes futuras ni automatiza
 `SEDAR+`, cuyos terminos prohíben scraping y bases de datos públicas.
 Singapur ya consulta el catálogo JSON oficial `SGX IPO Prospectus`; registra
 documentos publicados para revisión y no confirma automáticamente una
-cotización completada.
+cotización completada. `MAS OPERA Public Offers` se conserva como referencia
+oficial bloqueada para automatizacion publica: la consulta requiere security
+code y sus terminos restringen robots, caching y enlaces a contenido.
 Japon ya tiene dos capas: `EDINET` filtra securities registration statements,
 enmiendas y retiros desde el API oficial, mientras `JPX New Listings` confirma
 fechas de aprobacion o listing en Tokio. Ambas capas ya entran al historial

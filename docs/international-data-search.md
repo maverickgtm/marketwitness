@@ -20,7 +20,7 @@ Si se encontraron rutas nuevas para ampliar el producto:
 |---:|---|---|---|
 | Alta | FSA Japan `EDINET` Documents API | API oficial gratuita de documentos regulatorios, incluidos securities registration statements; requiere clave y acceso responsable | Incorporar Japon como conector prioritario y construir un collector atribuido de documentos de oferta |
 | Media | `EDINET DB` | Enriquecimiento de datos japoneses; declara plan gratis y display publico con atribucion, sin redistribucion masiva | Mantener como candidato secundario, no sustituir la fuente oficial EDINET |
-| Alta | MAS `OPERA` / Singapore Open Data Licence | Prospectos y documentos de ofertas de Singapur; la licencia abierta permite aplicaciones y analisis derivados para datasets cubiertos | Verificar dataset/API concreto de OPERA antes de ampliar IPO Watch |
+| Alta | MAS `OPERA` / Singapore Open Data Licence | Prospectos y documentos de ofertas de Singapur | Revisado sin conector: Public Offers exige security code y los terminos OPERA restringen robots, caching y deep links; SGX queda como feed implementado |
 | Media | JPX `J-Quants API` | Precios OHLC japoneses ajustados y listado de valores; plan gratis con dos anos de historial y retraso de 12 semanas | Buen candidato para laboratorio Japon; revisar permiso de output antes de publicar precios |
 | Media | SGX `Analyst Research` | Informes aportados por firmas sobre acciones de Singapur | Referencia documental, no feed estructurado de targets |
 | Baja | HKMA Open API | Series economicas y de mercado monetario de Hong Kong gratis y sin registro | Podria servir para contexto macro futuro; no resuelve targets, precios de acciones ni IPOs |
@@ -89,9 +89,9 @@ N-PORT`, con frecuencia regulatoria y sin afirmar tiempo real.
 1. `Japan IPO Filing Watch`: implementar un collector sobre el API oficial
    `EDINET`, configurado con clave, atribucion y controles de acceso justo,
    para monitorear documentos de oferta japoneses separado de precios.
-2. `Singapore Offer Document Watch`: localizar el dataset/API específico de
-   `MAS OPERA` cubierto por la Singapore Open Data Licence y agregarlo como
-   confirmacion regulatoria, complementaria al conector SGX existente.
+2. `Singapore Offer Document Watch`: revision cerrada sin collector `MAS
+   OPERA`; conservarlo como referencia manual bloqueada y usar el conector
+   oficial `SGX IPO Prospectus` ya implementado.
 3. `Japan Prices Sandbox`: preparar un adaptador `J-Quants` apagado por
    defecto, que solo se active tras confirmar atribucion y output publico del
    plan gratuito.
@@ -120,6 +120,7 @@ N-PORT`, con frecuencia regulatoria y sin afirmar tiempo real.
 - SGX Securities personal-use price download: <https://www.sgx.com/research-education/securities>
 - SGX Analyst Research: <https://www.sgx.com/research-education/analyst-research>
 - MAS OPERA terms: <https://eservices.mas.gov.sg/opera/MASUserTerms.aspx>
+- MAS OPERA Public Offers: <https://eservices.mas.gov.sg/opera/PublicOffers.aspx>
 - Singapore Open Data Licence: <https://data.gov.sg/open-data-licence>
 - SSE market-data services: <https://www.sse.com.cn/transparency/services/index.shtml>
 - SSE/CIIS historical products: <https://www.ciis.com.hk/hongkong/sc/historicaldata1/index.shtml>

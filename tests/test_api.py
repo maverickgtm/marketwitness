@@ -286,13 +286,14 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Open code.", page.text)
         self.assertIn("Run Exclusions And Pending", page.text)
         self.assertIn("Provider Control", page.text)
-        self.assertEqual(sources.json()["provider_count"], 34)
+        self.assertEqual(sources.json()["provider_count"], 35)
         self.assertGreater(sources.json()["open_review_count"], 0)
-        self.assertEqual(sources.json()["blocked_count"], 4)
+        self.assertEqual(sources.json()["blocked_count"], 5)
         self.assertEqual(
             {item["provider_id"] for item in blocked.json()["sources"]},
             {
                 "tipranks-reference",
+                "mas-opera-reference",
                 "xstocks-backing-api",
                 "bybit-xstocks-v5",
                 "kraken-xstocks",
@@ -314,6 +315,10 @@ class ApiTests(unittest.TestCase):
         )
         self.assertIn(
             "opendart-equity-offerings",
+            {item["provider_id"] for item in sources.json()["sources"]},
+        )
+        self.assertIn(
+            "mas-opera-reference",
             {item["provider_id"] for item in sources.json()["sources"]},
         )
 
