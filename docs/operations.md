@@ -489,8 +489,9 @@ corporativas.
 
 En la aplicacion, `/dashboard/etf/xlf-demo` y `/dashboard/etf/iyf-demo`
 presentan solamente fixtures sinteticos. La evidencia SEC queda separada en
-`/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory`; ninguna de estas
-rutas se presenta como actividad diaria o en tiempo real.
+`/dashboard/etf/nport-recent`, `/dashboard/etf-regulatory`,
+`/dashboard/etf/nport-catalog` y `/dashboard/etf/nport-sync`; ninguna de
+estas rutas se presenta como actividad diaria o en tiempo real.
 
 ### Importacion Local ARK
 
@@ -613,6 +614,7 @@ export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
 PYTHONPATH=src python3 -m targetaudit sec-nport-datasets \
   --output build/live/nport-dataset-catalog.csv \
   --report build/live/nport-dataset-catalog.md \
+  --html build/live/nport-dataset-catalog.html \
   --download-quarter 2026q1 \
   --storage-dir data/raw/etf/nport/datasets
 
@@ -652,6 +654,7 @@ PYTHONPATH=src python3 -m targetaudit sec-nport-sync \
   --state data/raw/etf/nport/sync-state.csv \
   --storage-dir data/raw/etf/nport/datasets \
   --report build/live/nport-sync.md \
+  --html build/live/nport-sync.html \
   --as-of YYYY-MM-DD \
   --series-id S000006411 \
   --fund-symbol XLF \
@@ -668,6 +671,11 @@ se descarga, valida y extrae; luego la serie solicitada se regenera usando
 todos los trimestres disponibles localmente. El estado se reemplaza
 atomicamente y rechaza estados desconocidos, para que una interrupcion o
 edicion accidental no sea tomada como evidencia ya procesada.
+
+El bundle reproducible sirve estos controles únicamente por las rutas fijas
+`/dashboard/etf/nport-catalog` y `/dashboard/etf/nport-sync`. Ambas son
+evidencia de disponibilidad y sincronizacion regulatoria trimestral; no
+representan compras, ventas ni una cartera diaria.
 
 Para el benchmark financiero inicial, un filing oficial `NPORT-P` de
 `SELECT SECTOR SPDR TRUST` confirma `XLF` como serie `S000006411` del

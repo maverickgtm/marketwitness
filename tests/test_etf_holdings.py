@@ -36,6 +36,8 @@ class EtfHoldingsTests(unittest.TestCase):
         self.assertIn('href="/dashboard/etf/iyf-demo"', page)
         self.assertIn('href="/dashboard/etf/nport-recent"', page)
         self.assertIn('href="/dashboard/etf-regulatory"', page)
+        self.assertIn('href="/dashboard/etf/nport-catalog"', page)
+        self.assertIn('href="/dashboard/etf/nport-sync"', page)
         self.assertNotIn("bought", page.lower())
         self.assertNotIn("sold", page.lower())
 

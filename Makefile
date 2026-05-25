@@ -127,12 +127,14 @@ demo:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-datasets \
 		--catalog-file data/samples/sec-nport-catalog.html \
 		--output build/demo/nport-dataset-catalog.csv \
-		--report build/demo/nport-dataset-catalog.md
+		--report build/demo/nport-dataset-catalog.md \
+		--html build/demo/nport-dataset-catalog.html
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-sync \
 		--catalog-file data/samples/sec-nport-catalog.html \
 		--state build/demo/nport-sync-state.csv \
 		--storage-dir build/demo/nport-sync-storage \
 		--report build/demo/nport-sync.md \
+		--html build/demo/nport-sync.html \
 		--as-of 2026-05-24 \
 		--series-id S000DEMO01 \
 		--fund-symbol XLF-REG-DEMO \

@@ -78,6 +78,9 @@ permiso explicito de output publico.
 - No se etiqueta como información diaria ni en tiempo real.
 - Las vistas `/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory`
   permanecen separadas de los sandboxes sintéticos `XLF-DEMO` e `IYF-DEMO`.
+- Las vistas `/dashboard/etf/nport-catalog` y `/dashboard/etf/nport-sync`
+  muestran el catálogo trimestral y su control incremental, no operaciones
+  diarias del ETF.
 
 ### Public Document Checks
 
@@ -118,6 +121,7 @@ Desde ella se abre `/dashboard/reports`, un indice de
 `/dashboard/ipo-watch`, `/dashboard/sec-alerts`, `/dashboard/ipo-reviews`,
 `/dashboard/etf/xlf-demo`, `/dashboard/etf/iyf-demo`,
 `/dashboard/etf/nport-recent`, `/dashboard/etf-regulatory`,
+`/dashboard/etf/nport-catalog`, `/dashboard/etf/nport-sync`,
 `/dashboard/document-checks`, `/dashboard/rwa-watch`,
 `/dashboard/global-listings`, `/dashboard/global-alerts` y
 `/dashboard/issuer-confirmations`, ademas del paquete fijo

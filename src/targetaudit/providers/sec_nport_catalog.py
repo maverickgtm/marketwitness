@@ -5,6 +5,7 @@ import re
 import shutil
 import zipfile
 from dataclasses import dataclass
+from html import escape
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.error import URLError
@@ -198,6 +199,49 @@ def write_catalog_report(
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(render_catalog_report(releases, downloaded), encoding="utf-8")
+
+
+def render_catalog_html(
+    releases: list[SecNportDatasetRelease],
+    downloaded: SecNportDownloadedDataset | None = None,
+) -> str:
+    rows = "".join(
+        "<tr>"
+        f"<td><strong>{escape(release.quarter.upper())}</strong></td>"
+        f'<td><a href="{escape(release.download_url)}">Official ZIP</a></td>'
+        "<td>regulatory_periodic</td>"
+        "</tr>"
+        for release in releases
+    )
+    local_note = ""
+    if downloaded is not None:
+        local_note = (
+            '<p class="notice local"><strong>Downloaded locally:</strong> '
+            f"{escape(downloaded.release.quarter.upper())} was extracted for local "
+            "backfill evidence. Local file paths are intentionally not published.</p>"
+        )
+    return f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TargetAudit | SEC N-PORT Dataset Catalog</title><style>
+:root{{--bg:#071016;--panel:#0f1c24;--line:#20343d;--text:#edf1ef;--muted:#98abb0;--mint:#56daac;--gold:#f0bc62;}}
+*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,Arial,sans-serif}}header,main{{max-width:1120px;margin:auto;padding:30px 28px}}nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:13px}}a{{color:var(--mint);text-decoration:none}}h1{{font-size:clamp(36px,5vw,56px);line-height:1.06;margin:38px 0 14px}}h2{{margin-top:42px}}.lead{{color:var(--muted);font-size:17px;max-width:840px}}.cards{{display:flex;gap:16px;margin:35px 0}}.card,.notice,.table-wrap{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{padding:18px 20px;min-width:250px}}.card p{{margin:0;color:var(--muted)}}.card strong{{display:block;color:var(--mint);font-size:38px}}.notice{{padding:15px 18px;border-left:3px solid var(--gold);color:var(--muted)}}.local{{margin-top:16px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left}}th{{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:500}}@media(max-width:760px){{.cards{{display:block}}.card{{margin-bottom:12px}}}}
+</style></head><body><header><nav><a href="/dashboard/reports">Report Center</a> / ETF Evidence / SEC N-PORT Catalog</nav>
+<h1>Quarterly holdings.<br>Official catalog.</h1>
+<p class="lead">Published SEC Form N-PORT ZIP releases available for historical regulatory backfill of fund positions.</p>
+<section class="cards"><article class="card"><p>Published releases detected</p><strong>{len(releases)}</strong></article><article class="card"><p>Evidence frequency</p><strong>Quarterly</strong></article></section></header>
+<main><p class="notice">N-PORT data sets are periodic regulatory evidence. They are not daily portfolio updates, confirmed manager trades or real-time market signals.</p>{local_note}
+<h2>Available Data Sets</h2><div class="table-wrap"><table><thead><tr><th>Quarter</th><th>SEC source</th><th>Layer</th></tr></thead><tbody>{rows}</tbody></table></div>
+<p class="meta">Source: <a href="{escape(SEC_NPORT_DATASETS_URL)}">SEC Form N-PORT Data Sets</a></p></main></body></html>"""
+
+
+def write_catalog_html(
+    path: str | Path,
+    releases: list[SecNportDatasetRelease],
+    downloaded: SecNportDownloadedDataset | None = None,
+) -> None:
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(render_catalog_html(releases, downloaded), encoding="utf-8")
 
 
 def _extract_dataset_archive(archive: Path, extracted: Path, force: bool) -> None:

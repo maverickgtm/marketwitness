@@ -10,6 +10,7 @@ from targetaudit.providers.sec_nport_catalog import (
 from targetaudit.providers.sec_nport import SecNportDataError
 from targetaudit.providers.sec_nport_dataset import REQUIRED_TABLES
 from targetaudit.providers.sec_nport_sync import (
+    render_sync_html,
     render_sync_report,
     sync_dataset_releases,
 )
@@ -29,12 +30,16 @@ class SecNportSyncProviderTests(unittest.TestCase):
             )
             state = (root / "state.csv").read_text(encoding="utf-8")
             report = render_sync_report(sync, root / "state.csv")
+            page = render_sync_html(sync)
 
         self.assertTrue(sync.initialized_baseline)
         self.assertEqual(called, [])
         self.assertEqual(sync.downloaded, ())
         self.assertIn("baseline_not_downloaded", state)
         self.assertIn("initialized the baseline without automatically downloading", report)
+        self.assertIn("New quarters.", page)
+        self.assertIn("not daily ETF portfolio activity", page)
+        self.assertIn("baseline_not_downloaded", page)
 
     def test_downloads_only_release_first_observed_after_baseline(self) -> None:
         downloads = []

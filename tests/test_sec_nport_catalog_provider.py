@@ -12,6 +12,7 @@ from targetaudit.providers.sec_nport_catalog import (
     download_dataset_release,
     fetch_dataset_catalog,
     load_dataset_catalog,
+    render_catalog_html,
     render_catalog_report,
     select_dataset_release,
 )
@@ -21,10 +22,14 @@ class SecNportCatalogProviderTests(unittest.TestCase):
     def test_reads_official_shaped_quarterly_catalog(self) -> None:
         releases = load_dataset_catalog(Path("data/samples/sec-nport-catalog.html"))
         report = render_catalog_report(releases)
+        page = render_catalog_html(releases)
 
         self.assertEqual([release.quarter for release in releases], ["2026q1", "2025q4", "2025q3"])
         self.assertTrue(releases[0].download_url.endswith("/2026q1_nport.zip"))
         self.assertIn("not a daily holdings feed", report)
+        self.assertIn("Quarterly holdings.", page)
+        self.assertIn("not daily portfolio updates", page)
+        self.assertIn("2026Q1", page)
 
     def test_selects_requested_published_quarter(self) -> None:
         releases = load_dataset_catalog(Path("data/samples/sec-nport-catalog.html"))

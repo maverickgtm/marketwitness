@@ -123,6 +123,8 @@ class ApiTests(unittest.TestCase):
             ("etf-holdings-activity.html", "XLF Holdings Sandbox generated page"),
             ("etf-holdings-iyf-activity.html", "IYF Holdings Sandbox generated page"),
             ("etf-holdings-regulatory-activity.html", "N-PORT Recent Filing generated page"),
+            ("nport-dataset-catalog.html", "N-PORT Dataset Catalog generated page"),
+            ("nport-sync.html", "N-PORT Sync Status generated page"),
         ):
             (self.reports / filename).write_text(
                 f"<html><h1>{title}</h1></html>", encoding="utf-8"
@@ -277,7 +279,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Reproducible reports.", page.text)
         self.assertIn("Known routes only.", page.text)
-        self.assertIn("23 allowlisted pages", page.text)
+        self.assertIn("25 allowlisted pages", page.text)
         self.assertIn("/dashboard/ipo-watch", page.text)
         self.assertIn("/dashboard/sec-alerts", page.text)
         self.assertIn("/dashboard/ipo-reviews", page.text)
@@ -285,6 +287,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/etf/iyf-demo", page.text)
         self.assertIn("/dashboard/etf/nport-recent", page.text)
         self.assertIn("/dashboard/etf-regulatory", page.text)
+        self.assertIn("/dashboard/etf/nport-catalog", page.text)
+        self.assertIn("/dashboard/etf/nport-sync", page.text)
         self.assertIn("/dashboard/document-checks", page.text)
         self.assertIn("/dashboard/rwa-watch", page.text)
         self.assertIn("/dashboard/global-listings", page.text)
@@ -391,6 +395,8 @@ class ApiTests(unittest.TestCase):
             "/dashboard/etf/xlf-demo": "XLF Holdings Sandbox generated page",
             "/dashboard/etf/iyf-demo": "IYF Holdings Sandbox generated page",
             "/dashboard/etf/nport-recent": "N-PORT Recent Filing generated page",
+            "/dashboard/etf/nport-catalog": "N-PORT Dataset Catalog generated page",
+            "/dashboard/etf/nport-sync": "N-PORT Sync Status generated page",
         }
 
         for route, marker in pages.items():

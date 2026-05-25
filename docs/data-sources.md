@@ -451,6 +451,9 @@ El comando `sec-nport-sync` inicializa un estado local sin descargar el
 historico existente y, en revisiones posteriores, descarga unicamente ZIP
 publicados por primera vez desde esa linea base. Puede regenerar la serie
 N-PORT de un fondo con los trimestres ya disponibles localmente.
+El bundle Open Edition expone los reportes generados de estos controles en
+`/dashboard/etf/nport-catalog` y `/dashboard/etf/nport-sync`, manteniendo
+visible que son evidencia regulatoria trimestral y no un feed diario.
 En la verificacion del `2026-05-24`, el catalogo oficial publico `26`
 releases, desde `2019q4` hasta `2026q1`.
 

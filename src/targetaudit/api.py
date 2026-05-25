@@ -75,6 +75,8 @@ ETF_ACTIVITY_REPORTS = {
     "xlf-demo": "etf-holdings-activity.html",
     "iyf-demo": "etf-holdings-iyf-activity.html",
     "nport-recent": "etf-holdings-regulatory-activity.html",
+    "nport-catalog": "nport-dataset-catalog.html",
+    "nport-sync": "nport-sync.html",
 }
 FINANCIALS_AUDIT_REPORTS = {
     "target-import": "authorized-targets-import.html",

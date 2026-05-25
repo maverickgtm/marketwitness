@@ -144,7 +144,7 @@ def report_center_html() -> str:
     <p class="lead">A reading room for the report pages included in the tested Open Edition bundle. It exposes approved dashboard routes, never arbitrary files from the generated-report directory.</p>
     <p class="meta">Open Edition bundle / Weekly GitHub Actions build / 30-day artifact retention</p>
     <section class="cards">
-      <article class="card"><p>Generated report routes</p><strong>23 allowlisted pages</strong></article>
+      <article class="card"><p>Generated report routes</p><strong>25 allowlisted pages</strong></article>
       <article class="card"><p>Bundle schedule</p><strong>Weekly + manual</strong></article>
       <article class="card"><p>Required paid data</p><strong>None</strong></article>
     </section>
@@ -160,6 +160,8 @@ def report_center_html() -> str:
       <article class="report"><span class="pill fixture">synthetic ETF snapshot</span><h3>IYF Holdings Sandbox</h3><p>A second financial ETF comparison to test multi-fund activity reporting.</p><small>Synthetic snapshots only; no automated iShares collection.</small><a href="/dashboard/etf/iyf-demo">Open report</a></article>
       <article class="report"><span class="pill regulatory">regulatory periodic</span><h3>N-PORT Recent Filing</h3><p>A recent-period comparison from the SEC regulatory evidence workflow.</p><small>Periodic filing evidence, not daily portfolio activity.</small><a href="/dashboard/etf/nport-recent">Open report</a></article>
       <article class="report"><span class="pill regulatory">regulatory periodic</span><h3>ETF Regulatory Holdings</h3><p>N-PORT period comparison for the regulatory ETF evidence layer.</p><small>Periodic filing evidence, not real-time ETF trading.</small><a href="/dashboard/etf-regulatory">Open report</a></article>
+      <article class="report"><span class="pill regulatory">SEC quarterly catalog</span><h3>N-PORT Dataset Catalog</h3><p>Published SEC ZIP releases available for controlled historical holdings backfill.</p><small>Official regulatory periods, never daily manager activity.</small><a href="/dashboard/etf/nport-catalog">Open report</a></article>
+      <article class="report"><span class="pill regulatory">incremental control</span><h3>N-PORT Sync Status</h3><p>Local-baseline workflow that tracks and downloads only newly observed SEC quarters.</p><small>Download state is operational evidence, not a position signal.</small><a href="/dashboard/etf/nport-sync">Open report</a></article>
       <article class="report"><span class="pill regulatory">document check</span><h3>Public Document Checks</h3><p>Documentary corroboration example for monitored listing candidates.</p><small>A document match does not confirm admission or trading.</small><a href="/dashboard/document-checks">Open report</a></article>
       <article class="report"><span class="pill fixture">synthetic sandbox</span><h3>RWA Watch Sandbox</h3><p>Auditable tokenized-asset observation format using synthetic rows only.</p><small>No live xStocks, venue or issuer feed is collected.</small><a href="/dashboard/rwa-watch">Open report</a></article>
       <article class="report"><span class="pill regulatory">international coverage</span><h3>Global Listings Watch</h3><p>Official signal map and navigation for international listing and filing monitors.</p><small>Jurisdictions retain separate confirmation rules and blocked paths.</small><a href="/dashboard/global-listings">Open report</a></article>

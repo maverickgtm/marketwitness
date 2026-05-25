@@ -304,7 +304,7 @@ nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font
 <p class="meta"><span>{escape(head.fund_symbol)} / {escape(head.issuer)}</span><span>Current {head.effective_date.isoformat()}</span><span>Previous {previous[0].effective_date.isoformat()}</span><span>{escape(head.source_frequency)}</span></p>
 <section class="cards">{cards}</section></header>
 <main><p class="notice">Observed holdings changes are not confirmed manager trades. They can reflect creations/redemptions, corporate actions, derivatives, cash or publication adjustments. Demo snapshots are synthetic until an approved official connector is enabled.</p>
-<nav class="views" aria-label="ETF evidence views"><a href="/dashboard/etf/xlf-demo">XLF sandbox</a><a href="/dashboard/etf/iyf-demo">IYF sandbox</a><a href="/dashboard/etf/nport-recent">N-PORT recent</a><a href="/dashboard/etf-regulatory">N-PORT history</a></nav>
+<nav class="views" aria-label="ETF evidence views"><a href="/dashboard/etf/xlf-demo">XLF sandbox</a><a href="/dashboard/etf/iyf-demo">IYF sandbox</a><a href="/dashboard/etf/nport-recent">N-PORT recent</a><a href="/dashboard/etf-regulatory">N-PORT history</a><a href="/dashboard/etf/nport-catalog">N-PORT catalog</a><a href="/dashboard/etf/nport-sync">N-PORT sync</a></nav>
 <h2>Changed positions</h2><div class="table-wrap"><table><thead><tr><th>Change</th><th>Holding</th><th>Previous shares</th><th>Current shares</th><th>Delta</th><th>Previous weight</th><th>Current weight</th><th>Delta</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p class="meta">Report cutoff {as_of.isoformat()} / <a href="{escape(head.source_url)}">current snapshot source</a></p></main></body></html>"""
 

@@ -90,6 +90,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
   con extraccion segura y archivos conservados fuera de Git.
 - [x] Ejecucion programada que consulta nuevos trimestres `N-PORT`, descarga
   solo releases nuevas y regenera la serie `XLF` cuando hay evidencia local.
+- [x] Vistas HTML públicas del catálogo y del estado incremental `N-PORT`,
+  expuestas como evidencia trimestral y no como actividad diaria.
 
 ## Milestone 5: Operacion Publica (`v1.0`)
 

@@ -685,8 +685,10 @@ Los identificadores `XLF` anteriores fueron confirmados en un filing
 
 El dashboard publica únicamente vistas conocidas para esta sección:
 `/dashboard/etf/xlf-demo` y `/dashboard/etf/iyf-demo` para fixtures
-sintéticos, y `/dashboard/etf/nport-recent` junto a
-`/dashboard/etf-regulatory` para evidencia SEC periódica.
+sintéticos; `/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory`
+para comparaciones SEC periódicas; y `/dashboard/etf/nport-catalog` junto a
+`/dashboard/etf/nport-sync` para auditar el catálogo trimestral y el estado
+incremental sin presentarlos como actividad diaria.
 
 Para reconstruir varios periodos desde ZIP trimestrales SEC extraidos
 localmente, se puede repetir `--dataset-dir` por trimestre:
@@ -696,6 +698,7 @@ export TARGETAUDIT_SEC_USER_AGENT="TargetAudit tu-correo@ejemplo.com"
 PYTHONPATH=src python3 -m targetaudit sec-nport-datasets \
   --output build/live/nport-dataset-catalog.csv \
   --report build/live/nport-dataset-catalog.md \
+  --html build/live/nport-dataset-catalog.html \
   --download-quarter 2026q1 \
   --storage-dir data/raw/etf/nport/datasets
 
@@ -724,6 +727,7 @@ PYTHONPATH=src python3 -m targetaudit sec-nport-sync \
   --state data/raw/etf/nport/sync-state.csv \
   --storage-dir data/raw/etf/nport/datasets \
   --report build/live/nport-sync.md \
+  --html build/live/nport-sync.html \
   --as-of YYYY-MM-DD \
   --series-id S000006411 \
   --fund-symbol XLF \
@@ -850,7 +854,7 @@ reales. La ruta
 `/dashboard/market-context` muestra el benchmark `XLF` en un widget atribuido
 de TradingView que no alimenta el scorecard ni se almacena como evidencia. La
 ruta
-`/dashboard/reports` organiza veintitres paginas generadas permitidas del
+`/dashboard/reports` organiza veinticinco paginas generadas permitidas del
 bundle semanal de Open Edition y enlaza sus controles de publicacion; no
 expone libremente archivos del directorio de construccion. Entre ellas se
 encuentran `Global Listings Alerts`, que compara señales internacionales para
@@ -946,6 +950,8 @@ Endpoints iniciales:
 | `/dashboard/etf/iyf-demo` | Diferencias de holdings sintéticas para `IYF-DEMO`, sin recolección automatizada |
 | `/dashboard/etf/nport-recent` | Comparación periódica reciente generada desde el flujo SEC N-PORT |
 | `/dashboard/etf-regulatory` | Actividad regulatoria ETF basada en periodos N-PORT |
+| `/dashboard/etf/nport-catalog` | Catálogo trimestral SEC N-PORT de releases ZIP para backfill regulatorio |
+| `/dashboard/etf/nport-sync` | Estado incremental de releases N-PORT observados y descargas locales controladas |
 | `/dashboard/document-checks` | Verificaciones documentales regulatorias generadas |
 | `/dashboard/global-listings` | Mapa navegable de cobertura y monitores oficiales internacionales |
 | `/dashboard/global-alerts` | Cola comparada de cambios en señales de listings y documentos internacionales |
@@ -1019,6 +1025,8 @@ build/demo/scorecard-readiness.md
 build/demo/scorecard-readiness.html
 build/demo/scorecard-release.md
 build/demo/scorecard-release.html
+build/demo/nport-dataset-catalog.html
+build/demo/nport-sync.html
 build/demo/alpha-vantage-prices.csv
 build/demo/alpha-vantage-prices.md
 build/demo/alpha-vantage-prices.html

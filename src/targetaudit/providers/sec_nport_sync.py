@@ -4,6 +4,7 @@ import csv
 import re
 from dataclasses import dataclass
 from datetime import date
+from html import escape
 from pathlib import Path
 from typing import Callable, Optional
 
@@ -164,6 +165,43 @@ def write_sync_report(path: str | Path, sync: SecNportSyncRun, state_path: str |
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(render_sync_report(sync, state_path), encoding="utf-8")
+
+
+def render_sync_html(sync: SecNportSyncRun) -> str:
+    rows = "".join(
+        "<tr>"
+        f"<td><strong>{escape(entry.quarter.upper())}</strong></td>"
+        f'<td><span class="pill {escape(entry.status)}">{escape(entry.status)}</span></td>'
+        f"<td>{escape(entry.first_seen_on.isoformat())}</td>"
+        f"<td>{escape(entry.last_seen_on.isoformat())}</td>"
+        "</tr>"
+        for entry in sync.entries
+    )
+    baseline_note = (
+        "<p class=\"notice\">This run initialized a local baseline without "
+        "automatically downloading historical releases already present in the SEC catalog.</p>"
+        if sync.initialized_baseline
+        else ""
+    )
+    return f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TargetAudit | SEC N-PORT Sync Status</title><style>
+:root{{--bg:#071016;--panel:#0f1c24;--line:#20343d;--text:#edf1ef;--muted:#98abb0;--mint:#56daac;--gold:#f0bc62;--blue:#62a6ff;}}
+*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,Arial,sans-serif}}header,main{{max-width:1140px;margin:auto;padding:30px 28px}}nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:13px}}a{{color:var(--mint);text-decoration:none}}h1{{font-size:clamp(36px,5vw,56px);line-height:1.06;margin:38px 0 14px}}h2{{margin-top:42px}}.lead{{color:var(--muted);font-size:17px;max-width:860px}}.cards{{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:35px 0}}.card,.notice,.table-wrap{{background:var(--panel);border:1px solid var(--line);border-radius:14px}}.card{{padding:18px 20px}}.card p{{margin:0;color:var(--muted)}}.card strong{{display:block;color:var(--mint);font-size:36px}}.notice{{padding:15px 18px;border-left:3px solid var(--gold);color:var(--muted);margin-bottom:16px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left}}th{{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:500}}.pill{{display:inline-block;border-radius:999px;padding:5px 9px;font-size:12px}}.baseline_not_downloaded{{color:var(--blue);background:rgba(98,166,255,.12)}}.available_local,.downloaded_new_release{{color:var(--mint);background:rgba(86,218,172,.12)}}@media(max-width:850px){{.cards{{grid-template-columns:repeat(2,1fr)}}.table-wrap{{overflow-x:auto}}table{{min-width:660px}}}}
+</style></head><body><header><nav><a href="/dashboard/reports">Report Center</a> / ETF Evidence / SEC N-PORT Sync</nav>
+<h1>New quarters.<br>Controlled downloads.</h1>
+<p class="lead">Incremental state for SEC N-PORT quarterly releases: establish a baseline, then acquire only newly observed publications for local backfill.</p>
+<p class="meta">Observed on {escape(sync.observed_on.isoformat())}</p>
+<section class="cards"><article class="card"><p>Tracked releases</p><strong>{len(sync.entries)}</strong></article><article class="card"><p>New this run</p><strong>{len(sync.newly_published)}</strong></article><article class="card"><p>Downloaded</p><strong>{len(sync.downloaded)}</strong></article><article class="card"><p>Locally usable</p><strong>{len(sync.available_dirs)}</strong></article></section></header>
+<main><p class="notice">This monitor tracks quarterly regulatory evidence, not daily ETF portfolio activity or trading instructions. Downloads remain local evidence outside the published dataset.</p>{baseline_note}
+<h2>Tracked Releases</h2><div class="table-wrap"><table><thead><tr><th>Quarter</th><th>Status</th><th>First seen</th><th>Last seen</th></tr></thead><tbody>{rows}</tbody></table></div>
+<p class="meta">Source: <a href="{escape(SEC_NPORT_DATASETS_URL)}">SEC Form N-PORT Data Sets</a></p></main></body></html>"""
+
+
+def write_sync_html(path: str | Path, sync: SecNportSyncRun) -> None:
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(render_sync_html(sync), encoding="utf-8")
 
 
 def _load_state(path: Path) -> dict[str, SecNportSyncEntry]:

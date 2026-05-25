@@ -208,9 +208,10 @@ from .providers.sec_nport_catalog import (
     load_dataset_catalog,
     select_dataset_release,
     write_catalog_csv,
+    write_catalog_html,
     write_catalog_report,
 )
-from .providers.sec_nport_sync import sync_dataset_releases, write_sync_report
+from .providers.sec_nport_sync import sync_dataset_releases, write_sync_html, write_sync_report
 from .providers.sec_ipo import (
     fetch_daily_master_index,
     load_master_index,
@@ -801,6 +802,7 @@ def main() -> int:
     )
     nport_datasets_parser.add_argument("--output", required=True, help="Dataset catalog CSV.")
     nport_datasets_parser.add_argument("--report", required=True, help="Dataset catalog report.")
+    nport_datasets_parser.add_argument("--html", help="Optional dataset catalog HTML page.")
     nport_datasets_parser.add_argument(
         "--user-agent",
         help="SEC contact user agent; alternatively set TARGETAUDIT_SEC_USER_AGENT.",
@@ -831,6 +833,7 @@ def main() -> int:
         "--storage-dir", required=True, help="Private root for ZIP and extracted tables."
     )
     nport_sync_parser.add_argument("--report", required=True, help="Synchronization report.")
+    nport_sync_parser.add_argument("--html", help="Optional synchronization HTML page.")
     nport_sync_parser.add_argument("--as-of", required=True, help="Observation date in YYYY-MM-DD.")
     nport_sync_parser.add_argument(
         "--user-agent",
@@ -1775,6 +1778,8 @@ def main() -> int:
                 )
             write_catalog_csv(args.output, releases)
             write_catalog_report(args.report, releases, downloaded)
+            if args.html:
+                write_catalog_html(args.html, releases, downloaded)
         except (SecNportDataError, ValueError) as exc:
             parser.error(str(exc))
         message = f"Wrote SEC N-PORT catalog for {len(releases)} quarterly releases"
@@ -1810,6 +1815,8 @@ def main() -> int:
                 releases, args.state, args.storage_dir, observed_on, args.user_agent
             )
             write_sync_report(args.report, sync, args.state)
+            if args.html:
+                write_sync_html(args.html, sync)
             outputs = []
             regeneration_waiting = False
             if all(regeneration):
