@@ -133,6 +133,14 @@ from .providers.tsx import (
     write_tsx_html,
     write_tsx_report,
 )
+from .providers.jpx import (
+    JpxDataError,
+    fetch_jpx_new_listings,
+    load_jpx_snapshot,
+    write_jpx_csv,
+    write_jpx_html,
+    write_jpx_report,
+)
 from .providers.sgx import (
     SgxDataError,
     fetch_sgx_prospectuses,
@@ -953,6 +961,20 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Report cutoff in YYYY-MM-DD format.",
     )
+    jpx_parser = subparsers.add_parser(
+        "jpx-monitor", help="Read official JPX New Listings records."
+    )
+    jpx_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    jpx_parser.add_argument("--report", required=True, help="Markdown report path.")
+    jpx_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    jpx_parser.add_argument(
+        "--snapshot", help="Read a saved official JPX HTML page instead of requesting JPX."
+    )
+    jpx_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Report cutoff in YYYY-MM-DD format.",
+    )
     sgx_parser = subparsers.add_parser(
         "sgx-monitor", help="Read official SGX IPO Prospectus records."
     )
@@ -1086,6 +1108,23 @@ def main() -> int:
         except (TsxDataError, ValueError) as exc:
             parser.error(str(exc))
         print(f"Wrote TSX monitor for {len(listings)} official records to {args.report}.")
+        return 0
+
+    if args.command == "jpx-monitor":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            listings = (
+                load_jpx_snapshot(args.snapshot, as_of)
+                if args.snapshot
+                else fetch_jpx_new_listings()
+            )
+            write_jpx_csv(args.output, listings)
+            write_jpx_report(args.report, listings, as_of)
+            if args.html:
+                write_jpx_html(args.html, listings, as_of)
+        except (JpxDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(f"Wrote JPX monitor for {len(listings)} official records to {args.report}.")
         return 0
 
     if args.command == "sgx-monitor":

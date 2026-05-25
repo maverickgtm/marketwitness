@@ -329,6 +329,12 @@ demo:
 		--report build/demo/tsx-monitor.md \
 		--html build/demo/tsx-monitor.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit jpx-monitor \
+		--snapshot data/samples/jpx-new-listings.html \
+		--output build/demo/jpx-monitor.csv \
+		--report build/demo/jpx-monitor.md \
+		--html build/demo/jpx-monitor.html \
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sgx-monitor \
 		--snapshot data/samples/sgx-ipo-prospectus.json \
 		--output build/demo/sgx-monitor.csv \

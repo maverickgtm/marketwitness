@@ -447,6 +447,17 @@ cuando la propia página marca la solicitud como retirada.
 `source_url` y `detail_url`. El único estado emitido es `listed`, ya que
 esta fuente documenta cotizaciones completadas y no solicitudes futuras.
 
+## JPX New Listings HTML Feed
+
+`jpx-monitor` parsea la tabla oficial de Tokyo Stock Exchange y produce:
+`company_name`, `security_code`, `market_segment`, `approval_date`,
+`listing_date`, `status`, `observed_on`, `source_url` y `outline_url`.
+
+El estado es `approved_pending_listing` cuando JPX ya publico la aprobacion
+pero la fecha de listing aun es futura, y `listed` cuando la fecha publicada
+ya fue alcanzada. Este monitor confirma hitos JPX; no sustituye el futuro
+collector de documentos de oferta `EDINET`.
+
 ## SGX IPO Prospectus JSON Feed
 
 `sgx-monitor` consulta el API usado por la página oficial `IPO Prospectus` y

@@ -35,6 +35,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Conector ASX `Upcoming floats and listings` desde HTML oficial.
 - [x] Conector TSX `New Company Listings` como confirmacion de listings.
 - [x] Conector SGX `IPO Prospectus` mediante API JSON oficial.
+- [x] Monitor JPX `New Listings` para aprobaciones y fechas de listing de Tokio.
 - [x] Historial y diff diario de los cinco monitores globales con cola de revision.
 - [x] Ingesta de comunicados oficiales para confirmar listings.
 - [x] Validacion de splits y cambios de ticker.
@@ -140,7 +141,7 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Revision final de brechas en Corea, Golfo y Sudafrica, incorporando
   `OpenDART`/`KRX` y dejando los mercados sin API confirmada en observacion.
 - [ ] Implementar un monitor regulatorio japones sobre el API oficial
-  `EDINET` con confirmacion `JPX New Listings`, y validar un conector adicional
+  `EDINET`, integrar JPX al diff diario y validar un conector adicional
   de ofertas de Singapur sobre datasets/API de `MAS OPERA`.
 - [ ] Implementar collectors de ofertas de Brasil (`CVM Dados Abertos`) y
   prospectos europeos (`ESMA Prospectus III`) con atribucion visible.

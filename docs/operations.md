@@ -673,6 +673,22 @@ de la segunda, la bandeja marca evidencia nueva, modificada o removida del
 feed para revisión. Una remoción nunca se promueve automáticamente a retirada,
 admisión o cotización completada.
 
+## Confirmacion JPX De Tokio
+
+El monitor JPX adicional lee la pagina oficial `New Listings` y genera
+confirmaciones de aprobacion o fecha de listing con evidencia enlazada:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit jpx-monitor \
+  --output data/raw/global/jpx-monitor.csv \
+  --report build/live/jpx-monitor.md \
+  --html build/live/jpx-monitor.html
+```
+
+Se ejecuta independientemente mientras se implementan `EDINET` y la
+integracion al diff global diario. Una aprobacion JPX no es una instruccion de
+inversion.
+
 ## Automatizaciones Locales Activas
 
 En la aplicacion Codex se configuraron cuatro ejecuciones recurrentes locales:

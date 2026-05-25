@@ -239,6 +239,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
       <a href="lse-fca-check.html">Open LSE / FCA check</a>
       <a href="asx-monitor.html">Open ASX live monitor</a>
       <a href="tsx-monitor.html">Open TSX listing confirmations</a>
+      <a href="jpx-monitor.html">Open JPX listing confirmations</a>
       <a href="sgx-monitor.html">Open SGX prospectus monitor</a>
       <a href="issuer-confirmations.html">Open issuer confirmations</a>
       <a href="etf-holdings-activity.html">Open ETF holdings activity</a>

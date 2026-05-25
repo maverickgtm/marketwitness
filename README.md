@@ -358,7 +358,7 @@ Estados Unidos. Su primer mapa de fuentes cubre:
 - `ASX` / Australia: monitor HTML oficial de upcoming floats and listings.
 - `TSX` / Canada: monitor HTML oficial de nuevas companias ya listadas.
 - `SGX` / Singapur: catalogo oficial de prospectos IPO.
-- `JPX` / Japon: `EDINET` para documentos y `JPX New Listings` para confirmacion de Tokio, en cola de implementacion.
+- `JPX` / Japon: monitor `JPX New Listings` implementado para confirmacion de Tokio; `EDINET` y diff diario en cola.
 - `CVM` / Brasil: portal oficial abierto de ofertas publicas, en cola de implementacion.
 - `ESMA` / Union Europea: prospectos regulatorios para Alemania, Paises Bajos e Italia, en cola de implementacion.
 - `KRX` / Corea del Sur: `OpenDART` para registros de oferta y `KRX OPEN API` para evidencia de mercado a validar, en cola de implementacion.
@@ -376,10 +376,10 @@ completadas; no lo usa para predecir solicitudes futuras ni automatiza
 Singapur ya consulta el catálogo JSON oficial `SGX IPO Prospectus`; registra
 documentos publicados para revisión y no confirma automáticamente una
 cotización completada.
-Japon se incorpora como prioridad pendiente: el API oficial `EDINET` permite
-buscar securities registration statements y `JPX New Listings` permite
-confirmar fechas de aprobacion o listing en Tokio. Aun faltan los collectors
-con atribucion y controles de acceso responsable.
+Japon sigue como prioridad combinada: el monitor implementado `JPX New
+Listings` confirma fechas de aprobacion o listing en Tokio. Aun falta el
+collector `EDINET` para securities registration statements y su integracion
+al diff diario.
 Brasil y la Union Europea se incorporan como prioridades pendientes:
 `CVM Dados Abertos` ofrece ofertas publicas estructuradas y `ESMA Prospectus
 III` permite recuperar prospectos europeos con reproduccion atribuida. Ambos
@@ -435,6 +435,15 @@ PYTHONPATH=src python3 -m targetaudit tsx-monitor \
   --output data/raw/global/tsx-monitor.csv \
   --report build/live/tsx-monitor.md \
   --html build/live/tsx-monitor.html
+```
+
+Para leer aprobaciones y confirmaciones JPX en vivo:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit jpx-monitor \
+  --output data/raw/global/jpx-monitor.csv \
+  --report build/live/jpx-monitor.md \
+  --html build/live/jpx-monitor.html
 ```
 
 Para leer prospectos SGX en vivo:
@@ -921,6 +930,9 @@ build/demo/asx-monitor.html
 build/demo/tsx-monitor.csv
 build/demo/tsx-monitor.md
 build/demo/tsx-monitor.html
+build/demo/jpx-monitor.csv
+build/demo/jpx-monitor.md
+build/demo/jpx-monitor.html
 build/demo/sgx-monitor.csv
 build/demo/sgx-monitor.md
 build/demo/sgx-monitor.html

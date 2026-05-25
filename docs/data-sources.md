@@ -301,7 +301,7 @@ Revision inicial al `2026-05-24`; ampliaciones internacionales al `2026-05-25`:
 | Australia | ASX Upcoming floats and listings | Nuevos listings con solicitud formal recibida, fecha anticipada y retiros | Feed HTML oficial implementado |
 | Canada | TSX New Company Listings | Nuevas companias ya listadas | Feed HTML oficial implementado como confirmación; `SEDAR+` bloqueado para automatizacion publica |
 | Singapur | SGX IPO Prospectus API | Prospectos IPO publicados | Feed JSON oficial implementado |
-| Japon / Tokio | FSA `EDINET` Documents API y JPX `New Listings` | Documentos de ofertas mas fechas oficiales de aprobacion/listing TSE | Conector prioritario pendiente de collector combinado y atribucion |
+| Japon / Tokio | FSA `EDINET` Documents API y JPX `New Listings` | Documentos de ofertas mas fechas oficiales de aprobacion/listing TSE | Monitor JPX implementado; EDINET y diff diario pendientes para completar el conector |
 | Brasil | CVM `Portal Dados Abertos` | Registros estructurados de ofertas publicas de distribucion | Conector prioritario pendiente para API/dataset oficial |
 | UE: Alemania, Paises Bajos e Italia | ESMA `Prospectus III` | Prospectos y documentos relacionados notificados por autoridades nacionales | Conector prioritario pendiente; reproduccion permitida con fuente y rotulo de transformacion |
 | Corea del Sur | FSS `OpenDART` y KRX `OPEN API` | Securities registration statements/ofertas mas estadisticas oficiales de mercado | Conector prioritario pendiente; validar output KRX del endpoint usado |
@@ -311,11 +311,12 @@ Las etapas no son intercambiables entre jurisdicciones. Por ejemplo, un
 Upcoming Listings solo confirma que ASX recibio una solicitud formal y presenta
 una fecha anticipada.
 
-El API oficial `EDINET` de la Financial Services Agency japonesa permite
-buscar y descargar documentos regulatorios. Un securities registration
-statement abre revision de una posible oferta; `JPX New Listings` puede
-confirmar aprobacion o fecha de listing en Tokio. Ninguno aporta targets de
-analistas.
+El monitor implementado de `JPX New Listings` confirma aprobaciones y fechas
+de listing en Tokio desde la tabla oficial, con enlaces a sus outlines. El API
+oficial `EDINET` de la Financial Services Agency japonesa permite buscar y
+descargar documentos regulatorios y permanece como siguiente collector: un
+securities registration statement abre revision de una posible oferta.
+Ninguno aporta targets de analistas.
 
 El portal abierto de `CVM` permite construir una cola brasileña de ofertas
 publicas. El registro `Prospectus III` de `ESMA` permite una cola europea

@@ -10,7 +10,7 @@ cuando la fuente regional existente ya es la mejor ruta.
 
 | Mercado | Hallazgo Oficial | Decision TargetAudit |
 |---|---|---|
-| Tokio | `JPX New Listings` publica fecha de listing, fecha de aprobacion, emisor, codigo, segmento y datos de oferta; `EDINET` aporta documentos regulatorios previos | Mejorar el conector prioritario japones a un flujo de oferta `EDINET` mas confirmacion de listing `JPX` |
+| Tokio | `JPX New Listings` publica fecha de listing, fecha de aprobacion, emisor, codigo, segmento y datos de oferta; `EDINET` aporta documentos regulatorios previos | Monitor JPX implementado; mantener prioritario hasta sumar flujo documental `EDINET` y diff diario |
 | Toronto | `TSX New Company Listings` ya confirma nuevas cotizaciones; `SEDAR+` muestra filings pero prohibe scraping, automatizacion y construir bases sin permiso | Mantener el feed TSX activo para listings completados y bloquear expansion prospectiva automatizada basada en SEDAR+ |
 | Frankfurt | BaFin publica prospectos aprobados y remite al registro `ESMA`; ESMA ya ofrece la ruta A2A atribuible para Alemania | Mantener Frankfurt dentro del conector regional `ESMA`, con BaFin como corroboracion documental, sin crear conector duplicado |
 
@@ -36,6 +36,10 @@ La combinacion correcta para el producto es:
 
 Esto mejora IPO Watch internacional sin confundir un filing con negociacion
 iniciada.
+
+Implementado el `2026-05-25`: `jpx-monitor` procesa la tabla JPX, distingue
+`approved_pending_listing` de `listed` segun la fecha publicada y enlaza el
+outline oficial. La etapa `EDINET` permanece pendiente.
 
 ### Ruta Que No Entra En Open Edition
 
@@ -85,7 +89,7 @@ El diseño previsto es:
 
 | Capacidad | Antes | Despues De Esta Revision |
 |---|---|---|
-| Tokio IPO Watch | `EDINET` pendiente para documentos | `EDINET` mas `JPX New Listings` como diseño de deteccion y confirmacion |
+| Tokio IPO Watch | `EDINET` pendiente para documentos | Confirmacion `JPX New Listings` implementada; deteccion `EDINET` pendiente |
 | Toronto Watch | Feed TSX de listings completados | Igual, con bloqueo documentado de `SEDAR+` automatizado |
 | Frankfurt Watch | Cubierto regionalmente por `ESMA` | Igual, con `BaFin` definido como corroboracion nacional |
 | Rankings de analistas | Sin dataset gratuito publicable | Sin cambio; ninguna de estas fuentes aporta price targets individuales reutilizables |
