@@ -213,6 +213,11 @@ from .operations_quality import (
     write_quality_html,
     write_quality_report,
 )
+from .open_edition import (
+    build_open_edition_snapshot,
+    write_open_edition_html,
+    write_open_edition_report,
+)
 from .release_center import (
     build_release_decision,
     write_release_html,
@@ -437,6 +442,18 @@ def main() -> int:
         "--as-of",
         default=date.today().isoformat(),
         help="Governance review cutoff in YYYY-MM-DD format.",
+    )
+    open_parser = subparsers.add_parser(
+        "open-edition",
+        help="Render capabilities available without paid data subscriptions.",
+    )
+    open_parser.add_argument("--registry", required=True, help="Provider registry CSV.")
+    open_parser.add_argument("--report", required=True, help="Markdown Open Edition report path.")
+    open_parser.add_argument("--html", help="Optional Open Edition HTML output path.")
+    open_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Open Edition review cutoff in YYYY-MM-DD format.",
     )
     approval_parser = subparsers.add_parser(
         "provider-approvals",
@@ -1110,6 +1127,22 @@ def main() -> int:
         print(
             f"Wrote source governance for {len(providers)} providers "
             f"to {args.report}."
+        )
+        return 0
+
+    if args.command == "open-edition":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            providers = load_source_registry(args.registry)
+            snapshot = build_open_edition_snapshot(providers, as_of)
+            write_open_edition_report(args.report, snapshot)
+            if args.html:
+                write_open_edition_html(args.html, snapshot)
+        except (SourceRegistryDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote Open Edition report with {snapshot['zero_cost_available_count']} "
+            f"no-cost capabilities to {args.report}."
         )
         return 0
 

@@ -6,6 +6,32 @@ Plataforma abierta para evaluar, con datos verificables, la precision historica 
 la utilidad economica de los `price targets` publicados por analistas financieros
 en bancos y companias financieras cotizadas en Estados Unidos.
 
+## Open Edition: Funcional Sin Costos De Datos
+
+La edicion principal para GitHub no requiere suscripciones pagadas ni claves
+comerciales. Incluye:
+
+- `Financials Scorecard Sandbox` completo con fixtures creados por el proyecto.
+- `U.S. IPO Filing Watch` sobre filings públicos SEC EDGAR.
+- `ETF Regulatory Holdings` sobre datos públicos SEC N-PORT.
+- Verificaciones documentales regulatorias públicas mediante FCA NSM.
+
+Los rankings de analistas con observaciones reales permanecen como extensión
+opcional: el usuario puede aportar entradas autorizadas, pero TargetAudit no
+obliga a comprar Benzinga, Alpha Vantage, Nasdaq, NYSE ni S&P DJI para que el
+repositorio sea ejecutable y útil.
+
+```bash
+PYTHONPATH=src python3 -m targetaudit open-edition \
+  --registry data/samples/source_registry.csv \
+  --report build/demo/open-edition.md \
+  --html build/demo/open-edition.html \
+  --as-of 2026-05-24
+```
+
+Ver [Open Edition](docs/open-edition.md) para el alcance gratuito y sus
+límites metodológicos.
+
 TargetAudit nace de una pregunta sencilla: si una firma publica un precio
 objetivo para una accion, ?ese pronostico se cumplio y una estrategia basada en
 el habria superado una alternativa pasiva?
@@ -61,10 +87,11 @@ PYTHONPATH=src python3 -m targetaudit provider-approvals \
   --as-of YYYY-MM-DD
 ```
 
-El primer expediente sigue cinco candidatos: Benzinga, Alpha Vantage,
+El expediente opcional sigue cinco candidatos: Benzinga, Alpha Vantage,
 Nasdaq Daily List, NYSE y S&P DJI. Cuatro son críticos para habilitar targets,
-precios, acciones corporativas y universo histórico; ninguno está aprobado
-para salida pública todavía.
+precios, acciones corporativas y universo histórico de un ranking real;
+ninguno está aprobado para salida pública todavía, y ninguno es requisito
+para `Open Edition`.
 
 Una revisión humana documentada genera copias actualizadas del registro y la
 cola, manteniendo intactos los archivos base:
@@ -125,9 +152,10 @@ target reajustado ni asume continuidad entre tickers: esas decisiones exigen
 evidencia revisada. El demo usa eventos sintéticos exclusivamente para probar
 este bloqueo.
 
-### Evidencia De Precios Ajustados
+### Evidencia De Precios Ajustados Opcional
 
-TargetAudit incorpora un adaptador cache-first para `Alpha Vantage Daily
+Como extensión no requerida por `Open Edition`, TargetAudit incorpora un
+adaptador cache-first para `Alpha Vantage Daily
 Adjusted`. El endpoint entrega `high` y `low` operados junto con
 `adjusted close`; el adaptador deriva maximos y minimos ajustados usando el
 factor diario `adjusted_close / raw_close`, necesario para auditar si un
@@ -566,9 +594,10 @@ auditados en desarrollo:
   local atomico y regeneracion opcional de una serie ETF.
 - Importa exportaciones autorizadas de targets con manifiesto y cola de rechazos.
 
-Todavia no es un ranking de mercado listo para decisiones de inversion. Para
-publicar resultados reales hacen falta observaciones historicas licenciadas o
-documentadas una por una y precios ajustados cuya licencia permita su uso.
+La edición abierta ya es funcional como sandbox auditado y monitor regulatorio
+gratuito. No es un ranking real de mercado listo para decisiones de inversion:
+para publicar resultados de analistas reales hacen falta observaciones
+autorizadas y precios ajustados cuyo uso público esté permitido.
 
 ## Almacen Local De Corridas
 
@@ -615,11 +644,14 @@ python3 -m pip install -e ".[application]"
 export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
 export TARGETAUDIT_SOURCE_REGISTRY="data/samples/source_registry.csv"
 export TARGETAUDIT_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
+export TARGETAUDIT_GENERATED_REPORTS="build/demo"
 python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 ```
 
-Al abrir `http://127.0.0.1:8000/` se muestra el dashboard inicial
-`Financials Scorecard`, conectado a las corridas almacenadas. Incluye filtros
+Al abrir `http://127.0.0.1:8000/` se muestra la portada `Open Edition`, que
+distingue capacidades gratuitas y extensiones opcionales. La ruta
+`/dashboard/financials` muestra `Financials Scorecard`, conectado a las
+corridas almacenadas. Incluye filtros
 de sector, direccion y muestra minima, detalle por firma/ticker y auditoria de
 exclusiones. La ficha de ticker incluye una linea temporal de hitos retenidos
 (referencia, entrada, target y salida/terminal) y deja visible que no representa
@@ -684,6 +716,11 @@ Endpoints iniciales:
 | Ruta | Uso |
 |---|---|
 | `/api/v1/health` | Estado y versión metodológica |
+| `/api/v1/open-edition` | Capacidades ejecutables sin suscripciones pagadas y límites declarados |
+| `/dashboard/open` | Portada de la edición gratuita de GitHub |
+| `/dashboard/ipo-watch` | Reporte generado de vigilancia SEC de filings IPO |
+| `/dashboard/etf-regulatory` | Actividad regulatoria ETF basada en periodos N-PORT |
+| `/dashboard/document-checks` | Verificaciones documentales regulatorias generadas |
 | `/api/v1/runs` | Corridas almacenadas |
 | `/api/v1/runs/{run_id}` | Parámetros y hashes de evidencia de una corrida |
 | `/api/v1/runs/{run_id}/facets` | Sectores, firmas y tickers para filtros |
@@ -735,6 +772,8 @@ build/demo/report-target-revisions.md
 build/demo/evaluations-target-revisions.csv
 build/demo/source-registry.md
 build/demo/source-registry.html
+build/demo/open-edition.md
+build/demo/open-edition.html
 build/demo/provider-approvals.md
 build/demo/provider-approvals.html
 build/demo/provider-reviewed-source-registry.csv
@@ -848,12 +887,13 @@ docs/                   Metodologia, estrategia, dashboard, fuentes y roadmap
 - `v0.4`: base DuckDB y API FastAPI de solo lectura para corridas auditables,
   seguidas por el dashboard web.
 - `v0.5`: dashboard web, filtros por sector y paginas de firma/accion.
-- `v1.0`: pipeline actualizado periodicamente con una fuente de targets cuya
-  licencia permita el producto publico.
+- `v1.0`: Open Edition publica, reproducible y sin costo de datos; rankings
+  reales quedan como extension opcional con entradas autorizadas.
 
 Consulta [la metodologia](docs/methodology.md),
 [las fuentes evaluadas](docs/data-sources.md) y
-[la estrategia de producto](docs/product-strategy.md). El progreso tecnico se
+[la estrategia de producto](docs/product-strategy.md), junto con el alcance
+[Open Edition](docs/open-edition.md). El progreso tecnico se
 mantiene en [el roadmap](docs/roadmap.md) y la ejecucion continua en
 [operations.md](docs/operations.md).
 

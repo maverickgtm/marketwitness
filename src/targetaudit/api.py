@@ -17,6 +17,7 @@ from fastapi.responses import HTMLResponse, Response
 from . import METHODOLOGY_VERSION, __version__
 from .dashboard_web import (
     financials_scorecard_html,
+    open_edition_html,
     operations_quality_html,
     provider_approvals_html,
     release_center_html,
@@ -24,6 +25,7 @@ from .dashboard_web import (
     source_governance_html,
 )
 from .models import Evaluation
+from .open_edition import build_open_edition_snapshot
 from .operations_quality import build_quality_snapshot
 from .provider_approvals import (
     ProviderApprovalDataError,
@@ -45,12 +47,14 @@ from .storage import (
 DEFAULT_DATABASE_PATH = "build/live/targetaudit.duckdb"
 DEFAULT_SOURCE_REGISTRY_PATH = "data/samples/source_registry.csv"
 DEFAULT_PROVIDER_APPROVALS_PATH = "data/samples/provider_approval_queue.csv"
+DEFAULT_GENERATED_REPORTS_PATH = "build/demo"
 
 
 def create_app(
     database_path: str | Path | None = None,
     source_registry_path: str | Path | None = None,
     provider_approvals_path: str | Path | None = None,
+    generated_reports_path: str | Path | None = None,
 ) -> FastAPI:
     database = Path(
         database_path or os.environ.get("TARGETAUDIT_DATABASE", DEFAULT_DATABASE_PATH)
@@ -63,6 +67,10 @@ def create_app(
         provider_approvals_path
         or os.environ.get("TARGETAUDIT_PROVIDER_APPROVALS", DEFAULT_PROVIDER_APPROVALS_PATH)
     )
+    reports = Path(
+        generated_reports_path
+        or os.environ.get("TARGETAUDIT_GENERATED_REPORTS", DEFAULT_GENERATED_REPORTS_PATH)
+    )
     application = FastAPI(
         title="TargetAudit API",
         version=__version__,
@@ -70,8 +78,32 @@ def create_app(
     )
 
     @application.get("/", response_class=HTMLResponse, include_in_schema=False)
-    def scorecard_home() -> str:
-        return financials_scorecard_html()
+    def open_home() -> str:
+        return open_edition_html()
+
+    @application.get(
+        "/dashboard/open", response_class=HTMLResponse, include_in_schema=False
+    )
+    def open_edition() -> str:
+        return open_edition_html()
+
+    @application.get(
+        "/dashboard/ipo-watch", response_class=HTMLResponse, include_in_schema=False
+    )
+    def ipo_watch_report() -> str:
+        return _generated_html(reports, "ipo-watch.html")
+
+    @application.get(
+        "/dashboard/etf-regulatory", response_class=HTMLResponse, include_in_schema=False
+    )
+    def etf_regulatory_report() -> str:
+        return _generated_html(reports, "etf-holdings-regulatory-history.html")
+
+    @application.get(
+        "/dashboard/document-checks", response_class=HTMLResponse, include_in_schema=False
+    )
+    def document_checks_report() -> str:
+        return _generated_html(reports, "lse-fca-check.html")
 
     @application.get(
         "/dashboard/financials", response_class=HTMLResponse, include_in_schema=False
@@ -118,6 +150,7 @@ def create_app(
             "database_available": database.is_file(),
             "source_registry_available": registry.is_file(),
             "provider_approvals_available": approval_queue.is_file(),
+            "generated_reports_available": reports.is_dir(),
         }
 
     @application.get("/api/v1/governance/sources")
@@ -159,6 +192,15 @@ def create_app(
         try:
             as_of = max((item.reviewed_on for item in providers), default=date.today())
             return build_scorecard_readiness(providers, as_of)
+        except SourceRegistryDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @application.get("/api/v1/open-edition")
+    def open_edition_snapshot() -> dict[str, object]:
+        providers = _read_sources(registry)
+        try:
+            as_of = max((item.reviewed_on for item in providers), default=date.today())
+            return build_open_edition_snapshot(providers, as_of)
         except SourceRegistryDataError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 
@@ -401,6 +443,19 @@ def _read_sources(registry: Path) -> list[SourceProvider]:
     try:
         return load_source_registry(registry)
     except (OSError, SourceRegistryDataError) as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+
+def _generated_html(directory: Path, filename: str) -> str:
+    path = directory / filename
+    if not path.is_file():
+        raise HTTPException(
+            status_code=404,
+            detail=f"Generated report not available: {filename}. Run the demo pipeline first.",
+        )
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
 

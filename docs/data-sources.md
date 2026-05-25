@@ -11,6 +11,14 @@ La investigacion publica inicial se concentrara en `U.S. Financials`, usando
 permita. Esto responde a la hipotesis de que firmas especializadas en el sector
 pueden comportarse distinto a firmas generalistas.
 
+## Alcance Gratuito Principal
+
+`Open Edition` no depende de proveedores comerciales. Funciona offline con
+fixtures redistribuibles y, para operación live sin cuota, utiliza las fuentes
+regulatorias registradas como aptas: SEC EDGAR, SEC N-PORT y FCA NSM. Las
+fuentes de targets, precios o universo comercial quedan listadas como caminos
+opcionales para usuarios que posean derechos suficientes.
+
 ## Registro Formal De Gobernanza
 
 La clasificación legible por máquina vive en

@@ -92,8 +92,12 @@ verificables de cotizaciones tecnologicas/estrategicas.
 
 ## Milestone 5: Operacion Publica (`v1.0`)
 
-- [ ] Licencia de datos apta para mostrar resultados publicamente.
-- [ ] Actualizaciones programadas del scorecard con fuentes publicables.
+- [x] Open Edition ejecutable sin suscripciones de datos, con sandbox
+  redistribuible y monitores regulatorios públicos claramente separados.
+- [ ] Licencia o aportación autorizada opcional para mostrar rankings reales
+  de analistas públicamente.
+- [ ] Actualizaciones programadas del scorecard real con fuentes opcionales
+  publicables.
 - [x] Monitoreo de calidad por corrida con bloqueo de entradas/linaje
   incompletos, modo de publicación que exige acciones corporativas y universo
   histórico, y revisión visible de exclusiones anormales.
@@ -112,7 +116,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 
 ## Decisiones Pendientes
 
-1. Proveedor legal de targets historicos para la primera muestra real.
-2. Proveedor de precios ajustados que permita publicacion del dashboard.
+1. Si se desea ampliar Open Edition, proveedor o aportación autorizada de
+   targets históricos para una primera muestra real.
+2. Para esa ampliación opcional, precios ajustados que permitan publicación.
 3. Nombre/dominio final y alcance: proyecto de investigacion o producto
    publico con actualizaciones.

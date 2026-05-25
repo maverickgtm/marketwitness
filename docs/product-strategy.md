@@ -10,10 +10,12 @@ listings.**
 El paquete tecnico conserva el nombre `targetaudit` para poder extenderse en
 el futuro a otros verticales sin romper integraciones.
 
-El producto tiene dos modulos complementarios:
+La edición principal debe funcionar sin comprar datasets. Tiene modulos
+complementarios:
 
-- `Financials Scorecard`: auditoria sectorial de targets sobre financials.
-- `IPO Watch`: monitoreo basado en fuentes de nuevas cotizaciones
+- `Financials Scorecard`: sandbox auditable sobre financials con datos
+  redistribuibles; admite datos autorizados como extensión.
+- `IPO Watch`: monitoreo basado en fuentes públicas regulatorias de nuevas cotizaciones
   tecnologicas/estrategicas.
 - `Global Listings Watch`: mapa y futuros conectores de listings fuera de
   Estados Unidos, comenzando por Londres y Hong Kong.
@@ -99,7 +101,8 @@ Estas hipotesis son preguntas de investigacion, no conclusiones del producto.
 
 ## Riesgos De Negocio
 
-- Los targets historicos detallados pueden exigir una licencia de datos paga.
+- Los targets historicos detallados pueden exigir una licencia de datos paga;
+  por ello son una extensión opcional y no requisito de la edición GitHub.
 - Un reporte publico con muestra pequena puede inducir a error aun si el
   calculo es correcto.
 - Las clasificaciones sectoriales y componentes historicos requieren datos

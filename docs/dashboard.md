@@ -8,6 +8,24 @@ Con la expansion internacional y los controles de publicación, el producto
 tiene páginas operativas adicionales, incluida la página de actividad
 publicada de ETF:
 
+## Portada: Open Edition
+
+Objetivo: mostrar desde el primer acceso que la versión GitHub funciona sin
+comprar datos comerciales.
+
+- La raíz `/` y `/dashboard/open` consumen `/api/v1/open-edition`.
+- Distingue un sandbox offline con fixtures redistribuibles, monitores
+  regulatorios públicos sin cuota de datos y extensiones autorizadas
+  opcionales.
+- Presenta SEC IPO Watch y SEC N-PORT como capacidades gratuitas con límites
+  visibles, incluida la identificación `User-Agent` exigida para solicitudes
+  SEC live.
+- Enlaza reportes generados autorizados mediante `/dashboard/ipo-watch`,
+  `/dashboard/etf-regulatory` y `/dashboard/document-checks`; la API no expone
+  archivos arbitrarios de la carpeta de construcción.
+- El ranking real de analistas permanece como ampliación voluntaria y nunca
+  como condición para usar la edición pública.
+
 ## API De Aplicacion
 
 La capa inicial FastAPI consulta exclusivamente corridas guardadas en DuckDB.

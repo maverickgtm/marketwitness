@@ -1,6 +1,104 @@
 from __future__ import annotations
 
 
+def open_edition_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Open Edition</title>
+  <style>
+    :root {
+      --bg:#071016; --panel:#0f1c24; --panel2:#14242d; --line:#20343d;
+      --text:#edf1ef; --muted:#98abb0; --mint:#56daac; --gold:#f0bc62;
+      --blue:#62a6ff; --red:#ff7d72;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
+    header, main { max-width:1240px; margin:auto; padding:30px 28px; }
+    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    a { color:var(--mint); text-decoration:none; }
+    h1 { font-size:clamp(40px,5vw,62px); line-height:1.04; margin:38px 0 14px; }
+    h2 { margin:44px 0 16px; font-size:22px; }
+    h3 { margin:13px 0 8px; }
+    .lead { color:var(--muted); font-size:18px; max-width:930px; }
+    .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--mint);
+      border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
+    .card,.feature,.mode { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+    .card { padding:17px 20px; }
+    .card p { color:var(--muted); margin:0; }
+    .card strong { display:block; font-size:37px; color:var(--mint); margin-top:4px; }
+    .features { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+    .feature { padding:18px; }
+    .feature strong { color:var(--mint); display:block; margin:8px 0; }
+    .feature p,.feature small,.mode small { color:var(--muted); display:block; }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; white-space:nowrap; }
+    .bundled_offline_demo { color:var(--blue); background:rgba(98,166,255,.12); }
+    .public_source_no_key { color:var(--mint); background:rgba(86,218,172,.12); }
+    .bring_authorized_data { color:var(--gold); background:rgba(240,188,98,.12); }
+    .modes { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .mode { padding:18px; }
+    .mode p { color:var(--mint); }
+    #error { display:none; border-left-color:var(--red); color:var(--red); }
+    @media(max-width:920px) { .cards,.features,.modes { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>TargetAudit / Open Edition / <a href="/dashboard/financials">Financials Sandbox</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Governance</a></nav>
+    <h1>Market research.<br>No paid data required.</h1>
+    <p class="lead" id="promise">Loading the zero-cost product profile...</p>
+    <p class="meta" id="reviewed">Loading source controls...</p>
+    <section class="cards">
+      <article class="card"><p>No-cost capabilities</p><strong id="free">-</strong></article>
+      <article class="card"><p>Offline demo</p><strong id="offline">-</strong></article>
+      <article class="card"><p>Public-data monitors</p><strong id="public">-</strong></article>
+      <article class="card"><p>Optional extensions</p><strong id="optional">-</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice">This GitHub edition runs without commercial subscriptions. Real analyst ranking inputs are optional and must arrive with usage rights.</p>
+    <p id="error" class="notice"></p>
+    <h2>Included Capabilities</h2>
+    <section class="features" id="capabilities"></section>
+    <h2>Run Modes</h2>
+    <section class="modes" id="modes"></section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    function text(value) {
+      return String(value == null || value === "" ? "-" : value)
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    }
+    async function initialize() {
+      try {
+        const response = await fetch("/api/v1/open-edition");
+        if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+        const data = await response.json();
+        $("promise").textContent = data.promise;
+        $("reviewed").textContent = `${data.edition} / Reviewed as of ${data.as_of}`;
+        $("free").textContent = data.zero_cost_available_count;
+        $("offline").textContent = data.offline_ready_count;
+        $("public").textContent = data.public_data_ready_count;
+        $("optional").textContent = data.optional_extension_count;
+        $("capabilities").innerHTML = data.capabilities.map((item) => {
+          const route = item.route ? `<a href="${text(item.route)}">Open ${text(item.title)}</a>` : "";
+          return `<article class="feature"><span class="pill ${text(item.status)}">${text(item.status)}</span><h3>${text(item.title)}</h3><strong>${text(item.cost)}</strong><p>${text(item.output)}</p><small>${text(item.limitation)}</small>${route}</article>`;
+        }).join("");
+        $("modes").innerHTML = data.setup_modes.map((mode) => `<article class="mode"><h3>${text(mode.title)}</h3><p>${text(mode.requirement)}</p><small>${text(mode.result)}</small></article>`).join("");
+      } catch (error) {
+        $("error").style.display = "block";
+        $("error").textContent = error.message;
+      }
+    }
+    initialize();
+  </script>
+</body>
+</html>"""
+
+
 def financials_scorecard_html() -> str:
     return """<!doctype html>
 <html lang="en">
@@ -83,7 +181,7 @@ def financials_scorecard_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Scorecard / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / U.S. Financials / Scorecard / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Price targets,<br>measured in daylight.</h1>
     <p class="lead">Auditable analyst-target research with visible sample size, uncertainty, benchmark context and exclusions. A hit is evidence of a reached target, not investment advice.</p>
     <p class="meta" id="run-meta">Loading latest stored research run...</p>
@@ -386,7 +484,7 @@ def source_governance_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / Governance / Sources / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Open code.<br>Controlled data.</h1>
     <p class="lead">Publication rights are part of the evidence. This page separates sources already usable under documented policy from data that still requires terms, licensing or manual controls.</p>
     <p class="meta" id="reviewed">Loading source registry...</p>
@@ -584,7 +682,7 @@ def operations_quality_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / Operations / Quality / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Scorecard Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a></nav>
     <h1>Ship evidence,<br>not surprises.</h1>
     <p class="lead">Operational quality gates for stored evaluation runs: reproducibility stamps, required inputs, provider lineage and anomalous exclusion rates.</p>
     <p class="meta" id="scope">Refreshable quality view over stored evaluation runs</p>
@@ -732,7 +830,7 @@ def scorecard_readiness_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Readiness / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / U.S. Financials / Readiness / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/governance">Source Governance</a> / <a href="/dashboard/operations">Operations Quality</a></nav>
     <h1>Earn the right<br>to publish.</h1>
     <p class="lead">Readiness for a real public Financials scorecard. Demo fixtures can test the system; only approved production sources can enable release.</p>
     <p class="meta" id="reviewed">Loading readiness controls...</p>
@@ -867,7 +965,7 @@ def release_center_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / U.S. Financials / Release Center / <a href="/dashboard/financials">Scorecard</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a> / <a href="/dashboard/governance">Governance</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / U.S. Financials / Release Center / <a href="/dashboard/financials">Scorecard</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/approvals">Provider Approvals</a> / <a href="/dashboard/operations">Operations Quality</a> / <a href="/dashboard/governance">Governance</a></nav>
     <h1>Release only<br>what is defensible.</h1>
     <p class="lead">One publication decision for one candidate run. Approved source rights and complete run evidence must both pass before a real scorecard can be released.</p>
     <p class="meta" id="reviewed">Select a candidate run to review...</p>
@@ -1019,7 +1117,7 @@ def provider_approvals_html() -> str:
 </head>
 <body>
   <header>
-    <nav>TargetAudit / Governance / Provider Approvals / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/governance">Sources</a></nav>
+    <nav><a href="/dashboard/open">Open Edition</a> / Governance / Provider Approvals / <a href="/dashboard/financials">Financials Scorecard</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/readiness">Readiness</a> / <a href="/dashboard/governance">Sources</a></nav>
     <h1>Permission before<br>production data.</h1>
     <p class="lead">A documented review queue for providers that could unlock the public U.S. Financials scorecard. Technical access never stands in for publishing rights.</p>
     <p class="meta" id="reviewed">Loading approval work queue...</p>

@@ -98,6 +98,11 @@ demo:
 		--report build/demo/source-registry.md \
 		--html build/demo/source-registry.html \
 		--as-of 2026-05-24
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit open-edition \
+		--registry build/demo/provider-reviewed-source-registry.csv \
+		--report build/demo/open-edition.md \
+		--html build/demo/open-edition.html \
+		--as-of 2026-05-24
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit provider-approvals \
 		--registry build/demo/provider-reviewed-source-registry.csv \
 		--approvals build/demo/provider-reviewed-approval-queue.csv \

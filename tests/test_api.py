@@ -103,6 +103,19 @@ class ApiTests(unittest.TestCase):
         )
         alternate_asset = root / "targets-alternate.csv"
         alternate_asset.write_text("alternate auditable input\n", encoding="utf-8")
+        self.reports = root / "reports"
+        self.reports.mkdir()
+        (self.reports / "ipo-watch.html").write_text(
+            "<html><h1>IPO Watch generated page</h1></html>", encoding="utf-8"
+        )
+        (self.reports / "etf-holdings-regulatory-history.html").write_text(
+            "<html><h1>ETF Regulatory Holdings generated page</h1></html>",
+            encoding="utf-8",
+        )
+        (self.reports / "lse-fca-check.html").write_text(
+            "<html><h1>Public Document Checks generated page</h1></html>",
+            encoding="utf-8",
+        )
         store_evaluation_run(
             self.database,
             EvaluationRun(
@@ -117,7 +130,12 @@ class ApiTests(unittest.TestCase):
             evaluations,
         )
         self.client = TestClient(
-            create_app(self.database, Path("data/samples/source_registry.csv"))
+            create_app(
+                self.database,
+                Path("data/samples/source_registry.csv"),
+                Path("data/samples/provider_approval_queue.csv"),
+                self.reports,
+            )
         )
 
     def tearDown(self) -> None:
@@ -131,6 +149,7 @@ class ApiTests(unittest.TestCase):
         self.assertTrue(health.json()["database_available"])
         self.assertTrue(health.json()["source_registry_available"])
         self.assertTrue(health.json()["provider_approvals_available"])
+        self.assertTrue(health.json()["generated_reports_available"])
         self.assertEqual(run.status_code, 200)
         self.assertEqual(run.json()["evaluated_count"], 2)
         self.assertEqual(run.json()["methodology_version"], "0.3.3")
@@ -167,6 +186,29 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(facets.status_code, 200)
         self.assertEqual(facets.json()["sectors"], ["Financials"])
         self.assertEqual(facets.json()["tickers"], ["AAA", "BBB"])
+
+    def test_serves_open_edition_as_the_zero_cost_home_page(self) -> None:
+        home = self.client.get("/")
+        page = self.client.get("/dashboard/open")
+        snapshot = self.client.get("/api/v1/open-edition")
+
+        self.assertEqual(home.status_code, 200)
+        self.assertIn("No paid data required", home.text)
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("/api/v1/open-edition", page.text)
+        self.assertEqual(snapshot.status_code, 200)
+        self.assertEqual(snapshot.json()["zero_cost_available_count"], 4)
+        self.assertEqual(snapshot.json()["public_data_ready_count"], 3)
+        self.assertEqual(snapshot.json()["optional_extension_count"], 1)
+
+    def test_serves_generated_open_edition_monitor_pages(self) -> None:
+        ipo = self.client.get("/dashboard/ipo-watch")
+        etf = self.client.get("/dashboard/etf-regulatory")
+        documents = self.client.get("/dashboard/document-checks")
+
+        self.assertIn("IPO Watch generated page", ipo.text)
+        self.assertIn("ETF Regulatory Holdings generated page", etf.text)
+        self.assertIn("Public Document Checks generated page", documents.text)
 
     def test_compares_run_methodology_and_evidence_fingerprints(self) -> None:
         response = self.client.get(

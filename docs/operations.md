@@ -1,5 +1,24 @@
 # Operacion Continua De Listing Watch
 
+## Open Edition Sin Cuota De Datos
+
+La distribución pública del repositorio prioriza operaciones que no requieren
+suscripciones comerciales. `open-edition` genera el manifiesto visible de esa
+promesa:
+
+```bash
+PYTHONPATH=src python3 -m targetaudit open-edition \
+  --registry data/samples/source_registry.csv \
+  --report build/live/open-edition.md \
+  --html build/live/open-edition.html \
+  --as-of YYYY-MM-DD
+```
+
+El sandbox de Financials corre con fixtures propios. La operación live sin
+cuota utiliza SEC EDGAR para IPO Watch y SEC N-PORT para evidencia periódica
+ETF; la SEC requiere un `User-Agent` con contacto, pero no una API key de pago.
+Los proveedores comerciales se conservan como extensiones opcionales.
+
 ## Objetivo
 
 La lista inicial de SpaceX, Cerebras y candidatos conocidos es una semilla.
