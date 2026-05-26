@@ -34,6 +34,8 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   source proposals.
 - [x] Multilingual contributor gateway in English, Japanese, Brazilian
   Portuguese, Traditional Chinese, and Korean.
+- [x] Responsive Open Edition navigation with compact-screen quick access to
+  flagship research, cross-asset context, scorecards, RWA and contributions.
 - [x] Release-candidate policies, security reporting, contribution templates,
   dashboard screenshots, and English public documentation migration.
 - [x] Official White House RSS paths classified as eligible policy-event
@@ -56,6 +58,17 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   connectors only after output policy and tests are approved.
 - [ ] Obtain external legal review before operating a public service with real
   data, subscriptions, advertising, or third-party-facing signals.
+
+## Hosted Product Path
+
+- [ ] Publish the GitHub Open Edition before introducing any paid feature.
+- [ ] Create a responsive public website deployment using the same read-only
+  Open Edition boundaries and no required paid data source.
+- [ ] Add operational monitoring, authentication, privacy/security review and
+  service terms before offering user accounts or saved research.
+- [ ] Consider optional subscriptions for hosted alerts, saved watchlists,
+  private workspaces or authorized-data workflows while keeping Open Edition
+  free and reproducible.
 
 ## Release Decisions
 

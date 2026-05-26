@@ -3,7 +3,7 @@
 **Evidence-first market intelligence for public listings, analyst research,
 volatility, ETF evidence, and presidential communication research.**
 
-`v0.1.0-rc.1` | Open Edition | MIT licensed | No paid data required
+`v0.1.0-rc.1` | Open Edition | MIT licensed | No paid data required | Responsive dashboard
 
 MarketWitness is an open-source research system built around a simple rule:
 market claims should be traceable to evidence, permissions, and explicit
@@ -58,6 +58,19 @@ rights are visible product outcomes, not hidden limitations.
 
 ![MarketWitness Presidential Impact Lab](docs/assets/policy-signal-impact-lab.png)
 
+## Desktop And Mobile Ready
+
+MarketWitness is designed as a responsive web dashboard, not a desktop-only
+report viewer. On compact screens the layout stacks cleanly and replaces the
+collapsed sidebar with quick access to the product's key paths:
+
+- `VIX Reaction Explorer` and `Presidential Impact Lab`;
+- `Crypto / Commodities`, `Analyst Scorecards`, and `Tokenized Assets / RWA`;
+- the international `Contribute Connectors` gateway.
+
+This makes the Open Edition practical to review from a phone browser while
+preserving the evidence and rights boundaries shown on desktop.
+
 ## Quick Start
 
 Requirements: Python `3.9+`.
@@ -103,6 +116,18 @@ Open <http://127.0.0.1:8000/>. High-signal views include:
 | `/dashboard/policy` | Public-use and data-rights policy |
 
 The stable technical package and command name are `marketwitness`.
+
+## Open Core, Future Hosted Service
+
+The GitHub Open Edition is intended to remain usable without a paid data
+subscription. A future hosted MarketWitness website can build on the same
+open foundation through convenience and operations: scheduled monitors,
+alerts, saved watchlists, private workspaces, collaboration, and authorized
+bring-your-own-data analysis.
+
+Any eventual subscription must pay for hosting, workflow features, support or
+properly licensed data access. It must not turn blocked sources into public
+rankings or sell unverified buy/sell claims.
 
 ## Public Data Boundaries
 
@@ -196,6 +221,7 @@ the final publication steps.
 ## Documentation
 
 - [Product strategy](docs/product-strategy.md)
+- [Public positioning and sustainability](docs/market-positioning-and-sustainability.md)
 - [Dashboard guide](docs/dashboard.md)
 - [Open Edition](docs/open-edition.md)
 - [Data sources](docs/data-sources.md)

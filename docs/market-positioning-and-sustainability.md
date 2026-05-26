@@ -59,6 +59,26 @@ operation, convenience, or data a customer independently licenses.
 Do not monetize through buy/sell recommendations, alleged winning signals, or
 public rankings assembled from data without rights.
 
+## Hosted Website Path
+
+A public website is a reasonable next product step after the GitHub release:
+it removes installation friction, makes mobile access immediate, and gives
+people a stable destination for the VIX Reaction Explorer, Presidential Impact
+Lab, IPO Watch and Evidence Commons.
+
+| Stage | Public Offer | Revenue Boundary |
+|---|---|---|
+| Open Edition launch | Free repository, local dashboard, API and reproducible reports | No required subscription or paid market-data source |
+| Public hosted preview | Responsive read-only site using the same lawful/demo boundaries | Free access while measuring interest and operating cost |
+| Optional account tier | Saved watchlists, scheduled alerts, email delivery and private workspaces | Subscription pays for hosting and workflow convenience |
+| Authorized research tier | Customer-provided or explicitly licensed datasets in private analyses | Rights verified before ingestion or display; no unlicensed shared leaderboard |
+
+The responsive dashboard already supports the website direction: key research
+paths remain accessible when the sidebar collapses on compact screens. Before
+charging for a hosted service, the project should add authentication,
+operational monitoring, privacy/security review, terms of service, and
+external review of any real-data publication or subscription model.
+
 ## Launch Decision
 
 Launch the Open Edition once installation and the major dashboard flows are
