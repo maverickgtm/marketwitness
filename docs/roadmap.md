@@ -190,9 +190,14 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] `Evidence Passport Commons` v0.1 con pagina publica, API de origen y
   derechos, e invitacion a contributors para ampliar cadencia y limites de
   afirmacion de forma verificable.
-- [x] Workspace inicial `Market Intelligence` y API de modulos, con seis
+- [x] Workspace inicial `Market Intelligence` y API de modulos, ampliado a siete
   capas priorizadas y fuentes oficiales registradas sin presentar nuevos
   conectores como feeds live.
+- [x] `Volatility Intelligence Lab` inicial con vista VIX atribuida, API de
+  diseño de episodios, mapa `VIX`/`VXN`/`MOVE`/commodities y fuentes Cboe/ICE
+  registradas sin declarar series reales publicables.
+- [ ] Aprobar derechos o una ruta autorizada para historia Cboe/ICE antes de
+  calcular y publicar episodios reales de volatilidad.
 - [ ] Implementar `Market Regimes` con `BTC`/`ETH`, `WTI`/`Brent` y curva
   Treasury despues de aprobar politica de output y pruebas de cada conector.
 - [ ] Implementar `Macro Calendar` Fed/BLS e `Insider Activity` SEC como

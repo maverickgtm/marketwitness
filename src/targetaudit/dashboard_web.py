@@ -1189,7 +1189,7 @@ def market_intelligence_html() -> str:
         <h1>Events. Context.<br><span>Positioning.</span></h1>
         <p class="lead">A planned intelligence layer connecting IPO and listing evidence to macro catalysts, selected market regimes and declared positioning. It begins with provenance, not promises.</p>
         <p class="meta" id="reviewed">Loading reviewed sources...</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/ipo">Open IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/volatility">Open Volatility Lab</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
       </article>
       <article class="sequence"><p class="eyebrow">Delivery sequence</p><ol id="sequence"></ol></article>
     </section>
@@ -1222,6 +1222,116 @@ def market_intelligence_html() -> str:
           const route = item.route ? `<a href="${text(item.route)}">Open existing foundation</a>` : "";
           return `<article class="module"><div class="module-head"><div><span class="theme">${text(item.theme)}</span><h3>${text(item.title)}</h3></div><span class="pill ${text(item.stage)}">${text(item.stage)}</span></div><p>${text(item.coverage)}</p><small><strong>Cadence:</strong> ${text(item.cadence)}</small><small><strong>Boundary:</strong> ${text(item.claim_limit)}</small><div class="sources">${sourceLinks}</div><p class="next">${text(item.next_delivery)} ${route}</p></article>`;
         }).join("");
+      } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
+    }
+    initialize();
+  </script>
+</body>
+</html>"""
+
+
+def volatility_lab_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Volatility Intelligence Lab</title>
+  <style>
+    :root { --bg:#060a12; --panel:#101824; --panel2:#151f2d; --line:#233142; --text:#f3f6f7;
+      --muted:#95a9b8; --mint:#38dfad; --blue:#62a6ff; --gold:#f3bf66; --red:#ff7d72;
+      --purple:#a68cff; --shadow:0 22px 70px rgba(0,0,0,.25); }
+    * { box-sizing:border-box; } body { margin:0; color:var(--text); font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 80% 0%,rgba(255,125,114,.1),transparent 27%),
+        radial-gradient(circle at 20% 8%,rgba(98,166,255,.12),transparent 30%),var(--bg); }
+    a { color:var(--mint); text-decoration:none; } header,main { max-width:1390px; margin:auto; padding:23px 28px; }
+    nav,.eyebrow,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-size:11px; }
+    .top { display:flex; justify-content:space-between; gap:18px; align-items:center; margin-bottom:25px; }
+    .back { border:1px solid var(--line); color:var(--text); border-radius:10px; padding:9px 14px; font-weight:600; }
+    .hero { display:grid; grid-template-columns:minmax(450px,.92fr) minmax(490px,1.08fr); gap:16px; }
+    .intro,.chart,.card,.panel,.notice { background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); }
+    .intro { padding:29px 32px; } h1 { font-size:clamp(40px,4.8vw,60px); letter-spacing:-.05em; line-height:1.03; margin:14px 0 15px; }
+    h1 span { color:var(--red); } h2 { font-size:21px; margin:40px 0 16px; letter-spacing:-.02em; } h3 { margin:9px 0 7px; letter-spacing:-.01em; }
+    .lead { color:var(--muted); font-size:17px; } .hero-links { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+    .hero-links a { padding:10px 14px; border:1px solid var(--line); border-radius:10px; font-weight:600; }
+    .hero-links .primary { background:var(--mint); border-color:var(--mint); color:#051016; }
+    .chart { padding:16px; min-height:443px; } .panel-head { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:4px 5px 13px; }
+    .panel-head h2 { margin:0; font-size:17px; } .external { color:var(--blue); background:rgba(98,166,255,.13); border-radius:999px; padding:5px 9px; font-size:11px; }
+    .market-widget { height:375px; overflow:hidden; border-radius:12px; position:relative; background:var(--panel2); }
+    .tradingview-widget-container,.tradingview-widget-container__widget { width:100%; height:100%; position:relative; z-index:1; }
+    .widget-idle { position:absolute; inset:0 0 25px; display:flex; align-items:center; justify-content:center; text-align:center; color:var(--muted); padding:30px; }
+    .widget-idle strong { display:block; color:var(--text); font-size:18px; margin-bottom:7px; } .widget-idle p { margin:0; max-width:320px; }
+    .tradingview-widget-copyright { color:var(--muted); font-size:11px; line-height:25px; } .tradingview-widget-copyright .blue-text { color:var(--blue); }
+    .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-top:17px; }
+    .card { box-shadow:none; padding:15px 17px; } .card p { color:var(--muted); margin:0; font-size:13px; } .card strong { display:block; color:var(--mint); font-size:32px; margin-top:5px; letter-spacing:-.04em; }
+    .notice { box-shadow:none; margin-top:17px; padding:14px 18px; color:var(--muted); border-left:3px solid var(--gold); }
+    .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; } .panel { box-shadow:none; padding:18px; }
+    .indicator-head { display:flex; justify-content:space-between; gap:12px; align-items:start; } .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:11px; white-space:nowrap; }
+    .phase_1 { color:var(--mint); background:rgba(56,223,173,.12); } .phase_2 { color:var(--gold); background:rgba(243,191,102,.12); } .phase_3 { color:var(--purple); background:rgba(166,140,255,.12); }
+    .family { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-size:10px; } .panel p,.panel small { color:var(--muted); display:block; margin:8px 0; }
+    .source { border-top:1px solid var(--line); padding-top:10px; margin-top:12px; font-size:12px; }
+    .designs { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; } .trigger { color:var(--red)!important; font-weight:600; }
+    .windows { display:flex; flex-wrap:wrap; gap:6px; margin-top:11px; } .window { background:var(--panel2); color:var(--blue); border-radius:8px; padding:4px 8px; font-size:11px; }
+    #error { display:none; border-left-color:var(--red); color:var(--red); }
+    @media(max-width:1000px) { .hero,.metrics,.grid,.designs { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top"><nav><a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/intelligence">Market Intelligence</a> / Volatility Lab</nav><a class="back" href="/dashboard/intelligence">Back to intelligence</a></div>
+    <section class="hero">
+      <article class="intro">
+        <p class="eyebrow">Auditable stress episode research</p>
+        <h1>Volatility<br><span>propagation.</span></h1>
+        <p class="lead" id="question">Loading research design...</p>
+        <p class="meta" id="reviewed">Loading evidence controls...</p>
+        <div class="hero-links"><a class="primary" href="/dashboard/ipo">Overlay IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Passports</a></div>
+      </article>
+      <article class="chart">
+        <div class="panel-head"><div><h2>VIX Visual Context</h2><p class="meta">Not an audit input</p></div><span class="external">TradingView display</span></div>
+        <div class="market-widget">
+          <div class="widget-idle"><div><strong>External VIX display</strong><p>Available when TradingView loads. The research design below remains usable offline.</p></div></div>
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/CBOE-VIX/" rel="noopener nofollow" target="_blank"><span class="blue-text">VIX chart</span></a><span> by TradingView</span></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+            {"autosize":true,"symbol":"CBOE:VIX","interval":"D","timezone":"Etc/UTC","theme":"dark","style":"1","locale":"en","withdateranges":true,"allow_symbol_change":false,"save_image":false,"calendar":false,"support_host":"https://www.tradingview.com"}
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
+        </div>
+      </article>
+    </section>
+    <section class="metrics">
+      <article class="card"><p>Indicator groups</p><strong id="groups">-</strong></article>
+      <article class="card"><p>Episode designs</p><strong id="episodes">-</strong></article>
+      <article class="card"><p>Phase 1 anchors</p><strong id="phase1">-</strong></article>
+      <article class="card"><p>New live calculations</p><strong>0</strong></article>
+    </section>
+    <p class="notice" id="boundary">Loading publication boundary...</p>
+    <p class="notice" id="error"></p>
+  </header>
+  <main>
+    <h2>Stress Map</h2>
+    <section class="grid" id="indicators"></section>
+    <h2>Reaction Research Designs</h2>
+    <section class="designs" id="designs"></section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    function text(value) { return String(value == null ? "" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;"); }
+    async function initialize() {
+      try {
+        const response = await fetch("/api/v1/intelligence/volatility");
+        if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+        const data = await response.json();
+        $("question").textContent = data.research_question;
+        $("reviewed").textContent = `${data.product} / reviewed as of ${data.as_of}`;
+        $("groups").textContent = data.indicator_group_count; $("episodes").textContent = data.episode_design_count; $("phase1").textContent = data.phase_1.length;
+        $("boundary").textContent = data.publication_boundary;
+        $("indicators").innerHTML = data.indicators.map((item) => `<article class="panel"><div class="indicator-head"><div><span class="family">${text(item.family)}</span><h3>${text(item.symbol)}</h3></div><span class="pill ${text(item.priority)}">${text(item.priority)}</span></div><p>${text(item.role)}</p><small><strong>Connects to:</strong> ${text(item.linked_context)}</small><p class="source"><a href="${text(item.source.official_url)}" target="_blank" rel="noopener">${text(item.source.provider_name)}</a> / ${text(item.source.deployment_state)}</p></article>`).join("");
+        $("designs").innerHTML = data.episode_designs.map((item) => `<article class="panel"><h3>${text(item.key.replaceAll("_", " "))}</h3><p class="trigger">${text(item.trigger)}</p><p>${text(item.comparison)}</p><small>${text(item.output)}</small><div class="windows">${item.windows.map((window) => `<span class="window">${text(window)}</span>`).join("")}</div></article>`).join("");
       } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
     }
     initialize();

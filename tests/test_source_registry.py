@@ -18,7 +18,7 @@ class SourceRegistryTests(unittest.TestCase):
         report = render_source_registry_report(providers, date(2026, 5, 25))
         page = render_source_registry_html(providers, date(2026, 5, 25))
 
-        self.assertEqual(len(providers), 42)
+        self.assertEqual(len(providers), 44)
         self.assertIn("Authorized Demo Export", report)
         self.assertIn("Alpha Vantage Daily Adjusted", report)
         self.assertIn("S&P DJI Constituent Data", report)
@@ -49,6 +49,8 @@ class SourceRegistryTests(unittest.TestCase):
         self.assertIn("U.S. Treasury Daily Treasury Par Yield Curve Rates", report)
         self.assertIn("SEC Insider Transactions Data Sets", report)
         self.assertIn("CFTC Commitments of Traders", report)
+        self.assertIn("Cboe Volatility Index Family", report)
+        self.assertIn("ICE BofA MOVE Index", report)
         self.assertIn("Blocked from automated collection: `5`", report)
         self.assertIn("market data intended for display", report)
         self.assertIn("Public accessibility is not a license", page)

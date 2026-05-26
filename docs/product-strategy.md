@@ -27,6 +27,9 @@ complementarios:
 - `Market Intelligence`: workspace de eventos, contexto y posicionamiento que
   ordena la integracion futura de cripto seleccionada, energia, tasas,
   catalizadores macro, insiders y CFTC sin emitir senales de operacion.
+- `Volatility Intelligence Lab`: investigacion de episodios `VIX`, tecnologia
+  (`VXN`), tasas (`MOVE`) y commodities, enlazada a filings/listings
+  verificados en lugar de duplicar un dashboard de volatilidad.
 
 ## Problema
 
@@ -75,6 +78,12 @@ el registro de fuente y derechos ya controlado.
 
 > ?Que regimen de tasas, energia, activos digitales y posicionamiento
 > declarado rodeaba un evento verificado, con que fuente y frecuencia?
+
+`Volatility Intelligence Lab` refina esa pregunta frente a competidores que
+ya visualizan `VIX` y term structure:
+
+> ?Como se propagaron episodios de estres hacia activos e IPOs verificadas,
+> y que evidencia permite sostener esa lectura?
 
 Una expansión posterior de activos tokenizados preguntaria:
 

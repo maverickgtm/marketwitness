@@ -33,6 +33,7 @@ from .dashboard_web import (
     release_center_html,
     scorecard_readiness_html,
     source_governance_html,
+    volatility_lab_html,
 )
 from .licensed_extensions import (
     LicensedExtensionDataError,
@@ -60,6 +61,7 @@ from .storage import (
     read_run_assets,
     read_run_summary,
 )
+from .volatility_lab import build_volatility_lab_snapshot
 
 DEFAULT_DATABASE_PATH = "build/live/targetaudit.duckdb"
 DEFAULT_SOURCE_REGISTRY_PATH = "data/samples/source_registry.csv"
@@ -306,6 +308,12 @@ def create_app(
         return market_intelligence_html()
 
     @application.get(
+        "/dashboard/volatility", response_class=HTMLResponse, include_in_schema=False
+    )
+    def volatility_lab_page() -> str:
+        return volatility_lab_html()
+
+    @application.get(
         "/dashboard/financials", response_class=HTMLResponse, include_in_schema=False
     )
     def scorecard() -> str:
@@ -436,6 +444,15 @@ def create_app(
         try:
             as_of = max((item.reviewed_on for item in providers), default=date.today())
             return build_market_intelligence_snapshot(providers, as_of)
+        except SourceRegistryDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @application.get("/api/v1/intelligence/volatility")
+    def volatility_lab_snapshot() -> dict[str, object]:
+        providers = _read_sources(registry)
+        try:
+            as_of = max((item.reviewed_on for item in providers), default=date.today())
+            return build_volatility_lab_snapshot(providers, as_of)
         except SourceRegistryDataError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 

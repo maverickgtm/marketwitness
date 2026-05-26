@@ -12,8 +12,8 @@ class MarketIntelligenceTests(unittest.TestCase):
 
         snapshot = build_market_intelligence_snapshot(providers, date(2026, 5, 25))
 
-        self.assertEqual(snapshot["module_count"], 6)
-        self.assertEqual(snapshot["foundation_count"], 2)
+        self.assertEqual(snapshot["module_count"], 7)
+        self.assertEqual(snapshot["foundation_count"], 3)
         self.assertEqual(snapshot["planned_connector_count"], 4)
         regimes = next(
             item for item in snapshot["modules"] if item["key"] == "market_regimes"
@@ -25,6 +25,11 @@ class MarketIntelligenceTests(unittest.TestCase):
         )
         self.assertIn("does not recommend positions", snapshot["publication_boundary"])
         self.assertIn("not a buy", regimes["claim_limit"])
+        volatility = next(
+            item for item in snapshot["modules"] if item["key"] == "volatility_lab"
+        )
+        self.assertEqual(volatility["route"], "/dashboard/volatility")
+        self.assertIn("Cboe Volatility Index Family", {item["provider_name"] for item in volatility["sources"]})
 
     def test_rejects_unknown_source_dependency(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))

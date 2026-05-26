@@ -41,8 +41,8 @@ copias revisadas de ambos registros y su auditoría. El fixture inicial
 documenta que la página premium de Alpha Vantage todavía no demuestra permiso
 de salida pública y por eso conserva el expediente pendiente.
 
-Al `2026-05-25`, el inventario contiene 42 fuentes: 20 conectores o fixtures
-implementados, 23 fuentes que aun exigen revision de terminos/licencia para
+Al `2026-05-25`, el inventario contiene 44 fuentes: 20 conectores o fixtures
+implementados, 25 fuentes que aun exigen revision de terminos/licencia para
 uso público real, 1 integracion limitada a descarga manual y 5 referencias
 bloqueadas para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto
@@ -66,6 +66,21 @@ las bases ya activas de los conectores pendientes:
 Ninguna de estas filas convierte contexto en recomendacion. Antes de almacenar
 o publicar datos nuevos, cada conector debe documentar cadencia, output
 permitido y limites en su Evidence Passport.
+
+### Volatility Intelligence Lab
+
+El sublaboratorio `/dashboard/volatility` agrega dos fuentes registradas sin
+activarlas como datasets:
+
+| Fuente | Indicadores | Uso Permitido En Esta Entrega |
+|---|---|---|
+| Cboe Volatility Index Family | `VIX`, term structure, `VVIX`, `SKEW`, `VXN`, `OVX`, `GVZ` | Enlaces oficiales y display externo atribuido de VIX; sin almacenar series ni publicar episodios reales |
+| ICE BofA MOVE Index | Volatilidad de tasas/bonos de EE. UU. | Fuente de diseño para estrés de financiación; sin feed o output real activado |
+
+Esta decision responde a la competencia: otros dashboards ya muestran el
+universo VIX. TargetAudit enfoca la investigación futura en reacción de
+activos y eventos regulatorios/listings auditables. Ver
+[Volatility Intelligence Lab](volatility-intelligence-lab.md).
 
 ## Targets Y Ratings
 

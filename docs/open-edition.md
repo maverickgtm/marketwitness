@@ -126,6 +126,18 @@ permiso explicito de output publico.
 - Conserva los conectores nuevos como `connector_planned`: la pagina no
   contiene precios live nuevos ni recomendaciones de compra o venta.
 
+### Volatility Intelligence Lab
+
+- La ruta `/dashboard/volatility` presenta un grafico `VIX` de TradingView
+  atribuido como contexto externo y un mapa de indicadores para estudiar
+  propagacion de estres.
+- La API `/api/v1/intelligence/volatility` describe los episodios futuros:
+  shocks VIX, divergencia tecnologica `VXN`, estres de tasas `MOVE` y
+  propagacion `OVX/GVZ`.
+- Cboe e ICE quedan registrados como fuentes pendientes de derechos para
+  resultados historicos reales; esta version no descarga sus series ni
+  recomienda posiciones.
+
 ## Ejecutar Sin Costos
 
 ```bash
@@ -164,6 +176,9 @@ conexion a Internet pero no suscripcion de datos de TargetAudit.
 La ruta `/dashboard/intelligence` es navegable aun sin red porque presenta el
 mapa de fuentes y limites; las futuras ingestas solo se activaran tras pruebas
 y validacion de output público.
+`/dashboard/volatility` conserva la misma regla: sin Internet mantiene visible
+el diseño de investigacion, mientras el chart atribuido requiere cargar el
+widget externo.
 
 ## Reporte Periodico En GitHub
 

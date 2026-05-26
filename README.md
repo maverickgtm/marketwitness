@@ -33,6 +33,9 @@ comerciales. Incluye:
 - `Market Intelligence`, un workspace de expansion que ordena fuentes
   oficiales para regimenes de mercado, calendario macro, insiders y
   posicionamiento antes de activar nuevos feeds.
+- `Volatility Intelligence Lab`, una pagina de investigacion de episodios de
+  estres con `VIX`, tecnologia, tasas y commodities, conectada al contexto de
+  IPOs y no a senales de trading.
 
 Los rankings de analistas con observaciones reales permanecen como extensión
 opcional: el usuario puede aportar entradas autorizadas, pero TargetAudit no
@@ -87,6 +90,14 @@ transacciones insider SEC y posicionamiento agregado CFTC. La API
 `/api/v1/intelligence/modules` declara fuentes, prioridad, cadencia y limite
 de interpretacion; por ahora no presenta esos conectores como precios live ni
 como recomendaciones.
+
+El primer sublaboratorio ya navega en `/dashboard/volatility` y publica su
+contrato en `/api/v1/intelligence/volatility`: organiza `VIX`,
+`VIX1D/VIX9D/VIX3M`, `VXN`, `MOVE`, `VVIX/SKEW` y `OVX/GVZ`, con un chart
+externo atribuido de `VIX` y diseños de episodios para reacción cross-asset e
+IPOs. Cboe e ICE quedan registrados como fuentes sujetas a derechos antes de
+almacenar series o publicar resultados históricos reales. Ver
+[Volatility Intelligence Lab](docs/volatility-intelligence-lab.md).
 
 Un ultimo barrido realizado el `2026-05-25` encontro una puerta gratuita que
 vale intentar formalmente: `AnalystCentral` anuncia un CSV historico gratuito
@@ -915,6 +926,10 @@ La ruta `/dashboard/intelligence` expone el nuevo mapa de inteligencia de
 mercado: enlaza las bases IPO/ETF existentes y ordena la futura incorporacion
 de cripto seleccionada, energia, tasas, calendario macro, insiders y CFTC con
 sus fuentes y limites visibles.
+Desde alli, `/dashboard/volatility` abre el laboratorio de propagacion de
+estres: muestra el `VIX` exclusivamente como visualizacion externa atribuida y
+expone los futuros estudios que relacionaran volatilidad con activos, IPOs y
+ownership cuando los derechos de las series esten aprobados.
 La ruta
 `/dashboard/reports` organiza veintisiete paginas generadas permitidas del
 bundle semanal de Open Edition y enlaza sus controles de publicacion; no
@@ -1006,6 +1021,8 @@ Endpoints iniciales:
 | `/dashboard/open` | Portada de la edición gratuita de GitHub |
 | `/api/v1/intelligence/modules` | Mapa fuente-primero de capas de inteligencia, prioridades y límites de interpretación |
 | `/dashboard/intelligence` | Workspace Market Intelligence para eventos, contexto y posicionamiento planificado |
+| `/api/v1/intelligence/volatility` | Diseño estructurado de indicadores y episodios del laboratorio de volatilidad |
+| `/dashboard/volatility` | Volatility Intelligence Lab con VIX atribuido y mapa de investigación de propagación |
 | `/dashboard/reports` | Centro de reportes reproducibles con las rutas generadas permitidas del bundle Open Edition |
 | `/api/v1/policy/public-use` | Politica estructurada de uso responsable, capas de datos y fuentes bloqueadas |
 | `/dashboard/policy` | Pagina publica de no-recomendacion y derechos de datos pendientes |

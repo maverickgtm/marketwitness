@@ -22,6 +22,19 @@ MODULES = (
         "claim_limit": "A filing starts verification; it does not confirm listing or a trade.",
     },
     {
+        "key": "volatility_lab",
+        "title": "Volatility Intelligence Lab",
+        "theme": "Stress Episodes / Listings",
+        "stage": "foundation_available",
+        "priority": "now",
+        "provider_ids": ("cboe-volatility-family", "ice-move-index"),
+        "coverage": "VIX-family and MOVE study design connected to cross-asset and IPO questions.",
+        "cadence": "Attributed external display now; stored episode research pending rights",
+        "route": "/dashboard/volatility",
+        "next_delivery": "Activate historical episode calculations only after output rights are cleared.",
+        "claim_limit": "Volatility regimes describe conditions; they do not prescribe a trade.",
+    },
+    {
         "key": "market_regimes",
         "title": "Market Regimes",
         "theme": "Digital Assets / Energy / Rates",
@@ -106,9 +119,9 @@ def build_market_intelligence_snapshot(
         "foundation_count": stages["implemented_foundation"] + stages["foundation_available"],
         "planned_connector_count": stages["connector_planned"],
         "implementation_sequence": [
+            "Volatility Lab foundation: VIX display and auditable stress-episode design.",
             "Market Regimes: BTC, ETH, WTI, Brent and Treasury 2Y/10Y.",
-            "Macro Calendar and Insider Activity attached to watched companies.",
-            "Ownership expansion and CFTC positioning after the first connectors are audited.",
+            "Macro Calendar, Insider Activity, ownership and CFTC after connector review.",
         ],
         "publication_boundary": (
             "This workspace maps verifiable evidence and implementation order. "

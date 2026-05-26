@@ -119,9 +119,9 @@ Objetivo: convertir la expansion cross-asset en una capa verificable de
 contexto y posicionamiento, sin prometer feeds que aun no estan activos.
 
 - La ruta `/dashboard/intelligence` consume
-  `/api/v1/intelligence/modules` y muestra seis capas: Pre-IPO Radar, Market
-  Regimes, Macro Calendar, Insider Activity, Ownership Watch y Futures
-  Positioning.
+  `/api/v1/intelligence/modules` y muestra siete capas: Pre-IPO Radar,
+  Volatility Intelligence Lab, Market Regimes, Macro Calendar, Insider
+  Activity, Ownership Watch y Futures Positioning.
 - Reconoce como bases existentes el flujo IPO SEC y la evidencia ETF N-PORT;
   los conectores de nuevos valores permanecen etiquetados como planificados.
 - Registra como siguientes fuentes `Kraken Spot` para `BTC`/`ETH`, `EIA` para
@@ -131,6 +131,24 @@ contexto y posicionamiento, sin prometer feeds que aun no estan activos.
   3/4/5` para insiders y `CFTC COT` para posicionamiento futuro agregado.
 - Declara en interfaz y API que no hay nuevos valores live recolectados ni
   recomendación de posiciones en esta etapa.
+
+## Pagina: Volatility Intelligence Lab
+
+Objetivo: investigar propagacion de estres sin convertirse en otro panel
+generico de VIX o en una fuente de senales.
+
+- La ruta `/dashboard/volatility` consume
+  `/api/v1/intelligence/volatility` y presenta el `Stress Map` de `VIX`,
+  curva corta, `VXN`, `MOVE`, `VVIX/SKEW`, `OVX/GVZ` y horizontes largos.
+- El grafico `CBOE:VIX` se carga como widget atribuido de TradingView y queda
+  expresamente fuera de la evidencia calculada.
+- Publica diseños de episodios para estudiar reaccion posterior cross-asset,
+  estres tecnologico alrededor de IPOs y estres de tasas previo al mercado de
+  equity.
+- Registra fuentes Cboe e ICE; ninguna serie real se ingiere ni se publica
+  como resultado derivado hasta aprobar derechos de output.
+- Su diferencia frente a dashboards de volatilidad existentes es conectar
+  episodios con IPO Watch, ETF/ownership y Evidence Passport Commons.
 
 La direccion visual, las decisiones sobre widgets y la siguiente fase de
 rediseño se documentan en
@@ -200,6 +218,10 @@ afirmacion antes de activar nuevos conectores.
 `/api/v1/intelligence/modules` publica el plan de activacion de Market
 Intelligence con sus fuentes registradas, cadencias esperadas, rutas ya
 disponibles y limites de cada futura capa.
+
+`/api/v1/intelligence/volatility` publica el contrato inicial del laboratorio:
+familias de indicadores, prioridad por fase y diseños de episodios, manteniendo
+los resultados reales bloqueados hasta validar fuentes y derechos.
 
 ## Aplicacion Financials Scorecard
 
