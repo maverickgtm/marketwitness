@@ -59,9 +59,7 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
 
 ## Release Decisions
 
-1. The GitHub candidate brand remains `TargetAudit`; `MarketWitness` is only a
-   possible future rebrand requiring clearance and migration planning.
-2. The Open Edition launches around lawful public evidence and synthetic
+1. The Open Edition launches around lawful public evidence and synthetic
    methods, not an unlicensed real analyst ranking.
-3. Optional commercial integrations must be bring-your-own-license or carry
+2. Optional commercial integrations must be bring-your-own-license or carry
    explicit public-output rights.

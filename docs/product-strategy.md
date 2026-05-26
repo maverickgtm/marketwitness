@@ -9,13 +9,6 @@ Tagline: **Evidence-first market intelligence for auditable research.**
 The technical package remains `targetaudit`, allowing the product to extend to
 other verticals without breaking integrations.
 
-### Future Branding Candidate
-
-`MarketWitness` is retained only as a possible future rebranding candidate.
-The `v0.1.0-rc.1` public release remains `TargetAudit`. Any future brand
-change requires trademark, repository-handle, and domain clearance, followed
-by a planned migration of package-facing language.
-
 ## Product Thesis
 
 Established market products provide current targets, ratings, calendars, and

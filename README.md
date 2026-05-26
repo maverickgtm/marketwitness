@@ -189,14 +189,6 @@ are maintained in English.
 Use the [release candidate checklist](docs/release-candidate-checklist.md) for
 the final publication steps.
 
-## Brand Direction
-
-The launch identity remains **TargetAudit** so the package, API, commands, and
-documentation stay coherent for the release candidate. **MarketWitness** is
-retained only as a possible future rebranding candidate; adopting it would
-require brand, trademark, repository-handle, and domain clearance before any
-migration.
-
 ## Documentation
 
 - [Product strategy](docs/product-strategy.md)

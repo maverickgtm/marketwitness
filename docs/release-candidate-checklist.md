@@ -7,10 +7,6 @@ useful project without mandatory payments. This candidate demonstrates
 evidence auditing, regulatory monitors, and a navigable dashboard; it does not
 promise real analyst rankings or investment recommendations.
 
-`MarketWitness` is recorded only as a possible future brand. The release
-candidate remains `TargetAudit`; no repository, package, CLI, API, or
-dashboard identifier should be renamed for this release.
-
 ## Ready For The Candidate
 
 - [x] Code licensed under MIT.
