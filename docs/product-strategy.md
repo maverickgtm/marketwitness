@@ -36,7 +36,7 @@ rights and claim boundaries as product features.
 | ETF Evidence Center | Study holdings evidence and changes | Periodic regulatory reports are separated from daily-trade claims |
 | RWA Watch Sandbox | Model tokenized-asset observations | Live venue or issuer collection stays subject to documented rights |
 | Market Intelligence | Organize events, context, and future connectors | Does not issue trading signals |
-| Volatility Intelligence Lab | Examine volatility regimes across assets and events | Visible research workflow; proprietary series are not bundled |
+| VIX Reaction Explorer | Select rising/cooling volatility scenarios and examine planned reaction windows across assets and events | Visible research workflow; proprietary series are not bundled |
 | Presidential Impact Lab | Link documented Donald Trump communications to event windows | Truth Social automation is blocked without permission |
 
 ## Differentiation

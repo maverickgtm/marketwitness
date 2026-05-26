@@ -282,8 +282,13 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/commons", page.text)
         self.assertIn("/dashboard/volatility", page.text)
         self.assertIn("/dashboard/presidential-impact", page.text)
+        self.assertIn("/dashboard/rwa-watch", page.text)
+        self.assertIn("Tokenized Assets / RWA", page.text)
+        self.assertIn("Analyst Scorecards", page.text)
+        self.assertIn("Contribute Connectors", page.text)
+        self.assertIn('aria-label="Quick navigation"', page.text)
         self.assertIn("What Makes MarketWitness Different", page.text)
-        self.assertIn("VIX Stress Lab", page.text)
+        self.assertIn("VIX Reaction Explorer", page.text)
         self.assertIn("Trump Communication Impact", page.text)
         self.assertIn("Global IPO Radar", page.text)
         self.assertIn("Evidence Commons", page.text)
@@ -318,14 +323,17 @@ class ApiTests(unittest.TestCase):
         self.assertIn("policy_signal_lab", keys)
         self.assertIn("/dashboard/volatility", page.text)
         self.assertIn("/dashboard/presidential-impact", page.text)
+        self.assertIn("VIX Reaction Explorer", page.text)
 
     def test_serves_volatility_research_lab_without_implying_a_trading_signal(self) -> None:
         page = self.client.get("/dashboard/volatility")
         snapshot = self.client.get("/api/v1/intelligence/volatility")
 
         self.assertEqual(page.status_code, 200)
-        self.assertIn("Volatility", page.text)
-        self.assertIn("propagation.", page.text)
+        self.assertIn("When VIX moves", page.text)
+        self.assertIn("what reacts?", page.text)
+        self.assertIn("VIX Reaction Explorer", page.text)
+        self.assertIn("Results gated / design live", page.text)
         self.assertIn("VIXCLS", page.text)
         self.assertIn("via FRED", page.text)
         self.assertIn("External VIX display unavailable", page.text)
@@ -333,6 +341,10 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(snapshot.status_code, 200)
         self.assertEqual(snapshot.json()["indicator_group_count"], 7)
         self.assertEqual(snapshot.json()["episode_design_count"], 4)
+        self.assertEqual(
+            [scenario["key"] for scenario in snapshot.json()["reaction_explorer"]["scenarios"]],
+            ["vix_rises", "vix_cools"],
+        )
         self.assertIn("VXN", snapshot.json()["phase_1"])
         self.assertIn("MOVE", snapshot.json()["phase_1"])
         self.assertIn("does not ingest Cboe or ICE", snapshot.json()["publication_boundary"])

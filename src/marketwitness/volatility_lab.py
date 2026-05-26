@@ -96,6 +96,81 @@ EPISODE_DESIGNS = (
     },
 )
 
+REACTION_SCENARIOS = (
+    {
+        "key": "vix_rises",
+        "label": "VIX rises",
+        "headline": "Stress expansion",
+        "trigger": "A disclosed upward VIX threshold is crossed.",
+        "question": (
+            "Did risk-sensitive assets weaken, defensive assets strengthen, "
+            "or did the move fail to propagate?"
+        ),
+        "lenses": (
+            {
+                "family": "Equities",
+                "assets": "SPY / QQQ / XLF",
+                "measurement": "Return, drawdown and breadth after the stress event.",
+            },
+            {
+                "family": "Crypto",
+                "assets": "BTC / ETH",
+                "measurement": "Directional reaction and dispersion versus equities.",
+            },
+            {
+                "family": "Energy / Havens",
+                "assets": "WTI / Brent / Gold / USD",
+                "measurement": "Whether stress spreads or defensiveness appears.",
+            },
+            {
+                "family": "Evidence Pipeline",
+                "assets": "IPO Watch / ETF holdings",
+                "measurement": "Listing milestones and permitted holdings evidence nearby.",
+            },
+        ),
+    },
+    {
+        "key": "vix_cools",
+        "label": "VIX cools",
+        "headline": "Stress relief",
+        "trigger": "A disclosed downward VIX threshold is crossed.",
+        "question": (
+            "Did risk appetite return across growth assets and listings, "
+            "or did the calmer VIX fail to improve broader conditions?"
+        ),
+        "lenses": (
+            {
+                "family": "Equities",
+                "assets": "SPY / QQQ / XLF",
+                "measurement": "Recovery frequency and median forward return.",
+            },
+            {
+                "family": "Crypto",
+                "assets": "BTC / ETH",
+                "measurement": "Whether digital assets participate in relief.",
+            },
+            {
+                "family": "Energy / Havens",
+                "assets": "WTI / Brent / Gold / USD",
+                "measurement": "Rotation away from defense or continued caution.",
+            },
+            {
+                "family": "Evidence Pipeline",
+                "assets": "IPO Watch / ETF holdings",
+                "measurement": "Verified listing progress and allowed ownership context.",
+            },
+        ),
+    },
+)
+
+REACTION_HORIZONS = (
+    {"key": "same_day", "label": "Same day"},
+    {"key": "1_session", "label": "1 session"},
+    {"key": "5_sessions", "label": "5 sessions"},
+    {"key": "20_sessions", "label": "20 sessions"},
+    {"key": "60_sessions", "label": "60 sessions"},
+)
+
 
 def build_volatility_lab_snapshot(
     providers: list[SourceProvider], as_of: date
@@ -107,7 +182,7 @@ def build_volatility_lab_snapshot(
     providers_by_id = {provider.provider_id: provider for provider in providers}
     indicators = [_indicator_payload(item, providers_by_id) for item in INDICATORS]
     return {
-        "product": "Volatility Intelligence Lab",
+        "product": "VIX Reaction Explorer",
         "as_of": as_of.isoformat(),
         "research_status": "methodology_and_display_ready_real_series_pending_rights",
         "indicator_group_count": len(indicators),
@@ -122,6 +197,22 @@ def build_volatility_lab_snapshot(
             "design only. It does not ingest Cboe or ICE series, calculate real episode "
             "results, or recommend a position."
         ),
+        "reaction_explorer": {
+            "status": "design_ready_results_pending_rights",
+            "prompt": (
+                "Choose whether VIX rises or cools, then inspect which assets and "
+                "time windows the lab is designed to test."
+            ),
+            "boundary": (
+                "Measurement workspace only: observed returns and reaction statistics "
+                "remain unavailable until rights-approved historical inputs are enabled."
+            ),
+            "horizons": [dict(item) for item in REACTION_HORIZONS],
+            "scenarios": [
+                {**item, "lenses": [dict(lens) for lens in item["lenses"]]}
+                for item in REACTION_SCENARIOS
+            ],
+        },
         "indicators": indicators,
         "episode_designs": [
             {**item, "windows": list(item["windows"])} for item in EPISODE_DESIGNS

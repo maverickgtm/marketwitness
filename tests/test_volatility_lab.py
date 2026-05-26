@@ -12,12 +12,22 @@ class VolatilityLabTests(unittest.TestCase):
 
         snapshot = build_volatility_lab_snapshot(providers, date(2026, 5, 25))
 
+        self.assertEqual(snapshot["product"], "VIX Reaction Explorer")
         self.assertEqual(snapshot["indicator_group_count"], 7)
         self.assertEqual(snapshot["episode_design_count"], 4)
         self.assertEqual(
             snapshot["phase_1"], ["VIX", "VIX1D / VIX9D / VIX3M", "VXN", "MOVE"]
         )
         self.assertIn("does not ingest Cboe or ICE", snapshot["publication_boundary"])
+        explorer = snapshot["reaction_explorer"]
+        self.assertEqual(
+            [item["key"] for item in explorer["scenarios"]],
+            ["vix_rises", "vix_cools"],
+        )
+        self.assertEqual(explorer["horizons"][2]["key"], "5_sessions")
+        self.assertIn("observed returns", explorer["boundary"])
+        rise = explorer["scenarios"][0]
+        self.assertIn("BTC / ETH", {item["assets"] for item in rise["lenses"]})
         move = next(item for item in snapshot["indicators"] if item["symbol"] == "MOVE")
         self.assertEqual(move["source"]["provider_id"], "ice-move-index")
         tech = next(item for item in snapshot["episode_designs"] if item["key"] == "technology_stress_gap")

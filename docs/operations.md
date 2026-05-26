@@ -135,8 +135,8 @@ House News and Presidential Actions RSS. White House Wire is metadata-only
 because linked content may be third party. Truth Social history or live
 collection remains disabled without permission.
 
-`Volatility Intelligence Lab` displays attributed FRED VIX context and
-publishes experimental design. Do not publish calculated historical episodes
+`VIX Reaction Explorer` displays attributed FRED VIX context and publishes
+rising/cooling scenario design. Do not publish calculated historical episodes
 from Cboe or ICE sources until their storage and derived-output rights are
 approved.
 

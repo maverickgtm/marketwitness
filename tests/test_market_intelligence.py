@@ -30,6 +30,7 @@ class MarketIntelligenceTests(unittest.TestCase):
             item for item in snapshot["modules"] if item["key"] == "volatility_lab"
         )
         self.assertEqual(volatility["route"], "/dashboard/volatility")
+        self.assertEqual(volatility["title"], "VIX Reaction Explorer")
         self.assertIn("Cboe Volatility Index Family", {item["provider_name"] for item in volatility["sources"]})
         policy_signals = next(
             item for item in snapshot["modules"] if item["key"] == "policy_signal_lab"

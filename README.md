@@ -1,7 +1,7 @@
 # MarketWitness
 
 **Evidence-first market intelligence for public listings, analyst research,
-volatility, ETF evidence, and policy signals.**
+volatility, ETF evidence, and presidential communication research.**
 
 `v0.1.0-rc.1` | Open Edition | MIT licensed | No paid data required
 
@@ -41,7 +41,7 @@ rights are visible product outcomes, not hidden limitations.
 | Financials Evidence Center | Audit a price-target scoring pipeline and its release gates | Redistributable fixtures; real rankings blocked |
 | Market Intelligence | Organize market context and future connectors | Source-first workspace with documented constraints |
 | Cross-Asset Markets | View Bitcoin, Ethereum, energy, metals, FX and benchmarks | Attributed TradingView displays; no widget data is stored or scored |
-| Volatility Intelligence Lab | Study volatility episodes and cross-asset reactions | Research interface with clear data boundaries |
+| VIX Reaction Explorer | Choose rising or cooling VIX scenarios and map cross-asset reaction windows | Interactive study design; real episode results require rights-approved inputs |
 | Presidential Impact Lab | Study documented Donald Trump communications against market-reaction windows | Official White House RSS path; Truth Social blocked without permission |
 
 ## Product Views
@@ -95,8 +95,10 @@ Open <http://127.0.0.1:8000/>. High-signal views include:
 | `/dashboard/financials-evidence` | Analyst scorecard evidence gates |
 | `/dashboard/intelligence` | Market Intelligence workspace |
 | `/dashboard/market-context` | Cross-Asset Markets: BTC, ETH, energy, metals and FX |
-| `/dashboard/volatility` | Volatility Intelligence Lab |
+| `/dashboard/volatility` | VIX Reaction Explorer: rising/cooling volatility research |
 | `/dashboard/presidential-impact` | Presidential Impact Lab: Donald Trump communication study |
+| `/dashboard/rwa-watch` | Tokenized Assets / RWA synthetic evidence sandbox |
+| `/dashboard/contribute?lang=en` | International connector contributor gateway |
 | `/dashboard/commons` | Evidence Passport Commons |
 | `/dashboard/policy` | Public-use and data-rights policy |
 
@@ -200,7 +202,7 @@ the final publication steps.
 - [Methodology](docs/methodology.md)
 - [Operations](docs/operations.md)
 - [Roadmap](docs/roadmap.md)
-- [Volatility Intelligence Lab](docs/volatility-intelligence-lab.md)
+- [VIX Reaction Explorer](docs/volatility-intelligence-lab.md)
 - [Presidential Impact Lab](docs/policy-signal-impact-lab.md)
 - [Public Use And Data Rights Policy](docs/public-use-policy.md)
 

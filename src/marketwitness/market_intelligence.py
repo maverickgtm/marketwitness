@@ -23,7 +23,7 @@ MODULES = (
     },
     {
         "key": "volatility_lab",
-        "title": "Volatility Intelligence Lab",
+        "title": "VIX Reaction Explorer",
         "theme": "Stress Episodes / Listings",
         "stage": "foundation_available",
         "priority": "now",
@@ -138,7 +138,7 @@ def build_market_intelligence_snapshot(
         "foundation_count": stages["implemented_foundation"] + stages["foundation_available"],
         "planned_connector_count": stages["connector_planned"],
         "implementation_sequence": [
-            "Volatility Lab foundation: VIX display and auditable stress-episode design.",
+            "VIX Reaction Explorer: rising/cooling scenarios and auditable stress-episode design.",
             "Presidential Impact Lab: Donald Trump communications study with source-rights gate.",
             "Market Regimes: BTC, ETH, WTI, Brent and Treasury 2Y/10Y.",
             "Macro Calendar, Insider Activity, ownership and CFTC after connector review.",

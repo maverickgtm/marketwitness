@@ -47,6 +47,9 @@ def open_edition_html() -> str:
       border-radius:999px; padding:7px 13px; font-size:12px; }
     .button { display:inline-flex; align-items:center; height:38px; border-radius:10px; padding:0 15px; font-weight:600;
       color:#061117; background:var(--mint); }
+    .quick-access { display:none; max-width:1370px; margin:13px auto 0; gap:8px; flex-wrap:wrap; }
+    .quick-access a { border:1px solid var(--line); border-radius:999px; color:var(--muted); padding:7px 12px; font-size:12px; }
+    .quick-access a:hover { color:var(--text); border-color:var(--mint); }
     .market-strip { max-width:1370px; margin:18px auto 0; display:grid; grid-template-columns:175px minmax(0,1fr);
       overflow:hidden; border:1px solid var(--line); border-radius:15px; background:rgba(16,26,39,.9); height:56px; }
     .strip-label { padding:9px 15px; border-right:1px solid var(--line); display:flex; flex-direction:column; justify-content:center; }
@@ -123,7 +126,7 @@ def open_edition_html() -> str:
     .mode { padding:18px; box-shadow:none; }
     .mode p { color:var(--mint); }
     #error { display:none; border-left-color:var(--red); color:var(--red); }
-    @media(max-width:1120px) { .shell { grid-template-columns:1fr; } .sidebar { display:none; }
+    @media(max-width:1120px) { .shell { grid-template-columns:1fr; } .sidebar { display:none; } .quick-access { display:flex; }
       .hero { grid-template-columns:1fr; } .flagship-grid,.command-grid { grid-template-columns:repeat(2,1fr); } }
     @media(max-width:720px) { .workspace { padding:16px 14px 34px; } .topbar { height:auto; align-items:flex-start; flex-direction:column; }
       .market-strip { grid-template-columns:126px minmax(0,1fr); } .strip-label { padding:8px 10px; }
@@ -138,7 +141,7 @@ def open_edition_html() -> str:
         <span class="side-label">Workspace</span>
         <a class="nav-link active" href="/dashboard/open"><span class="dot"></span>Open Edition</a>
         <a class="nav-link" href="/dashboard/intelligence"><span class="dot"></span>Market Intelligence</a>
-        <a class="nav-link" href="/dashboard/volatility"><span class="dot"></span>Volatility / VIX Lab</a>
+        <a class="nav-link" href="/dashboard/volatility"><span class="dot"></span>VIX Reaction Explorer</a>
         <a class="nav-link" href="/dashboard/presidential-impact"><span class="dot"></span>Presidential Impact</a>
         <a class="nav-link" href="/dashboard/market-context"><span class="dot"></span>Cross-Asset Markets</a>
         <a class="nav-link" href="/dashboard/reports"><span class="dot"></span>Report Center</a>
@@ -147,8 +150,9 @@ def open_edition_html() -> str:
         <span class="side-label">Evidence</span>
         <a class="nav-link" href="/dashboard/ipo"><span class="dot"></span>IPO Watch</a>
         <a class="nav-link" href="/dashboard/etf"><span class="dot"></span>ETF Activity</a>
-        <a class="nav-link" href="/dashboard/financials-evidence"><span class="dot"></span>Financials</a>
+        <a class="nav-link" href="/dashboard/financials-evidence"><span class="dot"></span>Analyst Scorecards</a>
         <a class="nav-link" href="/dashboard/global-listings"><span class="dot"></span>Global Listings</a>
+        <a class="nav-link" href="/dashboard/rwa-watch"><span class="dot"></span>Tokenized Assets / RWA</a>
       </div>
       <div class="nav-group">
         <span class="side-label">Controls</span>
@@ -156,6 +160,7 @@ def open_edition_html() -> str:
         <a class="nav-link" href="/dashboard/policy"><span class="dot"></span>Public Use Policy</a>
         <a class="nav-link" href="/dashboard/governance"><span class="dot"></span>Governance</a>
         <a class="nav-link" href="/dashboard/release"><span class="dot"></span>Release Center</a>
+        <a class="nav-link" href="/dashboard/contribute?lang=en"><span class="dot"></span>Contribute Connectors</a>
       </div>
       <div class="side-foot online"><span class="dot"></span><strong>Open Edition</strong>No paid market-data subscription required.</div>
     </aside>
@@ -164,6 +169,14 @@ def open_edition_html() -> str:
         <p class="crumbs">Research terminal / public workspace</p>
         <div class="actions"><span class="status online"><span class="dot"></span>Evidence controls active</span><a class="button" href="/dashboard/contribute?lang=en">Contribute source</a></div>
       </div>
+      <nav class="quick-access" aria-label="Quick navigation">
+        <a href="/dashboard/volatility">VIX Explorer</a>
+        <a href="/dashboard/presidential-impact">Presidential Impact</a>
+        <a href="/dashboard/market-context">Crypto / Commodities</a>
+        <a href="/dashboard/financials-evidence">Analyst Scorecards</a>
+        <a href="/dashboard/rwa-watch">Tokenized Assets / RWA</a>
+        <a href="/dashboard/contribute?lang=en">Contribute Connectors</a>
+      </nav>
       <section class="market-strip" aria-label="External TradingView ticker display">
         <div class="strip-label"><strong>Market strip</strong><span>External display</span></div>
         <div class="ticker">
@@ -186,7 +199,7 @@ def open_edition_html() -> str:
           <p class="meta" id="reviewed">Loading source controls...</p>
           <div class="hero-links">
             <a class="primary" href="#flagships">Explore flagship labs</a>
-            <a href="/dashboard/volatility">Open VIX Lab</a>
+            <a href="/dashboard/volatility">VIX reaction explorer</a>
             <a href="/dashboard/presidential-impact">Trump impact study</a>
             <a href="/dashboard/ipo">IPO Watch</a>
             <a href="/dashboard/commons">Evidence Commons</a>
@@ -218,10 +231,10 @@ def open_edition_html() -> str:
         <section class="flagship-grid" aria-label="Flagship intelligence laboratories">
           <article class="flagship volatility">
             <span class="label">Volatility Intelligence</span>
-            <h3>VIX Stress Lab</h3>
-            <p>Study how volatility shocks may propagate across equities, technology, rates, commodities and watched listings.</p>
+            <h3>VIX Reaction Explorer</h3>
+            <p>Choose rising or cooling volatility and map the assets, horizons and evidence needed to test the reaction.</p>
             <strong>VIX / VXN / MOVE / VVIX / OVX / GVZ</strong>
-            <a href="/dashboard/volatility">Open volatility lab</a>
+            <a href="/dashboard/volatility">Open reaction explorer</a>
           </article>
           <article class="flagship policy">
             <span class="label">Presidential Event Research</span>
@@ -1255,7 +1268,7 @@ def market_intelligence_html() -> str:
         <h1>Events. Context.<br><span>Positioning.</span></h1>
         <p class="lead">A planned intelligence layer connecting IPO and listing evidence to macro catalysts, selected market regimes and declared positioning. It begins with provenance, not promises.</p>
         <p class="meta" id="reviewed">Loading reviewed sources...</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/presidential-impact">Open Presidential Impact Lab</a><a href="/dashboard/volatility">Volatility Lab</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/presidential-impact">Open Presidential Impact Lab</a><a href="/dashboard/volatility">VIX Reaction Explorer</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
       </article>
       <article class="sequence"><p class="eyebrow">Delivery sequence</p><ol id="sequence"></ol></article>
     </section>
@@ -1302,7 +1315,7 @@ def volatility_lab_html() -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MarketWitness | Volatility Intelligence Lab</title>
+  <title>MarketWitness | VIX Reaction Explorer</title>
   <style>
     :root { --bg:#060a12; --panel:#101824; --panel2:#151f2d; --line:#233142; --text:#f3f6f7;
       --muted:#95a9b8; --mint:#38dfad; --blue:#62a6ff; --gold:#f3bf66; --red:#ff7d72;
@@ -1338,17 +1351,32 @@ def volatility_lab_html() -> str:
     .source { border-top:1px solid var(--line); padding-top:10px; margin-top:12px; font-size:12px; }
     .designs { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; } .trigger { color:var(--red)!important; font-weight:600; }
     .windows { display:flex; flex-wrap:wrap; gap:6px; margin-top:11px; } .window { background:var(--panel2); color:var(--blue); border-radius:8px; padding:4px 8px; font-size:11px; }
+    .explorer { background:linear-gradient(125deg,rgba(98,166,255,.09),rgba(255,125,114,.06)),var(--panel); border:1px solid var(--line); border-radius:20px; padding:22px; margin-bottom:28px; }
+    .explorer-head { display:flex; justify-content:space-between; align-items:start; gap:20px; margin-bottom:18px; }
+    .explorer-head h2 { margin:0 0 7px; font-size:25px; } .explorer-head p { margin:0; color:var(--muted); max-width:760px; }
+    .gated { border-radius:999px; padding:7px 11px; color:var(--gold); background:rgba(243,191,102,.11); font-size:11px; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap; }
+    .scenario-bar,.horizon-bar { display:flex; flex-wrap:wrap; gap:9px; margin:16px 0; }
+    .scenario-button,.horizon-button { appearance:none; border:1px solid var(--line); background:var(--panel2); color:var(--muted); padding:10px 15px; border-radius:11px; font:inherit; font-size:14px; font-weight:600; cursor:pointer; }
+    .scenario-button.active { color:#071016; background:var(--red); border-color:var(--red); }
+    .scenario-button.relief.active { background:var(--mint); border-color:var(--mint); }
+    .horizon-button.active { color:var(--text); border-color:var(--blue); background:rgba(98,166,255,.16); }
+    .selection { background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin:15px 0; }
+    .selection h3 { font-size:20px; margin:5px 0; } .selection p { color:var(--muted); margin:7px 0 0; }
+    .reaction-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:11px; margin-top:16px; }
+    .reaction-card { border:1px solid var(--line); border-radius:13px; padding:14px; background:rgba(6,10,18,.3); }
+    .reaction-card h3 { font-size:17px; margin:7px 0; } .reaction-card p { color:var(--muted); font-size:13px; margin:0; }
+    .explorer-boundary { color:var(--gold); border-top:1px solid var(--line); padding-top:15px; margin:18px 0 0; font-size:13px; }
     #error { display:none; border-left-color:var(--red); color:var(--red); }
-    @media(max-width:1000px) { .hero,.metrics,.grid,.designs { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
+    @media(max-width:1000px) { .hero,.metrics,.grid,.designs,.reaction-grid { grid-template-columns:1fr; } .explorer-head { flex-direction:column; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
   </style>
 </head>
 <body>
   <header>
-    <div class="top"><nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/intelligence">Market Intelligence</a> / Volatility Lab</nav><a class="back" href="/dashboard/intelligence">Back to intelligence</a></div>
+    <div class="top"><nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/intelligence">Market Intelligence</a> / VIX Reaction Explorer</nav><a class="back" href="/dashboard/intelligence">Back to intelligence</a></div>
     <section class="hero">
       <article class="intro">
-        <p class="eyebrow">Auditable stress episode research</p>
-        <h1>Volatility<br><span>propagation.</span></h1>
+        <p class="eyebrow">VIX reaction research workspace</p>
+        <h1>When VIX moves,<br><span>what reacts?</span></h1>
         <p class="lead" id="question">Loading research design...</p>
         <p class="meta" id="reviewed">Loading evidence controls...</p>
         <div class="hero-links"><a class="primary" href="/dashboard/ipo">Overlay IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Passports</a></div>
@@ -1372,6 +1400,24 @@ def volatility_lab_html() -> str:
     <p class="notice" id="error"></p>
   </header>
   <main>
+    <section class="explorer" aria-label="VIX Reaction Explorer">
+      <div class="explorer-head">
+        <div><p class="eyebrow">Interactive study design</p><h2>VIX Reaction Explorer</h2><p id="explorer-prompt">Loading reaction workspace...</p></div>
+        <span class="gated">Results gated / design live</span>
+      </div>
+      <p class="meta">1 / Choose the VIX move</p>
+      <div class="scenario-bar" id="scenarios"></div>
+      <p class="meta">2 / Choose the reaction window</p>
+      <div class="horizon-bar" id="horizons"></div>
+      <article class="selection">
+        <p class="eyebrow" id="selected-trigger">Loading scenario...</p>
+        <h3 id="selected-headline">Loading...</h3>
+        <p id="selected-question"></p>
+      </article>
+      <p class="meta">3 / Observe these reaction lenses</p>
+      <section class="reaction-grid" id="reaction-lenses"></section>
+      <p class="explorer-boundary" id="explorer-boundary"></p>
+    </section>
     <h2>Stress Map</h2>
     <section class="grid" id="indicators"></section>
     <h2>Reaction Research Designs</h2>
@@ -1380,6 +1426,23 @@ def volatility_lab_html() -> str:
   <script>
     const $ = (id) => document.getElementById(id);
     function text(value) { return String(value == null ? "" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;"); }
+    function renderReactionExplorer(explorer) {
+      let selectedScenario = explorer.scenarios[0];
+      let selectedHorizon = explorer.horizons[2];
+      const render = () => {
+        $("scenarios").innerHTML = explorer.scenarios.map((scenario) => `<button type="button" class="scenario-button ${scenario.key === "vix_cools" ? "relief" : ""} ${scenario.key === selectedScenario.key ? "active" : ""}" data-scenario="${text(scenario.key)}">${text(scenario.label)}</button>`).join("");
+        $("horizons").innerHTML = explorer.horizons.map((horizon) => `<button type="button" class="horizon-button ${horizon.key === selectedHorizon.key ? "active" : ""}" data-horizon="${text(horizon.key)}">${text(horizon.label)}</button>`).join("");
+        $("selected-trigger").textContent = `${selectedScenario.trigger} / ${selectedHorizon.label}`;
+        $("selected-headline").textContent = selectedScenario.headline;
+        $("selected-question").textContent = selectedScenario.question;
+        $("reaction-lenses").innerHTML = selectedScenario.lenses.map((lens) => `<article class="reaction-card"><p class="eyebrow">${text(lens.family)}</p><h3>${text(lens.assets)}</h3><p>${text(lens.measurement)}</p></article>`).join("");
+        document.querySelectorAll("[data-scenario]").forEach((button) => button.addEventListener("click", () => { selectedScenario = explorer.scenarios.find((scenario) => scenario.key === button.dataset.scenario); render(); }));
+        document.querySelectorAll("[data-horizon]").forEach((button) => button.addEventListener("click", () => { selectedHorizon = explorer.horizons.find((horizon) => horizon.key === button.dataset.horizon); render(); }));
+      };
+      $("explorer-prompt").textContent = explorer.prompt;
+      $("explorer-boundary").textContent = explorer.boundary;
+      render();
+    }
     async function initialize() {
       try {
         const response = await fetch("/api/v1/intelligence/volatility");
@@ -1389,6 +1452,7 @@ def volatility_lab_html() -> str:
         $("reviewed").textContent = `${data.product} / reviewed as of ${data.as_of}`;
         $("groups").textContent = data.indicator_group_count; $("episodes").textContent = data.episode_design_count; $("phase1").textContent = data.phase_1.length;
         $("boundary").textContent = data.publication_boundary;
+        renderReactionExplorer(data.reaction_explorer);
         $("indicators").innerHTML = data.indicators.map((item) => `<article class="panel"><div class="indicator-head"><div><span class="family">${text(item.family)}</span><h3>${text(item.symbol)}</h3></div><span class="pill ${text(item.priority)}">${text(item.priority)}</span></div><p>${text(item.role)}</p><small><strong>Connects to:</strong> ${text(item.linked_context)}</small><p class="source"><a href="${text(item.source.official_url)}" target="_blank" rel="noopener">${text(item.source.provider_name)}</a> / ${text(item.source.deployment_state)}</p></article>`).join("");
         $("designs").innerHTML = data.episode_designs.map((item) => `<article class="panel"><h3>${text(item.key.replaceAll("_", " "))}</h3><p class="trigger">${text(item.trigger)}</p><p>${text(item.comparison)}</p><small>${text(item.output)}</small><div class="windows">${item.windows.map((window) => `<span class="window">${text(window)}</span>`).join("")}</div></article>`).join("");
       } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
@@ -1586,7 +1650,7 @@ def market_context_html() -> str:
 <body>
   <header>
     <div class="top">
-      <nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / Cross-Asset Markets / <a href="/dashboard/volatility">VIX Lab</a></nav>
+      <nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / Cross-Asset Markets / <a href="/dashboard/volatility">VIX Reaction Explorer</a></nav>
       <a class="back" href="/dashboard/open">Back to terminal</a>
     </div>
     <section class="market-strip" aria-label="External TradingView ticker display">

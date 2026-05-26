@@ -17,7 +17,7 @@ ranking.
 | `/dashboard/financials-evidence` | Financials evidence and release-gate sequence | Demo scorecard is not real analyst performance |
 | `/dashboard/intelligence` | Cross-asset research workspace | Planned stored connectors are not live feeds |
 | `/dashboard/market-context` | Cross-Asset Markets terminal | TradingView displays context only; values are not stored or scored |
-| `/dashboard/volatility` | Volatility Intelligence Lab | External VIX display; no unlicensed episode calculations |
+| `/dashboard/volatility` | VIX Reaction Explorer | Select rising/cooling scenarios and windows; no unlicensed episode calculations |
 | `/dashboard/presidential-impact` | Presidential Impact Lab: Donald Trump communication study | White House RSS eligible; Truth Social collection blocked without permission |
 | `/dashboard/commons` | Evidence Passport Commons | Source rights and claim boundaries are visible |
 | `/dashboard/policy` | Public Use Policy | Product control, not legal advice |
@@ -27,12 +27,15 @@ ranking.
 ## Open Edition Home And Cross-Asset Markets
 
 The home view communicates that the GitHub edition runs without purchased
-data. It provides direct navigation to IPO, ETF, Financials, Global Listings,
-and control views, along with official TradingView `Ticker Tape` and `Market
-Overview` widgets labeled as attributed external display.
+data. It provides direct navigation to IPO, ETF, Analyst Scorecards, Global
+Listings, tokenized-asset/RWA evidence and control views, along with official
+TradingView `Ticker Tape` and `Market Overview` widgets labeled as attributed
+external display. When the sidebar collapses, a compact quick-access bar keeps
+the VIX, Presidential Impact, Crypto/Commodities, Analyst Scorecards, RWA and
+contributor paths visible.
 
 Its first product-selling section promotes four distinctive reasons to explore
-the project: `VIX Stress Lab`, `Trump Communication Impact`, `Global IPO Radar`, and
+the project: `VIX Reaction Explorer`, `Trump Communication Impact`, `Global IPO Radar`, and
 `Evidence Commons`. The following `Core Departments` section provides direct
 entry to IPO, ETF, Financials, Market Intelligence, Data Rights, and generated
 report workflows so visitors do not have to discover the system through
@@ -115,7 +118,8 @@ confirmed manager buy or sell without additional evidence.
 - `/dashboard/intelligence` maps Pre-IPO, volatility, policy, regimes, macro,
   insiders, ownership, and futures-positioning layers; planned sources are not
   described as collected values.
-- `/dashboard/volatility` presents a FRED-attributed VIX display and planned
+- `/dashboard/volatility` presents a FRED-attributed VIX display, an
+  interactive rising-versus-cooling reaction explorer, and planned
   `VIX`/`VXN`/`MOVE`/commodity episode designs.
 - `/dashboard/presidential-impact` presents the Donald Trump communication
   event-study design, official White House RSS intake path, and visible Truth

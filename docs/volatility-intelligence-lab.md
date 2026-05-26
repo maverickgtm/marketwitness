@@ -1,20 +1,37 @@
-# Volatility Intelligence Lab
+# VIX Reaction Explorer
 
 Initial design and review date: `2026-05-25`.
 
 ## Purpose
 
-`Volatility Intelligence Lab` does not aim to be a generic VIX screen. Its
+`VIX Reaction Explorer` does not aim to be a generic VIX screen. Its
 question is:
 
 > When verifiable stress appears in equities, technology, rates, or
 > commodities, what happens next to monitored assets and confirmed listing
 > events?
 
-`/dashboard/volatility` publishes the research design and an attributed
-external VIX visualization. `/api/v1/intelligence/volatility` publishes the
-indicator families and planned experiments. No real Cboe or ICE series are
+`/dashboard/volatility` publishes the **VIX Reaction Explorer** and an
+attributed external VIX visualization. Visitors can select `VIX rises` or
+`VIX cools`, choose a same-day, 1-, 5-, 20-, or 60-session horizon, and see
+which equity, crypto, energy, haven, IPO, and ETF lenses are designed for
+measurement. `/api/v1/intelligence/volatility` publishes the same scenarios,
+indicator families, and planned experiments. No real Cboe or ICE series are
 downloaded or scored in this release.
+
+## Visible Reaction Explorer
+
+The explorer exposes the original research idea directly instead of hiding it
+in methodology cards.
+
+| Scenario | Research Question | Visible Lenses |
+|---|---|---|
+| `VIX rises` | Does stress propagate, or does the move remain isolated? | `SPY`/`QQQ`/`XLF`, `BTC`/`ETH`, energy/havens, IPO and ETF evidence |
+| `VIX cools` | Does risk appetite return, or do broader conditions remain weak? | `SPY`/`QQQ`/`XLF`, `BTC`/`ETH`, energy/havens, IPO and ETF evidence |
+
+This is an interactive measurement workspace, not a table of observed
+returns. Real reaction statistics remain gated until public derived-output
+rights or an appropriately licensed input path is approved.
 
 ## Volatility Families
 
