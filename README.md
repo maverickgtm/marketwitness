@@ -42,7 +42,7 @@ rights are visible product outcomes, not hidden limitations.
 | Market Intelligence | Organize market context and future connectors | Source-first workspace with documented constraints |
 | Cross-Asset Markets | View Bitcoin, Ethereum, energy, metals, FX and benchmarks | Attributed TradingView displays; no widget data is stored or scored |
 | Volatility Intelligence Lab | Study volatility episodes and cross-asset reactions | Research interface with clear data boundaries |
-| Policy Signal Impact Lab | Study official communications and market-reaction windows | Official White House RSS path; Truth Social blocked without permission |
+| Presidential Impact Lab | Study documented Donald Trump communications against market-reaction windows | Official White House RSS path; Truth Social blocked without permission |
 
 ## Product Views
 
@@ -54,9 +54,9 @@ rights are visible product outcomes, not hidden limitations.
 
 ![MarketWitness Global Listings Watch](docs/assets/global-listings-watch.png)
 
-### Policy Signal Impact Lab
+### Presidential Impact Lab: Donald Trump Communication Study
 
-![MarketWitness Policy Signal Impact Lab](docs/assets/policy-signal-impact-lab.png)
+![MarketWitness Presidential Impact Lab](docs/assets/policy-signal-impact-lab.png)
 
 ## Quick Start
 
@@ -96,7 +96,7 @@ Open <http://127.0.0.1:8000/>. High-signal views include:
 | `/dashboard/intelligence` | Market Intelligence workspace |
 | `/dashboard/market-context` | Cross-Asset Markets: BTC, ETH, energy, metals and FX |
 | `/dashboard/volatility` | Volatility Intelligence Lab |
-| `/dashboard/policy-signals` | Policy Signal Impact Lab |
+| `/dashboard/presidential-impact` | Presidential Impact Lab: Donald Trump communication study |
 | `/dashboard/commons` | Evidence Passport Commons |
 | `/dashboard/policy` | Public-use and data-rights policy |
 
@@ -201,7 +201,7 @@ the final publication steps.
 - [Operations](docs/operations.md)
 - [Roadmap](docs/roadmap.md)
 - [Volatility Intelligence Lab](docs/volatility-intelligence-lab.md)
-- [Policy Signal Impact Lab](docs/policy-signal-impact-lab.md)
+- [Presidential Impact Lab](docs/policy-signal-impact-lab.md)
 - [Public Use And Data Rights Policy](docs/public-use-policy.md)
 
 ## License

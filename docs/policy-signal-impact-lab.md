@@ -1,10 +1,10 @@
-# Policy Signal Impact Lab
+# Presidential Impact Lab
 
 Review date: `2026-05-25`.
 
 ## Proposal
 
-`Policy Signal Impact Lab` studies whether a verifiable public communication
+`Presidential Impact Lab` studies whether a verifiable public communication
 coincides with later changes in volatility or related assets. Its initial
 designed case is `Donald Trump / Truth Social`, beginning at the second-term
 start date of `2025-01-20`.
@@ -28,7 +28,7 @@ observational nature of the result.
 
 ## Measurement Design
 
-`/dashboard/policy-signals` and `/api/v1/intelligence/policy-signals` publish
+`/dashboard/presidential-impact` and `/api/v1/intelligence/policy-signals` publish
 the initial design:
 
 | Layer | Initial Lenses |

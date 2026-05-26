@@ -25,7 +25,7 @@ promise real analyst rankings or investment recommendations.
 - [ ] Run `make verify` from a clean clone and retain a green CI result on the
   candidate commit.
 - [x] Publish three selected screenshots in `docs/assets/` and use them in
-  `README.md`: IPO Watch, Global Listings, and Policy Signals.
+  `README.md`: IPO Watch, Global Listings, and Presidential Impact Lab.
 - [ ] Create the GitHub repository with description, topics, and the correct
   link before adding permanent badges.
 - [ ] Enable `Private vulnerability reporting` under the GitHub `Security` tab.
@@ -74,5 +74,5 @@ python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 
 Open `http://127.0.0.1:8000/` and review `/dashboard/ipo`,
 `/dashboard/global-listings`, `/dashboard/intelligence`,
-`/dashboard/volatility`, `/dashboard/policy-signals`, and
+`/dashboard/volatility`, `/dashboard/presidential-impact`, and
 `/dashboard/policy`.

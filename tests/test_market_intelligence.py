@@ -34,7 +34,8 @@ class MarketIntelligenceTests(unittest.TestCase):
         policy_signals = next(
             item for item in snapshot["modules"] if item["key"] == "policy_signal_lab"
         )
-        self.assertEqual(policy_signals["route"], "/dashboard/policy-signals")
+        self.assertEqual(policy_signals["route"], "/dashboard/presidential-impact")
+        self.assertEqual(policy_signals["title"], "Presidential Impact Lab")
         self.assertIn(
             "Truth Social Public Content",
             {item["provider_name"] for item in policy_signals["sources"]},

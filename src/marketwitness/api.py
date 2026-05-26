@@ -322,6 +322,12 @@ def create_app(
         return policy_signal_lab_html()
 
     @application.get(
+        "/dashboard/presidential-impact", response_class=HTMLResponse, include_in_schema=False
+    )
+    def presidential_impact_lab_page() -> str:
+        return policy_signal_lab_html()
+
+    @application.get(
         "/dashboard/financials", response_class=HTMLResponse, include_in_schema=False
     )
     def scorecard() -> str:

@@ -83,7 +83,7 @@ def build_policy_signal_lab_snapshot(
 ) -> dict[str, Any]:
     if any(provider.reviewed_on > as_of for provider in providers):
         raise SourceRegistryDataError(
-            "Source registry includes a provider review after the Policy Signal Lab cutoff."
+            "Source registry includes a provider review after the Presidential Impact Lab cutoff."
         )
     providers_by_id = {provider.provider_id: provider for provider in providers}
     truth = _required_source(providers_by_id, "truth-social-public-content")
@@ -92,7 +92,7 @@ def build_policy_signal_lab_snapshot(
     whitehouse_actions = _required_source(providers_by_id, "whitehouse-presidential-actions-rss")
     whitehouse_wire = _required_source(providers_by_id, "whitehouse-wire-rss")
     return {
-        "product": "Policy Signal Impact Lab",
+        "product": "Presidential Impact Lab",
         "case_study": "Donald Trump / Truth Social communications",
         "as_of": as_of.isoformat(),
         "coverage_start": "2025-01-20",
@@ -166,7 +166,7 @@ def _required_source(
     provider = providers_by_id.get(provider_id)
     if provider is None:
         raise SourceRegistryDataError(
-            f"Policy Signal Lab requires registered source: {provider_id}."
+            f"Presidential Impact Lab requires registered source: {provider_id}."
         )
     return provider
 

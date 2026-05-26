@@ -31,7 +31,7 @@ stored, exported, or used as scoring evidence.
 | Cross-Asset Markets | TradingView views for BTC, ETH, metals, energy, FX and benchmarks | External visual context only; no stored or scored widget values |
 | Market Intelligence | Planned cross-asset sources and operating boundaries | No new live values or position recommendation |
 | Volatility Intelligence Lab | VIX display and episode-design API | Cboe/ICE derived output pending rights |
-| Policy Signal Impact Lab | Policy-event methodology and official RSS intake path | Truth Social automation blocked without permission |
+| Presidential Impact Lab | Donald Trump communication-event methodology and official White House RSS intake path | Truth Social automation blocked without permission |
 | Evidence Passport Commons | Public source/rights registry and contribution path | A passport is not investment advice |
 
 ## Run Without Data Fees

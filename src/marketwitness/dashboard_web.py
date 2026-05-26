@@ -139,7 +139,7 @@ def open_edition_html() -> str:
         <a class="nav-link active" href="/dashboard/open"><span class="dot"></span>Open Edition</a>
         <a class="nav-link" href="/dashboard/intelligence"><span class="dot"></span>Market Intelligence</a>
         <a class="nav-link" href="/dashboard/volatility"><span class="dot"></span>Volatility / VIX Lab</a>
-        <a class="nav-link" href="/dashboard/policy-signals"><span class="dot"></span>Policy Signals</a>
+        <a class="nav-link" href="/dashboard/presidential-impact"><span class="dot"></span>Presidential Impact</a>
         <a class="nav-link" href="/dashboard/market-context"><span class="dot"></span>Cross-Asset Markets</a>
         <a class="nav-link" href="/dashboard/reports"><span class="dot"></span>Report Center</a>
       </div>
@@ -181,13 +181,13 @@ def open_edition_html() -> str:
           <h1>Audit the signal.<br><span>Verify the source.</span></h1>
           <p class="lead" id="promise">Loading the zero-cost product profile...</p>
           <div class="positioning" aria-label="Flagship research coverage">
-            <span>VIX stress episodes</span><span>Policy signal impact</span><span>Global IPO evidence</span><span>ETF holdings audit</span>
+            <span>VIX stress episodes</span><span>Trump communication impact</span><span>Global IPO evidence</span><span>ETF holdings audit</span>
           </div>
           <p class="meta" id="reviewed">Loading source controls...</p>
           <div class="hero-links">
             <a class="primary" href="#flagships">Explore flagship labs</a>
             <a href="/dashboard/volatility">Open VIX Lab</a>
-            <a href="/dashboard/policy-signals">Policy signals</a>
+            <a href="/dashboard/presidential-impact">Trump impact study</a>
             <a href="/dashboard/ipo">IPO Watch</a>
             <a href="/dashboard/commons">Evidence Commons</a>
           </div>
@@ -224,11 +224,11 @@ def open_edition_html() -> str:
             <a href="/dashboard/volatility">Open volatility lab</a>
           </article>
           <article class="flagship policy">
-            <span class="label">Policy Event Research</span>
-            <h3>Policy Signal Impact</h3>
-            <p>Trace official presidential communications against disclosed market-reaction windows without claiming causality.</p>
+            <span class="label">Presidential Event Research</span>
+            <h3>Trump Communication Impact</h3>
+            <p>Study documented Donald Trump communications against disclosed market-reaction windows without claiming causality.</p>
             <strong>White House RSS eligible / Truth Social gated</strong>
-            <a href="/dashboard/policy-signals">Open policy lab</a>
+            <a href="/dashboard/presidential-impact">Open presidential lab</a>
           </article>
           <article class="flagship global">
             <span class="label">Listings Intelligence</span>
@@ -1255,7 +1255,7 @@ def market_intelligence_html() -> str:
         <h1>Events. Context.<br><span>Positioning.</span></h1>
         <p class="lead">A planned intelligence layer connecting IPO and listing evidence to macro catalysts, selected market regimes and declared positioning. It begins with provenance, not promises.</p>
         <p class="meta" id="reviewed">Loading reviewed sources...</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/policy-signals">Open Policy Signal Lab</a><a href="/dashboard/volatility">Volatility Lab</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/presidential-impact">Open Presidential Impact Lab</a><a href="/dashboard/volatility">Volatility Lab</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
       </article>
       <article class="sequence"><p class="eyebrow">Delivery sequence</p><ol id="sequence"></ol></article>
     </section>
@@ -1405,7 +1405,7 @@ def policy_signal_lab_html() -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MarketWitness | Policy Signal Impact Lab</title>
+  <title>MarketWitness | Presidential Impact Lab</title>
   <style>
     :root { --bg:#070a12; --panel:#111827; --panel2:#182133; --line:#29354a; --text:#f2f5f8; --muted:#98a7ba;
       --mint:#58dfb0; --electric:#66a5ff; --amber:#ffcc68; --coral:#ff7c73; --purple:#a48bff; }
@@ -1448,11 +1448,11 @@ def policy_signal_lab_html() -> str:
 </head>
 <body>
   <header>
-    <div class="top"><nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/intelligence">Market Intelligence</a> / Policy Signals</nav><a class="back" href="/dashboard/intelligence">Back to intelligence</a></div>
+    <div class="top"><nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/intelligence">Market Intelligence</a> / Presidential Impact Lab</nav><a class="back" href="/dashboard/intelligence">Back to intelligence</a></div>
     <section class="hero">
       <article class="intro">
-        <p class="eyebrow">Communication-to-market event research</p>
-        <h1>Policy signals.<br><span>Market fingerprints.</span></h1>
+        <p class="eyebrow">Donald Trump communication event study</p>
+        <h1>Trump communications.<br><span>Market fingerprints.</span></h1>
         <span class="case" id="case">Loading first case study...</span>
         <p class="lead" id="question">Loading research question...</p>
         <p class="micro" id="reviewed"></p>

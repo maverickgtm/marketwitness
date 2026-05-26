@@ -37,7 +37,7 @@ rights and claim boundaries as product features.
 | RWA Watch Sandbox | Model tokenized-asset observations | Live venue or issuer collection stays subject to documented rights |
 | Market Intelligence | Organize events, context, and future connectors | Does not issue trading signals |
 | Volatility Intelligence Lab | Examine volatility regimes across assets and events | Visible research workflow; proprietary series are not bundled |
-| Policy Signal Impact Lab | Link verifiable public communications to event windows | Truth Social automation is blocked without permission |
+| Presidential Impact Lab | Link documented Donald Trump communications to event windows | Truth Social automation is blocked without permission |
 
 ## Differentiation
 

@@ -281,10 +281,10 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/intelligence", page.text)
         self.assertIn("/dashboard/commons", page.text)
         self.assertIn("/dashboard/volatility", page.text)
-        self.assertIn("/dashboard/policy-signals", page.text)
+        self.assertIn("/dashboard/presidential-impact", page.text)
         self.assertIn("What Makes MarketWitness Different", page.text)
         self.assertIn("VIX Stress Lab", page.text)
-        self.assertIn("Policy Signal Impact", page.text)
+        self.assertIn("Trump Communication Impact", page.text)
         self.assertIn("Global IPO Radar", page.text)
         self.assertIn("Evidence Commons", page.text)
         self.assertIn("Core Departments", page.text)
@@ -317,7 +317,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("volatility_lab", keys)
         self.assertIn("policy_signal_lab", keys)
         self.assertIn("/dashboard/volatility", page.text)
-        self.assertIn("/dashboard/policy-signals", page.text)
+        self.assertIn("/dashboard/presidential-impact", page.text)
 
     def test_serves_volatility_research_lab_without_implying_a_trading_signal(self) -> None:
         page = self.client.get("/dashboard/volatility")
@@ -338,15 +338,19 @@ class ApiTests(unittest.TestCase):
         self.assertIn("does not ingest Cboe or ICE", snapshot.json()["publication_boundary"])
 
     def test_serves_policy_signal_lab_with_truth_social_collection_disabled(self) -> None:
-        page = self.client.get("/dashboard/policy-signals")
+        page = self.client.get("/dashboard/presidential-impact")
+        legacy_page = self.client.get("/dashboard/policy-signals")
         snapshot = self.client.get("/api/v1/intelligence/policy-signals")
 
         self.assertEqual(page.status_code, 200)
-        self.assertIn("Policy signals.", page.text)
+        self.assertEqual(legacy_page.status_code, 200)
+        self.assertIn("Trump communications.", page.text)
         self.assertIn("Market fingerprints.", page.text)
+        self.assertIn("Presidential Impact Lab", page.text)
         self.assertIn("VIXCLS", page.text)
         self.assertIn("/api/v1/intelligence/policy-signals", page.text)
         self.assertEqual(snapshot.status_code, 200)
+        self.assertEqual(snapshot.json()["product"], "Presidential Impact Lab")
         self.assertEqual(snapshot.json()["case_study"], "Donald Trump / Truth Social communications")
         self.assertEqual(snapshot.json()["coverage_start"], "2025-01-20")
         self.assertIn("disabled_pending_written_permission", snapshot.json()["live_feed_status"])

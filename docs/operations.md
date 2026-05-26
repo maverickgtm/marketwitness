@@ -130,7 +130,7 @@ trade claim.
 
 ## Policy And Volatility Research
 
-`Policy Signal Impact Lab` can begin future official-event intake from White
+`Presidential Impact Lab` can begin future official-event intake from White
 House News and Presidential Actions RSS. White House Wire is metadata-only
 because linked content may be third party. Truth Social history or live
 collection remains disabled without permission.

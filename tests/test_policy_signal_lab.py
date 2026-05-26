@@ -12,6 +12,7 @@ class PolicySignalLabTests(unittest.TestCase):
 
         snapshot = build_policy_signal_lab_snapshot(providers, date(2026, 5, 25))
 
+        self.assertEqual(snapshot["product"], "Presidential Impact Lab")
         self.assertEqual(snapshot["coverage_start"], "2025-01-20")
         self.assertEqual(snapshot["proposed_measure"], "Policy Signal Impact Trace")
         self.assertIn("disabled_pending_written_permission", snapshot["live_feed_status"])

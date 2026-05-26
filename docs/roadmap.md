@@ -29,7 +29,7 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
 
 - [x] No-cost Open Edition bundle with attributed TradingView context,
   RWA Watch Sandbox, Market Intelligence workspace, Volatility Intelligence
-  Lab, Policy Signal Impact Lab, and visible Public Use Policy.
+  Lab, Presidential Impact Lab, and visible Public Use Policy.
 - [x] Evidence Passport Commons API and contribution gateway for international
   source proposals.
 - [x] Multilingual contributor gateway in English, Japanese, Brazilian

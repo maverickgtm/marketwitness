@@ -18,7 +18,7 @@ ranking.
 | `/dashboard/intelligence` | Cross-asset research workspace | Planned stored connectors are not live feeds |
 | `/dashboard/market-context` | Cross-Asset Markets terminal | TradingView displays context only; values are not stored or scored |
 | `/dashboard/volatility` | Volatility Intelligence Lab | External VIX display; no unlicensed episode calculations |
-| `/dashboard/policy-signals` | Policy Signal Impact Lab | Truth Social collection blocked without permission |
+| `/dashboard/presidential-impact` | Presidential Impact Lab: Donald Trump communication study | White House RSS eligible; Truth Social collection blocked without permission |
 | `/dashboard/commons` | Evidence Passport Commons | Source rights and claim boundaries are visible |
 | `/dashboard/policy` | Public Use Policy | Product control, not legal advice |
 | `/dashboard/governance` | Source Governance | Technical integration does not imply publishability |
@@ -32,7 +32,7 @@ and control views, along with official TradingView `Ticker Tape` and `Market
 Overview` widgets labeled as attributed external display.
 
 Its first product-selling section promotes four distinctive reasons to explore
-the project: `VIX Stress Lab`, `Policy Signal Impact`, `Global IPO Radar`, and
+the project: `VIX Stress Lab`, `Trump Communication Impact`, `Global IPO Radar`, and
 `Evidence Commons`. The following `Core Departments` section provides direct
 entry to IPO, ETF, Financials, Market Intelligence, Data Rights, and generated
 report workflows so visitors do not have to discover the system through
@@ -117,9 +117,9 @@ confirmed manager buy or sell without additional evidence.
   described as collected values.
 - `/dashboard/volatility` presents a FRED-attributed VIX display and planned
   `VIX`/`VXN`/`MOVE`/commodity episode designs.
-- `/dashboard/policy-signals` presents a rights-aware communication/event
-  study design, official White House RSS intake path, and visible Truth Social
-  block.
+- `/dashboard/presidential-impact` presents the Donald Trump communication
+  event-study design, official White House RSS intake path, and visible Truth
+  Social collection block.
 
 ## Controls
 

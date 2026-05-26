@@ -36,7 +36,7 @@ MODULES = (
     },
     {
         "key": "policy_signal_lab",
-        "title": "Policy Signal Impact Lab",
+        "title": "Presidential Impact Lab",
         "theme": "Public Communications / Market Reaction",
         "stage": "foundation_available",
         "priority": "now",
@@ -49,7 +49,7 @@ MODULES = (
         ),
         "coverage": "Official White House communications intake plus Donald Trump / Truth Social gated case study linked to cross-asset reaction windows.",
         "cadence": "Official hourly RSS eligible; Wire metadata only; Truth Social collection disabled by terms",
-        "route": "/dashboard/policy-signals",
+        "route": "/dashboard/presidential-impact",
         "next_delivery": "Implement archived White House RSS collection; seek permission before collecting Truth Social posts.",
         "claim_limit": "Observed reaction is not proof of causation, manipulation or a position to take.",
     },
@@ -139,7 +139,7 @@ def build_market_intelligence_snapshot(
         "planned_connector_count": stages["connector_planned"],
         "implementation_sequence": [
             "Volatility Lab foundation: VIX display and auditable stress-episode design.",
-            "Policy Signal Impact Lab: communications methodology with source-rights gate.",
+            "Presidential Impact Lab: Donald Trump communications study with source-rights gate.",
             "Market Regimes: BTC, ETH, WTI, Brent and Treasury 2Y/10Y.",
             "Macro Calendar, Insider Activity, ownership and CFTC after connector review.",
         ],
