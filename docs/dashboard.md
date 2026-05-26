@@ -5,6 +5,10 @@ external market context, and publication controls. A screen can be useful
 without implying that the evidence supports a trade or a public real-data
 ranking.
 
+Every served dashboard page and generated report includes a persistent
+`Home` / `All views` control. A reader can always return to the Open Edition
+workspace or the report directory without relying on browser history.
+
 ## Primary Navigation
 
 | Route | Purpose | Evidence Boundary |

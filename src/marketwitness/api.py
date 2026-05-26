@@ -105,6 +105,36 @@ GOVERNANCE_SNAPSHOT_REPORTS = {
     "approval-review": "provider-approval-review-outcomes.html",
     "scorecard-readiness": "scorecard-readiness.html",
 }
+GLOBAL_NAV_MARKER = "mw-global-navigation"
+GLOBAL_NAV_STYLE = """
+<style id="mw-global-navigation-style">
+  body { padding-bottom:76px !important; }
+  .mw-global-navigation { position:fixed; z-index:10000; right:20px; bottom:20px;
+    display:flex; gap:9px; padding:7px; border:1px solid rgba(122,154,185,.25);
+    border-radius:14px; background:rgba(8,14,23,.92); backdrop-filter:blur(14px);
+    box-shadow:0 16px 42px rgba(0,0,0,.3); font:600 13px/1.2 Inter,-apple-system,
+    BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+  .mw-global-navigation a { display:inline-flex; align-items:center; gap:7px;
+    border-radius:9px; padding:10px 13px; color:#adbecb !important;
+    text-decoration:none !important; border:1px solid transparent; }
+  .mw-global-navigation a:first-child { color:#071016 !important;
+    background:#38dfad; }
+  .mw-global-navigation a:last-child { border-color:rgba(122,154,185,.2); }
+  .mw-global-navigation a:focus-visible { outline:2px solid #62a6ff;
+    outline-offset:2px; }
+  @media (max-width:700px) {
+    body { padding-bottom:82px !important; }
+    .mw-global-navigation { left:12px; right:12px; bottom:12px; }
+    .mw-global-navigation a { flex:1; justify-content:center; }
+  }
+</style>
+"""
+GLOBAL_NAV_HTML = """
+<nav class="mw-global-navigation" aria-label="Global application navigation">
+  <a href="/dashboard/open" aria-label="Return to MarketWitness home">Home</a>
+  <a href="/dashboard/reports">All views</a>
+</nav>
+"""
 
 
 def create_app(
@@ -141,31 +171,31 @@ def create_app(
 
     @application.get("/", response_class=HTMLResponse, include_in_schema=False)
     def open_home() -> str:
-        return open_edition_html()
+        return _dashboard_html(open_edition_html())
 
     @application.get(
         "/dashboard/open", response_class=HTMLResponse, include_in_schema=False
     )
     def open_edition() -> str:
-        return open_edition_html()
+        return _dashboard_html(open_edition_html())
 
     @application.get(
         "/dashboard/reports", response_class=HTMLResponse, include_in_schema=False
     )
     def report_center() -> str:
-        return report_center_html()
+        return _dashboard_html(report_center_html())
 
     @application.get(
         "/dashboard/extensions", response_class=HTMLResponse, include_in_schema=False
     )
     def licensed_extension_page() -> str:
-        return licensed_extensions_html()
+        return _dashboard_html(licensed_extensions_html())
 
     @application.get(
         "/dashboard/ipo", response_class=HTMLResponse, include_in_schema=False
     )
     def ipo_watch_center() -> str:
-        return ipo_watch_center_html()
+        return _dashboard_html(ipo_watch_center_html())
 
     @application.get(
         "/dashboard/ipo-watch", response_class=HTMLResponse, include_in_schema=False
@@ -195,13 +225,13 @@ def create_app(
         "/dashboard/etf", response_class=HTMLResponse, include_in_schema=False
     )
     def etf_evidence_center() -> str:
-        return etf_evidence_center_html()
+        return _dashboard_html(etf_evidence_center_html())
 
     @application.get(
         "/dashboard/financials-evidence", response_class=HTMLResponse, include_in_schema=False
     )
     def financials_evidence_center() -> str:
-        return financials_evidence_center_html()
+        return _dashboard_html(financials_evidence_center_html())
 
     @application.get(
         "/dashboard/etf-regulatory", response_class=HTMLResponse, include_in_schema=False
@@ -254,13 +284,13 @@ def create_app(
         "/dashboard/contribute", response_class=HTMLResponse, include_in_schema=False
     )
     def global_contributors(lang: str = Query(default="en", max_length=10)) -> str:
-        return global_contributors_html(lang)
+        return _dashboard_html(global_contributors_html(lang))
 
     @application.get(
         "/dashboard/commons", response_class=HTMLResponse, include_in_schema=False
     )
     def evidence_commons() -> str:
-        return evidence_commons_html()
+        return _dashboard_html(evidence_commons_html())
 
     @application.get(
         "/dashboard/global/{monitor}", response_class=HTMLResponse, include_in_schema=False
@@ -301,73 +331,73 @@ def create_app(
         "/dashboard/market-context", response_class=HTMLResponse, include_in_schema=False
     )
     def market_context_page() -> str:
-        return market_context_html()
+        return _dashboard_html(market_context_html())
 
     @application.get(
         "/dashboard/intelligence", response_class=HTMLResponse, include_in_schema=False
     )
     def market_intelligence_page() -> str:
-        return market_intelligence_html()
+        return _dashboard_html(market_intelligence_html())
 
     @application.get(
         "/dashboard/volatility", response_class=HTMLResponse, include_in_schema=False
     )
     def volatility_lab_page() -> str:
-        return volatility_lab_html()
+        return _dashboard_html(volatility_lab_html())
 
     @application.get(
         "/dashboard/policy-signals", response_class=HTMLResponse, include_in_schema=False
     )
     def policy_signal_lab_page() -> str:
-        return policy_signal_lab_html()
+        return _dashboard_html(policy_signal_lab_html())
 
     @application.get(
         "/dashboard/presidential-impact", response_class=HTMLResponse, include_in_schema=False
     )
     def presidential_impact_lab_page() -> str:
-        return policy_signal_lab_html()
+        return _dashboard_html(policy_signal_lab_html())
 
     @application.get(
         "/dashboard/financials", response_class=HTMLResponse, include_in_schema=False
     )
     def scorecard() -> str:
-        return financials_scorecard_html()
+        return _dashboard_html(financials_scorecard_html())
 
     @application.get(
         "/dashboard/governance", response_class=HTMLResponse, include_in_schema=False
     )
     def source_governance() -> str:
-        return source_governance_html()
+        return _dashboard_html(source_governance_html())
 
     @application.get(
         "/dashboard/operations", response_class=HTMLResponse, include_in_schema=False
     )
     def operations_quality() -> str:
-        return operations_quality_html()
+        return _dashboard_html(operations_quality_html())
 
     @application.get(
         "/dashboard/readiness", response_class=HTMLResponse, include_in_schema=False
     )
     def scorecard_readiness() -> str:
-        return scorecard_readiness_html()
+        return _dashboard_html(scorecard_readiness_html())
 
     @application.get(
         "/dashboard/release", response_class=HTMLResponse, include_in_schema=False
     )
     def release_center() -> str:
-        return release_center_html()
+        return _dashboard_html(release_center_html())
 
     @application.get(
         "/dashboard/approvals", response_class=HTMLResponse, include_in_schema=False
     )
     def provider_approval_page() -> str:
-        return provider_approvals_html()
+        return _dashboard_html(provider_approvals_html())
 
     @application.get(
         "/dashboard/policy", response_class=HTMLResponse, include_in_schema=False
     )
     def public_policy_page() -> str:
-        return public_use_policy_html()
+        return _dashboard_html(public_use_policy_html())
 
     @application.get("/api/v1/health")
     def health() -> dict[str, object]:
@@ -749,9 +779,22 @@ def _generated_html(directory: Path, filename: str) -> str:
             detail=f"Generated report not available: {filename}. Run the demo pipeline first.",
         )
     try:
-        return path.read_text(encoding="utf-8")
+        return _dashboard_html(path.read_text(encoding="utf-8"))
     except OSError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+
+def _dashboard_html(page: str) -> str:
+    if GLOBAL_NAV_MARKER in page:
+        return page
+    decorated = (
+        page.replace("</head>", f"{GLOBAL_NAV_STYLE}</head>", 1)
+        if "</head>" in page
+        else f"{GLOBAL_NAV_STYLE}{page}"
+    )
+    if "</body>" in decorated:
+        return decorated.replace("</body>", f"{GLOBAL_NAV_HTML}</body>", 1)
+    return f"{decorated}{GLOBAL_NAV_HTML}"
 
 
 def _public_source(item: SourceProvider) -> dict[str, object]:

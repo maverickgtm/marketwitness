@@ -302,6 +302,76 @@ class ApiTests(unittest.TestCase):
         self.assertIn("overflow-y:auto", page.text)
         self.assertIn("overscroll-behavior:contain", page.text)
 
+    def test_exposes_global_home_navigation_on_all_dashboard_pages(self) -> None:
+        pages = [
+            "/",
+            "/dashboard/open",
+            "/dashboard/reports",
+            "/dashboard/extensions",
+            "/dashboard/ipo",
+            "/dashboard/ipo-watch",
+            "/dashboard/sec-discovery",
+            "/dashboard/sec-alerts",
+            "/dashboard/ipo-reviews",
+            "/dashboard/etf",
+            "/dashboard/financials-evidence",
+            "/dashboard/etf-regulatory",
+            "/dashboard/etf/arkk-demo",
+            "/dashboard/etf/xlf-demo",
+            "/dashboard/etf/iyf-demo",
+            "/dashboard/etf/nport-recent",
+            "/dashboard/etf/nport-catalog",
+            "/dashboard/etf/nport-sync",
+            "/dashboard/document-checks",
+            "/dashboard/rwa-watch",
+            "/dashboard/global-alerts",
+            "/dashboard/issuer-confirmations",
+            "/dashboard/global-listings",
+            "/dashboard/contribute?lang=en",
+            "/dashboard/commons",
+            "/dashboard/global/hkex",
+            "/dashboard/global/lse-upcoming",
+            "/dashboard/global/asx",
+            "/dashboard/global/tsx",
+            "/dashboard/global/jpx",
+            "/dashboard/global/edinet",
+            "/dashboard/global/cvm",
+            "/dashboard/global/esma",
+            "/dashboard/global/opendart",
+            "/dashboard/global/sgx",
+            "/dashboard/audit/target-import",
+            "/dashboard/audit/adjusted-prices",
+            "/dashboard/audit/corporate-actions",
+            "/dashboard/audit/operations-quality",
+            "/dashboard/audit/release-decision",
+            "/dashboard/governance-report/open-edition",
+            "/dashboard/governance-report/licensed-extensions",
+            "/dashboard/governance-report/source-registry",
+            "/dashboard/governance-report/provider-approvals",
+            "/dashboard/governance-report/approval-review",
+            "/dashboard/governance-report/scorecard-readiness",
+            "/dashboard/market-context",
+            "/dashboard/intelligence",
+            "/dashboard/volatility",
+            "/dashboard/policy-signals",
+            "/dashboard/presidential-impact",
+            "/dashboard/financials",
+            "/dashboard/governance",
+            "/dashboard/operations",
+            "/dashboard/readiness",
+            "/dashboard/release",
+            "/dashboard/approvals",
+            "/dashboard/policy",
+        ]
+
+        for route in pages:
+            with self.subTest(route=route):
+                response = self.client.get(route)
+                self.assertEqual(response.status_code, 200)
+                self.assertIn('class="mw-global-navigation"', response.text)
+                self.assertIn('href="/dashboard/open"', response.text)
+                self.assertIn('href="/dashboard/reports"', response.text)
+
     def test_serves_market_intelligence_blueprint_without_live_data_claims(self) -> None:
         page = self.client.get("/dashboard/intelligence")
         snapshot = self.client.get("/api/v1/intelligence/modules")
