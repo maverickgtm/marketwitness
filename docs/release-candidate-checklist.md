@@ -23,8 +23,8 @@ rankings reales de analistas ni recomendaciones de inversion.
 
 - [ ] Ejecutar `make verify` desde un clon limpio y conservar el resultado de
   CI verde en el commit candidato.
-- [ ] Publicar dos o tres capturas seleccionadas en `docs/assets/` y usarlas
-  en el `README`: Open Edition, IPO/Global Listings y Policy Signals.
+- [x] Publicar tres capturas seleccionadas en `docs/assets/` y usarlas
+  en el `README`: IPO Watch, Global Listings y Policy Signals.
 - [ ] Crear el repositorio GitHub con descripcion, topics y enlace correcto
   antes de añadir badges permanentes.
 - [ ] Habilitar `Private vulnerability reporting` en la pestana `Security`.

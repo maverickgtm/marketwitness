@@ -35,6 +35,14 @@ publicar el repositorio se seguira la
 [lista del candidato de GitHub](docs/release-candidate-checklist.md), el
 [changelog](CHANGELOG.md) y el [aviso legal](DISCLAIMER.md).
 
+### Vistas Del Producto
+
+![IPO Watch Center: confirmar evidencia antes de asignar estado](docs/assets/ipo-watch-center.png)
+
+![Global Listings Watch: cobertura oficial por mercado](docs/assets/global-listings-watch.png)
+
+![Policy Signal Impact Lab: comunicaciones y reaccion de mercado](docs/assets/policy-signal-impact-lab.png)
+
 ## Evidence Passport Commons: La Diferencia Abierta
 
 TargetAudit no comienza vendiendo una senal: comienza publicando el contrato
