@@ -83,7 +83,23 @@ def open_edition_html() -> str:
     .card p { color:var(--muted); margin:0; font-size:13px; }
     .card strong { display:block; font-size:34px; letter-spacing:-.04em; color:var(--mint); margin-top:5px; }
     .notice { box-shadow:none; border-left:3px solid var(--gold); padding:14px 18px; color:var(--muted); margin:18px 0 0; }
-    .command-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:13px; }
+    .flagship-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; }
+    .flagship { padding:19px; min-height:200px; position:relative; overflow:hidden; background:var(--panel);
+      border:1px solid var(--line); border-radius:18px; }
+    .flagship:before { content:""; position:absolute; height:3px; left:0; right:0; top:0; background:var(--mint); }
+    .flagship.volatility:before { background:var(--blue); }
+    .flagship.policy:before { background:var(--gold); }
+    .flagship.global:before { background:linear-gradient(90deg,var(--mint),var(--blue)); }
+    .flagship .label { display:inline-flex; color:var(--muted); font-size:10px; text-transform:uppercase;
+      letter-spacing:.12em; margin-bottom:18px; }
+    .flagship h3 { font-size:19px; margin:0 0 9px; }
+    .flagship p { margin:0 0 16px; color:var(--muted); font-size:13px; min-height:59px; }
+    .flagship strong { display:block; color:var(--text); font-size:12px; margin-bottom:16px; }
+    .flagship a { color:var(--mint); font-size:13px; font-weight:600; }
+    .positioning { position:relative; display:flex; gap:10px; flex-wrap:wrap; margin:22px 0 0; }
+    .positioning span { color:var(--text); background:rgba(56,223,173,.08); border:1px solid rgba(56,223,173,.18);
+      padding:6px 10px; border-radius:999px; font-size:12px; }
+    .command-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; }
     .command { padding:17px; box-shadow:none; min-height:132px; }
     .command small { display:block; color:var(--muted); margin-bottom:13px; text-transform:uppercase; letter-spacing:.1em; font-size:10px; }
     .command strong { display:block; font-size:16px; margin-bottom:7px; }
@@ -104,10 +120,10 @@ def open_edition_html() -> str:
     .mode p { color:var(--mint); }
     #error { display:none; border-left-color:var(--red); color:var(--red); }
     @media(max-width:1120px) { .shell { grid-template-columns:1fr; } .sidebar { display:none; }
-      .hero { grid-template-columns:1fr; } .command-grid { grid-template-columns:repeat(2,1fr); } }
+      .hero { grid-template-columns:1fr; } .flagship-grid,.command-grid { grid-template-columns:repeat(2,1fr); } }
     @media(max-width:720px) { .workspace { padding:16px 14px 34px; } .topbar { height:auto; align-items:flex-start; flex-direction:column; }
       .market-strip { grid-template-columns:126px minmax(0,1fr); } .strip-label { padding:8px 10px; }
-      .hero-copy { padding:26px 20px; } .cards,.features,.modes,.command-grid { grid-template-columns:1fr; } }
+      .hero-copy { padding:26px 20px; } .cards,.features,.modes,.flagship-grid,.command-grid { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -118,6 +134,8 @@ def open_edition_html() -> str:
         <span class="side-label">Workspace</span>
         <a class="nav-link active" href="/dashboard/open"><span class="dot"></span>Open Edition</a>
         <a class="nav-link" href="/dashboard/intelligence"><span class="dot"></span>Market Intelligence</a>
+        <a class="nav-link" href="/dashboard/volatility"><span class="dot"></span>Volatility / VIX Lab</a>
+        <a class="nav-link" href="/dashboard/policy-signals"><span class="dot"></span>Policy Signals</a>
         <a class="nav-link" href="/dashboard/market-context"><span class="dot"></span>Market Context</a>
         <a class="nav-link" href="/dashboard/reports"><span class="dot"></span>Report Center</a>
       </div>
@@ -155,16 +173,19 @@ def open_edition_html() -> str:
       </section>
       <section class="hero">
         <article class="hero-copy">
-          <p class="eyebrow">Open source market intelligence</p>
+          <p class="eyebrow">Evidence-first market intelligence / Open Edition</p>
           <h1>Audit the signal.<br><span>Verify the source.</span></h1>
           <p class="lead" id="promise">Loading the zero-cost product profile...</p>
+          <div class="positioning" aria-label="Flagship research coverage">
+            <span>VIX stress episodes</span><span>Policy signal impact</span><span>Global IPO evidence</span><span>ETF holdings audit</span>
+          </div>
           <p class="meta" id="reviewed">Loading source controls...</p>
           <div class="hero-links">
-            <a class="primary" href="/dashboard/reports">Explore reports</a>
-            <a href="/dashboard/intelligence">Market intelligence</a>
-            <a href="/dashboard/market-context">Open market context</a>
+            <a class="primary" href="#flagships">Explore flagship labs</a>
+            <a href="/dashboard/volatility">Open VIX Lab</a>
+            <a href="/dashboard/policy-signals">Policy signals</a>
+            <a href="/dashboard/ipo">IPO Watch</a>
             <a href="/dashboard/commons">Evidence Commons</a>
-            <a href="/dashboard/policy">Data boundaries</a>
           </div>
         </article>
         <article class="market-card">
@@ -189,13 +210,45 @@ def open_edition_html() -> str:
         </section>
         <p class="notice"><strong>No paid data required.</strong> TradingView panels above are attributed external market context only. This GitHub edition does not store widget data or treat it as ranking evidence. Real analyst inputs require usage rights.</p>
         <p id="error" class="notice"></p>
-        <h2>Research Modules</h2>
+        <h2 id="flagships">What Makes TargetAudit Different</h2>
+        <section class="flagship-grid" aria-label="Flagship intelligence laboratories">
+          <article class="flagship volatility">
+            <span class="label">Volatility Intelligence</span>
+            <h3>VIX Stress Lab</h3>
+            <p>Study how volatility shocks may propagate across equities, technology, rates, commodities and watched listings.</p>
+            <strong>VIX / VXN / MOVE / VVIX / OVX / GVZ</strong>
+            <a href="/dashboard/volatility">Open volatility lab</a>
+          </article>
+          <article class="flagship policy">
+            <span class="label">Policy Event Research</span>
+            <h3>Policy Signal Impact</h3>
+            <p>Trace official presidential communications against disclosed market-reaction windows without claiming causality.</p>
+            <strong>White House RSS eligible / Truth Social gated</strong>
+            <a href="/dashboard/policy-signals">Open policy lab</a>
+          </article>
+          <article class="flagship global">
+            <span class="label">Listings Intelligence</span>
+            <h3>Global IPO Radar</h3>
+            <p>Track filings, prospectuses and confirmed milestones through official market evidence across jurisdictions.</p>
+            <strong>SEC / LSE / HKEX / JPX / ESMA / CVM / OpenDART</strong>
+            <a href="/dashboard/global-listings">Open global listings</a>
+          </article>
+          <article class="flagship">
+            <span class="label">Source Trust Layer</span>
+            <h3>Evidence Commons</h3>
+            <p>Inspect whether a source can be collected and published before it becomes a score, alert or integration.</p>
+            <strong>Provenance / rights / cadence / claim boundary</strong>
+            <a href="/dashboard/commons">Open source passports</a>
+          </article>
+        </section>
+        <h2>Core Departments</h2>
         <section class="command-grid">
-          <article class="command"><small>Listings</small><strong>IPO Watch</strong><p>Follow filings, reviews and verified milestones.</p><a href="/dashboard/ipo">Enter workflow</a></article>
-          <article class="command"><small>Ownership</small><strong>ETF Activity</strong><p>Separate periodic evidence from daily claims.</p><a href="/dashboard/etf">Open evidence</a></article>
-          <article class="command"><small>Targets</small><strong>Financials Lab</strong><p>Inspect methodology and blocked real-data release.</p><a href="/dashboard/financials-evidence">Audit scorecard</a></article>
-          <article class="command"><small>International</small><strong>Global Listings</strong><p>Monitor official signals across global markets.</p><a href="/dashboard/global-listings">View markets</a></article>
-          <article class="command"><small>Context</small><strong>Market Intelligence</strong><p>Connect listings, catalysts and positioning with source-first plans.</p><a href="/dashboard/intelligence">Open workspace</a></article>
+          <article class="command"><small>Pre-IPO Research</small><strong>IPO Watch Center</strong><p>Follow filing intake, human review and verified milestones.</p><a href="/dashboard/ipo">Enter workflow</a></article>
+          <article class="command"><small>Ownership Evidence</small><strong>ETF Evidence Center</strong><p>Separate regulatory holdings evidence from daily claims.</p><a href="/dashboard/etf">Open evidence</a></article>
+          <article class="command"><small>Analyst Research</small><strong>Financials Scorecard</strong><p>Inspect target methodology and real-data release gates.</p><a href="/dashboard/financials-evidence">Audit scorecard</a></article>
+          <article class="command"><small>Cross-Asset Context</small><strong>Market Intelligence</strong><p>Connect listings, catalysts and positioning under source controls.</p><a href="/dashboard/intelligence">Open workspace</a></article>
+          <article class="command"><small>Publication Safety</small><strong>Data Rights Policy</strong><p>Review public-output boundaries and blocked data sources.</p><a href="/dashboard/policy">Review boundaries</a></article>
+          <article class="command"><small>Reproducible Output</small><strong>Report Center</strong><p>Navigate the tested evidence bundle and audit snapshots.</p><a href="/dashboard/reports">Explore reports</a></article>
         </section>
         <h2>Included Capabilities</h2>
         <section class="features" id="capabilities"></section>

@@ -30,6 +30,13 @@ data. It provides direct navigation to IPO, ETF, Financials, Global Listings,
 and control views, along with official TradingView `Ticker Tape` and `Market
 Overview` widgets labeled as attributed external display.
 
+Its first product-selling section promotes four distinctive reasons to explore
+the project: `VIX Stress Lab`, `Policy Signal Impact`, `Global IPO Radar`, and
+`Evidence Commons`. The following `Core Departments` section provides direct
+entry to IPO, ETF, Financials, Market Intelligence, Data Rights, and generated
+report workflows so visitors do not have to discover the system through
+documentation first.
+
 `/dashboard/market-context` adds a TradingView `Advanced Chart` for
 `AMEX:XLF`, benchmark comparison, and visible attribution. TargetAudit does
 not read, store, export, or score widget values. The dashboard remains usable
