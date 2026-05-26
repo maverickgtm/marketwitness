@@ -1,5 +1,11 @@
 # MarketWitness
 
+[![Test](https://github.com/maverickgtm/marketwitness/actions/workflows/test.yml/badge.svg)](https://github.com/maverickgtm/marketwitness/actions/workflows/test.yml)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-3776AB.svg)](https://www.python.org/)
+[![MIT License](https://img.shields.io/badge/license-MIT-2ea44f.svg)](LICENSE)
+[![Open Edition](https://img.shields.io/badge/Open%20Edition-no%20paid%20data%20required-32d6b0.svg)](docs/open-edition.md)
+[![Discussions](https://img.shields.io/badge/community-Discussions-7B61FF.svg)](https://github.com/maverickgtm/marketwitness/discussions)
+
 **Evidence-first market intelligence for public listings, analyst research,
 volatility, futures positioning, insider disclosures, ETF evidence, and presidential communication research.**
 
@@ -262,7 +268,8 @@ are maintained in English.
 - Use the [methodology proposal form](https://github.com/maverickgtm/marketwitness/issues/new?template=methodology_proposal.yml)
   for event-study design, metrics, validation windows or uncertainty controls.
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting code and
-  [SECURITY.md](SECURITY.md) before reporting any sensitive problem.
+  [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before participating.
+- Read [SECURITY.md](SECURITY.md) before reporting any sensitive problem.
 
 ## Release Candidate Status
 
