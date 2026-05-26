@@ -356,11 +356,15 @@ class ApiTests(unittest.TestCase):
 
     def test_serves_open_edition_as_the_zero_cost_home_page(self) -> None:
         home = self.client.get("/")
+        favicon = self.client.get("/favicon.ico")
         page = self.client.get("/dashboard/open")
         snapshot = self.client.get("/api/v1/open-edition")
 
         self.assertEqual(home.status_code, 200)
         self.assertIn("No paid data required", home.text)
+        self.assertEqual(favicon.status_code, 200)
+        self.assertIn("image/svg+xml", favicon.headers["content-type"])
+        self.assertIn("<svg", favicon.text)
         self.assertEqual(page.status_code, 200)
         self.assertIn('<span class="brand-mark">M</span>MarketWitness', page.text)
         self.assertNotIn('<span class="brand-mark">T</span>MarketWitness', page.text)

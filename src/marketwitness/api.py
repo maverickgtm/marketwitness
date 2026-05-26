@@ -92,6 +92,11 @@ DEFAULT_PROVIDER_APPROVALS_PATH = "data/samples/provider_approval_queue.csv"
 DEFAULT_GENERATED_REPORTS_PATH = "build/demo"
 DEFAULT_PUBLIC_MONITOR_REPORTS_PATH = "build/public-monitor"
 DEFAULT_LICENSED_EXTENSIONS_PATH = "data/samples/licensed_extensions.csv"
+FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#38dfad"/><stop offset="1" stop-color="#25a9db"/></linearGradient></defs>
+<rect width="64" height="64" rx="18" fill="url(#g)"/>
+<path fill="#061117" d="M14 17h9l9 17 9-17h9v30h-8V31l-7 13h-6l-7-13v16h-8z"/>
+</svg>"""
 GLOBAL_MONITOR_REPORTS = {
     "hkex": "hkex-monitor.html",
     "lse-upcoming": "lse-upcoming.html",
@@ -221,6 +226,14 @@ def create_app(
     @application.get("/", response_class=HTMLResponse, include_in_schema=False)
     def open_home() -> str:
         return _dashboard_html(open_edition_html())
+
+    @application.get("/favicon.ico", include_in_schema=False)
+    def favicon() -> Response:
+        return Response(
+            content=FAVICON_SVG,
+            media_type="image/svg+xml",
+            headers={"Cache-Control": "public, max-age=86400"},
+        )
 
     @application.get(
         "/dashboard/open", response_class=HTMLResponse, include_in_schema=False
