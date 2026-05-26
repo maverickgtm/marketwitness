@@ -85,6 +85,18 @@ general al directorio de reportes construidos.
 - No agrega un endpoint de archivos: cada enlace corresponde a una ruta fija
   servida por la API.
 
+## Experiencia Premium De Modulos
+
+- `/dashboard/ipo` presenta una `Verification Ladder` que separa
+  descubrimiento, revision humana y confirmacion oficial antes de navegar a
+  estados o mercados.
+- `/dashboard/etf` presenta `Evidence Layers` para distinguir graficamente
+  fixtures, comparaciones regulatorias y controles N-PORT.
+- `/dashboard/global-listings` presenta un `Coverage Grid` generado desde el
+  registro de fuentes globales, distinguiendo rutas oficiales y restricciones.
+- Estas visualizaciones describen la cobertura y la metodologia del producto;
+  no representan precios, operaciones o resultados live.
+
 ## Pagina: Market Context
 
 Objetivo: dar contexto visual del benchmark financiero sin crear una nueva

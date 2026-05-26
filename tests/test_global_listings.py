@@ -39,6 +39,8 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertIn("HKEX, LSE, ASX, TSX, JPX, SGX, CVM, ESMA and OpenDART have official ingestion paths", page)
         self.assertIn('href="/dashboard/global-alerts"', page)
         self.assertIn('href="/dashboard/contribute?lang=en"', page)
+        self.assertIn("Coverage Grid", page)
+        self.assertIn("Open change review", page)
         self.assertIn('href="/dashboard/global/hkex"', page)
         self.assertIn('href="/dashboard/global/lse-upcoming"', page)
         self.assertIn('href="/dashboard/document-checks"', page)

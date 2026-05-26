@@ -45,8 +45,8 @@ targets, IPOs o cambios de holdings.
 La misma direccion debe extenderse progresivamente sin rehacer el alcance de
 datos:
 
-1. llevar el shell de navegacion y las tarjetas premium a `IPO Watch`,
-   `Global Listings` y `ETF Evidence`;
+1. llevar el lenguaje premium a reportes secundarios; `IPO Watch`,
+   `ETF Evidence` y `Global Listings` ya incorporan su primera superficie;
 2. crear graficos propios exclusivamente para datos que TargetAudit ya puede
    publicar, como conteos de documentos por mercado o estados de aprobacion;
 3. producir capturas de lanzamiento y revisar responsive design antes de

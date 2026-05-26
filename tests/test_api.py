@@ -386,6 +386,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/issuer-confirmations", page.text)
         self.assertIn("does not confirm an IPO", page.text)
         self.assertIn("Required paid data", page.text)
+        self.assertIn("Verification Ladder", page.text)
+        self.assertIn("Open status board", page.text)
 
     def test_serves_etf_evidence_center_with_separated_frequency_layers(self) -> None:
         page = self.client.get("/dashboard/etf")
@@ -401,6 +403,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/etf/nport-sync", page.text)
         self.assertIn("not confirmed manager trades", page.text)
         self.assertIn("Required paid data", page.text)
+        self.assertIn("Evidence Layers", page.text)
+        self.assertIn("Open regulatory view", page.text)
 
     def test_serves_attributed_market_context_without_a_data_endpoint(self) -> None:
         page = self.client.get("/dashboard/market-context")

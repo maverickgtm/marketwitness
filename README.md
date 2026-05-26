@@ -31,6 +31,9 @@ PYTHONPATH=src python3 -m targetaudit open-edition \
 
 Ver [Open Edition](docs/open-edition.md) para el alcance gratuito y sus
 límites metodológicos.
+La evaluacion realista de competencia, interes publico y posibles modelos de
+ingreso se conserva en
+[Posicionamiento Y Sostenibilidad Publica](docs/market-positioning-and-sustainability.md).
 
 GitHub Actions tambien genera semanalmente un paquete comprobado de Open
 Edition mediante `.github/workflows/open-edition-report.yml`. El artefacto

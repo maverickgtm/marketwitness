@@ -415,39 +415,75 @@ def ipo_watch_center_html() -> str:
   <title>TargetAudit | IPO Watch Center</title>
   <style>
     :root {
-      --bg:#071016; --panel:#0f1c24; --line:#20343d; --text:#edf1ef;
-      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff;
+      --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246; --text:#f2f6f7;
+      --muted:#96aab8; --mint:#38dfad; --gold:#f3bf66; --blue:#62a6ff; --shadow:0 22px 68px rgba(0,0,0,.24);
     }
     * { box-sizing:border-box; }
-    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
-    header,main { max-width:1220px; margin:auto; padding:30px 28px; }
-    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    body { margin:0; color:var(--text); font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 88% 0%,rgba(243,191,102,.11),transparent 29%),var(--bg); }
+    header,main { max-width:1370px; margin:auto; padding:23px 28px; }
+    nav,.meta,.eyebrow { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-size:11px; }
     a { color:var(--mint); text-decoration:none; }
-    h1 { font-size:clamp(40px,5vw,62px); line-height:1.04; margin:38px 0 14px; }
-    h2 { margin:42px 0 16px; font-size:22px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:32px; }
+    .back { color:var(--text); border:1px solid var(--line); border-radius:10px; padding:9px 14px; font-weight:600; }
+    .hero { display:grid; grid-template-columns:minmax(480px,1.02fr) minmax(395px,.98fr); gap:18px; }
+    .hero-copy,.pipeline,.card,.stage,.notice { background:var(--panel); border:1px solid var(--line); border-radius:18px; }
+    .hero-copy { padding:32px 34px; box-shadow:var(--shadow); }
+    h1 { font-size:clamp(42px,5vw,62px); letter-spacing:-.045em; line-height:1.04; margin:14px 0; }
+    h1 span { color:var(--gold); }
+    h2 { margin:38px 0 16px; font-size:21px; letter-spacing:-.02em; }
     h3 { margin:10px 0 8px; }
-    .lead { color:var(--muted); font-size:18px; max-width:920px; }
-    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
-    .card,.stage,.notice { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
-    .card { padding:18px 20px; }
+    .lead { color:var(--muted); font-size:17px; max-width:610px; }
+    .hero-links { display:flex; flex-wrap:wrap; gap:10px; margin-top:27px; }
+    .hero-links a { border:1px solid var(--line); padding:10px 14px; border-radius:10px; font-weight:600; }
+    .hero-links .primary { color:#081117; background:var(--mint); border-color:var(--mint); }
+    .pipeline { padding:21px; box-shadow:var(--shadow); }
+    .pipeline-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:19px; }
+    .pipeline-head strong { font-size:17px; } .pipeline-head span { color:var(--blue); background:rgba(98,166,255,.12); border-radius:999px; padding:5px 10px; font-size:11px; }
+    .ladder { display:grid; gap:12px; }
+    .gate-line { display:grid; grid-template-columns:42px 1fr auto; gap:13px; align-items:center; padding:14px; border-radius:13px; background:var(--panel2); }
+    .gate-line b { display:grid; place-items:center; width:38px; height:38px; border-radius:11px; background:rgba(98,166,255,.13); color:var(--blue); }
+    .gate-line.review b { color:var(--gold); background:rgba(243,191,102,.13); }
+    .gate-line.confirm b { color:var(--mint); background:rgba(56,223,173,.13); }
+    .gate-line strong { display:block; font-size:14px; } .gate-line small { color:var(--muted); }
+    .gate-state { font-size:11px; text-transform:uppercase; color:var(--muted); }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin:18px 0 0; }
+    .card { padding:16px 18px; border-radius:16px; }
     .card p,.stage p,.stage small { color:var(--muted); margin:0; display:block; }
-    .card strong { color:var(--mint); display:block; font-size:27px; margin-top:5px; }
-    .notice { border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); }
-    .workflow { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-    .coverage { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .card strong { color:var(--mint); display:block; font-size:31px; letter-spacing:-.04em; margin-top:5px; }
+    .notice { border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); margin-top:18px; border-radius:15px; }
+    .workflow { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; }
+    .coverage { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; }
     .stage { padding:18px; }
+    .stage a { display:inline-block; margin-top:14px; font-weight:600; }
     .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; }
     .intake { color:var(--blue); background:rgba(98,166,255,.12); }
     .review { color:var(--gold); background:rgba(240,188,98,.12); }
     .verified { color:var(--mint); background:rgba(86,218,172,.12); }
-    @media(max-width:950px) { .cards,.workflow,.coverage { grid-template-columns:1fr; } }
+    @media(max-width:1050px) { .hero { grid-template-columns:1fr; } }
+    @media(max-width:850px) { header,main { padding:18px 14px; } .top { align-items:flex-start; flex-direction:column; }
+      .cards,.workflow,.coverage { grid-template-columns:1fr; } .hero-copy { padding:25px 20px; } }
   </style>
 </head>
 <body>
   <header>
-    <nav><a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/reports">Report Center</a> / IPO Watch Center</nav>
-    <h1>IPO evidence.<br>Confirm before status.</h1>
-    <p class="lead">Navigate potential offerings, reviewed filing evidence and confirmed listing milestones without turning rumors or documents into trading instructions.</p>
+    <div class="top"><nav><a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/reports">Report Center</a> / IPO Watch Center</nav><a class="back" href="/dashboard/open">Back to terminal</a></div>
+    <section class="hero">
+      <article class="hero-copy">
+        <p class="eyebrow">Listing intelligence</p>
+        <h1>IPO evidence.<br><span>Confirm before status.</span></h1>
+        <p class="lead">Navigate potential offerings, reviewed filing evidence and confirmed listing milestones without turning rumors or documents into trading instructions.</p>
+        <div class="hero-links"><a class="primary" href="/dashboard/ipo-watch">Open status board</a><a href="/dashboard/global-listings">Global markets</a></div>
+      </article>
+      <article class="pipeline">
+        <div class="pipeline-head"><strong>Verification Ladder</strong><span>Evidence only</span></div>
+        <div class="ladder">
+          <div class="gate-line"><b>01</b><div><strong>Discover</strong><small>Registration or prospectus evidence</small></div><span class="gate-state">intake</span></div>
+          <div class="gate-line review"><b>02</b><div><strong>Review</strong><small>Identity, filing and state checked</small></div><span class="gate-state">human gate</span></div>
+          <div class="gate-line confirm"><b>03</b><div><strong>Confirm</strong><small>Issuer or exchange milestone</small></div><span class="gate-state">verified</span></div>
+        </div>
+      </article>
+    </section>
     <section class="cards">
       <article class="card"><p>U.S. workflow stages</p><strong>4</strong></article>
       <article class="card"><p>International markets mapped</p><strong>10</strong></article>
@@ -484,37 +520,72 @@ def etf_evidence_center_html() -> str:
   <title>TargetAudit | ETF Evidence Center</title>
   <style>
     :root {
-      --bg:#071016; --panel:#0f1c24; --line:#20343d; --text:#edf1ef;
-      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff;
+      --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246; --text:#f2f6f7;
+      --muted:#96aab8; --mint:#38dfad; --gold:#f3bf66; --blue:#62a6ff; --shadow:0 22px 68px rgba(0,0,0,.24);
     }
     * { box-sizing:border-box; }
-    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
-    header,main { max-width:1220px; margin:auto; padding:30px 28px; }
-    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    body { margin:0; color:var(--text); font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 86% 0%,rgba(98,166,255,.12),transparent 28%),var(--bg); }
+    header,main { max-width:1370px; margin:auto; padding:23px 28px; }
+    nav,.meta,.eyebrow { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-size:11px; }
     a { color:var(--mint); text-decoration:none; }
-    h1 { font-size:clamp(40px,5vw,62px); line-height:1.04; margin:38px 0 14px; }
-    h2 { margin:42px 0 16px; font-size:22px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:32px; }
+    .back { color:var(--text); border:1px solid var(--line); border-radius:10px; padding:9px 14px; font-weight:600; }
+    .hero { display:grid; grid-template-columns:minmax(480px,1.02fr) minmax(385px,.98fr); gap:18px; }
+    .hero-copy,.layers,.card,.view,.notice { background:var(--panel); border:1px solid var(--line); border-radius:18px; }
+    .hero-copy { padding:32px 34px; box-shadow:var(--shadow); }
+    h1 { font-size:clamp(42px,5vw,62px); letter-spacing:-.045em; line-height:1.04; margin:14px 0; }
+    h1 span { color:var(--blue); }
+    h2 { margin:38px 0 16px; font-size:21px; letter-spacing:-.02em; }
     h3 { margin:10px 0 8px; }
-    .lead { color:var(--muted); font-size:18px; max-width:920px; }
-    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
-    .card,.view,.notice { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
-    .card { padding:18px 20px; }
+    .lead { color:var(--muted); font-size:17px; max-width:620px; }
+    .hero-links { display:flex; flex-wrap:wrap; gap:10px; margin-top:27px; }
+    .hero-links a { border:1px solid var(--line); padding:10px 14px; border-radius:10px; font-weight:600; }
+    .hero-links .primary { color:#071017; background:var(--mint); border-color:var(--mint); }
+    .layers { padding:21px; box-shadow:var(--shadow); }
+    .layers-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:21px; }
+    .layers-head strong { font-size:17px; } .layers-head span { color:var(--blue); background:rgba(98,166,255,.12); border-radius:999px; padding:5px 10px; font-size:11px; }
+    .bar-list { display:grid; gap:18px; }
+    .bar-head { display:flex; justify-content:space-between; color:var(--muted); font-size:13px; margin-bottom:8px; }
+    .bar-head b { color:var(--text); }
+    .track { height:9px; background:var(--panel2); border-radius:999px; overflow:hidden; }
+    .fill { display:block; height:100%; border-radius:inherit; background:var(--blue); }
+    .fill.regulatory { background:var(--mint); } .fill.control { background:var(--gold); }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin:18px 0 0; }
+    .card { padding:16px 18px; border-radius:16px; }
     .card p,.view p,.view small { color:var(--muted); margin:0; display:block; }
-    .card strong { color:var(--mint); display:block; font-size:28px; margin-top:5px; }
-    .notice { border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); }
-    .views { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+    .card strong { color:var(--mint); display:block; font-size:31px; letter-spacing:-.04em; margin-top:5px; }
+    .notice { border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); margin-top:18px; border-radius:15px; }
+    .views { display:grid; grid-template-columns:repeat(2,1fr); gap:13px; }
     .view { padding:18px; }
+    .view a { display:inline-block; margin-top:14px; font-weight:600; }
     .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; }
     .fixture { color:var(--blue); background:rgba(98,166,255,.12); }
     .regulatory { color:var(--mint); background:rgba(86,218,172,.12); }
-    @media(max-width:880px) { .cards,.views { grid-template-columns:1fr; } }
+    @media(max-width:1050px) { .hero { grid-template-columns:1fr; } }
+    @media(max-width:880px) { header,main { padding:18px 14px; } .top { align-items:flex-start; flex-direction:column; }
+      .cards,.views { grid-template-columns:1fr; } .hero-copy { padding:25px 20px; } }
   </style>
 </head>
 <body>
   <header>
-    <nav><a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/reports">Report Center</a> / ETF Evidence Center</nav>
-    <h1>ETF evidence.<br>Frequency first.</h1>
-    <p class="lead">A single entry point for holdings research that keeps synthetic daily-shaped comparisons separate from official periodic SEC N-PORT evidence.</p>
+    <div class="top"><nav><a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/reports">Report Center</a> / ETF Evidence Center</nav><a class="back" href="/dashboard/open">Back to terminal</a></div>
+    <section class="hero">
+      <article class="hero-copy">
+        <p class="eyebrow">Ownership evidence</p>
+        <h1>ETF evidence.<br><span>Frequency first.</span></h1>
+        <p class="lead">A single entry point for holdings research that keeps synthetic daily-shaped comparisons separate from official periodic SEC N-PORT evidence.</p>
+        <div class="hero-links"><a class="primary" href="/dashboard/etf-regulatory">Open regulatory view</a><a href="/dashboard/etf/nport-catalog">SEC catalog</a></div>
+      </article>
+      <article class="layers">
+        <div class="layers-head"><strong>Evidence Layers</strong><span>Cadence matters</span></div>
+        <div class="bar-list">
+          <div><div class="bar-head"><b>Sandbox views</b><span>3 fixture pages</span></div><div class="track"><span class="fill" style="width:100%"></span></div></div>
+          <div><div class="bar-head"><b>Regulatory comparisons</b><span>2 periodic views</span></div><div class="track"><span class="fill regulatory" style="width:66.7%"></span></div></div>
+          <div><div class="bar-head"><b>N-PORT controls</b><span>2 audit views</span></div><div class="track"><span class="fill control" style="width:66.7%"></span></div></div>
+        </div>
+      </article>
+    </section>
     <section class="cards">
       <article class="card"><p>Synthetic sandboxes</p><strong>3</strong></article>
       <article class="card"><p>Regulatory comparisons</p><strong>2</strong></article>
