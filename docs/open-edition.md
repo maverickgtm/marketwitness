@@ -147,6 +147,9 @@ permiso explicito de output publico.
 - El feed live de Truth Social esta bloqueado: esta edicion no ejecuta
   scraping ni almacena publicaciones porque los terminos oficiales requieren
   permiso para automatizacion y compilacion sistematica.
+- Registra `White House News RSS` y `Presidential Actions RSS` como la ruta
+  gratuita elegible para futuros eventos oficiales; `White House Wire RSS`
+  queda limitado a metadata de enlaces externos.
 - Documenta competidores y precedentes sin afirmar que un movimiento fue
   causado por una publicacion o que indique una operacion.
 

@@ -171,6 +171,9 @@ terminos de una plataforma social.
 - Mantiene bloqueada la coleccion automatica de Truth Social porque sus
   terminos oficiales restringen automatizacion, recuperacion sistematica y
   data mining sin permiso escrito.
+- Expone un `Authorized Intake Map`: `White House News RSS` y `Presidential
+  Actions RSS` quedan elegibles para collector oficial; `White House Wire`
+  queda limitado a metadata de enlaces externos.
 
 La direccion visual, las decisiones sobre widgets y la siguiente fase de
 rediseño se documentan en

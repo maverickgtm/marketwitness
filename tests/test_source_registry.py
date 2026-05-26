@@ -18,7 +18,7 @@ class SourceRegistryTests(unittest.TestCase):
         report = render_source_registry_report(providers, date(2026, 5, 25))
         page = render_source_registry_html(providers, date(2026, 5, 25))
 
-        self.assertEqual(len(providers), 46)
+        self.assertEqual(len(providers), 49)
         self.assertIn("Authorized Demo Export", report)
         self.assertIn("Alpha Vantage Daily Adjusted", report)
         self.assertIn("S&P DJI Constituent Data", report)
@@ -53,6 +53,9 @@ class SourceRegistryTests(unittest.TestCase):
         self.assertIn("ICE BofA MOVE Index", report)
         self.assertIn("FRED CBOE Volatility Index VIXCLS", report)
         self.assertIn("Truth Social Public Content", report)
+        self.assertIn("White House Official News RSS", report)
+        self.assertIn("White House Presidential Actions RSS", report)
+        self.assertIn("White House Wire RSS", report)
         self.assertIn("Blocked from automated collection: `6`", report)
         self.assertIn("market data intended for display", report)
         self.assertIn("Public accessibility is not a license", page)

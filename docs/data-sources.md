@@ -41,7 +41,7 @@ copias revisadas de ambos registros y su auditoría. El fixture inicial
 documenta que la página premium de Alpha Vantage todavía no demuestra permiso
 de salida pública y por eso conserva el expediente pendiente.
 
-Al `2026-05-25`, el inventario contiene 46 fuentes: 20 conectores o fixtures
+Al `2026-05-25`, el inventario contiene 49 fuentes: 20 conectores o fixtures
 implementados, 25 fuentes que aun exigen revision de terminos/licencia para
 uso público real, 1 integracion limitada a descarga manual y 6 referencias
 bloqueadas para colección automatizada. Esta separación evita confundir "el
@@ -88,6 +88,8 @@ activos y eventos regulatorios/listings auditables. Ver
 |---|---|---|
 | FRED `VIXCLS` | Grafica diaria VIX desde `2025-01-20` | Display externo con cita visible; no se ingieren observaciones |
 | Truth Social Public Content | Comunicaciones de Donald Trump para event studies | Bloqueado para coleccion automatica: los terminos restringen bots, scraping, data mining y recuperacion sistematica sin permiso |
+| White House Official News RSS / Presidential Actions RSS | Comunicaciones y acciones presidenciales oficiales | RSS gratuito apto para futuro collector con atribucion y archivo de evidencia |
+| White House Wire RSS | Seleccion oficial de titulares y enlaces de terceros | Solo metadata de radar; no descargar ni republicar articulos enlazados |
 
 La idea de medir comunicaciones presidenciales y mercado tiene precedentes:
 JPMorgan publico el `Volfefe Index` sobre tweets y volatilidad de tasas en

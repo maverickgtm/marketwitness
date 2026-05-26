@@ -38,6 +38,14 @@ class MarketIntelligenceTests(unittest.TestCase):
             "Truth Social Public Content",
             {item["provider_name"] for item in policy_signals["sources"]},
         )
+        self.assertIn(
+            "White House Official News RSS",
+            {item["provider_name"] for item in policy_signals["sources"]},
+        )
+        self.assertIn(
+            "White House Presidential Actions RSS",
+            {item["provider_name"] for item in policy_signals["sources"]},
+        )
 
     def test_rejects_unknown_source_dependency(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))

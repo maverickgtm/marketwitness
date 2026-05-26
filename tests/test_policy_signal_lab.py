@@ -15,6 +15,7 @@ class PolicySignalLabTests(unittest.TestCase):
         self.assertEqual(snapshot["coverage_start"], "2025-01-20")
         self.assertEqual(snapshot["proposed_measure"], "Policy Signal Impact Trace")
         self.assertIn("disabled_pending_written_permission", snapshot["live_feed_status"])
+        self.assertEqual(snapshot["official_intake_status"], "eligible_for_connector_implementation")
         self.assertIn("prohibit automated access", snapshot["publication_boundary"])
         self.assertEqual(len(snapshot["event_windows"]), 5)
         self.assertEqual(len(snapshot["asset_lenses"]), 4)
@@ -25,6 +26,22 @@ class PolicySignalLabTests(unittest.TestCase):
             if item["provider_id"] == "truth-social-public-content"
         )
         self.assertEqual(truth["deployment_state"], "blocked")
+        whitehouse = next(
+            item
+            for item in snapshot["source_controls"]
+            if item["provider_id"] == "whitehouse-official-news-rss"
+        )
+        self.assertEqual(whitehouse["deployment_state"], "usable_with_policy")
+        presidential_actions = next(
+            item
+            for item in snapshot["source_controls"]
+            if item["provider_id"] == "whitehouse-presidential-actions-rss"
+        )
+        self.assertEqual(presidential_actions["deployment_state"], "usable_with_policy")
+        self.assertEqual(
+            {item["state"] for item in snapshot["approved_intake_candidates"]},
+            {"eligible", "metadata_only", "blocked_without_permission"},
+        )
 
     def test_rejects_missing_communication_source_control(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))

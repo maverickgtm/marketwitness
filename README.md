@@ -107,6 +107,10 @@ cripto e IPOs verificadas. Su contrato
 no activa un feed Truth Social: los términos oficiales revisados prohíben
 colección automatizada sin permiso. Se diferencia por un pasaporte de
 evidencia por evento, no por atribuir causalidad o recomendar operaciones.
+La investigacion del `2026-05-25` confirmo una ruta gratuita viable:
+`White House News RSS` y `Presidential Actions RSS` publican entradas
+oficiales con metadatos horarios, mientras `White House Wire RSS` se mantiene
+solo como radar de enlaces porque mezcla contenido de terceros.
 Ver [Policy Signal Impact Lab](docs/policy-signal-impact-lab.md).
 
 Un ultimo barrido realizado el `2026-05-25` encontro una puerta gratuita que

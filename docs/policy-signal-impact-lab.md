@@ -64,6 +64,28 @@ Por eso TargetAudit registra `truth-social-public-content` como
 publicaciones y no ofrece monitoreo en tiempo real mientras no exista permiso
 escrito o un proveedor autorizado con derechos suficientes.
 
+## Ruta Gratuita Confirmada: White House RSS
+
+La busqueda confirmo una alternativa mucho mas limpia para iniciar episodios
+oficiales sin esperar permiso de Truth Social:
+
+| Feed | Verificacion | Uso En TargetAudit |
+|---|---|---|
+| `https://www.whitehouse.gov/news/feed/` | RSS oficial activo; declara actualizacion horaria e incluye entradas firmadas `The White House` | Fuente primaria candidata para statements, fact sheets y noticias oficiales |
+| `https://www.whitehouse.gov/presidential-actions/feed/` | RSS oficial activo; incluye executive orders, memoranda y proclamations | Fuente primaria candidata para decisiones formales con posible impacto económico |
+| `https://www.whitehouse.gov/wire/feed/` | RSS oficial activo, pero enlaza Reuters, Fox, WSJ, YouTube y otros medios | Solo radar de titulo, timestamp y URL externa; no importar cuerpos periodisticos |
+
+La politica de copyright de `whitehouse.gov` indica que los materiales
+producidos por el Gobierno no estan protegidos por copyright conforme a ley
+federal y que, salvo indicacion distinta, contenido de terceros del sitio se
+licencia bajo CC BY 3.0. Aun asi, `White House Wire` se trata de manera
+conservadora porque los articulos enlazados viven en dominios de terceros y
+conservan sus propias condiciones.
+
+Esto cambia el roadmap: podemos construir primero un monitor oficial de
+decisiones y mensajes presidenciales, y dejar Truth Social como una extension
+futura sujeta a permiso.
+
 ## Grafica VIX Visible
 
 El laboratorio utiliza una imagen alojada por FRED de la serie
@@ -75,6 +97,10 @@ observaciones VIX ni calcula resultados con ella en esta entrega.
 ## Fuentes Consultadas
 
 - Truth Social Terms of Service: <https://help.truthsocial.com/legal/terms-of-service/>
+- White House News RSS: <https://www.whitehouse.gov/news/feed/>
+- White House Presidential Actions RSS: <https://www.whitehouse.gov/presidential-actions/feed/>
+- White House Wire RSS: <https://www.whitehouse.gov/wire/feed/>
+- White House copyright policy: <https://www.whitehouse.gov/copyright/>
 - FRED `VIXCLS`: <https://fred.stlouisfed.org/series/VIXCLS>
 - FRED graph sharing help: <https://fredhelp.stlouisfed.org/category/fred/graphs/share-my-fred-graph/>
 - Bloomberg, JPMorgan `Volfefe Index`, 2019-09-09:

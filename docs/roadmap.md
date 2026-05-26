@@ -203,6 +203,11 @@ verificables de cotizaciones tecnologicas/estrategicas.
   de coleccion automatica por terminos oficiales.
 - [ ] Obtener permiso escrito o un feed autorizado de comunicaciones antes de
   calcular episodios historicos o activar alertas en tiempo real.
+- [x] Confirmar `White House News RSS`, `Presidential Actions RSS` y
+  `White House Wire RSS`; clasificar los dos primeros como ingesta oficial
+  elegible y Wire como radar metadata-only por sus enlaces de terceros.
+- [ ] Implementar archivado, deduplicacion y clasificacion tematica de los
+  feeds oficiales de White House antes de medir reacciones de mercado.
 - [ ] Aprobar derechos o una ruta autorizada para historia Cboe/ICE antes de
   calcular y publicar episodios reales de volatilidad.
 - [ ] Implementar `Market Regimes` con `BTC`/`ETH`, `WTI`/`Brent` y curva

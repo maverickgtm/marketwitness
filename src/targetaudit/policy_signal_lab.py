@@ -88,26 +88,70 @@ def build_policy_signal_lab_snapshot(
     providers_by_id = {provider.provider_id: provider for provider in providers}
     truth = _required_source(providers_by_id, "truth-social-public-content")
     fred = _required_source(providers_by_id, "fred-vixcls-display")
+    whitehouse_news = _required_source(providers_by_id, "whitehouse-official-news-rss")
+    whitehouse_actions = _required_source(providers_by_id, "whitehouse-presidential-actions-rss")
+    whitehouse_wire = _required_source(providers_by_id, "whitehouse-wire-rss")
     return {
         "product": "Policy Signal Impact Lab",
         "case_study": "Donald Trump / Truth Social communications",
         "as_of": as_of.isoformat(),
         "coverage_start": "2025-01-20",
-        "research_status": "methodology_ready_collection_blocked_by_source_terms",
+        "research_status": "methodology_ready_official_feed_eligible_truth_social_blocked",
         "proposed_measure": "Policy Signal Impact Trace",
         "research_question": (
             "After a documented market-relevant presidential communication, what "
             "changed across volatility and connected assets on disclosed windows?"
         ),
         "live_feed_status": "disabled_pending_written_permission_or_authorized_feed",
+        "official_intake_status": "eligible_for_connector_implementation",
         "publication_boundary": (
             "Truth Social terms reviewed by TargetAudit prohibit automated access, "
             "systematic retrieval and data-mining without permission. This page does "
-            "not collect posts, calculate a Trump score, infer causation or recommend a trade."
+            "not collect posts, calculate a Trump score, infer causation or recommend a trade. "
+            "White House official RSS is an eligible future intake; White House Wire "
+            "is limited to outbound-link radar metadata because it includes third-party reporting."
         ),
         "source_controls": [
+            _source_payload(
+                whitehouse_news,
+                "Eligible official communication intake: statements, actions and fact sheets.",
+            ),
+            _source_payload(
+                whitehouse_actions,
+                "Eligible official intake: executive orders, memoranda and proclamations.",
+            ),
+            _source_payload(
+                whitehouse_wire,
+                "Radar metadata only: titles, timestamps and outbound links.",
+            ),
             _source_payload(truth, "Communication record; automated ingestion disabled."),
             _source_payload(fred, "Attributed external VIX visual context only."),
+        ],
+        "approved_intake_candidates": [
+            {
+                "name": "White House News RSS",
+                "url": "https://www.whitehouse.gov/news/feed/",
+                "role": "Primary official communications intake",
+                "state": "eligible",
+            },
+            {
+                "name": "Presidential Actions RSS",
+                "url": "https://www.whitehouse.gov/presidential-actions/feed/",
+                "role": "Formal orders, memoranda and proclamations",
+                "state": "eligible",
+            },
+            {
+                "name": "White House Wire RSS",
+                "url": "https://www.whitehouse.gov/wire/feed/",
+                "role": "Headline/link radar; third-party bodies excluded",
+                "state": "metadata_only",
+            },
+            {
+                "name": "Truth Social",
+                "url": "https://truthsocial.com/@realDonaldTrump",
+                "role": "Direct-post source",
+                "state": "blocked_without_permission",
+            },
         ],
         "event_windows": list(EVENT_WINDOWS),
         "asset_lenses": list(ASSET_LENSES),

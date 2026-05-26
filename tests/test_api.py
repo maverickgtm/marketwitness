@@ -340,8 +340,14 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(snapshot.json()["case_study"], "Donald Trump / Truth Social communications")
         self.assertEqual(snapshot.json()["coverage_start"], "2025-01-20")
         self.assertIn("disabled_pending_written_permission", snapshot.json()["live_feed_status"])
+        self.assertEqual(snapshot.json()["official_intake_status"], "eligible_for_connector_implementation")
         self.assertIn("prohibit automated access", snapshot.json()["publication_boundary"])
         self.assertIn("JPMorgan Volfefe Index", {item["name"] for item in snapshot.json()["prior_art"]})
+        self.assertIn("Authorized Intake Map", page.text)
+        self.assertIn(
+            "https://www.whitehouse.gov/news/feed/",
+            {item["url"] for item in snapshot.json()["approved_intake_candidates"]},
+        )
 
     def test_serves_allowlisted_report_center_for_periodic_bundle(self) -> None:
         page = self.client.get("/dashboard/reports")
@@ -490,7 +496,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/api/v1/policy/public-use", page.text)
         self.assertEqual(policy.status_code, 200)
         self.assertEqual(policy.json()["review_status"], "pending_external_legal_review")
-        self.assertEqual(policy.json()["tracked_source_count"], 46)
+        self.assertEqual(policy.json()["tracked_source_count"], 49)
         self.assertEqual(policy.json()["blocked_source_count"], 6)
         self.assertIn(
             "mas-opera-reference",
@@ -664,7 +670,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Open code.", page.text)
         self.assertIn("Run Exclusions And Pending", page.text)
         self.assertIn("Provider Control", page.text)
-        self.assertEqual(sources.json()["provider_count"], 46)
+        self.assertEqual(sources.json()["provider_count"], 49)
         self.assertGreater(sources.json()["open_review_count"], 0)
         self.assertEqual(sources.json()["blocked_count"], 6)
         self.assertEqual(
@@ -716,7 +722,7 @@ class ApiTests(unittest.TestCase):
             passports.json()["protocol_status"],
             "source_and_rights_published_cadence_enrichment_open",
         )
-        self.assertEqual(passports.json()["passport_count"], 46)
+        self.assertEqual(passports.json()["passport_count"], 49)
         self.assertEqual(passports.json()["states"]["blocked"], 6)
         passport = passports.json()["passports"][0]
         self.assertIn("source", passport)

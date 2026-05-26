@@ -1373,8 +1373,11 @@ def policy_signal_lab_html() -> str:
     .split { display:grid; grid-template-columns:1fr 1fr; gap:14px; } .assets { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
     .window-row { display:flex; gap:7px; flex-wrap:wrap; margin-top:15px; } .window { color:var(--electric); background:var(--panel2); padding:5px 9px; border-radius:8px; font-size:12px; }
     .prior { margin-top:10px; padding-top:11px; border-top:1px solid var(--line); } .prior:first-of-type { border-top:0; margin-top:0; padding-top:0; }
+    .channels { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:28px; }
+    .channel-state { display:inline-block; margin-top:13px; border-radius:999px; padding:5px 8px; font-size:11px; color:var(--mint); background:rgba(88,223,176,.11); }
+    .metadata_only { color:var(--electric); background:rgba(102,165,255,.12); } .blocked_without_permission { color:var(--amber); background:rgba(255,204,104,.12); }
     #error { display:none; border-left-color:var(--coral); color:var(--coral); }
-    @media(max-width:1030px) { .hero,.metrics,.pipeline,.split,.assets { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
+    @media(max-width:1030px) { .hero,.metrics,.pipeline,.split,.assets,.channels { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
   </style>
 </head>
 <body>
@@ -1405,6 +1408,8 @@ def policy_signal_lab_html() -> str:
     <p class="guardrail" id="error"></p>
   </header>
   <main>
+    <h2 class="section-title">Authorized Intake Map</h2>
+    <section class="channels" id="channels"></section>
     <h2 class="section-title">Policy Signal Impact Trace</h2>
     <section class="pipeline" id="pipeline"></section>
     <section class="split">
@@ -1437,6 +1442,8 @@ def policy_signal_lab_html() -> str:
         $("windowCount").textContent = data.event_windows.length;
         $("assetCount").textContent = data.asset_lenses.length;
         $("boundary").textContent = data.publication_boundary;
+        const intakeLabels = { eligible: "Eligible", metadata_only: "Metadata only", blocked_without_permission: "Permission required" };
+        $("channels").innerHTML = data.approved_intake_candidates.map((item) => `<article class="panel"><p class="micro">${text(item.name)}</p><h3>${text(item.role)}</h3><p><a href="${text(item.url)}" target="_blank" rel="noopener">Open source</a></p><span class="channel-state ${text(item.state)}">${text(intakeLabels[item.state] || item.state)}</span></article>`).join("");
         $("pipeline").innerHTML = data.pipeline.map((item, index) => `<article class="panel"><span class="number">0${index + 1}</span><h3>${text(item.step)}</h3><p>${text(item.output)}</p><span class="state ${text(item.state)}">${text(item.state)}</span></article>`).join("");
         $("assets").innerHTML = data.asset_lenses.map((item) => `<article class="panel"><p class="micro">${text(item.group)}</p><h3>${text(item.assets)}</h3><p>${text(item.question)}</p></article>`).join("");
         $("windows").innerHTML = data.event_windows.map((item) => `<span class="window">${text(item)}</span>`).join("");
