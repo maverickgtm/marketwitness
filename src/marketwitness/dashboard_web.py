@@ -136,7 +136,7 @@ def open_edition_html() -> str:
 <body>
   <div class="shell">
     <aside class="sidebar">
-      <a class="brand" href="/dashboard/open"><span class="brand-mark">T</span>MarketWitness</a>
+      <a class="brand" href="/dashboard/open"><span class="brand-mark">M</span>MarketWitness</a>
       <div class="nav-group">
         <span class="side-label">Workspace</span>
         <a class="nav-link active" href="/dashboard/open"><span class="dot"></span>Open Edition</a>

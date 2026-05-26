@@ -362,6 +362,8 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(home.status_code, 200)
         self.assertIn("No paid data required", home.text)
         self.assertEqual(page.status_code, 200)
+        self.assertIn('<span class="brand-mark">M</span>MarketWitness', page.text)
+        self.assertNotIn('<span class="brand-mark">T</span>MarketWitness', page.text)
         self.assertIn("/api/v1/open-edition", page.text)
         self.assertEqual(snapshot.status_code, 200)
         self.assertEqual(snapshot.json()["zero_cost_available_count"], 10)
