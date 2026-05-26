@@ -144,6 +144,7 @@ def open_edition_html() -> str:
         <a class="nav-link" href="/dashboard/volatility"><span class="dot"></span>VIX Reaction Explorer</a>
         <a class="nav-link" href="/dashboard/presidential-impact"><span class="dot"></span>Presidential Impact</a>
         <a class="nav-link" href="/dashboard/market-context"><span class="dot"></span>Cross-Asset Markets</a>
+        <a class="nav-link" href="/dashboard/macro-calendar"><span class="dot"></span>Macro Calendar</a>
         <a class="nav-link" href="/dashboard/reports"><span class="dot"></span>Report Center</a>
       </div>
       <div class="nav-group">
@@ -173,6 +174,7 @@ def open_edition_html() -> str:
         <a href="/dashboard/volatility">VIX Explorer</a>
         <a href="/dashboard/presidential-impact">Presidential Impact</a>
         <a href="/dashboard/market-context">Crypto / Commodities</a>
+        <a href="/dashboard/macro-calendar">Macro Catalysts</a>
         <a href="/dashboard/financials-evidence">Analyst Scorecards</a>
         <a href="/dashboard/rwa-watch">Tokenized Assets / RWA</a>
         <a href="/dashboard/contribute?lang=en">Contribute Connectors</a>
@@ -1577,7 +1579,7 @@ def market_intelligence_html() -> str:
         <h1>Events. Context.<br><span>Positioning.</span></h1>
         <p class="lead">A planned intelligence layer connecting IPO and listing evidence to macro catalysts, selected market regimes and declared positioning. It begins with provenance, not promises.</p>
         <p class="meta" id="reviewed">Loading reviewed sources...</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/presidential-impact">Open Presidential Impact Lab</a><a href="/dashboard/volatility">VIX Reaction Explorer</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/presidential-impact">Open Presidential Impact Lab</a><a href="/dashboard/volatility">VIX Reaction Explorer</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/macro-calendar">Macro calendar</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
       </article>
       <article class="sequence"><p class="eyebrow">Delivery sequence</p><ol id="sequence"></ol></article>
     </section>
@@ -1613,6 +1615,117 @@ def market_intelligence_html() -> str:
       } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
     }
     initialize();
+  </script>
+</body>
+</html>"""
+
+
+def macro_calendar_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MarketWitness | Macro Catalyst Calendar</title>
+  <style>
+    :root { --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246; --text:#f2f6f7;
+      --muted:#96aab8; --mint:#38dfad; --gold:#f3bf66; --blue:#62a6ff; --red:#ff8176; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--text); font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 78% 0%,rgba(243,191,102,.13),transparent 30%),radial-gradient(circle at 8% 14%,rgba(56,223,173,.08),transparent 27%),var(--bg); }
+    a { color:var(--mint); text-decoration:none; } header,main { max-width:1320px; margin:auto; padding:24px 28px; }
+    nav,.eyebrow,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-size:11px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:27px; }
+    .back { color:var(--text); border:1px solid var(--line); padding:9px 14px; border-radius:10px; font-weight:600; }
+    .hero,.panel,.event,.card,.notice { border:1px solid var(--line); border-radius:18px; background:var(--panel); }
+    .hero { display:grid; grid-template-columns:minmax(470px,1.1fr) minmax(340px,.9fr); gap:22px; padding:31px 34px; }
+    h1 { font-size:clamp(42px,5vw,62px); line-height:1.02; letter-spacing:-.05em; margin:13px 0 15px; }
+    h1 span { color:var(--gold); } h2 { font-size:23px; margin:0 0 8px; letter-spacing:-.02em; }
+    .lead { color:var(--muted); font-size:17px; max-width:650px; }
+    .cards { display:grid; grid-template-columns:repeat(2,1fr); gap:11px; align-content:center; }
+    .card { padding:16px 18px; background:var(--panel2); } .card small { color:var(--muted); display:block; }
+    .card strong { display:block; color:var(--mint); font-size:28px; margin-top:6px; letter-spacing:-.03em; }
+    .panel { margin-top:20px; padding:22px; } .panel-head { display:flex; align-items:start; justify-content:space-between; gap:16px; margin-bottom:17px; }
+    .official { color:var(--mint); background:rgba(56,223,173,.12); border-radius:999px; padding:7px 11px; font-size:11px; text-transform:uppercase; letter-spacing:.09em; white-space:nowrap; }
+    .filters { display:flex; justify-content:space-between; flex-wrap:wrap; gap:13px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:15px 0; }
+    .filter { display:flex; gap:8px; flex-wrap:wrap; } button { font:inherit; cursor:pointer; padding:9px 13px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); color:var(--muted); font-weight:600; }
+    button.active { background:var(--mint); border-color:var(--mint); color:#061117; }
+    .next { display:grid; grid-template-columns:150px 1fr auto; gap:20px; align-items:center; padding:19px; background:var(--panel2); border-radius:15px; margin:18px 0; }
+    .countdown { color:var(--gold); font-size:31px; letter-spacing:-.04em; font-weight:700; }
+    .next h3 { margin:0 0 4px; font-size:20px; } .next p,.notice { margin:0; color:var(--muted); }
+    .events { display:grid; grid-template-columns:repeat(2,1fr); gap:11px; } .event { background:var(--panel2); padding:16px; display:grid; gap:7px; }
+    .event-head { display:flex; align-items:center; justify-content:space-between; gap:10px; } .label { color:var(--blue); text-transform:uppercase; letter-spacing:.1em; font-size:11px; }
+    .days { color:var(--gold); font-size:12px; } .event strong { font-size:17px; } .event p { color:var(--muted); margin:0; }
+    .links { display:flex; flex-wrap:wrap; gap:16px; margin:20px 0 4px; font-weight:600; }
+    .notice { border-left:3px solid var(--gold); margin-top:19px; padding:14px 17px; }
+    #error { display:none; border-left-color:var(--red); }
+    @media(max-width:920px) { .hero,.events { grid-template-columns:1fr; } .next { grid-template-columns:1fr; } header,main { padding:18px 14px; } }
+    @media(max-width:570px) { .top,.panel-head { flex-direction:column; align-items:flex-start; } .hero { padding:24px 20px; } .cards { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top"><nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/intelligence">Market Intelligence</a> / Macro Calendar</nav><a class="back" href="/dashboard/open">Back to terminal</a></div>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Official scheduled catalysts / no paid data</p>
+        <h1>Know the date.<br><span>Measure the context.</span></h1>
+        <p class="lead">Track upcoming Federal Reserve policy meetings and selected BLS inflation and labor releases before they arrive, then investigate the observed Treasury curve environment.</p>
+        <p class="meta" id="mode">Loading official schedule artifact...</p>
+      </div>
+      <section class="cards">
+        <article class="card"><small>Upcoming events</small><strong id="event-count">-</strong></article>
+        <article class="card"><small>Next catalyst</small><strong id="next-label">-</strong></article>
+        <article class="card"><small>BLS releases</small><strong id="bls-count">-</strong></article>
+        <article class="card"><small>FOMC meetings</small><strong id="fomc-count">-</strong></article>
+      </section>
+    </section>
+  </header>
+  <main>
+    <section class="panel">
+      <div class="panel-head"><div><p class="eyebrow">Upcoming event monitor</p><h2>Macro Catalyst Calendar</h2><p class="lead">Filter by planning horizon and issuing agency.</p></div><span class="official">Official schedules</span></div>
+      <div class="filters">
+        <div class="filter" aria-label="Horizon filters">
+          <button class="horizon active" data-horizon="30" type="button">30 days</button>
+          <button class="horizon" data-horizon="90" type="button">90 days</button>
+          <button class="horizon" data-horizon="180" type="button">180 days</button>
+          <button class="horizon" data-horizon="365" type="button">Year</button>
+        </div>
+        <div class="filter" aria-label="Agency filters">
+          <button class="agency active" data-agency="all" type="button">All</button>
+          <button class="agency" data-agency="BLS" type="button">BLS</button>
+          <button class="agency" data-agency="Federal Reserve" type="button">Federal Reserve</button>
+        </div>
+      </div>
+      <article class="next" id="next-event"><strong class="countdown">Loading</strong><div><h3>Preparing schedule</h3><p>Waiting for official calendar artifact...</p></div></article>
+      <section class="events" id="events"></section>
+      <div class="links"><a href="/dashboard/macro-calendar/report">Open normalized schedule</a><a href="/dashboard/market-context">Inspect Treasury curve context</a><a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm" target="_blank" rel="noopener">Federal Reserve source</a><a href="https://www.bls.gov/schedule/" target="_blank" rel="noopener">BLS source</a></div>
+      <p class="notice" id="boundary">Scheduled catalysts are context, not a position recommendation.</p>
+      <p class="notice" id="error"></p>
+    </section>
+  </main>
+  <script>
+    let selectedHorizon = "30", selectedAgency = "all";
+    const clean = (value) => String(value == null ? "-" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    async function loadCalendar() {
+      const response = await fetch(`/api/v1/intelligence/macro-calendar?horizon_days=${selectedHorizon}&agency=${encodeURIComponent(selectedAgency)}`);
+      if (!response.ok) throw new Error((await response.json()).detail || "Calendar request failed.");
+      const data = await response.json();
+      if (!data.available) { document.getElementById("mode").textContent = data.message; return; }
+      document.getElementById("mode").textContent = `${data.data_mode} / observed ${data.as_of} / selected horizon ${data.selected_horizon_days} days`;
+      document.getElementById("event-count").textContent = data.upcoming_count;
+      document.getElementById("bls-count").textContent = data.agency_counts.BLS;
+      document.getElementById("fomc-count").textContent = data.agency_counts["Federal Reserve"];
+      document.getElementById("next-label").textContent = data.next_event ? data.next_event.short_label : "None";
+      document.getElementById("boundary").textContent = data.publication_boundary;
+      document.getElementById("next-event").innerHTML = data.next_event
+        ? `<strong class="countdown">${clean(data.next_event.days_until)} days</strong><div><p class="eyebrow">Next scheduled catalyst</p><h3>${clean(data.next_event.short_label)} / ${clean(data.next_event.title)}</h3><p>${clean(data.next_event.date_range)} / ${clean(data.next_event.detail)} / ${clean(data.next_event.agency)}</p></div><a href="${clean(data.next_event.source_url)}" target="_blank" rel="noopener">Source</a>`
+        : `<strong class="countdown">-</strong><div><h3>No event in selected horizon</h3><p>Extend the time window or switch agency.</p></div>`;
+      document.getElementById("events").innerHTML = data.events.map((item) => `<article class="event"><div class="event-head"><span class="label">${clean(item.short_label)} / ${clean(item.agency)}</span><span class="days">${clean(item.days_until)} days away</span></div><strong>${clean(item.title)}</strong><p>${clean(item.date_range)} / ${clean(item.detail)}</p><a href="${clean(item.source_url)}" target="_blank" rel="noopener">Official source</a></article>`).join("") || "<p>No scheduled catalysts match this filter.</p>";
+    }
+    document.querySelectorAll(".horizon").forEach((button) => button.addEventListener("click", () => { selectedHorizon = button.dataset.horizon; document.querySelectorAll(".horizon").forEach((item) => item.classList.toggle("active", item === button)); loadCalendar().catch(showError); }));
+    document.querySelectorAll(".agency").forEach((button) => button.addEventListener("click", () => { selectedAgency = button.dataset.agency; document.querySelectorAll(".agency").forEach((item) => item.classList.toggle("active", item === button)); loadCalendar().catch(showError); }));
+    function showError(error) { const node = document.getElementById("error"); node.style.display = "block"; node.textContent = error.message; }
+    loadCalendar().catch(showError);
   </script>
 </body>
 </html>"""

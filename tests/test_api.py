@@ -137,6 +137,16 @@ class ApiTests(unittest.TestCase):
             "<html><h1>Treasury Yield Context generated page</h1></html>",
             encoding="utf-8",
         )
+        (self.reports / "macro-calendar.csv").write_text(
+            "event_id,agency,category,short_label,title,start_date,end_date,time_et,has_projections,source_mode,observed_on,source_url\n"
+            "bls-cpi-2026-06-10,BLS,Inflation,CPI,Consumer Price Index,2026-06-10,2026-06-10,08:30 ET,false,synthetic_fixture,2026-05-26,https://www.bls.gov/schedule/\n"
+            "fomc-2026-06-17,Federal Reserve,Monetary Policy,FOMC,FOMC meeting and policy decision,2026-06-16,2026-06-17,Decision date,true,synthetic_fixture,2026-05-26,https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm\n",
+            encoding="utf-8",
+        )
+        (self.reports / "macro-calendar.html").write_text(
+            "<html><h1>Macro Catalyst Calendar generated page</h1></html>",
+            encoding="utf-8",
+        )
         (self.reports / "ipo-watch.html").write_text(
             "<html><h1>IPO Watch generated page</h1></html>", encoding="utf-8"
         )
@@ -317,9 +327,9 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("/api/v1/open-edition", page.text)
         self.assertEqual(snapshot.status_code, 200)
-        self.assertEqual(snapshot.json()["zero_cost_available_count"], 7)
+        self.assertEqual(snapshot.json()["zero_cost_available_count"], 8)
         self.assertEqual(snapshot.json()["offline_ready_count"], 2)
-        self.assertEqual(snapshot.json()["public_data_ready_count"], 5)
+        self.assertEqual(snapshot.json()["public_data_ready_count"], 6)
         self.assertEqual(snapshot.json()["attributed_widget_count"], 0)
         self.assertEqual(snapshot.json()["optional_extension_count"], 1)
         self.assertIn("/dashboard/reports", page.text)
@@ -329,6 +339,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/commons", page.text)
         self.assertIn("/dashboard/volatility", page.text)
         self.assertIn("/dashboard/presidential-impact", page.text)
+        self.assertIn("/dashboard/macro-calendar", page.text)
         self.assertIn("/dashboard/rwa-watch", page.text)
         self.assertIn("Tokenized Assets / RWA", page.text)
         self.assertIn("Analyst Scorecards", page.text)
@@ -400,6 +411,7 @@ class ApiTests(unittest.TestCase):
             "/dashboard/governance-report/approval-review",
             "/dashboard/governance-report/scorecard-readiness",
             "/dashboard/market-context",
+            "/dashboard/macro-calendar",
             "/dashboard/intelligence",
             "/dashboard/volatility",
             "/dashboard/policy-signals",
@@ -431,8 +443,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Source-first expansion blueprint", page.text)
         self.assertEqual(snapshot.status_code, 200)
         self.assertEqual(snapshot.json()["module_count"], 8)
-        self.assertEqual(snapshot.json()["foundation_count"], 5)
-        self.assertEqual(snapshot.json()["planned_connector_count"], 3)
+        self.assertEqual(snapshot.json()["foundation_count"], 6)
+        self.assertEqual(snapshot.json()["planned_connector_count"], 2)
         self.assertIn("Official document metadata may be loaded", snapshot.json()["publication_boundary"])
         keys = {item["key"] for item in snapshot.json()["modules"]}
         self.assertIn("market_regimes", keys)
@@ -440,6 +452,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("futures_positioning", keys)
         self.assertIn("volatility_lab", keys)
         self.assertIn("policy_signal_lab", keys)
+        self.assertIn("macro_calendar", keys)
         self.assertIn("/dashboard/volatility", page.text)
         self.assertIn("/dashboard/presidential-impact", page.text)
         self.assertIn("VIX Reaction Explorer", page.text)
@@ -861,6 +874,25 @@ class ApiTests(unittest.TestCase):
         self.assertIn("do not predict returns", regime.json()["publication_boundary"])
         self.assertEqual(treasury_report.status_code, 200)
         self.assertIn("Treasury Yield Context generated page", treasury_report.text)
+
+    def test_serves_functional_macro_catalyst_calendar_from_official_shaped_artifact(self) -> None:
+        page = self.client.get("/dashboard/macro-calendar")
+        snapshot = self.client.get(
+            "/api/v1/intelligence/macro-calendar?horizon_days=30&agency=all"
+        )
+        report = self.client.get("/dashboard/macro-calendar/report")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Macro Catalyst Calendar", page.text)
+        self.assertIn("/api/v1/intelligence/macro-calendar", page.text)
+        self.assertIn("Inspect Treasury curve context", page.text)
+        self.assertEqual(snapshot.status_code, 200)
+        self.assertTrue(snapshot.json()["available"])
+        self.assertEqual(snapshot.json()["upcoming_count"], 2)
+        self.assertEqual(snapshot.json()["next_event"]["short_label"], "CPI")
+        self.assertIn("do not forecast outcomes", snapshot.json()["publication_boundary"])
+        self.assertEqual(report.status_code, 200)
+        self.assertIn("Macro Catalyst Calendar generated page", report.text)
 
     def test_serves_public_use_policy_with_blocked_source_boundaries(self) -> None:
         page = self.client.get("/dashboard/policy")

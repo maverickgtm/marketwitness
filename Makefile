@@ -117,6 +117,13 @@ demo:
 		--report build/demo/treasury-yields.md \
 		--html build/demo/treasury-yields.html \
 		--as-of 2026-05-25
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness macro-calendar \
+		--fomc-snapshot data/samples/fomc-calendar-synthetic.html \
+		--bls-snapshot data/samples/bls-release-calendar-synthetic.ics \
+		--output build/demo/macro-calendar.csv \
+		--report build/demo/macro-calendar.md \
+		--html build/demo/macro-calendar.html \
+		--as-of 2026-05-26
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness rwa-watch \
 		--snapshot data/samples/rwa-watch-synthetic.csv \
 		--report build/demo/rwa-watch.md \

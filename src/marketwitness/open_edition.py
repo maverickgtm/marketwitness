@@ -81,6 +81,16 @@ CAPABILITIES = (
         "limitation": "Truth Social is not collected; topic labels do not measure reaction or recommend trades.",
     },
     {
+        "key": "macro_catalyst_calendar",
+        "title": "Macro Catalyst Calendar",
+        "status": "public_source_no_key",
+        "cost": "No data fee",
+        "provider_ids": ("fed-fomc-calendar", "bls-release-calendar"),
+        "output": "Upcoming FOMC, CPI, PPI, payrolls and JOLTS event timing from official schedules",
+        "route": "/dashboard/macro-calendar",
+        "limitation": "Calendar times identify known catalysts only; they do not predict releases, prices or positions.",
+    },
+    {
         "key": "real_analyst_rankings",
         "title": "Real Analyst Rankings",
         "status": "bring_authorized_data",

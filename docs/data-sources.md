@@ -74,12 +74,17 @@ successful calculation.
 - U.S. Treasury daily par yield curve XML now supplies attributed official
   `2Y`, `10Y`, and derived `2s10s` observations for policy context and the
   Cross-Asset Treasury Curve Regime Explorer.
+- Federal Reserve FOMC calendar HTML and BLS release-calendar iCalendar now
+  supply attributed scheduled-event metadata for the Macro Catalyst Calendar;
+  MarketWitness stores no release result or directional forecast from them.
 
 ## Official Reference Set
 
 - SEC EDGAR: <https://www.sec.gov/search-filings>
 - SEC N-PORT datasets: <https://www.sec.gov/data-research/sec-markets-data/form-n-port-data-sets>
 - U.S. Treasury Daily Interest Rate XML Feed: <https://home.treasury.gov/treasury-daily-interest-rate-xml-feed>
+- Federal Reserve FOMC Calendars: <https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm>
+- BLS Release Calendar: <https://www.bls.gov/schedule/>
 - FCA NSM: <https://data.fca.org.uk/#/nsm/nationalstoragemechanism>
 - London Stock Exchange: <https://www.londonstockexchange.com/>
 - HKEX: <https://www.hkex.com.hk/>

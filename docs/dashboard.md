@@ -23,6 +23,7 @@ workspace or the report directory without relying on browser history.
 | `/dashboard/financials-evidence` | Financials evidence and release-gate sequence | Demo scorecard is not real analyst performance |
 | `/dashboard/intelligence` | Cross-asset research workspace | Planned stored connectors are not live feeds |
 | `/dashboard/market-context` | Cross-Asset Markets terminal with Treasury Curve Regime Explorer | Official Treasury 2Y/10Y observations support regime calculations; TradingView values are not stored or scored |
+| `/dashboard/macro-calendar` | Macro Catalyst Calendar with horizon and agency filters | Official FOMC and selected BLS schedule metadata identifies known times, not outcomes or trades |
 | `/dashboard/volatility` | VIX Reaction Explorer | Select rising/cooling scenarios and windows; no unlicensed episode calculations |
 | `/dashboard/presidential-impact` | Presidential Impact Lab: event intake, official Treasury context and calculation sandbox | News/Actions RSS and Treasury 2Y/10Y session changes are observable context; broader reactions and Truth Social remain gated |
 | `/dashboard/commons` | Evidence Passport Commons | Source rights and claim boundaries are visible |
@@ -145,8 +146,12 @@ confirmed manager buy or sell without additional evidence.
 - `/dashboard/rwa-watch` demonstrates token/reference observations with
   synthetic data; live xStocks, Ondo, and venue feeds remain rights-gated.
 - `/dashboard/intelligence` maps Pre-IPO, volatility, policy, regimes, macro,
-  insiders, ownership, and futures-positioning layers; planned sources are not
-  described as collected values.
+  insiders, ownership, and futures-positioning layers; its macro layer now
+  opens the official `Macro Catalyst Calendar`, while remaining planned
+  sources are not described as collected values.
+- `/dashboard/macro-calendar` filters upcoming official FOMC meetings and
+  selected BLS `CPI`, `PPI`, `Payrolls`, and `JOLTS` release times by horizon
+  and agency, with direct source links and a handoff to Treasury curve context.
 - `/dashboard/volatility` presents a FRED-attributed VIX display, an
   interactive rising-versus-cooling quantitative validation explorer with
   synthetic statistics, and planned real `VIX`/`VXN`/`MOVE`/commodity
@@ -182,6 +187,7 @@ registry files, and DuckDB runs. Key contracts include:
 - `/api/v1/intelligence/modules`
 - `/api/v1/intelligence/volatility`
 - `/api/v1/intelligence/treasury-regimes`
+- `/api/v1/intelligence/macro-calendar`
 - `/api/v1/intelligence/policy-signals`
 - `/api/v1/intelligence/policy-events`
 - `/api/v1/intelligence/policy-reactions`

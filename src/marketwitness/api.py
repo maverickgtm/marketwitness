@@ -24,6 +24,7 @@ from .dashboard_web import (
     ipo_watch_center_html,
     licensed_extensions_html,
     listings_radar_html,
+    macro_calendar_html,
     market_intelligence_html,
     market_context_html,
     open_edition_html,
@@ -51,6 +52,11 @@ from .policy_reaction import build_policy_reaction_snapshot
 from .policy_signal_lab import build_policy_signal_lab_snapshot
 from .policy_treasury import build_policy_treasury_context
 from .providers.treasury import TreasuryDataError, load_treasury_csv
+from .providers.macro_calendar import (
+    MacroCalendarDataError,
+    build_macro_calendar_snapshot,
+    load_macro_calendar_csv,
+)
 from .providers.whitehouse import WhiteHouseDataError, load_event_archive
 from .provider_approvals import (
     ProviderApprovalDataError,
@@ -382,6 +388,12 @@ def create_app(
     )
     def market_intelligence_page() -> str:
         return _dashboard_html(market_intelligence_html())
+
+    @application.get(
+        "/dashboard/macro-calendar", response_class=HTMLResponse, include_in_schema=False
+    )
+    def macro_calendar_page() -> str:
+        return _dashboard_html(macro_calendar_html())
 
     @application.get(
         "/dashboard/volatility", response_class=HTMLResponse, include_in_schema=False
@@ -733,6 +745,29 @@ def create_app(
         except (TreasuryDataError, ValueError) as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+    @application.get("/api/v1/intelligence/macro-calendar")
+    def macro_calendar_snapshot(
+        horizon_days: int = Query(default=90),
+        agency: str = Query(default="all"),
+    ) -> dict[str, object]:
+        path = policy_monitor_reports / "macro-calendar.csv"
+        if not path.is_file():
+            return {
+                "available": False,
+                "data_mode": "Optional official schedule artifact",
+                "message": (
+                    "Load the official Federal Reserve and BLS calendar artifact "
+                    "to inspect known upcoming macro catalysts."
+                ),
+                "events": [],
+            }
+        try:
+            return build_macro_calendar_snapshot(
+                load_macro_calendar_csv(path), horizon_days=horizon_days, agency=agency
+            )
+        except MacroCalendarDataError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
     @application.get("/api/v1/intelligence/policy-signals")
     def policy_signal_lab_snapshot() -> dict[str, object]:
         providers = _read_sources(registry)
@@ -859,6 +894,14 @@ def create_app(
     )
     def market_context_treasury_report() -> str:
         return _generated_html(policy_monitor_reports, "treasury-yields.html")
+
+    @application.get(
+        "/dashboard/macro-calendar/report",
+        response_class=HTMLResponse,
+        include_in_schema=False,
+    )
+    def macro_calendar_report() -> str:
+        return _generated_html(policy_monitor_reports, "macro-calendar.html")
 
     @application.get(
         "/dashboard/presidential-impact/treasury-report",

@@ -29,6 +29,7 @@ stored, exported, or used as scoring evidence.
 | Public Document Checks | FCA NSM corroboration flow | Documentation does not automatically prove admission/trading |
 | RWA Watch Sandbox | Synthetic token/reference observations | No real xStocks, Ondo, or venue collection |
 | Cross-Asset Markets | Official Treasury 2Y/10Y curve-regime explorer plus TradingView views for BTC, ETH, metals, energy, FX and benchmarks | Treasury observations are stored context; widget values are not stored or scored |
+| Macro Catalyst Calendar | Official FOMC meetings and selected BLS CPI, PPI, payrolls and JOLTS release schedule | Event times are known context, not release forecasts or positions |
 | Market Intelligence | Planned cross-asset sources and operating boundaries | No new live values or position recommendation |
 | VIX Reaction Explorer | VIX display, rising/cooling scenarios and episode-design API | Cboe/ICE derived output pending rights |
 | Presidential Impact Lab | Official White House archive, Treasury 2Y/10Y session context and themed calculation sandbox | Treasury changes are observational only; synthetic paths, Truth Social and broader reactions retain visible gates |
@@ -58,6 +59,9 @@ export MARKETWITNESS_SEC_USER_AGENT="MarketWitness contact@example.com"
 ```
 
 No paid API key is required for SEC connector workflows.
+Official BLS/FOMC schedule collection is also free, but BLS requires an
+identified contact request. Set `MARKETWITNESS_MACRO_USER_AGENT` locally or as
+a GitHub Actions secret; no personal email is stored in the public codebase.
 
 ## Periodic GitHub Report
 
@@ -89,11 +93,13 @@ through `MARKETWITNESS_PUBLIC_MONITOR_REPORTS`, the local app exposes it at
 available but explicitly reports that no official run is loaded.
 
 `.github/workflows/public-presidential-events-monitor.yml` collects official
-White House News/Presidential Actions metadata and official Treasury daily
-2Y/10Y par-yield observations on weekdays. Once its artifact is loaded through
+White House News/Presidential Actions metadata, official Treasury daily
+2Y/10Y par-yield observations, and official Federal Reserve/BLS schedule
+metadata on weekdays. Once its artifact is loaded through
 `MARKETWITNESS_POLICY_MONITOR_REPORTS`, Presidential Impact displays
-session-to-session basis-point context for thematic events. It does not claim
-the communication caused a yield move.
+session-to-session basis-point context for thematic events and Macro Catalyst
+Calendar exposes upcoming known release times. Neither view predicts an
+outcome, attributes causation, or recommends a trade.
 
 ## Optional Extensions
 

@@ -46,6 +46,16 @@ jobs:
             --report build/policy-monitor/treasury-yields.md \
             --html build/policy-monitor/treasury-yields.html \
             --as-of "$AS_OF"
+      - name: Collect official macro catalyst schedule
+        env:
+          MARKETWITNESS_MACRO_USER_AGENT: ${{ secrets.MARKETWITNESS_MACRO_USER_AGENT }}
+        run: |
+          python -m marketwitness macro-calendar \
+            --year "$(date -u +%Y)" \
+            --output build/policy-monitor/macro-calendar.csv \
+            --report build/policy-monitor/macro-calendar.md \
+            --html build/policy-monitor/macro-calendar.html \
+            --as-of "$AS_OF"
       - name: Save retained official-event archive
         uses: actions/cache/save@v4
         with:
@@ -59,8 +69,11 @@ jobs:
             echo "- Observation date: \`$AS_OF\`."
             echo "- Collects title, timestamp, official URL and rule-based topic tags from White House News and Presidential Actions RSS only."
             echo "- Includes official Treasury daily 2Y and 10Y yield context for session-to-session comparison."
+            echo "- Includes scheduled Federal Reserve FOMC meetings and selected BLS CPI, PPI, payrolls and JOLTS releases."
+            echo "- Official BLS/FOMC collection uses an identified contact User-Agent configured as a repository secret."
             echo "- Does not collect Truth Social or White House Wire linked article bodies."
             echo "- Treasury changes are temporal context, not proof of event causation or investment advice."
+            echo "- Macro calendar times identify known catalysts; they do not predict outcomes or positions."
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload official-event artifact
         uses: actions/upload-artifact@v4

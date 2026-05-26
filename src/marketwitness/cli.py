@@ -187,6 +187,14 @@ from .providers.treasury import (
     write_treasury_html,
     write_treasury_report,
 )
+from .providers.macro_calendar import (
+    MacroCalendarDataError,
+    fetch_macro_calendar,
+    load_macro_snapshots,
+    write_macro_calendar_csv,
+    write_macro_calendar_html,
+    write_macro_calendar_report,
+)
 from .providers.opendart import (
     OpenDartDataError,
     fetch_opendart_equity_filings,
@@ -1162,6 +1170,35 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Observation date in YYYY-MM-DD format.",
     )
+    macro_parser = subparsers.add_parser(
+        "macro-calendar",
+        help="Collect scheduled Federal Reserve FOMC and selected BLS macro catalysts.",
+    )
+    macro_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    macro_parser.add_argument("--report", required=True, help="Markdown report path.")
+    macro_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    macro_parser.add_argument(
+        "--fomc-snapshot",
+        help="Read a saved Federal Reserve-shaped HTML fixture instead of requesting the official page.",
+    )
+    macro_parser.add_argument(
+        "--bls-snapshot",
+        help="Read a saved BLS iCalendar fixture instead of requesting the official feed.",
+    )
+    macro_parser.add_argument(
+        "--year",
+        type=int,
+        help="Calendar year to normalize. Defaults to the observation year.",
+    )
+    macro_parser.add_argument(
+        "--user-agent",
+        help="Identified contact User-Agent; alternatively set MARKETWITNESS_MACRO_USER_AGENT.",
+    )
+    macro_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Observation date in YYYY-MM-DD format.",
+    )
     opendart_parser = subparsers.add_parser(
         "opendart-monitor", help="Read South Korea OpenDART equity-offering filings."
     )
@@ -1457,6 +1494,34 @@ def main() -> int:
         print(
             f"Wrote official Treasury yield context for {len(observations)} daily "
             f"observations to {args.report}."
+        )
+        return 0
+
+    if args.command == "macro-calendar":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            year = args.year or as_of.year
+            if bool(args.fomc_snapshot) != bool(args.bls_snapshot):
+                raise MacroCalendarDataError(
+                    "Macro calendar fixture mode requires both --fomc-snapshot and --bls-snapshot."
+                )
+            if args.fomc_snapshot:
+                events = load_macro_snapshots(
+                    args.fomc_snapshot, args.bls_snapshot, year, as_of
+                )
+                source_mode = "synthetic_fixture"
+            else:
+                events = fetch_macro_calendar(year, as_of, args.user_agent)
+                source_mode = "official_live_sources"
+            write_macro_calendar_csv(args.output, events)
+            write_macro_calendar_report(args.report, events, as_of, source_mode)
+            if args.html:
+                write_macro_calendar_html(args.html, events, as_of, source_mode)
+        except (MacroCalendarDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote macro catalyst calendar for {len(events)} scheduled events "
+            f"to {args.report}."
         )
         return 0
 

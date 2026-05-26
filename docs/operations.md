@@ -137,14 +137,27 @@ this collector because linked bodies may be third party. Truth Social history
 or live collection remains disabled without permission.
 
 `.github/workflows/public-presidential-events-monitor.yml` runs that intake
-alongside the official Treasury 2Y/10Y daily-yield context collector
-each weekday at `12:43 UTC`, restores a deduplicated archive and publishes a
-30-day downloadable artifact without a secret or paid API. To load a
-downloaded artifact into the dashboard:
+alongside the official Treasury 2Y/10Y daily-yield context collector and the
+official Federal Reserve/BLS macro-catalyst schedule collector each weekday at
+`12:43 UTC`, restores a deduplicated archive and publishes a 30-day
+downloadable artifact without a secret or paid API. To load a downloaded
+artifact into the dashboard:
 
 ```bash
 export MARKETWITNESS_POLICY_MONITOR_REPORTS="build/policy-monitor"
 ```
+
+Live `macro-calendar` collection follows the same identified-request rule as
+SEC access because BLS rejects anonymous retrieval. Keep the contact outside
+the public repository:
+
+```bash
+export MARKETWITNESS_MACRO_USER_AGENT="MarketWitness contact@example.com"
+```
+
+For the scheduled workflow, store that value in the
+`MARKETWITNESS_MACRO_USER_AGENT` repository secret. This requires no paid data
+subscription and does not expose the operator email in source code.
 
 `VIX Reaction Explorer` displays attributed FRED VIX context and publishes
 rising/cooling scenario design. Do not publish calculated historical episodes

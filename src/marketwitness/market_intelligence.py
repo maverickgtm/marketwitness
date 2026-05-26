@@ -69,16 +69,16 @@ MODULES = (
     },
     {
         "key": "macro_calendar",
-        "title": "Macro Calendar",
+        "title": "Macro Catalyst Calendar",
         "theme": "Catalysts",
-        "stage": "connector_planned",
+        "stage": "foundation_available",
         "priority": "next",
         "provider_ids": ("fed-fomc-calendar", "bls-release-calendar"),
-        "coverage": "FOMC meetings and scheduled CPI/employment publication windows.",
-        "cadence": "Scheduled official calendar",
-        "route": "",
-        "next_delivery": "Attach upcoming official events to watched IPO and listing timelines.",
-        "claim_limit": "An upcoming macro release does not determine an IPO outcome.",
+        "coverage": "Official FOMC meetings plus selected CPI, PPI, payrolls and JOLTS publication times are normalized and filterable.",
+        "cadence": "Weekday refresh from official Federal Reserve HTML and BLS iCalendar schedule",
+        "route": "/dashboard/macro-calendar",
+        "next_delivery": "Attach scheduled catalysts to verified listing timelines without forecasting outcomes.",
+        "claim_limit": "An upcoming scheduled release identifies timing, not direction or a trade.",
     },
     {
         "key": "insider_activity",
@@ -142,7 +142,8 @@ def build_market_intelligence_snapshot(
             "VIX Reaction Explorer: rising/cooling scenarios and auditable stress-episode design.",
             "Presidential Impact Lab: official White House intake with observed Treasury session context and Truth Social rights gate.",
             "Market Regimes: observed Treasury 2Y/10Y curve explorer plus attributed external BTC, ETH, WTI and Brent views.",
-            "Macro Calendar, Insider Activity, ownership and CFTC after connector review.",
+            "Macro Catalyst Calendar: official FOMC and selected BLS release timing with source links.",
+            "Insider Activity and CFTC positioning after connector review.",
         ],
         "publication_boundary": (
             "This workspace maps verifiable evidence and implementation order. "
