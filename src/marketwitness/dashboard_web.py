@@ -642,6 +642,14 @@ def listings_radar_html() -> str:
     .pulse div { background:var(--panel2); border-radius:10px; padding:10px; } .pulse small { display:block; color:var(--muted); } .pulse strong { display:block; margin-top:4px; }
     .cycle { border-top:1px solid var(--line); margin-top:12px; padding-top:12px; color:var(--muted); font-size:13px; }
     .cycle strong { display:block; color:var(--text); margin-bottom:4px; }
+    .activation { border-top:1px solid var(--line); padding:10px 0; } .activation:first-child { margin-top:12px; }
+    .activation-head { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+    .activation-head strong { font-size:13px; } .activation p { margin:5px 0 0; color:var(--muted); font-size:12px; }
+    .activation-state { border-radius:999px; padding:4px 7px; font-size:10px; text-transform:uppercase; letter-spacing:.05em; white-space:nowrap; }
+    .weekdays_official_capture { color:var(--mint); background:rgba(56,223,173,.13); }
+    .operator_configuration_required { color:var(--blue); background:rgba(98,166,255,.15); }
+    .rights_review_required { color:var(--gold); background:rgba(243,191,102,.13); }
+    .restricted_research_only { color:var(--rose); background:rgba(255,129,122,.13); }
     .watch-panel .empty,.monitor-panel .empty { color:var(--muted); font-size:13px; }
     .saved-item { border-top:1px solid var(--line); padding:13px 0; } .saved-item strong { display:block; margin-bottom:3px; } .saved-item p { color:var(--muted); font-size:12px; margin:0 0 7px; }
     .saved-item button { height:30px; font-size:12px; padding:0 10px; }
@@ -698,6 +706,8 @@ def listings_radar_html() -> str:
           <div class="cycle"><strong>Automatic artifact refresh</strong><span id="automatic-refresh">-</span></div>
           <div class="cycle"><strong>Refresh locally</strong><span id="manual-refresh">-</span></div>
           <div class="tools"><button type="button" id="reload">Re-read evidence</button><a id="export" href="/api/v1/listings/radar/export.csv" download>Export filtered CSV</a></div>
+          <div class="cycle"><strong>Official-source activation</strong><span><b id="automated-markets">-</b> markets have a no-cost weekday capture workflow. Live artifacts remain separate from this reproducible local bundle.</span></div>
+          <div id="automation-controls"></div>
         </aside>
         <aside class="watch-panel">
           <p class="eyebrow">Saved in this browser</p>
@@ -722,6 +732,9 @@ def listings_radar_html() -> str:
       document.querySelectorAll("[data-remove]").forEach((button) => button.addEventListener("click", () => { delete saved[button.dataset.remove]; localStorage.setItem(storageKey, JSON.stringify(saved)); renderSaved(); renderRecords(); }));
     }
     function toggleSave(id) { const item = records.find((record) => record.record_id === id); if (!item) return; if (saved[id]) delete saved[id]; else saved[id] = item; localStorage.setItem(storageKey, JSON.stringify(saved)); renderSaved(); renderRecords(); }
+    function renderAutomation(items) {
+      $("automation-controls").innerHTML = items.map((item) => `<article class="activation"><div class="activation-head"><strong>${text(item.market)} / ${text(item.name)}</strong><span class="activation-state ${text(item.activation_state)}">${text(item.activation_state.replaceAll("_", " "))}</span></div><p>${text(item.reason)}</p></article>`).join("");
+    }
     function renderRecords() {
       $("records").innerHTML = records.length ? records.map((item) => `<section class="record"><div><span class="badge ${text(item.stream)}">${item.stream === "ipo_watch" ? "U.S. IPO" : "Global change"}</span><p>${text(item.event_date)}</p><span class="status">${text(item.status.replaceAll("_", " "))}</span></div><div><h3>${text(item.company_name)}</h3><p>${text(item.market)} / ${text(item.evidence_level)}</p><p>${text(item.detail)}</p></div><div><p><strong>Next verification step</strong></p><p>${text(item.next_action)}</p></div><div class="evidence"><a href="${text(item.source_url)}" target="_blank" rel="noopener">Open evidence</a><button class="star ${saved[item.record_id] ? "saved" : ""}" type="button" data-save="${text(item.record_id)}">${saved[item.record_id] ? "Saved" : "Watch"}</button></div></section>`).join("") : `<section class="record"><p>No evidence records match these filters.</p></section>`;
       document.querySelectorAll("[data-save]").forEach((button) => button.addEventListener("click", () => toggleSave(button.dataset.save)));
@@ -752,8 +765,10 @@ def listings_radar_html() -> str:
         $("data-mode").textContent = data.operations.data_mode;
         $("automatic-refresh").textContent = data.operations.automatic_refresh;
         $("manual-refresh").textContent = data.operations.manual_refresh;
+        $("automated-markets").textContent = data.operations.automated_market_count;
         $("export").href = `/api/v1/listings/radar/export.csv?${parameters}`;
         $("error").style.display = "none";
+        renderAutomation(data.operations.automation_controls);
         renderRecords();
         renderSaved();
       } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }

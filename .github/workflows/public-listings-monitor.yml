@@ -1,0 +1,59 @@
+name: Public Listings Monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 11 * * 1-5"
+
+permissions:
+  contents: read
+
+jobs:
+  permitted-official-sources:
+    name: Permitted official-source capture
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install application dependencies
+        run: python -m pip install ".[application]"
+      - name: Define UTC evidence window
+        run: |
+          echo "AS_OF=$(date -u +%F)" >> "$GITHUB_ENV"
+          echo "SINCE=$(date -u -d '90 days ago' +%F)" >> "$GITHUB_ENV"
+          mkdir -p build/public-monitor
+      - name: Collect Brazil CVM offering evidence
+        run: |
+          python -m marketwitness cvm-monitor \
+            --since "$SINCE" \
+            --as-of "$AS_OF" \
+            --output build/public-monitor/cvm-monitor.csv \
+            --report build/public-monitor/cvm-monitor.md \
+            --html build/public-monitor/cvm-monitor.html
+      - name: Collect European ESMA prospectus evidence
+        run: |
+          python -m marketwitness esma-monitor \
+            --since "$SINCE" \
+            --as-of "$AS_OF" \
+            --output build/public-monitor/esma-monitor.csv \
+            --report build/public-monitor/esma-monitor.md \
+            --html build/public-monitor/esma-monitor.html
+      - name: Describe public-monitor boundary
+        run: |
+          {
+            echo "## MarketWitness Public Listings Monitor"
+            echo ""
+            echo "- Observation date: \`$AS_OF\`."
+            echo "- Collects CVM and ESMA official evidence only; both are approved for attributed derived output in the source registry."
+            echo "- These records are offering or prospectus review evidence, not trading confirmation or investment advice."
+            echo "- SEC, exchange feeds and free-key sources stay disabled here until their operational or publication controls are satisfied."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload official-source monitoring artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketwitness-public-listings-${{ github.run_number }}
+          path: build/public-monitor/
+          if-no-files-found: error
+          retention-days: 30

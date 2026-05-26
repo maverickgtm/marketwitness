@@ -91,6 +91,18 @@ ETF_ACTIVITY_REPORTS = {
     "nport-catalog": "nport-dataset-catalog.html",
     "nport-sync": "nport-sync.html",
 }
+LISTING_AUTOMATION_CONTROLS = (
+    ("CVM", "Brazil CVM", "cvm-equity-offerings", "weekdays_official_capture"),
+    ("ESMA", "European Union", "esma-equity-prospectuses", "weekdays_official_capture"),
+    ("US", "SEC EDGAR", "sec-edgar", "operator_configuration_required"),
+    ("LSE", "London Stock Exchange", "lse-new-issues", "rights_review_required"),
+    ("HKEX", "Hong Kong Exchange", "hkex-news", "rights_review_required"),
+    ("ASX", "Australian Securities Exchange", "asx-upcoming", "rights_review_required"),
+    ("TSX", "Toronto Stock Exchange", "tsx-listings", "rights_review_required"),
+    ("SGX", "Singapore Exchange", "sgx-prospectus", "rights_review_required"),
+    ("JPX", "Tokyo Stock Exchange", "jpx-new-listings", "rights_review_required"),
+    ("KRX", "South Korea OpenDART", "opendart-equity-offerings", "rights_review_required"),
+)
 FINANCIALS_AUDIT_REPORTS = {
     "target-import": "authorized-targets-import.html",
     "adjusted-prices": "alpha-vantage-prices.html",
@@ -505,6 +517,7 @@ def create_app(
             all_rows, query, stream, market, status, start, end
         )
         latest_evidence = max((str(item["event_date"]) for item in all_rows), default=None)
+        automation_controls = _listing_automation_controls(_read_sources(registry))
         return {
             "as_of": latest_evidence,
             "record_count": len(selected),
@@ -543,6 +556,11 @@ def create_app(
                         ),
                     },
                 ],
+                "automation_controls": automation_controls,
+                "automated_market_count": sum(
+                    item["activation_state"] == "weekdays_official_capture"
+                    for item in automation_controls
+                ),
             },
             "records": selected,
         }
@@ -970,6 +988,46 @@ def _filter_listing_radar_rows(
         reverse=True,
     )
     return selected
+
+
+def _listing_automation_controls(providers: list[SourceProvider]) -> list[dict[str, object]]:
+    providers_by_id = {provider.provider_id: provider for provider in providers}
+    controls = []
+    for market, name, provider_id, requested_state in LISTING_AUTOMATION_CONTROLS:
+        provider = providers_by_id.get(provider_id)
+        if provider is None:
+            activation_state = "unavailable"
+            reason = "Required source passport is not registered."
+        elif requested_state == "weekdays_official_capture" and provider.deployment_state == "usable_with_policy":
+            activation_state = requested_state
+            reason = "Eligible official evidence captured by the no-cost weekday GitHub Action."
+        elif requested_state == "operator_configuration_required":
+            activation_state = requested_state
+            reason = "Connector is permitted but live SEC collection requires an identified private User-Agent."
+        else:
+            activation_state = "rights_review_required"
+            reason = "Connector exists, but public live-output terms remain under review."
+        controls.append(
+            {
+                "market": market,
+                "name": name,
+                "provider_id": provider_id,
+                "activation_state": activation_state,
+                "deployment_state": provider.deployment_state if provider else "unavailable",
+                "reason": reason,
+            }
+        )
+    controls.append(
+        {
+            "market": "MOEX",
+            "name": "Moscow Exchange / Bank of Russia",
+            "provider_id": "",
+            "activation_state": "restricted_research_only",
+            "deployment_state": "blocked",
+            "reason": "Automation is not activated pending sanctions and licensing review.",
+        }
+    )
+    return controls
 
 
 def _generated_html(directory: Path, filename: str) -> str:

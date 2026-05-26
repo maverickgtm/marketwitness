@@ -612,6 +612,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Listings Radar", page.text)
         self.assertIn("My Watchlist", page.text)
         self.assertIn("Monitor Status", page.text)
+        self.assertIn("Official-source activation", page.text)
         self.assertIn("Export filtered CSV", page.text)
         self.assertIn("Re-read evidence", page.text)
         self.assertIn("Apply filters", page.text)
@@ -629,6 +630,17 @@ class ApiTests(unittest.TestCase):
             all_records.json()["operations"]["automatic_refresh"],
             "Mondays at 12:17 UTC via GitHub Actions",
         )
+        self.assertEqual(all_records.json()["operations"]["automated_market_count"], 2)
+        controls = {
+            item["market"]: item
+            for item in all_records.json()["operations"]["automation_controls"]
+        }
+        self.assertEqual(controls["CVM"]["activation_state"], "weekdays_official_capture")
+        self.assertEqual(controls["ESMA"]["activation_state"], "weekdays_official_capture")
+        self.assertEqual(
+            controls["US"]["activation_state"], "operator_configuration_required"
+        )
+        self.assertEqual(controls["MOEX"]["activation_state"], "restricted_research_only")
         self.assertEqual(filtered.json()["record_count"], 1)
         self.assertEqual(
             filtered.json()["records"][0]["company_name"],

@@ -90,7 +90,9 @@ stream, market, state and observed date, open cited evidence, and save a
 personal browser-local follow-up list. The list does not alter project data or
 promote an evidence signal to a confirmed listing. `Monitor Status` makes the
 bundle date and collection mode explicit, and filtered CSV export turns a
-research view into a portable review queue.
+research view into a portable review queue. The `Official-source activation`
+matrix separates the no-cost weekday CVM/ESMA artifact workflow from SEC
+operator configuration, rights reviews and restricted markets.
 
 ### Global Listings Watch
 

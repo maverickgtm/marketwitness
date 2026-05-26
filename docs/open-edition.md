@@ -75,6 +75,12 @@ Status`: its automatic refresh refers to this artifact schedule, not an
 always-on market data service. Users can re-read a locally rebuilt bundle and
 export the filtered evidence queue as CSV.
 
+`.github/workflows/public-listings-monitor.yml` is a separate weekday
+official-source capture for Brazil CVM and Europe ESMA only. Both sources are
+registered as usable for attributed derived output. Its downloadable artifact
+contains offering or prospectus evidence for review, never a completed listing
+claim or a position recommendation.
+
 ## Optional Extensions
 
 Commercial or user-licensed evidence is architecture-ready but is not required

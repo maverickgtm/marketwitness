@@ -35,7 +35,7 @@ rights are visible product outcomes, not hidden limitations.
 | Center | Purpose | Open Edition Evidence |
 |---|---|---|
 | Evidence Passport Commons | Register source provenance, cost, cadence, rights, and claim boundaries | Public source registry and contribution protocol |
-| Listings Radar / IPO Watch | Search, filter, export and locally follow U.S. IPO records and global listing-evidence changes | Reviewed demo registry plus dated official-source change workflow with visible update status |
+| Listings Radar / IPO Watch | Search, filter, export and locally follow U.S. IPO records and global listing-evidence changes | Reviewed demo registry plus visible automation coverage; weekday CVM/ESMA official-source artifact |
 | Global Listings Watch | Map official listing evidence beyond the United States and open the interactive radar | Official market-source registry across multiple jurisdictions |
 | ETF Evidence Center | Separate reported holdings evidence from daily-activity claims | Synthetic snapshots and SEC N-PORT workflow |
 | Financials Evidence Center | Audit a price-target scoring pipeline and its release gates | Redistributable fixtures; real rankings blocked |

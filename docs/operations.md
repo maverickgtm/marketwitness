@@ -153,6 +153,13 @@ the latest evidence date in the generated bundle, and exports a filtered CSV
 review queue. Re-reading the radar refreshes generated evidence already
 available to the application; it does not initiate live source collection.
 
+`.github/workflows/public-listings-monitor.yml` runs each weekday at `11:23
+UTC` and on manual dispatch. It makes live requests only to the approved
+official-source paths for Brazil CVM and Europe ESMA, then uploads a 30-day
+artifact. SEC is excluded because fair-access collection requires a privately
+managed identifying `User-Agent`; other exchange and free-key feeds remain
+excluded until their published-output controls are resolved.
+
 ## Operational Limits
 
 - Never commit API keys, provider downloads, personal request headers, or
