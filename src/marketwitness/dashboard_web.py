@@ -1355,17 +1355,24 @@ def volatility_lab_html() -> str:
     .explorer-head { display:flex; justify-content:space-between; align-items:start; gap:20px; margin-bottom:18px; }
     .explorer-head h2 { margin:0 0 7px; font-size:25px; } .explorer-head p { margin:0; color:var(--muted); max-width:760px; }
     .gated { border-radius:999px; padding:7px 11px; color:var(--gold); background:rgba(243,191,102,.11); font-size:11px; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap; }
-    .scenario-bar,.horizon-bar { display:flex; flex-wrap:wrap; gap:9px; margin:16px 0; }
-    .scenario-button,.horizon-button { appearance:none; border:1px solid var(--line); background:var(--panel2); color:var(--muted); padding:10px 15px; border-radius:11px; font:inherit; font-size:14px; font-weight:600; cursor:pointer; }
+    .scenario-bar,.horizon-bar,.period-bar { display:flex; flex-wrap:wrap; gap:9px; margin:16px 0; }
+    .scenario-button,.horizon-button,.period-button { appearance:none; border:1px solid var(--line); background:var(--panel2); color:var(--muted); padding:10px 15px; border-radius:11px; font:inherit; font-size:14px; font-weight:600; cursor:pointer; }
     .scenario-button.active { color:#071016; background:var(--red); border-color:var(--red); }
     .scenario-button.relief.active { background:var(--mint); border-color:var(--mint); }
-    .horizon-button.active { color:var(--text); border-color:var(--blue); background:rgba(98,166,255,.16); }
+    .horizon-button.active,.period-button.active { color:var(--text); border-color:var(--blue); background:rgba(98,166,255,.16); }
+    .period-picker { display:flex; align-items:end; flex-wrap:wrap; gap:10px; border:1px solid var(--line); border-radius:13px; padding:12px; background:rgba(6,10,18,.22); margin-bottom:16px; }
+    .period-picker label { color:var(--muted); text-transform:uppercase; letter-spacing:.09em; font-size:10px; }
+    .period-picker input { display:block; margin-top:5px; padding:9px 10px; border:1px solid var(--line); border-radius:9px; background:var(--panel2); color:var(--text); font:inherit; color-scheme:dark; }
+    .period-picker button { padding:10px 15px; border:1px solid var(--mint); border-radius:9px; background:var(--mint); color:#061016; font:inherit; font-weight:700; cursor:pointer; }
+    .period-details { border-left:3px solid var(--blue); padding:9px 13px; margin:8px 0 17px; background:rgba(98,166,255,.06); color:var(--muted); font-size:13px; }
+    .period-details strong { color:var(--text); }
+    #period-error { display:none; margin:8px 0 15px; color:var(--red); font-size:13px; }
     .selection { background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin:15px 0; }
     .selection h3 { font-size:20px; margin:5px 0; } .selection p { color:var(--muted); margin:7px 0 0; }
     .validation-head { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin:21px 0 12px; }
     .validation-head h3 { margin:0; font-size:19px; } .validation-head p { margin:3px 0 0; color:var(--muted); font-size:13px; }
     .validation-pill { color:var(--mint); background:rgba(56,223,173,.12); border-radius:999px; padding:6px 10px; font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
-    .technical-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:13px 0; }
+    .technical-kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:13px 0; }
     .technical-kpi { border:1px solid var(--line); border-radius:12px; padding:11px 13px; background:rgba(6,10,18,.26); }
     .technical-kpi p { margin:0; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.1em; }
     .technical-kpi strong { display:block; margin-top:5px; font-size:17px; color:var(--text); }
@@ -1411,7 +1418,7 @@ def volatility_lab_html() -> str:
         <div class="panel-head"><div><h2>VIX Visual Context</h2><p class="meta">Not an audit input</p></div><span class="external">FRED attributed display</span></div>
         <div class="market-widget">
           <div class="widget-idle" id="fred-fallback"><div><strong>External VIX display unavailable</strong><p>The research design below remains usable offline.</p></div></div>
-          <img class="fred-chart" src="https://fred.stlouisfed.org/graph/fredgraph.png?id=VIXCLS&amp;cosd=2025-01-20" alt="FRED externally hosted CBOE Volatility Index VIX graph since January 20 2025" onerror="this.style.display='none'; document.getElementById('fred-fallback').style.display='flex'">
+          <img class="fred-chart" id="fred-chart" src="https://fred.stlouisfed.org/graph/fredgraph.png?id=VIXCLS&amp;cosd=2025-01-20" alt="FRED externally hosted CBOE Volatility Index VIX graph since January 20 2025" onerror="this.style.display='none'; document.getElementById('fred-fallback').style.display='flex'">
           <div class="tradingview-widget-copyright"><a href="https://fred.stlouisfed.org/series/VIXCLS" rel="noopener nofollow" target="_blank"><span class="blue-text">CBOE Volatility Index: VIX [VIXCLS]</span></a><span> via FRED / citation required</span></div>
         </div>
       </article>
@@ -1433,7 +1440,16 @@ def volatility_lab_html() -> str:
       </div>
       <p class="meta">1 / Choose the VIX move</p>
       <div class="scenario-bar" id="scenarios"></div>
-      <p class="meta">2 / Choose the reaction window</p>
+      <p class="meta">2 / Choose the study period</p>
+      <div class="period-bar" id="period-presets"></div>
+      <div class="period-picker" aria-label="Custom study period">
+        <label>Start date<input id="period-start" type="date" min="2025-01-20"></label>
+        <label>End date<input id="period-end" type="date"></label>
+        <button id="period-apply" type="button">Apply dates</button>
+      </div>
+      <p id="period-error"></p>
+      <p class="period-details" id="period-details">Loading validation period...</p>
+      <p class="meta">3 / Choose the forward reaction window</p>
       <div class="horizon-bar" id="horizons"></div>
       <article class="selection">
         <p class="eyebrow" id="selected-trigger">Loading scenario...</p>
@@ -1446,6 +1462,7 @@ def volatility_lab_html() -> str:
       </div>
       <section class="technical-kpis">
         <article class="technical-kpi"><p>Episode rule</p><strong id="stat-rule">-</strong></article>
+        <article class="technical-kpi"><p>Study period</p><strong id="stat-period">-</strong></article>
         <article class="technical-kpi"><p>Sample size</p><strong id="stat-sample">-</strong></article>
         <article class="technical-kpi"><p>Forward window</p><strong id="stat-window">-</strong></article>
       </section>
@@ -1456,7 +1473,7 @@ def volatility_lab_html() -> str:
         </table>
       </div>
       <p class="technical-note">All table values are percentages computed from project-authored validation episodes, not historical trading outcomes.</p>
-      <p class="meta">3 / Interpret these reaction lenses</p>
+      <p class="meta">4 / Interpret these reaction lenses</p>
       <section class="reaction-grid" id="reaction-lenses"></section>
       <p class="explorer-boundary" id="explorer-boundary"></p>
     </section>
@@ -1471,28 +1488,57 @@ def volatility_lab_html() -> str:
     function percent(value) { return `${value > 0 ? "+" : ""}${Number(value).toFixed(2)}%`; }
     function tone(value) { return value > 0 ? "positive" : value < 0 ? "negative" : "neutral"; }
     function renderReactionExplorer(explorer) {
-      let selectedScenario = explorer.scenarios[0];
-      let selectedHorizon = explorer.horizons[2];
-      const validation = explorer.validation_sample;
+      let currentExplorer = explorer;
+      let selectedScenarioKey = explorer.scenarios[0].key;
+      let selectedHorizonKey = explorer.horizons[2].key;
+      const loadPeriod = async (start, end) => {
+        $("period-error").style.display = "none";
+        const response = await fetch(`/api/v1/intelligence/volatility?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`);
+        if (!response.ok) {
+          const failure = await response.json();
+          $("period-error").style.display = "block";
+          $("period-error").textContent = failure.detail || "Unable to apply this study period.";
+          return;
+        }
+        currentExplorer = (await response.json()).reaction_explorer;
+        render();
+      };
       const render = () => {
+        const validation = currentExplorer.validation_sample;
+        const period = validation.period;
+        const selectedScenario = currentExplorer.scenarios.find((scenario) => scenario.key === selectedScenarioKey);
+        const selectedHorizon = currentExplorer.horizons.find((horizon) => horizon.key === selectedHorizonKey);
         const result = validation.results.find((item) => item.scenario_key === selectedScenario.key && item.horizon_key === selectedHorizon.key);
-        $("scenarios").innerHTML = explorer.scenarios.map((scenario) => `<button type="button" class="scenario-button ${scenario.key === "vix_cools" ? "relief" : ""} ${scenario.key === selectedScenario.key ? "active" : ""}" data-scenario="${text(scenario.key)}">${text(scenario.label)}</button>`).join("");
-        $("horizons").innerHTML = explorer.horizons.map((horizon) => `<button type="button" class="horizon-button ${horizon.key === selectedHorizon.key ? "active" : ""}" data-horizon="${text(horizon.key)}">${text(horizon.label)}</button>`).join("");
+        $("scenarios").innerHTML = currentExplorer.scenarios.map((scenario) => `<button type="button" class="scenario-button ${scenario.key === "vix_cools" ? "relief" : ""} ${scenario.key === selectedScenario.key ? "active" : ""}" data-scenario="${text(scenario.key)}">${text(scenario.label)}</button>`).join("");
+        $("period-presets").innerHTML = period.presets.map((preset) => `<button type="button" class="period-button ${preset.start === period.start && preset.end === period.end ? "active" : ""}" data-start="${text(preset.start)}" data-end="${text(preset.end)}">${text(preset.label)}</button>`).join("");
+        $("horizons").innerHTML = currentExplorer.horizons.map((horizon) => `<button type="button" class="horizon-button ${horizon.key === selectedHorizon.key ? "active" : ""}" data-horizon="${text(horizon.key)}">${text(horizon.label)}</button>`).join("");
+        $("period-start").min = period.available_start;
+        $("period-start").max = period.available_end;
+        $("period-end").min = period.available_start;
+        $("period-end").max = period.available_end;
+        $("period-start").value = period.start;
+        $("period-end").value = period.end;
+        $("period-details").innerHTML = `<strong>Selected calendar window:</strong> ${text(period.start)} to ${text(period.end)} / <strong>Included authored checkpoints:</strong> ${period.episode_dates.length ? period.episode_dates.map(text).join(", ") : "none"}. Dates label synthetic paths only; they do not claim historical VIX events.`;
+        $("fred-chart").src = `https://fred.stlouisfed.org/graph/fredgraph.png?id=VIXCLS&cosd=${encodeURIComponent(period.start)}&coed=${encodeURIComponent(period.end)}`;
+        $("fred-chart").alt = `FRED externally hosted CBOE Volatility Index VIX graph from ${period.start} to ${period.end}`;
         $("selected-trigger").textContent = `${result.threshold} / ${selectedHorizon.label}`;
         $("selected-headline").textContent = selectedScenario.headline;
         $("selected-question").textContent = selectedScenario.question;
         $("validation-label").textContent = validation.label;
         $("validation-method").textContent = validation.method;
         $("stat-rule").textContent = result.threshold.replace("VIX close-to-close change ", "");
+        $("stat-period").textContent = `${period.start} to ${period.end}`;
         $("stat-sample").textContent = `${validation.episode_count} episodes`;
         $("stat-window").textContent = selectedHorizon.label;
-        $("stat-rows").innerHTML = result.lens_results.map((lens) => `<tr><td data-label="Reaction lens">${text(lens.family)}</td><td data-label="Median return" class="${tone(lens.median_return_pct)}">${percent(lens.median_return_pct)}</td><td data-label="Positive">${text(lens.positive_frequency_pct)}%</td><td data-label="Worst episode" class="${tone(lens.worst_return_pct)}">${percent(lens.worst_return_pct)}</td><td data-label="Dispersion">${percent(lens.dispersion_pct)}</td></tr>`).join("");
+        $("stat-rows").innerHTML = result.lens_results.length ? result.lens_results.map((lens) => `<tr><td data-label="Reaction lens">${text(lens.family)}</td><td data-label="Median return" class="${tone(lens.median_return_pct)}">${percent(lens.median_return_pct)}</td><td data-label="Positive">${text(lens.positive_frequency_pct)}%</td><td data-label="Worst episode" class="${tone(lens.worst_return_pct)}">${percent(lens.worst_return_pct)}</td><td data-label="Dispersion">${percent(lens.dispersion_pct)}</td></tr>`).join("") : `<tr><td colspan="5">No authored validation checkpoints fall inside this calendar window.</td></tr>`;
         $("reaction-lenses").innerHTML = selectedScenario.lenses.map((lens) => `<article class="reaction-card"><p class="eyebrow">${text(lens.family)}</p><h3>${text(lens.assets)}</h3><p>${text(lens.measurement)}</p></article>`).join("");
-        document.querySelectorAll("[data-scenario]").forEach((button) => button.addEventListener("click", () => { selectedScenario = explorer.scenarios.find((scenario) => scenario.key === button.dataset.scenario); render(); }));
-        document.querySelectorAll("[data-horizon]").forEach((button) => button.addEventListener("click", () => { selectedHorizon = explorer.horizons.find((horizon) => horizon.key === button.dataset.horizon); render(); }));
+        document.querySelectorAll("[data-scenario]").forEach((button) => button.addEventListener("click", () => { selectedScenarioKey = button.dataset.scenario; render(); }));
+        document.querySelectorAll("[data-horizon]").forEach((button) => button.addEventListener("click", () => { selectedHorizonKey = button.dataset.horizon; render(); }));
+        document.querySelectorAll("[data-start][data-end]").forEach((button) => button.addEventListener("click", () => loadPeriod(button.dataset.start, button.dataset.end)));
+        $("period-apply").onclick = () => loadPeriod($("period-start").value, $("period-end").value);
       };
-      $("explorer-prompt").textContent = explorer.prompt;
-      $("explorer-boundary").textContent = explorer.boundary;
+      $("explorer-prompt").textContent = currentExplorer.prompt;
+      $("explorer-boundary").textContent = currentExplorer.boundary;
       render();
     }
     async function initialize() {

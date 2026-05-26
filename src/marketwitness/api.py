@@ -492,11 +492,14 @@ def create_app(
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     @application.get("/api/v1/intelligence/volatility")
-    def volatility_lab_snapshot() -> dict[str, object]:
+    def volatility_lab_snapshot(
+        period_start: Optional[date] = Query(default=None, alias="start"),
+        period_end: Optional[date] = Query(default=None, alias="end"),
+    ) -> dict[str, object]:
         providers = _read_sources(registry)
         try:
             as_of = max((item.reviewed_on for item in providers), default=date.today())
-            return build_volatility_lab_snapshot(providers, as_of)
+            return build_volatility_lab_snapshot(providers, as_of, period_start, period_end)
         except SourceRegistryDataError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 

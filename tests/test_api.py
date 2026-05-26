@@ -405,6 +405,9 @@ class ApiTests(unittest.TestCase):
         self.assertIn("VIX Reaction Explorer", page.text)
         self.assertIn("Real results gated / validation live", page.text)
         self.assertIn("Forward Reaction Statistics", page.text)
+        self.assertIn("Choose the study period", page.text)
+        self.assertIn("Apply dates", page.text)
+        self.assertIn("Study period", page.text)
         self.assertIn("Median return", page.text)
         self.assertIn("Synthetic validation sample", page.text)
         self.assertIn("VIXCLS", page.text)
@@ -426,6 +429,17 @@ class ApiTests(unittest.TestCase):
         self.assertIn("VXN", snapshot.json()["phase_1"])
         self.assertIn("MOVE", snapshot.json()["phase_1"])
         self.assertIn("does not ingest Cboe or ICE", snapshot.json()["publication_boundary"])
+        filtered = self.client.get(
+            "/api/v1/intelligence/volatility?start=2026-01-01&end=2026-05-25"
+        )
+        self.assertEqual(filtered.status_code, 200)
+        self.assertEqual(
+            filtered.json()["reaction_explorer"]["validation_sample"]["episode_count"], 2
+        )
+        self.assertEqual(
+            filtered.json()["reaction_explorer"]["validation_sample"]["period"]["episode_dates"],
+            ["2026-02-02", "2026-04-06"],
+        )
 
     def test_serves_policy_signal_lab_with_truth_social_collection_disabled(self) -> None:
         page = self.client.get("/dashboard/presidential-impact")

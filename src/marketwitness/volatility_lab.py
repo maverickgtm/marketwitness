@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 from statistics import median, pstdev
 from typing import Any
 
@@ -172,6 +172,16 @@ REACTION_HORIZONS = (
     {"key": "60_sessions", "label": "60 sessions"},
 )
 
+VALIDATION_AVAILABLE_START = date(2025, 1, 20)
+VALIDATION_EPISODE_DATES = (
+    date(2025, 2, 3),
+    date(2025, 4, 7),
+    date(2025, 7, 14),
+    date(2025, 10, 13),
+    date(2026, 2, 2),
+    date(2026, 4, 6),
+)
+
 VALIDATION_RETURN_PATHS = {
     "vix_rises": {
         "threshold": "VIX close-to-close change >= +10%",
@@ -233,7 +243,10 @@ VALIDATION_RETURN_PATHS = {
 
 
 def build_volatility_lab_snapshot(
-    providers: list[SourceProvider], as_of: date
+    providers: list[SourceProvider],
+    as_of: date,
+    period_start: date | None = None,
+    period_end: date | None = None,
 ) -> dict[str, Any]:
     if any(provider.reviewed_on > as_of for provider in providers):
         raise SourceRegistryDataError(
@@ -241,6 +254,21 @@ def build_volatility_lab_snapshot(
         )
     providers_by_id = {provider.provider_id: provider for provider in providers}
     indicators = [_indicator_payload(item, providers_by_id) for item in INDICATORS]
+    selected_start = period_start or VALIDATION_AVAILABLE_START
+    selected_end = period_end or as_of
+    if selected_start > selected_end:
+        raise SourceRegistryDataError("Volatility Lab period start must be on or before its end.")
+    if selected_end > as_of:
+        raise SourceRegistryDataError("Volatility Lab period end cannot be after its review cutoff.")
+    if selected_start < VALIDATION_AVAILABLE_START:
+        raise SourceRegistryDataError(
+            "Volatility Lab validation periods cannot begin before 2025-01-20."
+        )
+    selected_indices = [
+        index
+        for index, episode_date in enumerate(VALIDATION_EPISODE_DATES)
+        if selected_start <= episode_date <= selected_end
+    ]
     return {
         "product": "VIX Reaction Explorer",
         "as_of": as_of.isoformat(),
@@ -276,13 +304,24 @@ def build_volatility_lab_snapshot(
             "validation_sample": {
                 "label": "Synthetic validation sample",
                 "mode": "project_authored_not_market_observations",
-                "episode_count": 6,
+                "episode_count": len(selected_indices),
                 "result_count": len(REACTION_SCENARIOS) * len(REACTION_HORIZONS),
                 "method": (
-                    "Forward-return paths validate calculations and controls; "
-                    "they are not observed historical market episodes."
+                    "Filtered forward-return paths validate calculations and controls; "
+                    "dates are authored checkpoints, not observed market episodes."
                 ),
-                "results": _validation_results(),
+                "period": {
+                    "start": selected_start.isoformat(),
+                    "end": selected_end.isoformat(),
+                    "available_start": VALIDATION_AVAILABLE_START.isoformat(),
+                    "available_end": as_of.isoformat(),
+                    "episode_dates": [
+                        VALIDATION_EPISODE_DATES[index].isoformat()
+                        for index in selected_indices
+                    ],
+                    "presets": _period_presets(as_of),
+                },
+                "results": _validation_results(selected_indices),
             },
         },
         "indicators": indicators,
@@ -292,7 +331,37 @@ def build_volatility_lab_snapshot(
     }
 
 
-def _validation_results() -> list[dict[str, Any]]:
+def _period_presets(as_of: date) -> list[dict[str, str]]:
+    trailing_start = max(VALIDATION_AVAILABLE_START, as_of - timedelta(days=180))
+    return [
+        {
+            "key": "full",
+            "label": "Full sample",
+            "start": VALIDATION_AVAILABLE_START.isoformat(),
+            "end": as_of.isoformat(),
+        },
+        {
+            "key": "year_2025",
+            "label": "2025",
+            "start": VALIDATION_AVAILABLE_START.isoformat(),
+            "end": min(as_of, date(2025, 12, 31)).isoformat(),
+        },
+        {
+            "key": "year_2026_ytd",
+            "label": "2026 YTD",
+            "start": date(2026, 1, 1).isoformat(),
+            "end": as_of.isoformat(),
+        },
+        {
+            "key": "trailing_180",
+            "label": "Last 180 days",
+            "start": trailing_start.isoformat(),
+            "end": as_of.isoformat(),
+        },
+    ]
+
+
+def _validation_results(selected_indices: list[int]) -> list[dict[str, Any]]:
     results = []
     for scenario_key, scenario in VALIDATION_RETURN_PATHS.items():
         threshold = scenario["threshold"]
@@ -300,16 +369,21 @@ def _validation_results() -> list[dict[str, Any]]:
             horizon_key = horizon["key"]
             lens_results = []
             for family, values in scenario[horizon_key].items():
+                selected_values = [values[index] for index in selected_indices]
+                if not selected_values:
+                    continue
                 lens_results.append(
                     {
                         "family": family,
-                        "sample_count": len(values),
-                        "median_return_pct": round(float(median(values)), 2),
+                        "sample_count": len(selected_values),
+                        "median_return_pct": round(float(median(selected_values)), 2),
                         "positive_frequency_pct": round(
-                            sum(value > 0 for value in values) / len(values) * 100
+                            sum(value > 0 for value in selected_values)
+                            / len(selected_values)
+                            * 100
                         ),
-                        "worst_return_pct": round(min(values), 2),
-                        "dispersion_pct": round(pstdev(values), 2),
+                        "worst_return_pct": round(min(selected_values), 2),
+                        "dispersion_pct": round(pstdev(selected_values), 2),
                     }
                 )
             results.append(
@@ -317,6 +391,7 @@ def _validation_results() -> list[dict[str, Any]]:
                     "scenario_key": scenario_key,
                     "horizon_key": horizon_key,
                     "threshold": threshold,
+                    "sample_count": len(selected_indices),
                     "lens_results": lens_results,
                 }
             )

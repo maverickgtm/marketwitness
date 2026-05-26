@@ -32,6 +32,13 @@ class VolatilityLabTests(unittest.TestCase):
         self.assertEqual(validation["mode"], "project_authored_not_market_observations")
         self.assertEqual(validation["episode_count"], 6)
         self.assertEqual(validation["result_count"], 10)
+        self.assertEqual(validation["period"]["start"], "2025-01-20")
+        self.assertEqual(validation["period"]["end"], "2026-05-25")
+        self.assertEqual(len(validation["period"]["episode_dates"]), 6)
+        self.assertEqual(
+            [item["key"] for item in validation["period"]["presets"]],
+            ["full", "year_2025", "year_2026_ytd", "trailing_180"],
+        )
         rises_five = next(
             result
             for result in validation["results"]
@@ -59,6 +66,34 @@ class VolatilityLabTests(unittest.TestCase):
         tech = next(item for item in snapshot["episode_designs"] if item["key"] == "technology_stress_gap")
         self.assertIn("Technology listings", tech["comparison"])
 
+    def test_filters_authored_validation_checkpoints_by_calendar_period(self) -> None:
+        providers = load_source_registry(Path("data/samples/source_registry.csv"))
+
+        snapshot = build_volatility_lab_snapshot(
+            providers,
+            date(2026, 5, 25),
+            date(2026, 1, 1),
+            date(2026, 5, 25),
+        )
+
+        validation = snapshot["reaction_explorer"]["validation_sample"]
+        self.assertEqual(validation["episode_count"], 2)
+        self.assertEqual(
+            validation["period"]["episode_dates"], ["2026-02-02", "2026-04-06"]
+        )
+        cools_one = next(
+            result
+            for result in validation["results"]
+            if result["scenario_key"] == "vix_cools"
+            and result["horizon_key"] == "1_session"
+        )
+        cool_equities = next(
+            item for item in cools_one["lens_results"] if item["family"] == "Equities"
+        )
+        self.assertEqual(cool_equities["sample_count"], 2)
+        self.assertEqual(cool_equities["median_return_pct"], 0.45)
+        self.assertEqual(cool_equities["positive_frequency_pct"], 100)
+
     def test_rejects_missing_volatility_source(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))
 
@@ -66,6 +101,17 @@ class VolatilityLabTests(unittest.TestCase):
             build_volatility_lab_snapshot(
                 [item for item in providers if item.provider_id != "cboe-volatility-family"],
                 date(2026, 5, 25),
+            )
+
+    def test_rejects_validation_period_after_review_cutoff(self) -> None:
+        providers = load_source_registry(Path("data/samples/source_registry.csv"))
+
+        with self.assertRaisesRegex(SourceRegistryDataError, "after its review cutoff"):
+            build_volatility_lab_snapshot(
+                providers,
+                date(2026, 5, 25),
+                date(2026, 1, 1),
+                date(2026, 5, 26),
             )
 
 

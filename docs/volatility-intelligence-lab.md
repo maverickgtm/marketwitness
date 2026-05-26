@@ -17,9 +17,14 @@ attributed external VIX visualization. Visitors can select `VIX rises` or
 calculated median return, positive-frequency, worst-episode, and dispersion
 metrics for a clearly labeled project-authored validation sample. Equity,
 crypto, energy, haven, IPO, and ETF lenses remain available for interpretation.
+The explorer also exposes calendar-period controls: `Full sample`, `2025`,
+`2026 YTD`, `Last 180 days`, or custom start/end dates. Filtering recalculates
+every visible statistic using only the included authored checkpoints and shows
+their exact dates.
 `/api/v1/intelligence/volatility` publishes the same scenarios, validation
-results, indicator families, and planned experiments. No real Cboe or ICE
-series are downloaded or scored in this release.
+results, period metadata, indicator families, and planned experiments. It
+accepts optional `start` and `end` ISO-date query parameters. No real Cboe or
+ICE series are downloaded or scored in this release.
 
 ## Visible Reaction Explorer
 
@@ -31,11 +36,13 @@ in methodology cards.
 | `VIX rises` | Does stress propagate, or does the move remain isolated? | `SPY`/`QQQ`/`XLF`, `BTC`/`ETH`, energy/havens, IPO and ETF evidence |
 | `VIX cools` | Does risk appetite return, or do broader conditions remain weak? | `SPY`/`QQQ`/`XLF`, `BTC`/`ETH`, energy/havens, IPO and ETF evidence |
 
-The quantitative table contains six synthetic validation episodes for each
-scenario/window combination. It exercises the event-study controls and makes
-window changes auditable, but is not observed historical performance. Real
-reaction statistics remain gated until public derived-output rights or an
-appropriately licensed input path is approved.
+The full-sample quantitative table contains six synthetic validation
+checkpoints for each scenario/window combination, dated between `2025-01-20`
+and `2026-05-25`. Selected ranges reduce that sample and recalculate the
+statistics. These dates label project-authored calculation paths; they are not
+claims that a historical VIX trigger occurred on those dates. Real reaction
+statistics remain gated until public derived-output rights or an appropriately
+licensed input path is approved.
 
 ## Volatility Families
 
