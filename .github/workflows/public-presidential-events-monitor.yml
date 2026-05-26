@@ -1,0 +1,62 @@
+name: Public Presidential Events Monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "43 12 * * 1-5"
+
+permissions:
+  contents: read
+
+jobs:
+  official-white-house-intake:
+    name: Official White House RSS intake
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install application dependencies
+        run: python -m pip install ".[application]"
+      - name: Define UTC observation date
+        run: |
+          echo "AS_OF=$(date -u +%F)" >> "$GITHUB_ENV"
+          mkdir -p build/policy-monitor/history
+      - name: Restore retained official-event archive
+        uses: actions/cache/restore@v4
+        with:
+          path: build/policy-monitor/history
+          key: public-presidential-events-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            public-presidential-events-${{ github.ref_name }}-
+      - name: Collect and classify official event metadata
+        run: |
+          python -m marketwitness whitehouse-events \
+            --archive build/policy-monitor/history/whitehouse-events.csv \
+            --output build/policy-monitor/whitehouse-events.csv \
+            --report build/policy-monitor/whitehouse-events.md \
+            --html build/policy-monitor/whitehouse-events.html \
+            --as-of "$AS_OF"
+      - name: Save retained official-event archive
+        uses: actions/cache/save@v4
+        with:
+          path: build/policy-monitor/history
+          key: public-presidential-events-${{ github.ref_name }}-${{ github.run_id }}
+      - name: Describe public-event boundary
+        run: |
+          {
+            echo "## MarketWitness Official Presidential Event Intake"
+            echo ""
+            echo "- Observation date: \`$AS_OF\`."
+            echo "- Collects title, timestamp, official URL and rule-based topic tags from White House News and Presidential Actions RSS only."
+            echo "- Does not collect Truth Social or White House Wire linked article bodies."
+            echo "- Events are research triage inputs, not measured market reaction or investment advice."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload official-event artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketwitness-presidential-events-${{ github.run_number }}
+          path: build/policy-monitor/
+          if-no-files-found: error
+          retention-days: 30

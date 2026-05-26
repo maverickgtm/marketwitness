@@ -117,6 +117,16 @@ class ApiTests(unittest.TestCase):
             "<html><h1>Public Listings Change Log generated page</h1></html>",
             encoding="utf-8",
         )
+        (self.reports / "whitehouse-events.csv").write_text(
+            "event_id,feed,title,published_at,published_on,category,themes,market_relevance,source_mode,observed_on,source_url\n"
+            "event-1,news,American Energy Infrastructure,2026-05-25T16:15:00Z,2026-05-25,Fact Sheets,energy,review_candidate,synthetic_fixture,2026-05-25,https://www.whitehouse.gov/fact-sheets/2026/05/energy/\n"
+            "event-2,presidential_actions,Financial Technology Innovation,2026-05-22T19:00:00Z,2026-05-22,Presidential Actions,financial_regulation;technology_ai,review_candidate,synthetic_fixture,2026-05-25,https://www.whitehouse.gov/presidential-actions/2026/05/fintech/\n",
+            encoding="utf-8",
+        )
+        (self.reports / "whitehouse-events.html").write_text(
+            "<html><h1>White House Official Event Intake generated page</h1></html>",
+            encoding="utf-8",
+        )
         (self.reports / "ipo-watch.html").write_text(
             "<html><h1>IPO Watch generated page</h1></html>", encoding="utf-8"
         )
@@ -248,6 +258,7 @@ class ApiTests(unittest.TestCase):
         self.assertTrue(health.json()["generated_reports_available"])
         self.assertTrue(health.json()["licensed_extensions_available"])
         self.assertTrue(health.json()["public_monitor_reports_available"])
+        self.assertTrue(health.json()["policy_monitor_reports_available"])
         self.assertEqual(run.status_code, 200)
         self.assertEqual(run.json()["evaluated_count"], 2)
         self.assertEqual(run.json()["methodology_version"], "0.3.3")
@@ -296,9 +307,9 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("/api/v1/open-edition", page.text)
         self.assertEqual(snapshot.status_code, 200)
-        self.assertEqual(snapshot.json()["zero_cost_available_count"], 6)
+        self.assertEqual(snapshot.json()["zero_cost_available_count"], 7)
         self.assertEqual(snapshot.json()["offline_ready_count"], 2)
-        self.assertEqual(snapshot.json()["public_data_ready_count"], 3)
+        self.assertEqual(snapshot.json()["public_data_ready_count"], 4)
         self.assertEqual(snapshot.json()["attributed_widget_count"], 1)
         self.assertEqual(snapshot.json()["optional_extension_count"], 1)
         self.assertIn("/dashboard/reports", page.text)
@@ -412,7 +423,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(snapshot.json()["module_count"], 8)
         self.assertEqual(snapshot.json()["foundation_count"], 4)
         self.assertEqual(snapshot.json()["planned_connector_count"], 4)
-        self.assertIn("no newly collected live values", snapshot.json()["publication_boundary"])
+        self.assertIn("Official document metadata may be loaded", snapshot.json()["publication_boundary"])
         keys = {item["key"] for item in snapshot.json()["modules"]}
         self.assertIn("market_regimes", keys)
         self.assertIn("insider_activity", keys)
@@ -473,6 +484,9 @@ class ApiTests(unittest.TestCase):
         page = self.client.get("/dashboard/presidential-impact")
         legacy_page = self.client.get("/dashboard/policy-signals")
         snapshot = self.client.get("/api/v1/intelligence/policy-signals")
+        events = self.client.get("/api/v1/intelligence/policy-events")
+        exported = self.client.get("/api/v1/intelligence/policy-events/export.csv")
+        report = self.client.get("/dashboard/presidential-impact/events-report")
 
         self.assertEqual(page.status_code, 200)
         self.assertEqual(legacy_page.status_code, 200)
@@ -486,7 +500,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(snapshot.json()["case_study"], "Donald Trump / Truth Social communications")
         self.assertEqual(snapshot.json()["coverage_start"], "2025-01-20")
         self.assertIn("disabled_pending_written_permission", snapshot.json()["live_feed_status"])
-        self.assertEqual(snapshot.json()["official_intake_status"], "eligible_for_connector_implementation")
+        self.assertEqual(snapshot.json()["official_intake_status"], "implemented_optional_artifact")
         self.assertIn("prohibit automated access", snapshot.json()["publication_boundary"])
         self.assertIn("JPMorgan Volfefe Index", {item["name"] for item in snapshot.json()["prior_art"]})
         self.assertIn("Authorized Intake Map", page.text)
@@ -503,6 +517,17 @@ class ApiTests(unittest.TestCase):
         )
         self.assertEqual(news_channel["page_url"], "https://www.whitehouse.gov/news/")
         self.assertEqual(news_channel["url"], "https://www.whitehouse.gov/news/feed/")
+        self.assertIn("Official Event Intake Queue", page.text)
+        self.assertIn("/api/v1/intelligence/policy-events", page.text)
+        self.assertEqual(events.status_code, 200)
+        self.assertTrue(events.json()["available"])
+        self.assertEqual(events.json()["data_mode"], "Synthetic reproducible RSS fixture")
+        self.assertEqual(events.json()["record_count"], 2)
+        self.assertIn("does not collect Truth Social", events.json()["publication_boundary"])
+        self.assertEqual(exported.status_code, 200)
+        self.assertIn("Financial Technology Innovation", exported.text)
+        self.assertEqual(report.status_code, 200)
+        self.assertIn("White House Official Event Intake generated page", report.text)
 
     def test_serves_allowlisted_report_center_for_periodic_bundle(self) -> None:
         page = self.client.get("/dashboard/reports")
@@ -719,6 +744,30 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(snapshot.status_code, 200)
         self.assertFalse(snapshot.json()["available"])
         self.assertIn("No official monitoring artifact", snapshot.json()["message"])
+        self.assertEqual(exported.status_code, 404)
+
+    def test_reports_when_no_presidential_event_artifact_is_loaded(self) -> None:
+        from fastapi.testclient import TestClient
+
+        from marketwitness.api import create_app
+
+        missing_policy_monitor_reports = Path(self.directory.name) / "missing-policy-monitor"
+        client = TestClient(
+            create_app(
+                self.database,
+                Path("data/samples/source_registry.csv"),
+                Path("data/samples/provider_approval_queue.csv"),
+                self.reports,
+                policy_monitor_reports_path=missing_policy_monitor_reports,
+            )
+        )
+
+        snapshot = client.get("/api/v1/intelligence/policy-events")
+        exported = client.get("/api/v1/intelligence/policy-events/export.csv")
+
+        self.assertEqual(snapshot.status_code, 200)
+        self.assertFalse(snapshot.json()["available"])
+        self.assertIn("No official event-intake artifact", snapshot.json()["message"])
         self.assertEqual(exported.status_code, 404)
 
     def test_serves_etf_evidence_center_with_separated_frequency_layers(self) -> None:

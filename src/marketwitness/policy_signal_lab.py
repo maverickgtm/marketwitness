@@ -103,12 +103,13 @@ def build_policy_signal_lab_snapshot(
             "changed across volatility and connected assets on disclosed windows?"
         ),
         "live_feed_status": "disabled_pending_written_permission_or_authorized_feed",
-        "official_intake_status": "eligible_for_connector_implementation",
+        "official_intake_status": "implemented_optional_artifact",
         "publication_boundary": (
             "Truth Social terms reviewed by MarketWitness prohibit automated access, "
             "systematic retrieval and data-mining without permission. This page does "
             "not collect posts, calculate a Trump score, infer causation or recommend a trade. "
-            "White House official RSS is an eligible future intake; White House Wire "
+            "White House official News and Presidential Actions RSS can populate an optional "
+            "archived event queue; White House Wire "
             "is limited to outbound-link radar metadata because it includes third-party reporting."
         ),
         "source_controls": [
@@ -181,6 +182,7 @@ def _source_payload(provider: SourceProvider, use: str) -> dict[str, str]:
         "provider_name": provider.provider_name,
         "official_url": provider.official_url,
         "reference_url": provider.reference_url,
+        "integration_status": provider.integration_status,
         "deployment_state": provider.deployment_state,
         "publication_policy": provider.publication_policy,
         "use": use,

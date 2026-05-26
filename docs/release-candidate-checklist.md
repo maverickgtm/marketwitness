@@ -17,8 +17,8 @@ promise real analyst rankings or investment recommendations.
 - [x] Reproducible Open Edition bundle and installable wheel without paid data.
 - [x] Read-only dashboard and API with identifiable blocked sources.
 - [x] Registry of 49 sources with permission and evidence classifications.
-- [x] Official free path for future presidential events through
-  `White House News RSS` and `Presidential Actions RSS`.
+- [x] Official free presidential-event intake through `White House News RSS`
+  and `Presidential Actions RSS`, with a deduplicated topic-triage artifact.
 
 ## Before Publishing The Repository
 
@@ -42,8 +42,6 @@ promise real analyst rankings or investment recommendations.
   KBW, UBS, Barclays, or Citi. This is a future licensed extension.
 - Proprietary Cboe/ICE historical series for VIX/VVIX/MOVE episodes.
 - Activation of RWA data, issuer daily holdings, or commercial sources.
-- An automatic White House RSS collector. The source is already approved as a
-  candidate; the collector is a post-candidate improvement.
 
 ## Blocks Any Real-Data Claim
 

@@ -42,7 +42,7 @@ rights are visible product outcomes, not hidden limitations.
 | Market Intelligence | Organize market context and future connectors | Source-first workspace with documented constraints |
 | Cross-Asset Markets | View Bitcoin, Ethereum, energy, metals, FX and benchmarks | Attributed TradingView displays; no widget data is stored or scored |
 | VIX Reaction Explorer | Compare rising or cooling VIX scenarios across forward windows | Synthetic quantitative validation table; real episode results require rights-approved inputs |
-| Presidential Impact Lab | Study documented Donald Trump communications against market-reaction windows | Official White House RSS path; Truth Social blocked without permission |
+| Presidential Impact Lab | Search and classify official presidential-event metadata before future reaction studies | White House News/Actions RSS artifact and topic queue; Truth Social blocked without permission |
 
 ## Product Views
 
@@ -96,6 +96,8 @@ export MARKETWITNESS_GENERATED_REPORTS="build/demo"
 export MARKETWITNESS_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
 # Optional: directory extracted from the Public Listings Monitor artifact.
 export MARKETWITNESS_PUBLIC_MONITOR_REPORTS="build/public-monitor"
+# Optional: directory extracted from the Public Presidential Events Monitor artifact.
+export MARKETWITNESS_POLICY_MONITOR_REPORTS="build/policy-monitor"
 python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 ```
 
@@ -113,7 +115,7 @@ Open <http://127.0.0.1:8000/>. High-signal views include:
 | `/dashboard/intelligence` | Market Intelligence workspace |
 | `/dashboard/market-context` | Cross-Asset Markets: BTC, ETH, energy, metals and FX |
 | `/dashboard/volatility` | VIX Reaction Explorer: rising/cooling volatility research |
-| `/dashboard/presidential-impact` | Presidential Impact Lab: Donald Trump communication study |
+| `/dashboard/presidential-impact` | Official White House event queue and gated Donald Trump communication study |
 | `/dashboard/rwa-watch` | Tokenized Assets / RWA synthetic evidence sandbox |
 | `/dashboard/contribute?lang=en` | International connector contributor gateway |
 | `/dashboard/commons` | Evidence Passport Commons |

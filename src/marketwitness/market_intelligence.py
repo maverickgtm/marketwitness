@@ -25,7 +25,7 @@ MODULES = (
         "key": "volatility_lab",
         "title": "VIX Reaction Explorer",
         "theme": "Stress Episodes / Listings",
-        "stage": "foundation_available",
+        "stage": "implemented_foundation",
         "priority": "now",
         "provider_ids": ("cboe-volatility-family", "ice-move-index"),
         "coverage": "VIX-family and MOVE study design connected to cross-asset and IPO questions.",
@@ -48,9 +48,9 @@ MODULES = (
             "fred-vixcls-display",
         ),
         "coverage": "Official White House communications intake plus Donald Trump / Truth Social gated case study linked to cross-asset reaction windows.",
-        "cadence": "Official hourly RSS eligible; Wire metadata only; Truth Social collection disabled by terms",
+        "cadence": "Archived official News and Presidential Actions RSS; Wire and Truth Social excluded from collection",
         "route": "/dashboard/presidential-impact",
-        "next_delivery": "Implement archived White House RSS collection; seek permission before collecting Truth Social posts.",
+        "next_delivery": "Connect eligible official event timestamps to rights-approved reaction inputs; seek permission before Truth Social.",
         "claim_limit": "Observed reaction is not proof of causation, manipulation or a position to take.",
     },
     {
@@ -139,13 +139,14 @@ def build_market_intelligence_snapshot(
         "planned_connector_count": stages["connector_planned"],
         "implementation_sequence": [
             "VIX Reaction Explorer: rising/cooling scenarios and auditable stress-episode design.",
-            "Presidential Impact Lab: Donald Trump communications study with source-rights gate.",
+            "Presidential Impact Lab: official White House event intake with Truth Social rights gate.",
             "Market Regimes: BTC, ETH, WTI, Brent and Treasury 2Y/10Y.",
             "Macro Calendar, Insider Activity, ownership and CFTC after connector review.",
         ],
         "publication_boundary": (
             "This workspace maps verifiable evidence and implementation order. "
-            "It currently displays no newly collected live values and does not recommend positions."
+            "Official document metadata may be loaded as an optional artifact; this workspace "
+            "does not calculate market reactions and does not recommend positions."
         ),
         "modules": modules,
     }

@@ -16,7 +16,7 @@ class PolicySignalLabTests(unittest.TestCase):
         self.assertEqual(snapshot["coverage_start"], "2025-01-20")
         self.assertEqual(snapshot["proposed_measure"], "Policy Signal Impact Trace")
         self.assertIn("disabled_pending_written_permission", snapshot["live_feed_status"])
-        self.assertEqual(snapshot["official_intake_status"], "eligible_for_connector_implementation")
+        self.assertEqual(snapshot["official_intake_status"], "implemented_optional_artifact")
         self.assertIn("prohibit automated access", snapshot["publication_boundary"])
         self.assertEqual(len(snapshot["event_windows"]), 5)
         self.assertEqual(len(snapshot["asset_lenses"]), 4)
@@ -33,12 +33,14 @@ class PolicySignalLabTests(unittest.TestCase):
             if item["provider_id"] == "whitehouse-official-news-rss"
         )
         self.assertEqual(whitehouse["deployment_state"], "usable_with_policy")
+        self.assertEqual(whitehouse["integration_status"], "implemented")
         presidential_actions = next(
             item
             for item in snapshot["source_controls"]
             if item["provider_id"] == "whitehouse-presidential-actions-rss"
         )
         self.assertEqual(presidential_actions["deployment_state"], "usable_with_policy")
+        self.assertEqual(presidential_actions["integration_status"], "implemented")
         channels = {item["name"]: item for item in snapshot["approved_intake_candidates"]}
         self.assertEqual(
             channels["White House News RSS"]["page_url"],

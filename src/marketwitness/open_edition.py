@@ -71,6 +71,16 @@ CAPABILITIES = (
         "limitation": "Display only: widget data is not stored, exported or used to score analyst targets.",
     },
     {
+        "key": "presidential_event_intake",
+        "title": "White House Official Event Intake",
+        "status": "public_source_no_key",
+        "cost": "No data fee",
+        "provider_ids": ("whitehouse-official-news-rss", "whitehouse-presidential-actions-rss"),
+        "output": "Archived official communication metadata with transparent topic triage",
+        "route": "/dashboard/presidential-impact",
+        "limitation": "Truth Social is not collected; topic labels do not measure reaction or recommend trades.",
+    },
+    {
         "key": "real_analyst_rankings",
         "title": "Real Analyst Rankings",
         "status": "bring_authorized_data",
@@ -119,8 +129,8 @@ def build_open_edition_snapshot(
             },
             {
                 "title": "Free public monitors",
-                "requirement": "Contact email in `MARKETWITNESS_SEC_USER_AGENT`",
-                "result": "SEC IPO and N-PORT collectors under fair-access rules, with no data fee.",
+                "requirement": "No key for White House/CVM/ESMA; contact email for SEC only",
+                "result": "Official event and regulatory collectors with documented source boundaries.",
             },
             {
                 "title": "Optional scorecard expansion",

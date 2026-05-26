@@ -48,6 +48,7 @@ from .market_intelligence import build_market_intelligence_snapshot
 from .open_edition import build_open_edition_snapshot
 from .operations_quality import build_quality_snapshot
 from .policy_signal_lab import build_policy_signal_lab_snapshot
+from .providers.whitehouse import WhiteHouseDataError, load_event_archive
 from .provider_approvals import (
     ProviderApprovalDataError,
     build_approval_queue,
@@ -159,6 +160,7 @@ def create_app(
     generated_reports_path: str | Path | None = None,
     licensed_extensions_path: str | Path | None = None,
     public_monitor_reports_path: str | Path | None = None,
+    policy_monitor_reports_path: str | Path | None = None,
 ) -> FastAPI:
     database = Path(
         database_path or os.environ.get("MARKETWITNESS_DATABASE", DEFAULT_DATABASE_PATH)
@@ -184,6 +186,10 @@ def create_app(
         or os.environ.get(
             "MARKETWITNESS_PUBLIC_MONITOR_REPORTS", DEFAULT_PUBLIC_MONITOR_REPORTS_PATH
         )
+    )
+    policy_monitor_reports = Path(
+        policy_monitor_reports_path
+        or os.environ.get("MARKETWITNESS_POLICY_MONITOR_REPORTS", reports)
     )
     application = FastAPI(
         title="MarketWitness API",
@@ -445,6 +451,7 @@ def create_app(
             "generated_reports_available": reports.is_dir(),
             "licensed_extensions_available": licensed_extensions.is_file(),
             "public_monitor_reports_available": public_monitor_reports.is_dir(),
+            "policy_monitor_reports_available": policy_monitor_reports.is_dir(),
         }
 
     @application.get("/api/v1/governance/sources")
@@ -712,6 +719,89 @@ def create_app(
             return build_policy_signal_lab_snapshot(providers, as_of)
         except SourceRegistryDataError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @application.get("/api/v1/intelligence/policy-events")
+    def policy_event_intake() -> dict[str, object]:
+        path = policy_monitor_reports / "whitehouse-events.csv"
+        if not path.is_file():
+            return {
+                "available": False,
+                "data_mode": "Optional official RSS artifact",
+                "collection_scope": "White House News and Presidential Actions RSS only",
+                "message": (
+                    "No official event-intake artifact is loaded in this runtime. "
+                    "Run the authorized White House RSS workflow or load its artifact."
+                ),
+                "records": [],
+            }
+        try:
+            events = load_event_archive(path)
+        except WhiteHouseDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+        topic_counts: Counter[str] = Counter()
+        for event in events:
+            topic_counts.update(event.themes.split(";"))
+        modes = {event.source_mode for event in events}
+        data_mode = (
+            "Synthetic reproducible RSS fixture"
+            if modes == {"synthetic_fixture"}
+            else "Official RSS event archive"
+            if modes == {"official_live_rss"}
+            else "Mixed validation archive"
+        )
+        return {
+            "available": True,
+            "data_mode": data_mode,
+            "collection_scope": "White House News and Presidential Actions RSS only",
+            "observation_date": max(
+                (event.observed_on.isoformat() for event in events), default=None
+            ),
+            "record_count": len(events),
+            "review_candidate_count": sum(
+                event.market_relevance == "review_candidate" for event in events
+            ),
+            "channel_counts": dict(Counter(event.feed for event in events)),
+            "topic_counts": dict(topic_counts),
+            "publication_boundary": (
+                "This archive stores official title/link metadata and transparent topic tags only; "
+                "it does not collect Truth Social, calculate market reaction or recommend trades."
+            ),
+            "records": [
+                {
+                    **event.__dict__,
+                    "published_on": event.published_on.isoformat(),
+                    "observed_on": event.observed_on.isoformat(),
+                }
+                for event in events
+            ],
+        }
+
+    @application.get("/api/v1/intelligence/policy-events/export.csv")
+    def policy_event_intake_export() -> Response:
+        path = policy_monitor_reports / "whitehouse-events.csv"
+        if not path.is_file():
+            raise HTTPException(status_code=404, detail="Official event-intake artifact is not loaded.")
+        try:
+            load_event_archive(path)
+        except WhiteHouseDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+        return Response(
+            path.read_text(encoding="utf-8"),
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": (
+                    'attachment; filename="marketwitness-whitehouse-events.csv"'
+                )
+            },
+        )
+
+    @application.get(
+        "/dashboard/presidential-impact/events-report",
+        response_class=HTMLResponse,
+        include_in_schema=False,
+    )
+    def policy_event_intake_report() -> str:
+        return _generated_html(policy_monitor_reports, "whitehouse-events.html")
 
     @application.get("/api/v1/policy/public-use")
     def public_use_policy_snapshot() -> dict[str, object]:

@@ -104,6 +104,13 @@ demo:
 		--report build/demo/open-edition.md \
 		--html build/demo/open-edition.html \
 		--as-of 2026-05-25
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness whitehouse-events \
+		--news-snapshot data/samples/whitehouse-news-rss-synthetic.xml \
+		--actions-snapshot data/samples/whitehouse-actions-rss-synthetic.xml \
+		--output build/demo/whitehouse-events.csv \
+		--report build/demo/whitehouse-events.md \
+		--html build/demo/whitehouse-events.html \
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness rwa-watch \
 		--snapshot data/samples/rwa-watch-synthetic.csv \
 		--report build/demo/rwa-watch.md \

@@ -1917,8 +1917,19 @@ def policy_signal_lab_html() -> str:
     .channel-links .primary { background:rgba(88,223,176,.1); border-color:rgba(88,223,176,.3); }
     .channel-links .feed { color:var(--muted); }
     .metadata_only { color:var(--electric); background:rgba(102,165,255,.12); } .blocked_without_permission { color:var(--amber); background:rgba(255,204,104,.12); }
+    .event-workspace { display:grid; grid-template-columns:300px 1fr; gap:14px; margin-bottom:32px; }
+    .event-controls { padding:18px; align-self:start; } .event-controls h3 { margin:0 0 12px; }
+    .event-kpis { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:14px 0; }
+    .event-kpi { background:var(--panel2); border-radius:10px; padding:10px; } .event-kpi strong { display:block; font-size:25px; color:var(--mint); }
+    label { display:block; color:var(--muted); font-size:12px; margin:12px 0 5px; }
+    input,select { width:100%; background:var(--panel2); border:1px solid var(--line); color:var(--text); border-radius:9px; padding:10px; font:inherit; }
+    .event-list { display:grid; gap:10px; } .event { padding:16px 18px; }
+    .event h3 { margin:7px 0 10px; font-size:17px; } .event-meta { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .theme { display:inline-block; color:var(--electric); background:rgba(102,165,255,.12); border-radius:999px; padding:4px 8px; margin:0 5px 6px 0; font-size:11px; }
+    .review_candidate { color:var(--amber); background:rgba(255,204,104,.11); } .context_only { color:var(--muted); background:var(--panel2); }
+    .empty { padding:22px; color:var(--muted); }
     #error { display:none; border-left-color:var(--coral); color:var(--coral); }
-    @media(max-width:1030px) { .hero,.metrics,.pipeline,.split,.assets,.channels { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
+    @media(max-width:1030px) { .hero,.metrics,.pipeline,.split,.assets,.channels,.event-workspace { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
   </style>
 </head>
 <body>
@@ -1951,6 +1962,20 @@ def policy_signal_lab_html() -> str:
   <main>
     <h2 class="section-title">Authorized Intake Map</h2>
     <section class="channels" id="channels"></section>
+    <h2 class="section-title">Official Event Intake Queue</h2>
+    <section class="event-workspace">
+      <article class="panel event-controls">
+        <p class="micro">Usable artifact viewer</p>
+        <h3 id="event-status">Checking event archive</h3>
+        <p id="event-note">Only title/link metadata from official White House RSS can enter this queue.</p>
+        <div class="event-kpis"><div class="event-kpi"><small>Archived</small><strong id="event-count">-</strong></div><div class="event-kpi"><small>Review themes</small><strong id="event-candidates">-</strong></div></div>
+        <label for="event-search">Search title</label><input id="event-search" type="search" placeholder="energy, financial, tariff">
+        <label for="event-channel">Channel</label><select id="event-channel"><option value="">All channels</option><option value="news">News</option><option value="presidential_actions">Presidential Actions</option></select>
+        <label for="event-theme">Topic</label><select id="event-theme"><option value="">All topics</option><option value="financial_regulation">Financial regulation</option><option value="energy">Energy</option><option value="trade_tariffs">Trade / tariffs</option><option value="fiscal_spending">Fiscal / spending</option><option value="technology_ai">Technology / AI</option><option value="sanctions_geopolitics">Sanctions / geopolitics</option><option value="other">Other</option></select>
+        <div class="channel-links"><a class="primary" href="/api/v1/intelligence/policy-events/export.csv" download>Export CSV</a><a href="/dashboard/presidential-impact/events-report">Open report</a></div>
+      </article>
+      <section class="event-list" id="events"><article class="panel empty">Loading official-event artifact...</article></section>
+    </section>
     <h2 class="section-title">Policy Signal Impact Trace</h2>
     <section class="pipeline" id="pipeline"></section>
     <section class="split">
@@ -1971,6 +1996,31 @@ def policy_signal_lab_html() -> str:
   <script>
     const $ = (id) => document.getElementById(id);
     function text(value) { return String(value == null ? "" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;"); }
+    function officialHref(value) { const url = String(value || ""); return url.startsWith("https://www.whitehouse.gov/") ? text(url) : "#"; }
+    let policyEvents = [];
+    function renderPolicyEvents() {
+      const query = $("event-search").value.toLowerCase().trim();
+      const channel = $("event-channel").value;
+      const theme = $("event-theme").value;
+      const selected = policyEvents.filter((item) =>
+        (!query || item.title.toLowerCase().includes(query)) &&
+        (!channel || item.feed === channel) &&
+        (!theme || item.themes.split(";").includes(theme))
+      );
+      $("events").innerHTML = selected.length ? selected.map((item) => `<article class="panel event"><div class="event-meta"><span class="micro">${text(item.published_at)} / ${text(item.feed.replaceAll("_", " "))}</span><span class="state ${text(item.market_relevance)}">${text(item.market_relevance.replaceAll("_", " "))}</span></div><h3>${text(item.title)}</h3><p>${item.themes.split(";").map((tag) => `<span class="theme">${text(tag.replaceAll("_", " "))}</span>`).join("")}</p><a href="${officialHref(item.source_url)}" target="_blank" rel="noopener">Open official source</a></article>`).join("") : `<article class="panel empty">${policyEvents.length ? "No events match these filters." : "No loaded official-event artifact. Run the White House RSS monitor or load its downloadable artifact."}</article>`;
+    }
+    async function loadPolicyEvents() {
+      const response = await fetch("/api/v1/intelligence/policy-events");
+      if (!response.ok) throw new Error((await response.json()).detail || "Event archive request failed");
+      const data = await response.json();
+      if (!data.available) { $("event-status").textContent = "Artifact not loaded"; $("event-note").textContent = data.message; renderPolicyEvents(); return; }
+      policyEvents = data.records;
+      $("event-status").textContent = `${data.data_mode} / observed ${data.observation_date}`;
+      $("event-note").textContent = data.publication_boundary;
+      $("event-count").textContent = data.record_count;
+      $("event-candidates").textContent = data.review_candidate_count;
+      renderPolicyEvents();
+    }
     async function initialize() {
       try {
         const response = await fetch("/api/v1/intelligence/policy-signals");
@@ -1993,8 +2043,10 @@ def policy_signal_lab_html() -> str:
         $("assets").innerHTML = data.asset_lenses.map((item) => `<article class="panel"><p class="micro">${text(item.group)}</p><h3>${text(item.assets)}</h3><p>${text(item.question)}</p></article>`).join("");
         $("windows").innerHTML = data.event_windows.map((item) => `<span class="window">${text(item)}</span>`).join("");
         $("priorArt").innerHTML = data.prior_art.map((item) => `<div class="prior"><h3><a href="${text(item.url)}" target="_blank" rel="noopener">${text(item.name)}</a> <span class="micro">${text(item.year)}</span></h3><p>${text(item.difference)}</p></div>`).join("");
+        await loadPolicyEvents();
       } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
     }
+    ["event-search", "event-channel", "event-theme"].forEach((id) => $(id).addEventListener("input", renderPolicyEvents));
     initialize();
   </script>
 </body>

@@ -40,6 +40,8 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   dashboard screenshots, and English public documentation migration.
 - [x] Official White House RSS paths classified as eligible policy-event
   sources; Truth Social collection remains blocked without permission.
+- [x] Archived White House News/Presidential Actions RSS intake with URL
+  deduplication, transparent topic classification and dashboard/API queue.
 - [x] Interactive Listings Radar combining the reviewed U.S. IPO registry with
   dated global listing-evidence changes, filters, source links and a
   browser-local research watchlist.
@@ -61,8 +63,6 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   historical-universe evidence for a first real scorecard.
 - [ ] Obtain written display/retention/derived-output authorization before a
   real `xStocks / Backed`, Ondo, or secondary-venue RWA connector.
-- [ ] Implement archive, deduplication, and topic classification for eligible
-  official White House feeds before calculating market-reaction episodes.
 - [ ] Approve Cboe/ICE rights or an authorized route before publishing real
   volatility episodes.
 - [ ] Implement market-regime, macro-calendar, insider, and CFTC positioning

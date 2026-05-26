@@ -130,10 +130,20 @@ trade claim.
 
 ## Policy And Volatility Research
 
-`Presidential Impact Lab` can begin future official-event intake from White
-House News and Presidential Actions RSS. White House Wire is metadata-only
-because linked content may be third party. Truth Social history or live
+`Presidential Impact Lab` archives title, timestamp, official URL and
+rule-based topic tags from White House News and Presidential Actions RSS using
+`whitehouse-events`. White House Wire stays excluded from this collector
+because linked bodies may be third party. Truth Social history or live
 collection remains disabled without permission.
+
+`.github/workflows/public-presidential-events-monitor.yml` runs that intake
+each weekday at `12:43 UTC`, restores a deduplicated archive and publishes a
+30-day downloadable artifact without a secret or paid API. To load a
+downloaded artifact into the dashboard:
+
+```bash
+export MARKETWITNESS_POLICY_MONITOR_REPORTS="build/policy-monitor"
+```
 
 `VIX Reaction Explorer` displays attributed FRED VIX context and publishes
 rising/cooling scenario design. Do not publish calculated historical episodes

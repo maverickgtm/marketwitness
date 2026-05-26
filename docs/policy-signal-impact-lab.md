@@ -10,8 +10,9 @@ designed case is `Donald Trump / Truth Social`, beginning at the second-term
 start date of `2025-01-20`.
 
 The working measurement name is **Policy Signal Impact Trace**. It is not
-published as a quantitative index because MarketWitness does not possess an
-authorized ingested history of the communications.
+published as a quantitative index. MarketWitness can archive eligible
+official White House event metadata, but does not possess an authorized Truth
+Social history or rights-approved market-reaction dataset.
 
 ## Differentiation
 
@@ -57,16 +58,29 @@ authorized provider with sufficient rights.
 
 | Feed | Verification | MarketWitness Use |
 |---|---|---|
-| `https://www.whitehouse.gov/news/feed/` | Active official RSS; hourly-update declaration and White House-signed entries | Candidate primary source for statements, fact sheets, and official news |
-| `https://www.whitehouse.gov/presidential-actions/feed/` | Active official RSS; includes executive orders, memoranda, and proclamations | Candidate primary source for formal decisions |
+| `https://www.whitehouse.gov/news/feed/` | Active official RSS; hourly-update declaration and White House-signed entries | Implemented source for statements, fact sheets, and official news metadata |
+| `https://www.whitehouse.gov/presidential-actions/feed/` | Active official RSS; includes executive orders, memoranda, and proclamations | Implemented source for formal-decision metadata |
 | `https://www.whitehouse.gov/wire/feed/` | Active official RSS linking to outside media | Title, timestamp, and external URL radar only; do not import third-party article bodies |
 
 Government-produced White House material follows the site's copyright policy;
 third-party linked material remains subject to its own conditions. Official
-RSS should therefore be implemented before any Truth Social extension.
+RSS is therefore implemented before any Truth Social extension.
 The dashboard links visitors to the corresponding human-readable White House
 pages first and labels each raw RSS endpoint separately as machine-readable
 intake for developers and connectors.
+
+## Implemented Official Event Intake
+
+`whitehouse-events` reads only White House News and Presidential Actions RSS,
+deduplicates repeated URLs, gives the formal actions channel priority when an
+entry appears in both feeds, and retains title, UTC timestamp, official URL,
+channel and deterministic title-topic tags. It never retains article bodies.
+
+The dashboard exposes the loaded archive at
+`/api/v1/intelligence/policy-events` and inside
+`/dashboard/presidential-impact`, with text search and topic/channel filters.
+The included GitHub demo uses clearly marked synthetic fixtures; the optional
+weekday workflow artifact contains official RSS observations.
 
 ## VIX Display
 

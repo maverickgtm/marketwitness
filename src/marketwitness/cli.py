@@ -169,6 +169,16 @@ from .providers.esma import (
     write_esma_html,
     write_esma_report,
 )
+from .providers.whitehouse import (
+    WhiteHouseDataError,
+    fetch_whitehouse_events,
+    load_event_archive,
+    load_whitehouse_snapshots,
+    merge_event_archive,
+    write_events_csv,
+    write_events_html,
+    write_events_report,
+)
 from .providers.opendart import (
     OpenDartDataError,
     fetch_opendart_equity_filings,
@@ -1099,6 +1109,30 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Report cutoff in YYYY-MM-DD format.",
     )
+    whitehouse_parser = subparsers.add_parser(
+        "whitehouse-events",
+        help="Archive official White House News and Presidential Actions RSS metadata.",
+    )
+    whitehouse_parser.add_argument("--output", required=True, help="Archived event CSV output path.")
+    whitehouse_parser.add_argument("--report", required=True, help="Markdown report path.")
+    whitehouse_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    whitehouse_parser.add_argument(
+        "--archive",
+        help="Optional persistent CSV archive loaded before and updated after this observation.",
+    )
+    whitehouse_parser.add_argument(
+        "--news-snapshot",
+        help="Read a saved White House News RSS fixture instead of requesting the official feed.",
+    )
+    whitehouse_parser.add_argument(
+        "--actions-snapshot",
+        help="Read a saved Presidential Actions RSS fixture instead of requesting the official feed.",
+    )
+    whitehouse_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Observation date in YYYY-MM-DD format.",
+    )
     opendart_parser = subparsers.add_parser(
         "opendart-monitor", help="Read South Korea OpenDART equity-offering filings."
     )
@@ -1342,6 +1376,37 @@ def main() -> int:
         print(
             f"Wrote ESMA equity prospectus watch for {len(prospectuses)} filtered "
             f"records to {args.report}."
+        )
+        return 0
+
+    if args.command == "whitehouse-events":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            if bool(args.news_snapshot) != bool(args.actions_snapshot):
+                raise WhiteHouseDataError(
+                    "White House fixture mode requires both --news-snapshot and --actions-snapshot."
+                )
+            if args.news_snapshot:
+                observed = load_whitehouse_snapshots(
+                    args.news_snapshot, args.actions_snapshot, as_of
+                )
+                source_mode = "synthetic_fixture"
+            else:
+                observed = fetch_whitehouse_events(as_of)
+                source_mode = "official_live_rss"
+            prior = load_event_archive(args.archive) if args.archive else []
+            events, new_count = merge_event_archive(prior, observed)
+            write_events_csv(args.output, events)
+            if args.archive:
+                write_events_csv(args.archive, events)
+            write_events_report(args.report, events, as_of, new_count, source_mode)
+            if args.html:
+                write_events_html(args.html, events, as_of, new_count, source_mode)
+        except (WhiteHouseDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote White House official event intake for {len(events)} archived records; "
+            f"{new_count} new in this observation. Report written to {args.report}."
         )
         return 0
 

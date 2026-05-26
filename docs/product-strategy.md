@@ -121,10 +121,11 @@ permission, timestamp, classification, window, asset set, exclusion rule, and
 connection to verified IPO or listing evidence.
 
 Truth Social is not bundled as a scraper. Its reviewed official terms restrict
-automated means, systematic retrieval, and data mining without permission. The
-dashboard and API publish the methodology and rights control now; live input
-may proceed only through authorization or a licensed source. Official White
-House RSS feeds provide the eligible free evidence path for official events.
+automated means, systematic retrieval, and data mining without permission.
+MarketWitness instead implements archived White House News and Presidential
+Actions RSS metadata intake, with deterministic title-topic tags and source
+links. Reaction calculations remain gated by authorized market inputs, and
+Truth Social input may proceed only through authorization or a licensed source.
 
 ## Business Risks
 
