@@ -1,0 +1,19 @@
+marketwitness-43-157-95-145.nip.io {
+	encode zstd gzip
+
+	header {
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		-Server
+	}
+
+	reverse_proxy 127.0.0.1:8765
+
+	log {
+		output file /var/log/caddy/marketwitness.access.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+	}
+}
