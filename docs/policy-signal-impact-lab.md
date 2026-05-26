@@ -82,6 +82,19 @@ The dashboard exposes the loaded archive at
 The included GitHub demo uses clearly marked synthetic fixtures; the optional
 weekday workflow artifact contains official RSS observations.
 
+## Implemented Official Treasury Context
+
+The same optional weekday artifact now collects the U.S. Treasury official
+daily par yield curve XML feed and retains the `2Y`, `10Y`, and derived
+`2s10s` curve values. `Observed Treasury Context` pairs a thematic official
+White House event with the first available Treasury observation strictly after
+publication and its next available session, reporting changes in basis
+points. Events remain pending when two sessions do not yet exist.
+
+This is the first real no-cost market-context layer in the lab. It describes
+temporal proximity and observed yield movement only; it does not claim that a
+communication caused the move or that a user should take a position.
+
 ## Implemented Reaction Sandbox
 
 `/api/v1/intelligence/policy-reactions` and the dashboard's
@@ -111,6 +124,7 @@ ingested for calculations in this release.
 - White House Wire RSS: <https://www.whitehouse.gov/wire/feed/>
 - White House copyright policy: <https://www.whitehouse.gov/copyright/>
 - FRED `VIXCLS`: <https://fred.stlouisfed.org/series/VIXCLS>
+- U.S. Treasury Daily Interest Rate XML Feed: <https://home.treasury.gov/treasury-daily-interest-rate-xml-feed>
 - Bloomberg, JPMorgan `Volfefe Index`: <https://www.bloomberg.com/news/articles/2019-09-09/jpmorgan-creates-volfefe-index-to-track-trump-tweet-impact>
 - CNBC, JPMorgan `Volfefe Index`: <https://www.cnbc.com/2019/09/08/donald-trump-is-tweeting-more-and-its-impacting-the-bond-market.html>
 - Trump & Dump: <https://www.trumpanddump.app/>

@@ -49,6 +49,11 @@ class MarketIntelligenceTests(unittest.TestCase):
             "White House Presidential Actions RSS",
             {item["provider_name"] for item in policy_signals["sources"]},
         )
+        self.assertIn(
+            "U.S. Treasury Daily Treasury Par Yield Curve Rates",
+            {item["provider_name"] for item in policy_signals["sources"]},
+        )
+        self.assertIn("Treasury 2Y/10Y", policy_signals["coverage"])
 
     def test_rejects_unknown_source_dependency(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))

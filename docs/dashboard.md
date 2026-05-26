@@ -24,7 +24,7 @@ workspace or the report directory without relying on browser history.
 | `/dashboard/intelligence` | Cross-asset research workspace | Planned stored connectors are not live feeds |
 | `/dashboard/market-context` | Cross-Asset Markets terminal | TradingView displays context only; values are not stored or scored |
 | `/dashboard/volatility` | VIX Reaction Explorer | Select rising/cooling scenarios and windows; no unlicensed episode calculations |
-| `/dashboard/presidential-impact` | Presidential Impact Lab: official event intake and calculation sandbox | News/Actions RSS artifact plus synthetic theme/window statistics; real reactions and Truth Social remain gated |
+| `/dashboard/presidential-impact` | Presidential Impact Lab: event intake, official Treasury context and calculation sandbox | News/Actions RSS and Treasury 2Y/10Y session changes are observable context; broader reactions and Truth Social remain gated |
 | `/dashboard/commons` | Evidence Passport Commons | Source rights and claim boundaries are visible |
 | `/dashboard/policy` | Public Use Policy | Product control, not legal advice |
 | `/dashboard/governance` | Source Governance | Technical integration does not imply publishability |
@@ -150,11 +150,13 @@ confirmed manager buy or sell without additional evidence.
   episode designs once rights permit them.
 - `/dashboard/presidential-impact` presents the Donald Trump communication
   event-study design, human-readable White House source links, a searchable
-  archived News/Presidential Actions RSS metadata queue with topic filters,
-  and a `Communication Reaction Sandbox` with theme, forward-window and
-  calendar controls. Official rows can open their corresponding calculation
-  theme, but visible statistics remain project-authored validation paths and
-  are not attributed to official events.
+  archived News/Presidential Actions RSS metadata queue with topic filters
+  and a compact recent-first view expandable to the full archive,
+  an `Observed Treasury Context` panel comparing the first two available
+  official 2Y/10Y Treasury sessions after thematic communications, and a
+  `Communication Reaction Sandbox` with theme, forward-window and calendar
+  controls. Treasury movement is temporal context, not causal attribution;
+  broader sandbox statistics remain project-authored validation paths.
 
 ## Controls
 
@@ -179,6 +181,7 @@ registry files, and DuckDB runs. Key contracts include:
 - `/api/v1/intelligence/policy-signals`
 - `/api/v1/intelligence/policy-events`
 - `/api/v1/intelligence/policy-reactions`
+- `/api/v1/intelligence/policy-treasury-context`
 - `/api/v1/policy/public-use`
 - `/api/v1/extensions/licensed`
 - run, governance, readiness, operations-quality, and scorecard-release

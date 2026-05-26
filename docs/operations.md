@@ -132,11 +132,12 @@ trade claim.
 
 `Presidential Impact Lab` archives title, timestamp, official URL and
 rule-based topic tags from White House News and Presidential Actions RSS using
-`whitehouse-events`. White House Wire stays excluded from this collector
-because linked bodies may be third party. Truth Social history or live
-collection remains disabled without permission.
+`whitehouse-events` and `treasury-yields`. White House Wire stays excluded from
+this collector because linked bodies may be third party. Truth Social history
+or live collection remains disabled without permission.
 
 `.github/workflows/public-presidential-events-monitor.yml` runs that intake
+alongside the official Treasury 2Y/10Y daily-yield context collector
 each weekday at `12:43 UTC`, restores a deduplicated archive and publishes a
 30-day downloadable artifact without a secret or paid API. To load a
 downloaded artifact into the dashboard:

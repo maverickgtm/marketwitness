@@ -42,7 +42,7 @@ rights are visible product outcomes, not hidden limitations.
 | Market Intelligence | Organize market context and future connectors | Source-first workspace with documented constraints |
 | Cross-Asset Markets | View Bitcoin, Ethereum, energy, metals, FX and benchmarks | Attributed TradingView displays; no widget data is stored or scored |
 | VIX Reaction Explorer | Compare rising or cooling VIX scenarios across forward windows | Synthetic quantitative validation table; real episode results require rights-approved inputs |
-| Presidential Impact Lab | Search official presidential-event metadata and test event-study calculations by theme and date range | White House News/Actions RSS queue plus synthetic reaction sandbox; real reactions and Truth Social remain gated |
+| Presidential Impact Lab | Search official communications and compare nearby Treasury-rate sessions before testing broader reactions | White House News/Actions plus official Treasury 2Y/10Y context; broader returns and Truth Social remain gated |
 
 ## Product Views
 

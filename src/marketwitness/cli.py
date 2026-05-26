@@ -179,6 +179,14 @@ from .providers.whitehouse import (
     write_events_html,
     write_events_report,
 )
+from .providers.treasury import (
+    TreasuryDataError,
+    fetch_treasury_yields,
+    load_treasury_snapshot,
+    write_treasury_csv,
+    write_treasury_html,
+    write_treasury_report,
+)
 from .providers.opendart import (
     OpenDartDataError,
     fetch_opendart_equity_filings,
@@ -1133,6 +1141,27 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Observation date in YYYY-MM-DD format.",
     )
+    treasury_parser = subparsers.add_parser(
+        "treasury-yields",
+        help="Collect official U.S. Treasury daily par yield curve context for 2Y and 10Y.",
+    )
+    treasury_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    treasury_parser.add_argument("--report", required=True, help="Markdown report path.")
+    treasury_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    treasury_parser.add_argument(
+        "--snapshot",
+        help="Read a saved Treasury-shaped XML fixture instead of requesting the official feed.",
+    )
+    treasury_parser.add_argument(
+        "--year",
+        type=int,
+        help="Official Treasury feed year. Defaults to the observation year.",
+    )
+    treasury_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Observation date in YYYY-MM-DD format.",
+    )
     opendart_parser = subparsers.add_parser(
         "opendart-monitor", help="Read South Korea OpenDART equity-offering filings."
     )
@@ -1407,6 +1436,27 @@ def main() -> int:
         print(
             f"Wrote White House official event intake for {len(events)} archived records; "
             f"{new_count} new in this observation. Report written to {args.report}."
+        )
+        return 0
+
+    if args.command == "treasury-yields":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            if args.snapshot:
+                observations = load_treasury_snapshot(args.snapshot, as_of)
+                source_mode = "synthetic_fixture"
+            else:
+                observations = fetch_treasury_yields(args.year or as_of.year, as_of)
+                source_mode = "official_live_xml"
+            write_treasury_csv(args.output, observations)
+            write_treasury_report(args.report, observations, as_of, source_mode)
+            if args.html:
+                write_treasury_html(args.html, observations, as_of, source_mode)
+        except (TreasuryDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote official Treasury yield context for {len(observations)} daily "
+            f"observations to {args.report}."
         )
         return 0
 

@@ -1929,6 +1929,7 @@ def policy_signal_lab_html() -> str:
     button.theme { border:0; cursor:pointer; font:inherit; font-size:11px; } button.theme:hover { background:rgba(102,165,255,.24); }
     .review_candidate { color:var(--amber); background:rgba(255,204,104,.11); } .context_only { color:var(--muted); background:var(--panel2); }
     .empty { padding:22px; color:var(--muted); }
+    .event-more { width:100%; border:1px solid var(--line); background:var(--panel2); color:var(--mint); border-radius:10px; padding:12px; font-weight:700; cursor:pointer; }
     .reaction-workspace { display:grid; grid-template-columns:360px 1fr; gap:14px; margin-bottom:32px; }
     .reaction-controls { padding:19px; } .reaction-controls h3 { margin:5px 0 10px; }
     .reaction-presets,.reaction-windows { display:flex; gap:7px; flex-wrap:wrap; margin-top:12px; }
@@ -1943,8 +1944,15 @@ def policy_signal_lab_html() -> str:
     .reaction-table { width:100%; border-collapse:collapse; margin-top:15px; } .reaction-table th { text-align:left; color:var(--muted); font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
     .reaction-table td,.reaction-table th { padding:10px 9px; border-bottom:1px solid var(--line); } .positive { color:var(--mint); } .negative { color:var(--coral); }
     .formula { color:var(--muted); font-size:12px; border-top:1px solid var(--line); padding-top:13px; margin:15px 0 0; }
+    .observed { padding:21px; margin-bottom:32px; } .observed-head { display:flex; justify-content:space-between; gap:15px; flex-wrap:wrap; margin-bottom:14px; }
+    .observed-head h3 { margin:5px 0 7px; } .official { color:var(--mint); background:rgba(88,223,176,.12); border-radius:999px; padding:6px 10px; align-self:start; font-size:11px; text-transform:uppercase; letter-spacing:.1em; }
+    .observed-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin:16px 0; }
+    .observed-kpi { background:var(--panel2); border-radius:10px; padding:11px; } .observed-kpi strong { display:block; font-size:22px; color:var(--mint); margin-top:4px; }
+    .observed-event { border-top:1px solid var(--line); padding:13px 0; } .observed-event:first-child { border-top:0; } .observed-event h4 { margin:5px 0 9px; font-size:16px; }
+    .bps { display:flex; gap:8px; flex-wrap:wrap; } .bps span { background:var(--panel2); border-radius:8px; padding:7px 9px; font-size:12px; }
+    .observed-pending { color:var(--muted); font-size:12px; margin-top:14px; }
     #error { display:none; border-left-color:var(--coral); color:var(--coral); }
-    @media(max-width:1030px) { .hero,.metrics,.pipeline,.split,.assets,.channels,.event-workspace,.reaction-workspace { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
+    @media(max-width:1030px) { .hero,.metrics,.pipeline,.split,.assets,.channels,.event-workspace,.reaction-workspace,.observed-grid { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
   </style>
 </head>
 <body>
@@ -1990,6 +1998,14 @@ def policy_signal_lab_html() -> str:
         <div class="channel-links"><a class="primary" href="/api/v1/intelligence/policy-events/export.csv" download>Export CSV</a><a href="/dashboard/presidential-impact/events-report">Open report</a></div>
       </article>
       <section class="event-list" id="events"><article class="panel empty">Loading official-event artifact...</article></section>
+    </section>
+    <h2 class="section-title">Observed Treasury Context</h2>
+    <section class="panel observed">
+      <div class="observed-head"><div><p class="micro">First real no-cost market context layer</p><h3 id="treasury-status">Checking Treasury artifact...</h3><p id="treasury-note"></p></div><span class="official" id="treasury-mode">Official daily data</span></div>
+      <div class="observed-grid"><div class="observed-kpi"><small>Yield observations</small><strong id="treasury-observations">-</strong></div><div class="observed-kpi"><small>Thematic events</small><strong id="treasury-candidates">-</strong></div><div class="observed-kpi"><small>Measured pairs</small><strong id="treasury-measured">-</strong></div><div class="observed-kpi"><small>Awaiting session</small><strong id="treasury-pending">-</strong></div></div>
+      <div class="channel-links"><a href="/dashboard/presidential-impact/treasury-report">Open Treasury report</a><a class="feed" href="https://home.treasury.gov/treasury-daily-interest-rate-xml-feed" target="_blank" rel="noopener">Official XML documentation</a></div>
+      <section id="treasury-records"><article class="empty">Loading observed Treasury context...</article></section>
+      <p class="guardrail" id="treasury-boundary"></p>
     </section>
     <h2 class="section-title" id="reaction-sandbox">Communication Reaction Sandbox</h2>
     <section class="reaction-workspace">
@@ -2037,6 +2053,7 @@ def policy_signal_lab_html() -> str:
     function percent(value) { return `${Number(value) > 0 ? "+" : ""}${Number(value).toFixed(2)}%`; }
     function tone(value) { return Number(value) >= 0 ? "positive" : "negative"; }
     let policyEvents = [];
+    let showAllPolicyEvents = false;
     let policyReaction = null;
     let selectedReactionWindow = "5_sessions";
     const supportedReactionThemes = new Set(["financial_regulation", "energy", "trade_tariffs", "technology_ai"]);
@@ -2049,12 +2066,15 @@ def policy_signal_lab_html() -> str:
         (!channel || item.feed === channel) &&
         (!theme || item.themes.split(";").includes(theme))
       );
-      $("events").innerHTML = selected.length ? selected.map((item) => `<article class="panel event"><div class="event-meta"><span class="micro">${text(item.published_at)} / ${text(item.feed.replaceAll("_", " "))}</span><span class="state ${text(item.market_relevance)}">${text(item.market_relevance.replaceAll("_", " "))}</span></div><h3>${text(item.title)}</h3><p>${item.themes.split(";").map((tag) => supportedReactionThemes.has(tag) ? `<button type="button" class="theme" data-study-theme="${text(tag)}" title="Open calculation sandbox for this theme">${text(tag.replaceAll("_", " "))} study</button>` : `<span class="theme">${text(tag.replaceAll("_", " "))}</span>`).join("")}</p><a href="${officialHref(item.source_url)}" target="_blank" rel="noopener">Open official source</a></article>`).join("") : `<article class="panel empty">${policyEvents.length ? "No events match these filters." : "No loaded official-event artifact. Run the White House RSS monitor or load its downloadable artifact."}</article>`;
+      const visible = showAllPolicyEvents ? selected : selected.slice(0, 8);
+      const expandControl = selected.length > 8 ? `<button class="event-more" id="event-more" type="button">${showAllPolicyEvents ? "Show fewer events" : `Show all ${selected.length} archived events`}</button>` : "";
+      $("events").innerHTML = selected.length ? visible.map((item) => `<article class="panel event"><div class="event-meta"><span class="micro">${text(item.published_at)} / ${text(item.feed.replaceAll("_", " "))}</span><span class="state ${text(item.market_relevance)}">${text(item.market_relevance.replaceAll("_", " "))}</span></div><h3>${text(item.title)}</h3><p>${item.themes.split(";").map((tag) => supportedReactionThemes.has(tag) ? `<button type="button" class="theme" data-study-theme="${text(tag)}" title="Open calculation sandbox for this theme">${text(tag.replaceAll("_", " "))} study</button>` : `<span class="theme">${text(tag.replaceAll("_", " "))}</span>`).join("")}</p><a href="${officialHref(item.source_url)}" target="_blank" rel="noopener">Open official source</a></article>`).join("") + expandControl : `<article class="panel empty">${policyEvents.length ? "No events match these filters." : "No loaded official-event artifact. Run the White House RSS monitor or load its downloadable artifact."}</article>`;
       document.querySelectorAll("[data-study-theme]").forEach((button) => button.addEventListener("click", () => {
         $("reaction-theme").value = button.dataset.studyTheme;
         loadPolicyReaction(button.dataset.studyTheme);
         $("reaction-sandbox").scrollIntoView({ behavior: "smooth", block: "start" });
       }));
+      if ($("event-more")) $("event-more").addEventListener("click", () => { showAllPolicyEvents = !showAllPolicyEvents; renderPolicyEvents(); });
     }
     async function loadPolicyEvents() {
       const response = await fetch("/api/v1/intelligence/policy-events");
@@ -2098,6 +2118,27 @@ def policy_signal_lab_html() -> str:
       policyReaction = await response.json();
       renderPolicyReaction();
     }
+    async function loadTreasuryContext() {
+      const response = await fetch("/api/v1/intelligence/policy-treasury-context");
+      if (!response.ok) throw new Error((await response.json()).detail || "Treasury context request failed");
+      const data = await response.json();
+      if (!data.available) {
+        $("treasury-status").textContent = "Official artifact not loaded";
+        $("treasury-note").textContent = data.message;
+        $("treasury-records").innerHTML = `<article class="empty">${text(data.message)}</article>`;
+        return;
+      }
+      $("treasury-status").textContent = `${data.data_mode} / rates through ${data.latest_rate_date}`;
+      $("treasury-note").textContent = data.measurement;
+      $("treasury-mode").textContent = data.data_mode.includes("Official") ? "Observed official data" : "Synthetic fixture";
+      $("treasury-observations").textContent = data.yield_observation_count;
+      $("treasury-candidates").textContent = data.candidate_event_count;
+      $("treasury-measured").textContent = data.measured_event_count;
+      $("treasury-pending").textContent = data.pending_event_count;
+      $("treasury-records").innerHTML = data.records.length ? data.records.slice(0, 8).map((item) => `<article class="observed-event"><p class="micro">${text(item.published_on)} event / ${text(item.reference_date)} to ${text(item.following_date)} Treasury sessions</p><h4><a href="${officialHref(item.source_url)}" target="_blank" rel="noopener">${text(item.title)}</a></h4><div class="bps"><span>2Y <strong class="${tone(item.two_year_change_bps)}">${text(item.two_year_change_bps)} bps</strong></span><span>10Y <strong class="${tone(item.ten_year_change_bps)}">${text(item.ten_year_change_bps)} bps</strong></span><span>2s10s curve <strong class="${tone(item.curve_change_bps)}">${text(item.curve_change_bps)} bps</strong></span></div></article>`).join("") : `<article class="empty">No thematic event has two available Treasury sessions yet.</article>`;
+      if (data.pending_event_count) $("treasury-records").innerHTML += `<p class="observed-pending">${text(data.pending_event_count)} thematic event(s) remain pending until a second available Treasury session exists.</p>`;
+      $("treasury-boundary").textContent = data.publication_boundary;
+    }
     async function initialize() {
       try {
         const response = await fetch("/api/v1/intelligence/policy-signals");
@@ -2121,10 +2162,11 @@ def policy_signal_lab_html() -> str:
         $("windows").innerHTML = data.event_windows.map((item) => `<span class="window">${text(item)}</span>`).join("");
         $("priorArt").innerHTML = data.prior_art.map((item) => `<div class="prior"><h3><a href="${text(item.url)}" target="_blank" rel="noopener">${text(item.name)}</a> <span class="micro">${text(item.year)}</span></h3><p>${text(item.difference)}</p></div>`).join("");
         await loadPolicyEvents();
+        await loadTreasuryContext();
         await loadPolicyReaction();
       } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
     }
-    ["event-search", "event-channel", "event-theme"].forEach((id) => $(id).addEventListener("input", renderPolicyEvents));
+    ["event-search", "event-channel", "event-theme"].forEach((id) => $(id).addEventListener("input", () => { showAllPolicyEvents = false; renderPolicyEvents(); }));
     $("reaction-theme").addEventListener("change", () => loadPolicyReaction());
     $("reaction-apply").addEventListener("click", () => loadPolicyReaction($("reaction-theme").value, $("reaction-start").value, $("reaction-end").value));
     initialize();

@@ -44,6 +44,8 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   deduplication, transparent topic classification and dashboard/API queue.
 - [x] Presidential Communication Reaction Sandbox with topic, horizon and
   calendar filters over explicitly synthetic numerical validation paths.
+- [x] Official Treasury 2Y/10Y daily context joined to thematic White House
+  communications as non-causal session-to-session basis-point observations.
 - [x] Interactive Listings Radar combining the reviewed U.S. IPO registry with
   dated global listing-evidence changes, filters, source links and a
   browser-local research watchlist.

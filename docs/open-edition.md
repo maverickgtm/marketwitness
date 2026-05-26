@@ -31,7 +31,7 @@ stored, exported, or used as scoring evidence.
 | Cross-Asset Markets | TradingView views for BTC, ETH, metals, energy, FX and benchmarks | External visual context only; no stored or scored widget values |
 | Market Intelligence | Planned cross-asset sources and operating boundaries | No new live values or position recommendation |
 | VIX Reaction Explorer | VIX display, rising/cooling scenarios and episode-design API | Cboe/ICE derived output pending rights |
-| Presidential Impact Lab | Searchable official White House News/Actions RSS archive plus themed reaction-calculation sandbox | Numerical paths are synthetic validation only; Truth Social automation and real reactions remain gated |
+| Presidential Impact Lab | Official White House archive, Treasury 2Y/10Y session context and themed calculation sandbox | Treasury changes are observational only; synthetic paths, Truth Social and broader reactions retain visible gates |
 | Evidence Passport Commons | Public source/rights registry and contribution path | A passport is not investment advice |
 
 ## Run Without Data Fees
@@ -87,6 +87,13 @@ When that artifact is downloaded into `build/public-monitor/` or configured
 through `MARKETWITNESS_PUBLIC_MONITOR_REPORTS`, the local app exposes it at
 `/dashboard/official-change-log`. Without an artifact the page remains
 available but explicitly reports that no official run is loaded.
+
+`.github/workflows/public-presidential-events-monitor.yml` collects official
+White House News/Presidential Actions metadata and official Treasury daily
+2Y/10Y par-yield observations on weekdays. Once its artifact is loaded through
+`MARKETWITNESS_POLICY_MONITOR_REPORTS`, Presidential Impact displays
+session-to-session basis-point context for thematic events. It does not claim
+the communication caused a yield move.
 
 ## Optional Extensions
 

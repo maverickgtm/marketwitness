@@ -111,6 +111,12 @@ demo:
 		--report build/demo/whitehouse-events.md \
 		--html build/demo/whitehouse-events.html \
 		--as-of 2026-05-25
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness treasury-yields \
+		--snapshot data/samples/treasury-yields-synthetic.xml \
+		--output build/demo/treasury-yields.csv \
+		--report build/demo/treasury-yields.md \
+		--html build/demo/treasury-yields.html \
+		--as-of 2026-05-25
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness rwa-watch \
 		--snapshot data/samples/rwa-watch-synthetic.csv \
 		--report build/demo/rwa-watch.md \

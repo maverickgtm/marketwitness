@@ -120,11 +120,21 @@ class ApiTests(unittest.TestCase):
         (self.reports / "whitehouse-events.csv").write_text(
             "event_id,feed,title,published_at,published_on,category,themes,market_relevance,source_mode,observed_on,source_url\n"
             "event-1,news,American Energy Infrastructure,2026-05-25T16:15:00Z,2026-05-25,Fact Sheets,energy,review_candidate,synthetic_fixture,2026-05-25,https://www.whitehouse.gov/fact-sheets/2026/05/energy/\n"
-            "event-2,presidential_actions,Financial Technology Innovation,2026-05-22T19:00:00Z,2026-05-22,Presidential Actions,financial_regulation;technology_ai,review_candidate,synthetic_fixture,2026-05-25,https://www.whitehouse.gov/presidential-actions/2026/05/fintech/\n",
+            "event-2,presidential_actions,Financial Technology Innovation,2026-05-21T19:00:00Z,2026-05-21,Presidential Actions,financial_regulation;technology_ai,review_candidate,synthetic_fixture,2026-05-25,https://www.whitehouse.gov/presidential-actions/2026/05/fintech/\n",
             encoding="utf-8",
         )
         (self.reports / "whitehouse-events.html").write_text(
             "<html><h1>White House Official Event Intake generated page</h1></html>",
+            encoding="utf-8",
+        )
+        (self.reports / "treasury-yields.csv").write_text(
+            "rate_date,two_year_pct,ten_year_pct,curve_2s10s_bps,source_mode,observed_on,source_url\n"
+            "2026-05-22,3.92,4.47,55.00,synthetic_fixture,2026-05-25,https://home.treasury.gov/feed\n"
+            "2026-05-25,3.86,4.39,53.00,synthetic_fixture,2026-05-25,https://home.treasury.gov/feed\n",
+            encoding="utf-8",
+        )
+        (self.reports / "treasury-yields.html").write_text(
+            "<html><h1>Treasury Yield Context generated page</h1></html>",
             encoding="utf-8",
         )
         (self.reports / "ipo-watch.html").write_text(
@@ -485,6 +495,8 @@ class ApiTests(unittest.TestCase):
         legacy_page = self.client.get("/dashboard/policy-signals")
         snapshot = self.client.get("/api/v1/intelligence/policy-signals")
         events = self.client.get("/api/v1/intelligence/policy-events")
+        treasury = self.client.get("/api/v1/intelligence/policy-treasury-context")
+        treasury_report = self.client.get("/dashboard/presidential-impact/treasury-report")
         reactions = self.client.get("/api/v1/intelligence/policy-reactions")
         filtered_reactions = self.client.get(
             "/api/v1/intelligence/policy-reactions?theme=financial_regulation&start=2025-01-20&end=2026-05-25"
@@ -511,6 +523,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Communication Reaction Sandbox", page.text)
         self.assertIn("Synthetic validation only", page.text)
         self.assertIn("/api/v1/intelligence/policy-reactions", page.text)
+        self.assertIn("Observed Treasury Context", page.text)
+        self.assertIn("/api/v1/intelligence/policy-treasury-context", page.text)
         self.assertIn("Browse official page", page.text)
         self.assertIn("RSS feed (machine-readable)", page.text)
         self.assertIn(
@@ -525,12 +539,22 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(news_channel["page_url"], "https://www.whitehouse.gov/news/")
         self.assertEqual(news_channel["url"], "https://www.whitehouse.gov/news/feed/")
         self.assertIn("Official Event Intake Queue", page.text)
+        self.assertIn("Show all ${selected.length} archived events", page.text)
         self.assertIn("/api/v1/intelligence/policy-events", page.text)
         self.assertEqual(events.status_code, 200)
         self.assertTrue(events.json()["available"])
         self.assertEqual(events.json()["data_mode"], "Synthetic reproducible RSS fixture")
         self.assertEqual(events.json()["record_count"], 2)
         self.assertIn("does not collect Truth Social", events.json()["publication_boundary"])
+        self.assertEqual(treasury.status_code, 200)
+        self.assertTrue(treasury.json()["available"])
+        self.assertEqual(treasury.json()["latest_rate_date"], "2026-05-25")
+        self.assertEqual(treasury.json()["measured_event_count"], 1)
+        self.assertEqual(treasury.json()["records"][0]["two_year_change_bps"], "-6.00")
+        self.assertIn("after publication", treasury.json()["measurement"])
+        self.assertIn("do not prove", treasury.json()["publication_boundary"])
+        self.assertEqual(treasury_report.status_code, 200)
+        self.assertIn("Treasury Yield Context generated page", treasury_report.text)
         self.assertEqual(reactions.status_code, 200)
         self.assertEqual(reactions.json()["episode_count"], 6)
         self.assertEqual(reactions.json()["mode"], "project_authored_not_market_observations")

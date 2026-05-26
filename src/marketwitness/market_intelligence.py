@@ -38,7 +38,7 @@ MODULES = (
         "key": "policy_signal_lab",
         "title": "Presidential Impact Lab",
         "theme": "Public Communications / Market Reaction",
-        "stage": "foundation_available",
+        "stage": "implemented_foundation",
         "priority": "now",
         "provider_ids": (
             "whitehouse-official-news-rss",
@@ -46,11 +46,12 @@ MODULES = (
             "whitehouse-wire-rss",
             "truth-social-public-content",
             "fred-vixcls-display",
+            "treasury-yield-curve",
         ),
-        "coverage": "Official White House communications intake plus Donald Trump / Truth Social gated case study linked to cross-asset reaction windows.",
-        "cadence": "Archived official News and Presidential Actions RSS; Wire and Truth Social excluded from collection",
+        "coverage": "Official White House intake plus observed Treasury 2Y/10Y session context and a gated Donald Trump / Truth Social case study.",
+        "cadence": "Archived official News and Presidential Actions RSS with Treasury daily yields; Wire and Truth Social excluded from collection",
         "route": "/dashboard/presidential-impact",
-        "next_delivery": "Connect eligible official event timestamps to rights-approved reaction inputs; seek permission before Truth Social.",
+        "next_delivery": "Extend observed context with other rights-approved series; seek permission before Truth Social.",
         "claim_limit": "Observed reaction is not proof of causation, manipulation or a position to take.",
     },
     {
@@ -139,7 +140,7 @@ def build_market_intelligence_snapshot(
         "planned_connector_count": stages["connector_planned"],
         "implementation_sequence": [
             "VIX Reaction Explorer: rising/cooling scenarios and auditable stress-episode design.",
-            "Presidential Impact Lab: official White House event intake with Truth Social rights gate.",
+            "Presidential Impact Lab: official White House intake with observed Treasury session context and Truth Social rights gate.",
             "Market Regimes: BTC, ETH, WTI, Brent and Treasury 2Y/10Y.",
             "Macro Calendar, Insider Activity, ownership and CFTC after connector review.",
         ],

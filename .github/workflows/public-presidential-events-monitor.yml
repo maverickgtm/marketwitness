@@ -38,6 +38,14 @@ jobs:
             --report build/policy-monitor/whitehouse-events.md \
             --html build/policy-monitor/whitehouse-events.html \
             --as-of "$AS_OF"
+      - name: Collect official Treasury yield context
+        run: |
+          python -m marketwitness treasury-yields \
+            --year "$(date -u +%Y)" \
+            --output build/policy-monitor/treasury-yields.csv \
+            --report build/policy-monitor/treasury-yields.md \
+            --html build/policy-monitor/treasury-yields.html \
+            --as-of "$AS_OF"
       - name: Save retained official-event archive
         uses: actions/cache/save@v4
         with:
@@ -50,8 +58,9 @@ jobs:
             echo ""
             echo "- Observation date: \`$AS_OF\`."
             echo "- Collects title, timestamp, official URL and rule-based topic tags from White House News and Presidential Actions RSS only."
+            echo "- Includes official Treasury daily 2Y and 10Y yield context for session-to-session comparison."
             echo "- Does not collect Truth Social or White House Wire linked article bodies."
-            echo "- Events are research triage inputs, not measured market reaction or investment advice."
+            echo "- Treasury changes are temporal context, not proof of event causation or investment advice."
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload official-event artifact
         uses: actions/upload-artifact@v4

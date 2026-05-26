@@ -49,6 +49,8 @@ from .open_edition import build_open_edition_snapshot
 from .operations_quality import build_quality_snapshot
 from .policy_reaction import build_policy_reaction_snapshot
 from .policy_signal_lab import build_policy_signal_lab_snapshot
+from .policy_treasury import build_policy_treasury_context
+from .providers.treasury import TreasuryDataError, load_treasury_csv
 from .providers.whitehouse import WhiteHouseDataError, load_event_archive
 from .provider_approvals import (
     ProviderApprovalDataError,
@@ -808,6 +810,36 @@ def create_app(
                 )
             },
         )
+
+    @application.get("/api/v1/intelligence/policy-treasury-context")
+    def policy_treasury_context() -> dict[str, object]:
+        event_path = policy_monitor_reports / "whitehouse-events.csv"
+        treasury_path = policy_monitor_reports / "treasury-yields.csv"
+        if not event_path.is_file() or not treasury_path.is_file():
+            return {
+                "available": False,
+                "data_mode": "Optional official Treasury artifact",
+                "message": (
+                    "Load both official White House event intake and Treasury yield "
+                    "artifacts to view observed session context."
+                ),
+                "records": [],
+                "pending": [],
+            }
+        try:
+            events = load_event_archive(event_path)
+            yields = load_treasury_csv(treasury_path)
+        except (WhiteHouseDataError, TreasuryDataError) as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+        return build_policy_treasury_context(events, yields)
+
+    @application.get(
+        "/dashboard/presidential-impact/treasury-report",
+        response_class=HTMLResponse,
+        include_in_schema=False,
+    )
+    def policy_treasury_report() -> str:
+        return _generated_html(policy_monitor_reports, "treasury-yields.html")
 
     @application.get(
         "/dashboard/presidential-impact/events-report",
