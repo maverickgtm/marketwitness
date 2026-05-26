@@ -49,7 +49,10 @@ Thank you,
 
 Mario Antillon
 TargetAudit project
-marioantillon@icloud.com
+[correo monitoreado del proyecto, completar solo al enviar]
+
+La copia versionada del borrador omite deliberadamente el correo real. Agrega
+el contacto fuera del repositorio al momento de enviar la solicitud.
 
 ## Evidencia A Conservar Si Responden
 

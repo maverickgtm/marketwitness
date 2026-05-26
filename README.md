@@ -6,6 +6,35 @@ Plataforma abierta para evaluar, con datos verificables, la precision historica 
 la utilidad economica de los `price targets` publicados por analistas financieros
 en bancos y companias financieras cotizadas en Estados Unidos.
 
+## GitHub Release Candidate: `v0.1.0-rc.1`
+
+TargetAudit ya esta en preparacion de candidato publico: un dashboard y motor
+de investigacion ejecutables sin comprar datos. La Open Edition incluye
+scorecards reproducibles con fixtures, vigilancia regulatoria de IPOs y ETF,
+listings globales, gobernanza de fuentes, laboratorios de volatilidad y
+senales de politica, ademas de una API FastAPI de solo lectura.
+
+Lo que hace diferente al proyecto es la capa de evidencia: cada fuente declara
+su origen, derechos de output y limite de uso antes de alimentar una
+afirmacion publica. No se presentan rankings reales de analistas ni senales de
+trading mientras no existan datos autorizados para ese fin.
+
+```bash
+python3 -m pip install -e ".[application]"
+make verify
+export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
+export TARGETAUDIT_SOURCE_REGISTRY="data/samples/source_registry.csv"
+export TARGETAUDIT_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
+export TARGETAUDIT_GENERATED_REPORTS="build/demo"
+export TARGETAUDIT_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
+python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
+```
+
+Abre `http://127.0.0.1:8000/` para recorrer la Open Edition. Antes de
+publicar el repositorio se seguira la
+[lista del candidato de GitHub](docs/release-candidate-checklist.md), el
+[changelog](CHANGELOG.md) y el [aviso legal](DISCLAIMER.md).
+
 ## Evidence Passport Commons: La Diferencia Abierta
 
 TargetAudit no comienza vendiendo una senal: comienza publicando el contrato
@@ -930,7 +959,7 @@ distingue capacidades gratuitas y extensiones opcionales. La ruta
 `/dashboard/policy` muestra limites de uso y derechos de datos: los reportes
 son investigacion y no recomendaciones de inversion, y la revision legal
 externa aun es un pendiente antes de operar un servicio publico con datos
-reales. La ruta
+reales.
 La portada incluye un pulso de mercado atribuido de TradingView, y
 `/dashboard/market-context` muestra el benchmark `XLF` junto con una lente
 comparativa de Financials y benchmarks. Estos widgets no alimentan el
@@ -1201,7 +1230,7 @@ build/demo/sgx-monitor.html
 build/demo/global-alerts.csv
 build/demo/global-alerts.md
 build/demo/global-alerts.html
-build/dist/targetaudit-0.1.0-py3-none-any.whl
+build/dist/targetaudit-0.1.0rc1-py3-none-any.whl
 ```
 
 El primer adaptador de fuente publica obtiene el mapa de ticker/CIK de la SEC.
@@ -1254,13 +1283,12 @@ SECURITY.md              Reporte privado y manejo de credenciales/datos locales
 
 ## Siguientes Versiones
 
-- `v0.3`: rigor cuantitativo, incluyendo intervalos, segmentos y control de
-  integrantes historicos del universo.
-- `v0.4`: base DuckDB y API FastAPI de solo lectura para corridas auditables,
-  seguidas por el dashboard web.
-- `v0.5`: dashboard web, filtros por sector y paginas de firma/accion.
-- `v1.0`: Open Edition publica, reproducible y sin costo de datos; rankings
-  reales quedan como extension opcional con entradas autorizadas.
+- `v0.1.0-rc.1`: candidato Open Edition reproducible, dashboard, API,
+  Evidence Passport Commons y monitores publicos ya implementados.
+- Siguiente incremento: collector archivado de White House RSS y nuevas capas
+  Market Intelligence con permisos y pruebas visibles.
+- Extension opcional futura: rankings reales de analistas unicamente con
+  entradas autorizadas y derechos de publicacion documentados.
 
 Consulta [la metodologia](docs/methodology.md),
 [las fuentes evaluadas](docs/data-sources.md) y
