@@ -24,6 +24,13 @@ jobs:
           echo "AS_OF=$(date -u +%F)" >> "$GITHUB_ENV"
           echo "SINCE=$(date -u -d '90 days ago' +%F)" >> "$GITHUB_ENV"
           mkdir -p build/public-monitor
+      - name: Restore prior official-source snapshots
+        uses: actions/cache/restore@v4
+        with:
+          path: build/public-monitor/history
+          key: public-listings-history-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            public-listings-history-${{ github.ref_name }}-
       - name: Collect Brazil CVM offering evidence
         run: |
           python -m marketwitness cvm-monitor \
@@ -40,6 +47,21 @@ jobs:
             --output build/public-monitor/esma-monitor.csv \
             --report build/public-monitor/esma-monitor.md \
             --html build/public-monitor/esma-monitor.html
+      - name: Compare with the prior observation
+        run: |
+          python -m marketwitness public-listings-alerts \
+            --cvm build/public-monitor/cvm-monitor.csv \
+            --esma build/public-monitor/esma-monitor.csv \
+            --history-dir build/public-monitor/history \
+            --as-of "$AS_OF" \
+            --output build/public-monitor/public-listings-alerts.csv \
+            --report build/public-monitor/public-listings-alerts.md \
+            --html build/public-monitor/public-listings-alerts.html
+      - name: Save official-source snapshot history
+        uses: actions/cache/save@v4
+        with:
+          path: build/public-monitor/history
+          key: public-listings-history-${{ github.ref_name }}-${{ github.run_id }}
       - name: Describe public-monitor boundary
         run: |
           {
@@ -47,6 +69,7 @@ jobs:
             echo ""
             echo "- Observation date: \`$AS_OF\`."
             echo "- Collects CVM and ESMA official evidence only; both are approved for attributed derived output in the source registry."
+            echo "- Includes a daily change log compared with the latest earlier retained observation."
             echo "- These records are offering or prospectus review evidence, not trading confirmation or investment advice."
             echo "- SEC, exchange feeds and free-key sources stay disabled here until their operational or publication controls are satisfied."
           } >> "$GITHUB_STEP_SUMMARY"

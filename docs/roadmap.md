@@ -47,6 +47,8 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   not-live status, local re-read control and filtered CSV review export.
 - [x] No-cost weekday official-source artifact for CVM and ESMA with visible
   per-market automation controls in Listings Radar.
+- [x] Retained CVM/ESMA observation history and automatic public listing change
+  log across weekday monitoring runs.
 
 ## Pending Product Expansion
 

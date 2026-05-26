@@ -160,6 +160,11 @@ artifact. SEC is excluded because fair-access collection requires a privately
 managed identifying `User-Agent`; other exchange and free-key feeds remain
 excluded until their published-output controls are resolved.
 
+The workflow caches dated CVM/ESMA snapshots between successful runs and calls
+`public-listings-alerts` to produce a CSV, Markdown and HTML change queue.
+`new`, `changed` and `removed_from_feed_review` are research triage states;
+none confirms exchange listing, withdrawal or a trade.
+
 ## Operational Limits
 
 - Never commit API keys, provider downloads, personal request headers, or

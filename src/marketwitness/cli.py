@@ -63,10 +63,14 @@ from .lse_upcoming import (
 )
 from .listing_alerts import (
     ListingAlertsDataError,
+    PUBLIC_MONITOR_MARKETS,
     archive_snapshot,
+    archive_selected_snapshot,
     compare_signals,
     latest_previous_snapshot,
     load_current_signals,
+    load_selected_signals,
+    load_selected_snapshot_directory,
     load_snapshot_directory,
     write_alerts_csv,
     write_alerts_html,
@@ -938,6 +942,25 @@ def main() -> int:
     alerts_parser.add_argument("--report", required=True, help="Markdown report path.")
     alerts_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
     alerts_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Observation date in YYYY-MM-DD format.",
+    )
+    public_alerts_parser = subparsers.add_parser(
+        "public-listings-alerts",
+        help="Compare permitted live CVM and ESMA evidence snapshots over time.",
+    )
+    public_alerts_parser.add_argument("--cvm", required=True, help="Current CVM monitor CSV.")
+    public_alerts_parser.add_argument("--esma", required=True, help="Current ESMA monitor CSV.")
+    public_alerts_parser.add_argument(
+        "--history-dir",
+        required=True,
+        help="Archive snapshots by date and compare with the latest earlier observation.",
+    )
+    public_alerts_parser.add_argument("--output", required=True, help="Alert output CSV path.")
+    public_alerts_parser.add_argument("--report", required=True, help="Markdown report path.")
+    public_alerts_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    public_alerts_parser.add_argument(
         "--as-of",
         default=date.today().isoformat(),
         help="Observation date in YYYY-MM-DD format.",
@@ -1931,6 +1954,50 @@ def main() -> int:
         print(
             f"Wrote global alerts for {len(alerts)} changes across "
             f"{len(current)} current records to {args.report}."
+        )
+        return 0
+
+    if args.command == "public-listings-alerts":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            paths = {"CVM": args.cvm, "ESMA": args.esma}
+            current = load_selected_signals(paths, PUBLIC_MONITOR_MARKETS)
+            prior_path = latest_previous_snapshot(args.history_dir, as_of)
+            previous = (
+                load_selected_snapshot_directory(prior_path, PUBLIC_MONITOR_MARKETS)
+                if prior_path
+                else None
+            )
+            baseline_label = prior_path.name if prior_path else "first recorded snapshot"
+            alerts = compare_signals(current, previous)
+            archive_selected_snapshot(
+                args.history_dir, paths, as_of, PUBLIC_MONITOR_MARKETS
+            )
+            write_alerts_csv(args.output, alerts, as_of)
+            write_alerts_report(
+                args.report,
+                alerts,
+                current,
+                as_of,
+                baseline_label,
+                PUBLIC_MONITOR_MARKETS,
+                "Public Listings Change Log",
+            )
+            if args.html:
+                write_alerts_html(
+                    args.html,
+                    alerts,
+                    current,
+                    as_of,
+                    baseline_label,
+                    PUBLIC_MONITOR_MARKETS,
+                    "Public Listings Change Log",
+                )
+        except (ListingAlertsDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote permitted public listings alerts for {len(alerts)} changes across "
+            f"{len(current)} current CVM/ESMA records to {args.report}."
         )
         return 0
 

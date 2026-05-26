@@ -9,6 +9,7 @@ from html import escape
 from pathlib import Path
 
 MARKETS = ("HKEX", "LSE", "ASX", "TSX", "JPX", "EDINET", "CVM", "ESMA", "OPENDART", "SGX")
+PUBLIC_MONITOR_MARKETS = ("CVM", "ESMA")
 SNAPSHOT_FILENAMES = {
     "HKEX": "hkex-monitor.csv",
     "LSE": "lse-upcoming.csv",
@@ -73,8 +74,16 @@ class ListingAlert:
 
 
 def load_current_signals(paths: dict[str, str | Path]) -> list[ListingSignal]:
+    return load_selected_signals(paths, MARKETS)
+
+
+def load_selected_signals(
+    paths: dict[str, str | Path], markets: tuple[str, ...]
+) -> list[ListingSignal]:
     signals: list[ListingSignal] = []
-    for market in MARKETS:
+    for market in markets:
+        if market not in MARKETS:
+            raise ListingAlertsDataError(f"Unsupported listing-alert market: {market}.")
         try:
             path = paths[market]
         except KeyError as exc:
@@ -84,14 +93,22 @@ def load_current_signals(paths: dict[str, str | Path]) -> list[ListingSignal]:
 
 
 def load_snapshot_directory(path: str | Path) -> list[ListingSignal]:
+    return load_selected_snapshot_directory(path, MARKETS)
+
+
+def load_selected_snapshot_directory(
+    path: str | Path, markets: tuple[str, ...]
+) -> list[ListingSignal]:
     directory = Path(path)
     if not directory.exists():
         raise ListingAlertsDataError(f"Previous snapshot directory does not exist: {path}")
-    return load_current_signals(
+    return load_selected_signals(
         {
             market: directory / filename
             for market, filename in SNAPSHOT_FILENAMES.items()
-        }
+            if market in markets
+        },
+        markets,
     )
 
 
@@ -115,9 +132,21 @@ def latest_previous_snapshot(history_dir: str | Path, as_of: date) -> Path | Non
 def archive_snapshot(
     history_dir: str | Path, paths: dict[str, str | Path], as_of: date
 ) -> Path:
+    return archive_selected_snapshot(history_dir, paths, as_of, MARKETS)
+
+
+def archive_selected_snapshot(
+    history_dir: str | Path,
+    paths: dict[str, str | Path],
+    as_of: date,
+    markets: tuple[str, ...],
+) -> Path:
     destination = Path(history_dir) / as_of.isoformat()
     destination.mkdir(parents=True, exist_ok=True)
-    for market, filename in SNAPSHOT_FILENAMES.items():
+    for market in markets:
+        if market not in SNAPSHOT_FILENAMES:
+            raise ListingAlertsDataError(f"Unsupported listing-alert market: {market}.")
+        filename = SNAPSHOT_FILENAMES[market]
         source = Path(paths[market])
         if not source.exists():
             raise ListingAlertsDataError(f"Cannot archive missing {market} CSV: {source}")
@@ -173,11 +202,13 @@ def render_alerts_report(
     current: list[ListingSignal],
     as_of: date,
     baseline_label: str,
+    markets: tuple[str, ...] = MARKETS,
+    title: str = "Global Listings Alerts",
 ) -> str:
     counts = Counter(alert.change_type for alert in alerts)
     market_counts = Counter(signal.market for signal in current)
     lines = [
-        "# Global Listings Alerts",
+        f"# {title}",
         "",
         f"- Observation date: `{as_of.isoformat()}`",
         f"- Compared against: `{baseline_label}`",
@@ -194,7 +225,7 @@ def render_alerts_report(
         "",
     ]
     lines.append(
-        " / ".join(f"{market}: `{market_counts[market]}`" for market in MARKETS)
+        " / ".join(f"{market}: `{market_counts[market]}`" for market in markets)
     )
     lines.extend(
         [
@@ -222,11 +253,14 @@ def write_alerts_report(
     current: list[ListingSignal],
     as_of: date,
     baseline_label: str,
+    markets: tuple[str, ...] = MARKETS,
+    title: str = "Global Listings Alerts",
 ) -> None:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(
-        render_alerts_report(alerts, current, as_of, baseline_label), encoding="utf-8"
+        render_alerts_report(alerts, current, as_of, baseline_label, markets, title),
+        encoding="utf-8",
     )
 
 
@@ -235,6 +269,8 @@ def render_alerts_html(
     current: list[ListingSignal],
     as_of: date,
     baseline_label: str,
+    markets: tuple[str, ...] = MARKETS,
+    title: str = "Global Listings Alerts",
 ) -> str:
     counts = Counter(alert.change_type for alert in alerts)
     market_counts = Counter(signal.market for signal in current)
@@ -248,7 +284,7 @@ def render_alerts_html(
     )
     coverage = "".join(
         f'<span class="market"><strong>{market}</strong> {market_counts[market]}</span>'
-        for market in MARKETS
+        for market in markets
     )
     rows = "".join(
         "<tr>"
@@ -266,7 +302,7 @@ def render_alerts_html(
         rows = '<tr><td colspan="7">No comparable changes detected. Continue monitoring official sources.</td></tr>'
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MarketWitness | Global Listings Alerts</title><style>
+<title>MarketWitness | {escape(title)}</title><style>
 :root{{--bg:#071016;--panel:#0f1c24;--line:#20343d;--text:#edf1ef;--muted:#98abb0;--mint:#56daac;--gold:#f0bc62;--blue:#62a6ff;--rose:#f48687;}}
 *{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,Arial,sans-serif}}header,main{{max-width:1180px;margin:auto;padding:30px 28px}}
 nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:13px}}h1{{font-size:clamp(34px,5vw,54px);line-height:1.06;margin:38px 0 14px}}.lead{{color:var(--muted);font-size:17px;max-width:800px}}
@@ -288,11 +324,14 @@ def write_alerts_html(
     current: list[ListingSignal],
     as_of: date,
     baseline_label: str,
+    markets: tuple[str, ...] = MARKETS,
+    title: str = "Global Listings Alerts",
 ) -> None:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(
-        render_alerts_html(alerts, current, as_of, baseline_label), encoding="utf-8"
+        render_alerts_html(alerts, current, as_of, baseline_label, markets, title),
+        encoding="utf-8",
     )
 
 

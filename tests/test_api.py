@@ -630,6 +630,10 @@ class ApiTests(unittest.TestCase):
             all_records.json()["operations"]["automatic_refresh"],
             "Mondays at 12:17 UTC via GitHub Actions",
         )
+        self.assertEqual(
+            all_records.json()["operations"]["official_monitor_refresh"],
+            "Weekdays at 11:23 UTC / CVM and ESMA retained change log artifact",
+        )
         self.assertEqual(all_records.json()["operations"]["automated_market_count"], 2)
         controls = {
             item["market"]: item

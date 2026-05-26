@@ -4,11 +4,15 @@ from datetime import date
 from pathlib import Path
 
 from marketwitness.listing_alerts import (
+    PUBLIC_MONITOR_MARKETS,
     ListingSignal,
     archive_snapshot,
+    archive_selected_snapshot,
     compare_signals,
     latest_previous_snapshot,
     load_current_signals,
+    load_selected_signals,
+    load_selected_snapshot_directory,
     load_snapshot_directory,
     render_alerts_html,
     render_alerts_report,
@@ -61,6 +65,56 @@ class ListingAlertsTests(unittest.TestCase):
 
         self.assertIn("observed_on,market,change_type", content)
         self.assertIn("2026-05-25,SGX,new,New Issuer", content)
+
+    def test_public_monitor_archives_and_compares_only_approved_live_markets(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            cvm = root / "cvm-monitor.csv"
+            esma = root / "esma-monitor.csv"
+            cvm.write_text(
+                "company_name,offering_id,security_type,offering_type,procedure,status,"
+                "filing_date,registration_date,observed_on,source_url,resource_url\n"
+                "Brasil Demo S.A.,CVM-1,ACOES,Primaria,RCVM 160,offering_recorded,"
+                "2026-05-25,-,2026-05-25,https://example.invalid/cvm,https://example.invalid/zip\n",
+                encoding="utf-8",
+            )
+            esma.write_text(
+                "company_name,isin,document_id,jurisdiction,security_type,offer_admission_type,"
+                "status,filing_date,updated_at,observed_on,source_url\n"
+                "Europe Demo SE,DE000DEMO,ESMA-1,Germany,Shares,Offer,"
+                "equity_prospectus_review,2026-05-25,-,2026-05-25,https://example.invalid/esma\n",
+                encoding="utf-8",
+            )
+            paths = {"CVM": cvm, "ESMA": esma}
+            first = load_selected_signals(paths, PUBLIC_MONITOR_MARKETS)
+            archive_selected_snapshot(
+                root / "history", paths, date(2026, 5, 25), PUBLIC_MONITOR_MARKETS
+            )
+            cvm.write_text(
+                cvm.read_text(encoding="utf-8").replace(
+                    "offering_recorded", "offering_closed"
+                ),
+                encoding="utf-8",
+            )
+            second = load_selected_signals(paths, PUBLIC_MONITOR_MARKETS)
+            prior = load_selected_snapshot_directory(
+                root / "history" / "2026-05-25", PUBLIC_MONITOR_MARKETS
+            )
+            alerts = compare_signals(second, prior)
+            report = render_alerts_report(
+                alerts,
+                second,
+                date(2026, 5, 26),
+                "2026-05-25",
+                PUBLIC_MONITOR_MARKETS,
+                "Public Listings Change Log",
+            )
+
+        self.assertEqual(len(first), 2)
+        self.assertEqual([alert.market for alert in alerts], ["CVM"])
+        self.assertIn("# Public Listings Change Log", report)
+        self.assertIn("CVM: `1` / ESMA: `1`", report)
+        self.assertNotIn("HKEX:", report)
 
     def test_hkex_allows_same_issuer_at_distinct_lifecycle_events(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

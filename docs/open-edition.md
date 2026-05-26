@@ -79,7 +79,9 @@ export the filtered evidence queue as CSV.
 official-source capture for Brazil CVM and Europe ESMA only. Both sources are
 registered as usable for attributed derived output. Its downloadable artifact
 contains offering or prospectus evidence for review, never a completed listing
-claim or a position recommendation.
+claim or a position recommendation. After the first observation, it also
+includes a `Public Listings Change Log` comparing the newest capture against
+the latest earlier retained CVM/ESMA snapshot.
 
 ## Optional Extensions
 

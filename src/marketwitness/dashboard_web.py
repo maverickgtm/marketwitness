@@ -704,9 +704,10 @@ def listings_radar_html() -> str:
           <div class="pulse"><div><small>Last evidence</small><strong id="latest-evidence">-</strong></div><div><small>Markets covered</small><strong id="market-count">-</strong></div></div>
           <p class="empty" id="data-mode">Loading data mode...</p>
           <div class="cycle"><strong>Automatic artifact refresh</strong><span id="automatic-refresh">-</span></div>
+          <div class="cycle"><strong>Official evidence monitor</strong><span id="official-monitor-refresh">-</span></div>
           <div class="cycle"><strong>Refresh locally</strong><span id="manual-refresh">-</span></div>
           <div class="tools"><button type="button" id="reload">Re-read evidence</button><a id="export" href="/api/v1/listings/radar/export.csv" download>Export filtered CSV</a></div>
-          <div class="cycle"><strong>Official-source activation</strong><span><b id="automated-markets">-</b> markets have a no-cost weekday capture workflow. Live artifacts remain separate from this reproducible local bundle.</span></div>
+          <div class="cycle"><strong>Official-source activation</strong><span><b id="automated-markets">-</b> markets have a no-cost weekday capture and change-log workflow. Live artifacts remain separate from this reproducible local bundle.</span></div>
           <div id="automation-controls"></div>
         </aside>
         <aside class="watch-panel">
@@ -764,6 +765,7 @@ def listings_radar_html() -> str:
         $("market-count").textContent = data.operations.market_count;
         $("data-mode").textContent = data.operations.data_mode;
         $("automatic-refresh").textContent = data.operations.automatic_refresh;
+        $("official-monitor-refresh").textContent = data.operations.official_monitor_refresh;
         $("manual-refresh").textContent = data.operations.manual_refresh;
         $("automated-markets").textContent = data.operations.automated_market_count;
         $("export").href = `/api/v1/listings/radar/export.csv?${parameters}`;

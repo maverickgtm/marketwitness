@@ -92,7 +92,9 @@ promote an evidence signal to a confirmed listing. `Monitor Status` makes the
 bundle date and collection mode explicit, and filtered CSV export turns a
 research view into a portable review queue. The `Official-source activation`
 matrix separates the no-cost weekday CVM/ESMA artifact workflow from SEC
-operator configuration, rights reviews and restricted markets.
+operator configuration, rights reviews and restricted markets. The weekday
+artifact persists an earlier CVM/ESMA snapshot and reports new, changed or
+removed-from-feed evidence requiring review.
 
 ### Global Listings Watch
 

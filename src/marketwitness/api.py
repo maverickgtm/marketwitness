@@ -540,6 +540,9 @@ def create_app(
                 "collection_status": "Scheduled artifact / not live collection",
                 "latest_evidence_date": latest_evidence,
                 "automatic_refresh": "Mondays at 12:17 UTC via GitHub Actions",
+                "official_monitor_refresh": (
+                    "Weekdays at 11:23 UTC / CVM and ESMA retained change log artifact"
+                ),
                 "manual_refresh": "Run make verify to rebuild the local evidence bundle",
                 "market_count": len({str(item["market"]) for item in all_rows}),
                 "streams": [
@@ -1000,7 +1003,10 @@ def _listing_automation_controls(providers: list[SourceProvider]) -> list[dict[s
             reason = "Required source passport is not registered."
         elif requested_state == "weekdays_official_capture" and provider.deployment_state == "usable_with_policy":
             activation_state = requested_state
-            reason = "Eligible official evidence captured by the no-cost weekday GitHub Action."
+            reason = (
+                "Official evidence captured and compared with retained prior "
+                "observations by the no-cost weekday GitHub Action."
+            )
         elif requested_state == "operator_configuration_required":
             activation_state = requested_state
             reason = "Connector is permitted but live SEC collection requires an identified private User-Agent."
