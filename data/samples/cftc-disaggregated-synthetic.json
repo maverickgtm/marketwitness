@@ -1,0 +1,42 @@
+[
+  {
+    "market_and_exchange_names": "WTI-PHYSICAL - NEW YORK MERCANTILE EXCHANGE",
+    "cftc_contract_market_code": "067651",
+    "report_date_as_yyyy_mm_dd": "2026-05-19T00:00:00.000",
+    "open_interest_all": "2002950",
+    "m_money_positions_long_all": "207565",
+    "m_money_positions_short_all": "109346",
+    "prod_merc_positions_long": "263865",
+    "prod_merc_positions_short": "538124"
+  },
+  {
+    "market_and_exchange_names": "WTI-PHYSICAL - NEW YORK MERCANTILE EXCHANGE",
+    "cftc_contract_market_code": "067651",
+    "report_date_as_yyyy_mm_dd": "2026-05-12T00:00:00.000",
+    "open_interest_all": "2081927",
+    "m_money_positions_long_all": "187332",
+    "m_money_positions_short_all": "114531",
+    "prod_merc_positions_long": "269400",
+    "prod_merc_positions_short": "530000"
+  },
+  {
+    "market_and_exchange_names": "GOLD - COMMODITY EXCHANGE INC.",
+    "cftc_contract_market_code": "088691",
+    "report_date_as_yyyy_mm_dd": "2026-05-19T00:00:00.000",
+    "open_interest_all": "379325",
+    "m_money_positions_long_all": "122894",
+    "m_money_positions_short_all": "29354",
+    "prod_merc_positions_long": "18216",
+    "prod_merc_positions_short": "151248"
+  },
+  {
+    "market_and_exchange_names": "GOLD - COMMODITY EXCHANGE INC.",
+    "cftc_contract_market_code": "088691",
+    "report_date_as_yyyy_mm_dd": "2026-05-12T00:00:00.000",
+    "open_interest_all": "376496",
+    "m_money_positions_long_all": "127242",
+    "m_money_positions_short_all": "29227",
+    "prod_merc_positions_long": "18000",
+    "prod_merc_positions_short": "149000"
+  }
+]

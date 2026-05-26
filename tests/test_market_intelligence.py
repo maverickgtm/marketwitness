@@ -13,8 +13,8 @@ class MarketIntelligenceTests(unittest.TestCase):
         snapshot = build_market_intelligence_snapshot(providers, date(2026, 5, 25))
 
         self.assertEqual(snapshot["module_count"], 8)
-        self.assertEqual(snapshot["foundation_count"], 6)
-        self.assertEqual(snapshot["planned_connector_count"], 2)
+        self.assertEqual(snapshot["foundation_count"], 7)
+        self.assertEqual(snapshot["planned_connector_count"], 1)
         regimes = next(
             item for item in snapshot["modules"] if item["key"] == "market_regimes"
         )
@@ -61,6 +61,12 @@ class MarketIntelligenceTests(unittest.TestCase):
         self.assertEqual(macro["route"], "/dashboard/macro-calendar")
         self.assertEqual(macro["title"], "Macro Catalyst Calendar")
         self.assertIn("CPI", macro["coverage"])
+        cot = next(
+            item for item in snapshot["modules"] if item["key"] == "futures_positioning"
+        )
+        self.assertEqual(cot["title"], "COT Positioning Lab")
+        self.assertEqual(cot["route"], "/dashboard/cot-positioning")
+        self.assertIn("U.S. Dollar Index", cot["coverage"])
 
     def test_rejects_unknown_source_dependency(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))

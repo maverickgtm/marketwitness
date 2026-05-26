@@ -108,15 +108,15 @@ MODULES = (
     },
     {
         "key": "futures_positioning",
-        "title": "Futures Positioning",
+        "title": "COT Positioning Lab",
         "theme": "Commodities / USD",
-        "stage": "connector_planned",
-        "priority": "after_next",
+        "stage": "foundation_available",
+        "priority": "next",
         "provider_ids": ("cftc-cot",),
-        "coverage": "Managed Money and commercial positioning for energy, metals and financial futures.",
-        "cadence": "Weekly CFTC report",
-        "route": "",
-        "next_delivery": "Publish net-position context alongside energy and dollar regimes.",
+        "coverage": "Official CFTC Managed Money context for WTI and Gold plus Leveraged Money context for U.S. Dollar Index benchmark futures.",
+        "cadence": "Weekly delayed CFTC Commitments of Traders API observations",
+        "route": "/dashboard/cot-positioning",
+        "next_delivery": "Overlay scheduled macro catalysts with observed COT report shifts without claiming causality.",
         "claim_limit": "Aggregated futures categories do not identify a profitable position.",
     },
 )
@@ -143,7 +143,8 @@ def build_market_intelligence_snapshot(
             "Presidential Impact Lab: official White House intake with observed Treasury session context and Truth Social rights gate.",
             "Market Regimes: observed Treasury 2Y/10Y curve explorer plus attributed external BTC, ETH, WTI and Brent views.",
             "Macro Catalyst Calendar: official FOMC and selected BLS release timing with source links.",
-            "Insider Activity and CFTC positioning after connector review.",
+            "COT Positioning Lab: official weekly WTI, Gold and U.S. Dollar Index category exposure.",
+            "Insider Activity after SEC transaction-classification review.",
         ],
         "publication_boundary": (
             "This workspace maps verifiable evidence and implementation order. "

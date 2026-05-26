@@ -195,6 +195,14 @@ from .providers.macro_calendar import (
     write_macro_calendar_html,
     write_macro_calendar_report,
 )
+from .providers.cftc import (
+    CftcDataError,
+    fetch_cftc_positions,
+    load_cftc_snapshots,
+    write_cftc_csv,
+    write_cftc_html,
+    write_cftc_report,
+)
 from .providers.opendart import (
     OpenDartDataError,
     fetch_opendart_equity_filings,
@@ -1199,6 +1207,26 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Observation date in YYYY-MM-DD format.",
     )
+    cftc_parser = subparsers.add_parser(
+        "cftc-positioning",
+        help="Collect official weekly CFTC COT context for WTI, Gold and USD Index.",
+    )
+    cftc_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    cftc_parser.add_argument("--report", required=True, help="Markdown report path.")
+    cftc_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    cftc_parser.add_argument(
+        "--disaggregated-snapshot",
+        help="Read a saved CFTC Disaggregated JSON fixture instead of requesting the API.",
+    )
+    cftc_parser.add_argument(
+        "--financial-snapshot",
+        help="Read a saved CFTC Traders in Financial Futures JSON fixture instead of requesting the API.",
+    )
+    cftc_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Observation date in YYYY-MM-DD format.",
+    )
     opendart_parser = subparsers.add_parser(
         "opendart-monitor", help="Read South Korea OpenDART equity-offering filings."
     )
@@ -1522,6 +1550,33 @@ def main() -> int:
         print(
             f"Wrote macro catalyst calendar for {len(events)} scheduled events "
             f"to {args.report}."
+        )
+        return 0
+
+    if args.command == "cftc-positioning":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            if bool(args.disaggregated_snapshot) != bool(args.financial_snapshot):
+                raise CftcDataError(
+                    "CFTC fixture mode requires both --disaggregated-snapshot and --financial-snapshot."
+                )
+            if args.disaggregated_snapshot:
+                positions = load_cftc_snapshots(
+                    args.disaggregated_snapshot, args.financial_snapshot, as_of
+                )
+                source_mode = "synthetic_fixture"
+            else:
+                positions = fetch_cftc_positions(as_of)
+                source_mode = "official_live_json"
+            write_cftc_csv(args.output, positions)
+            write_cftc_report(args.report, positions, as_of, source_mode)
+            if args.html:
+                write_cftc_html(args.html, positions, as_of, source_mode)
+        except (CftcDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote CFTC COT positioning context for {len(positions)} weekly "
+            f"observations to {args.report}."
         )
         return 0
 

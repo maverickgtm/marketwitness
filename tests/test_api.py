@@ -147,6 +147,18 @@ class ApiTests(unittest.TestCase):
             "<html><h1>Macro Catalyst Calendar generated page</h1></html>",
             encoding="utf-8",
         )
+        (self.reports / "cftc-positioning.csv").write_text(
+            "market_key,market_label,contract_market_code,contract_name,report_family,report_date,open_interest,primary_label,primary_long,primary_short,primary_net,secondary_label,secondary_long,secondary_short,secondary_net,source_mode,observed_on,source_url\n"
+            "wti,WTI Crude Oil,067651,WTI-PHYSICAL - NEW YORK MERCANTILE EXCHANGE,Disaggregated Futures Only,2026-05-12,2081927,Managed Money,187332,114531,72801,Producer / Merchant,269400,530000,-260600,synthetic_fixture,2026-05-26,https://publicreporting.cftc.gov/resource/72hh-3qpy.json\n"
+            "wti,WTI Crude Oil,067651,WTI-PHYSICAL - NEW YORK MERCANTILE EXCHANGE,Disaggregated Futures Only,2026-05-19,2002950,Managed Money,207565,109346,98219,Producer / Merchant,263865,538124,-274259,synthetic_fixture,2026-05-26,https://publicreporting.cftc.gov/resource/72hh-3qpy.json\n"
+            "gold,Gold,088691,GOLD - COMMODITY EXCHANGE INC.,Disaggregated Futures Only,2026-05-19,379325,Managed Money,122894,29354,93540,Producer / Merchant,18216,151248,-133032,synthetic_fixture,2026-05-26,https://publicreporting.cftc.gov/resource/72hh-3qpy.json\n"
+            "usd-index,U.S. Dollar Index,098662,USD INDEX - ICE FUTURES U.S.,Traders in Financial Futures Only,2026-05-19,40626,Leveraged Money,11286,23002,-11716,Asset Manager,12168,2581,9587,synthetic_fixture,2026-05-26,https://publicreporting.cftc.gov/resource/gpe5-46if.json\n",
+            encoding="utf-8",
+        )
+        (self.reports / "cftc-positioning.html").write_text(
+            "<html><h1>CFTC COT Positioning generated page</h1></html>",
+            encoding="utf-8",
+        )
         (self.reports / "ipo-watch.html").write_text(
             "<html><h1>IPO Watch generated page</h1></html>", encoding="utf-8"
         )
@@ -327,9 +339,9 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("/api/v1/open-edition", page.text)
         self.assertEqual(snapshot.status_code, 200)
-        self.assertEqual(snapshot.json()["zero_cost_available_count"], 8)
+        self.assertEqual(snapshot.json()["zero_cost_available_count"], 9)
         self.assertEqual(snapshot.json()["offline_ready_count"], 2)
-        self.assertEqual(snapshot.json()["public_data_ready_count"], 6)
+        self.assertEqual(snapshot.json()["public_data_ready_count"], 7)
         self.assertEqual(snapshot.json()["attributed_widget_count"], 0)
         self.assertEqual(snapshot.json()["optional_extension_count"], 1)
         self.assertIn("/dashboard/reports", page.text)
@@ -340,6 +352,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/volatility", page.text)
         self.assertIn("/dashboard/presidential-impact", page.text)
         self.assertIn("/dashboard/macro-calendar", page.text)
+        self.assertIn("/dashboard/cot-positioning", page.text)
         self.assertIn("/dashboard/rwa-watch", page.text)
         self.assertIn("Tokenized Assets / RWA", page.text)
         self.assertIn("Analyst Scorecards", page.text)
@@ -412,6 +425,7 @@ class ApiTests(unittest.TestCase):
             "/dashboard/governance-report/scorecard-readiness",
             "/dashboard/market-context",
             "/dashboard/macro-calendar",
+            "/dashboard/cot-positioning",
             "/dashboard/intelligence",
             "/dashboard/volatility",
             "/dashboard/policy-signals",
@@ -443,8 +457,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Source-first expansion blueprint", page.text)
         self.assertEqual(snapshot.status_code, 200)
         self.assertEqual(snapshot.json()["module_count"], 8)
-        self.assertEqual(snapshot.json()["foundation_count"], 6)
-        self.assertEqual(snapshot.json()["planned_connector_count"], 2)
+        self.assertEqual(snapshot.json()["foundation_count"], 7)
+        self.assertEqual(snapshot.json()["planned_connector_count"], 1)
         self.assertIn("Official document metadata may be loaded", snapshot.json()["publication_boundary"])
         keys = {item["key"] for item in snapshot.json()["modules"]}
         self.assertIn("market_regimes", keys)
@@ -455,11 +469,31 @@ class ApiTests(unittest.TestCase):
         self.assertIn("macro_calendar", keys)
         self.assertIn("/dashboard/volatility", page.text)
         self.assertIn("/dashboard/presidential-impact", page.text)
+        self.assertIn("/dashboard/cot-positioning", page.text)
         self.assertIn("VIX Reaction Explorer", page.text)
         regimes = next(
             item for item in snapshot.json()["modules"] if item["key"] == "market_regimes"
         )
         self.assertIn("curve-regime calculations are active", regimes["coverage"])
+
+    def test_serves_official_cftc_positioning_lab_with_market_and_window_filters(self) -> None:
+        page = self.client.get("/dashboard/cot-positioning")
+        snapshot = self.client.get("/api/v1/intelligence/cot-positioning?market=wti&weeks=1")
+        usd = self.client.get("/api/v1/intelligence/cot-positioning?market=usd-index&weeks=1")
+        report = self.client.get("/dashboard/cot-positioning/report")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("COT Positioning Lab", page.text)
+        self.assertIn("/api/v1/intelligence/cot-positioning", page.text)
+        self.assertIn("USD Index", page.text)
+        self.assertEqual(snapshot.status_code, 200)
+        self.assertEqual(snapshot.json()["latest"]["primary_label"], "Managed Money")
+        self.assertEqual(snapshot.json()["comparison"]["primary_net_change"], 25418)
+        self.assertEqual(usd.status_code, 200)
+        self.assertEqual(usd.json()["latest"]["primary_label"], "Leveraged Money")
+        self.assertIn("delayed", usd.json()["publication_boundary"])
+        self.assertEqual(report.status_code, 200)
+        self.assertIn("CFTC COT Positioning generated page", report.text)
 
     def test_serves_volatility_research_lab_without_implying_a_trading_signal(self) -> None:
         page = self.client.get("/dashboard/volatility")

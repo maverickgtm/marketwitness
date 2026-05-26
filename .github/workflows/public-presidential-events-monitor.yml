@@ -56,6 +56,13 @@ jobs:
             --report build/policy-monitor/macro-calendar.md \
             --html build/policy-monitor/macro-calendar.html \
             --as-of "$AS_OF"
+      - name: Collect official CFTC positioning context
+        run: |
+          python -m marketwitness cftc-positioning \
+            --output build/policy-monitor/cftc-positioning.csv \
+            --report build/policy-monitor/cftc-positioning.md \
+            --html build/policy-monitor/cftc-positioning.html \
+            --as-of "$AS_OF"
       - name: Save retained official-event archive
         uses: actions/cache/save@v4
         with:
@@ -70,10 +77,12 @@ jobs:
             echo "- Collects title, timestamp, official URL and rule-based topic tags from White House News and Presidential Actions RSS only."
             echo "- Includes official Treasury daily 2Y and 10Y yield context for session-to-session comparison."
             echo "- Includes scheduled Federal Reserve FOMC meetings and selected BLS CPI, PPI, payrolls and JOLTS releases."
+            echo "- Includes delayed weekly CFTC COT positioning for WTI, Gold and U.S. Dollar Index benchmark contracts."
             echo "- Official BLS/FOMC collection uses an identified contact User-Agent configured as a repository secret."
             echo "- Does not collect Truth Social or White House Wire linked article bodies."
             echo "- Treasury changes are temporal context, not proof of event causation or investment advice."
             echo "- Macro calendar times identify known catalysts; they do not predict outcomes or positions."
+            echo "- CFTC category net positions are aggregated context, not trading recommendations."
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload official-event artifact
         uses: actions/upload-artifact@v4

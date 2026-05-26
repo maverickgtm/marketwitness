@@ -36,6 +36,16 @@ promise real analyst rankings or investment recommendations.
 - [ ] Create the `v0.1.0-rc.1` tag and release notes only after Actions passes
   from the public repository.
 
+Run this publication hygiene check before pushing a public candidate:
+
+```bash
+make release-hygiene
+```
+
+It intentionally fails when tracked sensitive/generated files are present,
+when non-placeholder email addresses appear in tracked files, or when commit
+history still exposes non-`users.noreply.github.com` author emails.
+
 ## Not Blocking The Open Edition
 
 - A publishable real history of price targets from firms such as Roth MKM,

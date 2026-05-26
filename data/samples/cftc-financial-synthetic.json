@@ -1,0 +1,22 @@
+[
+  {
+    "market_and_exchange_names": "USD INDEX - ICE FUTURES U.S.",
+    "cftc_contract_market_code": "098662",
+    "report_date_as_yyyy_mm_dd": "2026-05-19T00:00:00.000",
+    "open_interest_all": "40626",
+    "lev_money_positions_long": "11286",
+    "lev_money_positions_short": "23002",
+    "asset_mgr_positions_long": "12168",
+    "asset_mgr_positions_short": "2581"
+  },
+  {
+    "market_and_exchange_names": "USD INDEX - ICE FUTURES U.S.",
+    "cftc_contract_market_code": "098662",
+    "report_date_as_yyyy_mm_dd": "2026-05-12T00:00:00.000",
+    "open_interest_all": "32108",
+    "lev_money_positions_long": "9720",
+    "lev_money_positions_short": "14471",
+    "asset_mgr_positions_long": "10825",
+    "asset_mgr_positions_short": "2330"
+  }
+]

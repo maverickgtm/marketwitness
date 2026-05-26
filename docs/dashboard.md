@@ -24,6 +24,7 @@ workspace or the report directory without relying on browser history.
 | `/dashboard/intelligence` | Cross-asset research workspace | Planned stored connectors are not live feeds |
 | `/dashboard/market-context` | Cross-Asset Markets terminal with Treasury Curve Regime Explorer | Official Treasury 2Y/10Y observations support regime calculations; TradingView values are not stored or scored |
 | `/dashboard/macro-calendar` | Macro Catalyst Calendar with horizon and agency filters | Official FOMC and selected BLS schedule metadata identifies known times, not outcomes or trades |
+| `/dashboard/cot-positioning` | COT Positioning Lab with market and weekly comparison filters | Official CFTC category observations are delayed aggregated context, not position recommendations |
 | `/dashboard/volatility` | VIX Reaction Explorer | Select rising/cooling scenarios and windows; no unlicensed episode calculations |
 | `/dashboard/presidential-impact` | Presidential Impact Lab: event intake, official Treasury context and calculation sandbox | News/Actions RSS and Treasury 2Y/10Y session changes are observable context; broader reactions and Truth Social remain gated |
 | `/dashboard/commons` | Evidence Passport Commons | Source rights and claim boundaries are visible |
@@ -152,6 +153,9 @@ confirmed manager buy or sell without additional evidence.
 - `/dashboard/macro-calendar` filters upcoming official FOMC meetings and
   selected BLS `CPI`, `PPI`, `Payrolls`, and `JOLTS` release times by horizon
   and agency, with direct source links and a handoff to Treasury curve context.
+- `/dashboard/cot-positioning` compares CFTC weekly category net contracts,
+  net exposure as a percentage of open interest and selected-window changes
+  for WTI, Gold and the U.S. Dollar Index, using fixed benchmark contract codes.
 - `/dashboard/volatility` presents a FRED-attributed VIX display, an
   interactive rising-versus-cooling quantitative validation explorer with
   synthetic statistics, and planned real `VIX`/`VXN`/`MOVE`/commodity
@@ -188,6 +192,7 @@ registry files, and DuckDB runs. Key contracts include:
 - `/api/v1/intelligence/volatility`
 - `/api/v1/intelligence/treasury-regimes`
 - `/api/v1/intelligence/macro-calendar`
+- `/api/v1/intelligence/cot-positioning`
 - `/api/v1/intelligence/policy-signals`
 - `/api/v1/intelligence/policy-events`
 - `/api/v1/intelligence/policy-reactions`

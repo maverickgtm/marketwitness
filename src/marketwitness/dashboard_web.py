@@ -145,6 +145,7 @@ def open_edition_html() -> str:
         <a class="nav-link" href="/dashboard/presidential-impact"><span class="dot"></span>Presidential Impact</a>
         <a class="nav-link" href="/dashboard/market-context"><span class="dot"></span>Cross-Asset Markets</a>
         <a class="nav-link" href="/dashboard/macro-calendar"><span class="dot"></span>Macro Calendar</a>
+        <a class="nav-link" href="/dashboard/cot-positioning"><span class="dot"></span>COT Positioning</a>
         <a class="nav-link" href="/dashboard/reports"><span class="dot"></span>Report Center</a>
       </div>
       <div class="nav-group">
@@ -175,6 +176,7 @@ def open_edition_html() -> str:
         <a href="/dashboard/presidential-impact">Presidential Impact</a>
         <a href="/dashboard/market-context">Crypto / Commodities</a>
         <a href="/dashboard/macro-calendar">Macro Catalysts</a>
+        <a href="/dashboard/cot-positioning">COT Positioning</a>
         <a href="/dashboard/financials-evidence">Analyst Scorecards</a>
         <a href="/dashboard/rwa-watch">Tokenized Assets / RWA</a>
         <a href="/dashboard/contribute?lang=en">Contribute Connectors</a>
@@ -1579,7 +1581,7 @@ def market_intelligence_html() -> str:
         <h1>Events. Context.<br><span>Positioning.</span></h1>
         <p class="lead">A planned intelligence layer connecting IPO and listing evidence to macro catalysts, selected market regimes and declared positioning. It begins with provenance, not promises.</p>
         <p class="meta" id="reviewed">Loading reviewed sources...</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/presidential-impact">Open Presidential Impact Lab</a><a href="/dashboard/volatility">VIX Reaction Explorer</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/macro-calendar">Macro calendar</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/presidential-impact">Open Presidential Impact Lab</a><a href="/dashboard/volatility">VIX Reaction Explorer</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/macro-calendar">Macro calendar</a><a href="/dashboard/cot-positioning">COT positioning</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
       </article>
       <article class="sequence"><p class="eyebrow">Delivery sequence</p><ol id="sequence"></ol></article>
     </section>
@@ -1726,6 +1728,158 @@ def macro_calendar_html() -> str:
     document.querySelectorAll(".agency").forEach((button) => button.addEventListener("click", () => { selectedAgency = button.dataset.agency; document.querySelectorAll(".agency").forEach((item) => item.classList.toggle("active", item === button)); loadCalendar().catch(showError); }));
     function showError(error) { const node = document.getElementById("error"); node.style.display = "block"; node.textContent = error.message; }
     loadCalendar().catch(showError);
+  </script>
+</body>
+</html>"""
+
+
+def cot_positioning_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MarketWitness | COT Positioning Lab</title>
+  <style>
+    :root { --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246; --text:#f2f6f7;
+      --muted:#96aab8; --mint:#38dfad; --gold:#f3bf66; --blue:#62a6ff; --red:#ff8176; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--text); font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 82% 0%,rgba(56,223,173,.12),transparent 28%),radial-gradient(circle at 14% 16%,rgba(243,191,102,.09),transparent 28%),var(--bg); }
+    a { color:var(--mint); text-decoration:none; } header,main { max-width:1360px; margin:auto; padding:23px 28px; }
+    nav,.eyebrow,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-size:11px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:27px; }
+    .back { color:var(--text); border:1px solid var(--line); padding:9px 14px; border-radius:10px; font-weight:600; }
+    .hero,.lab,.stat,.story,.history,.notice { border:1px solid var(--line); border-radius:18px; background:var(--panel); }
+    .hero { display:grid; grid-template-columns:minmax(480px,1fr) 430px; gap:24px; padding:32px 35px; }
+    h1 { font-size:clamp(43px,5vw,64px); line-height:1.02; letter-spacing:-.05em; margin:13px 0 15px; }
+    h1 span { color:var(--mint); } h2 { font-size:25px; margin:4px 0 8px; } h3 { margin:0 0 8px; }
+    .lead { color:var(--muted); font-size:17px; max-width:680px; }
+    .hero-card { padding:20px; background:var(--panel2); border-radius:15px; align-self:center; }
+    .hero-card strong { display:block; font-size:34px; letter-spacing:-.04em; color:var(--gold); margin:7px 0; }
+    .hero-card p { color:var(--muted); margin:4px 0; }
+    .lab { padding:22px; margin-top:20px; }
+    .lab-head { display:flex; justify-content:space-between; align-items:start; gap:17px; margin-bottom:19px; }
+    .official { color:var(--mint); background:rgba(56,223,173,.12); border-radius:999px; padding:7px 11px; font-size:11px; text-transform:uppercase; letter-spacing:.09em; white-space:nowrap; }
+    .controls { display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; padding:15px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .buttons { display:flex; flex-wrap:wrap; gap:8px; } button { font:inherit; font-weight:600; cursor:pointer; color:var(--muted); background:var(--panel2);
+      border:1px solid var(--line); border-radius:10px; padding:10px 14px; }
+    button.active { color:#061117; background:var(--mint); border-color:var(--mint); }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:18px 0; }
+    .stat { padding:15px 17px; background:var(--panel2); } .stat small { display:block; color:var(--muted); margin-bottom:6px; }
+    .stat strong { font-size:27px; letter-spacing:-.03em; }
+    .positive { color:var(--mint); } .negative { color:var(--red); } .neutral { color:var(--gold); }
+    .detail { display:grid; grid-template-columns:minmax(330px,.72fr) minmax(460px,1.28fr); gap:13px; }
+    .story,.history { background:var(--panel2); padding:17px; } .story p { color:var(--muted); margin:8px 0; }
+    .comparison { border-top:1px solid var(--line); padding-top:13px; margin-top:14px!important; }
+    .links { display:flex; flex-wrap:wrap; gap:14px; margin-top:17px; font-weight:600; font-size:13px; }
+    table { width:100%; border-collapse:collapse; } th,td { text-align:left; padding:9px 7px; border-bottom:1px solid var(--line); }
+    th { color:var(--muted); text-transform:uppercase; letter-spacing:.09em; font-size:11px; font-weight:500; }
+    .notice { border-left:3px solid var(--gold); padding:14px 18px; color:var(--muted); margin-top:18px; }
+    #error { display:none; border-left-color:var(--red); }
+    @media(max-width:940px) { .hero,.detail { grid-template-columns:1fr; } .stats { grid-template-columns:repeat(2,1fr); } header,main { padding:18px 14px; } }
+    @media(max-width:570px) { .top,.lab-head { flex-direction:column; align-items:flex-start; } .hero { padding:25px 20px; } .stats { grid-template-columns:1fr; } .history { overflow-x:auto; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top"><nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/intelligence">Market Intelligence</a> / COT Positioning</nav><a class="back" href="/dashboard/open">Back to terminal</a></div>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Official weekly CFTC context / no paid key</p>
+        <h1>Who is positioned.<br><span>How net exposure shifts.</span></h1>
+        <p class="lead">Inspect reported category exposure in three benchmark futures contracts: WTI crude oil, gold and the U.S. Dollar Index. Compare weekly changes without confusing aggregated reporting with a trade instruction.</p>
+        <p class="meta" id="mode">Loading official positioning artifact...</p>
+      </div>
+      <article class="hero-card">
+        <p class="eyebrow">Regulatory delay visible</p>
+        <strong id="report-date">-</strong>
+        <p>Latest report date in the loaded CFTC artifact.</p>
+        <p id="contract">Waiting for benchmark contract...</p>
+      </article>
+    </section>
+  </header>
+  <main>
+    <section class="lab">
+      <div class="lab-head"><div><p class="eyebrow">Positioning explorer</p><h2>COT Positioning Lab</h2><p class="lead">Choose a benchmark and a comparison window measured in weekly reports.</p></div><span class="official">CFTC official API</span></div>
+      <div class="controls">
+        <div class="buttons" aria-label="Market filters">
+          <button class="market active" data-market="wti" type="button">WTI crude</button>
+          <button class="market" data-market="gold" type="button">Gold</button>
+          <button class="market" data-market="usd-index" type="button">USD Index</button>
+        </div>
+        <div class="buttons" aria-label="Weekly comparison windows">
+          <button class="weeks active" data-weeks="1" type="button">1 week</button>
+          <button class="weeks" data-weeks="4" type="button">4 weeks</button>
+          <button class="weeks" data-weeks="12" type="button">12 weeks</button>
+          <button class="weeks" data-weeks="52" type="button">52 weeks</button>
+        </div>
+      </div>
+      <section class="stats">
+        <article class="stat"><small id="primary-label">Reported category net</small><strong id="primary-net">-</strong></article>
+        <article class="stat"><small>Net / open interest</small><strong id="primary-pct">-</strong></article>
+        <article class="stat"><small>Open interest</small><strong id="open-interest">-</strong></article>
+        <article class="stat"><small id="secondary-label">Secondary category net</small><strong id="secondary-net">-</strong></article>
+      </section>
+      <section class="detail">
+        <article class="story">
+          <p class="eyebrow">Selected comparison</p>
+          <h3 id="shift">Loading weekly reports...</h3>
+          <p id="explain"></p>
+          <p class="comparison" id="comparison"></p>
+          <div class="links"><a href="/dashboard/cot-positioning/report">Open normalized report</a><a href="https://publicreporting.cftc.gov/stories/s/User-s-Guide/p2fg-u73y/" target="_blank" rel="noopener">Official API guide</a><a href="/dashboard/market-context">Cross-asset displays</a></div>
+        </article>
+        <article class="history">
+          <p class="eyebrow">Recent weekly observations</p>
+          <table><thead><tr><th>Report date</th><th>Primary net</th><th>Net / OI</th><th>Open interest</th></tr></thead><tbody id="history"><tr><td colspan="4">Loading...</td></tr></tbody></table>
+        </article>
+      </section>
+      <p class="notice" id="boundary">CFTC category positions are delayed context, not an investment recommendation.</p>
+      <p class="notice" id="error"></p>
+    </section>
+  </main>
+  <script>
+    let selectedMarket = "wti", selectedWeeks = "1";
+    const text = (value) => String(value == null ? "-" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    const number = (value) => Number(value).toLocaleString("en-US", { maximumFractionDigits: 0 });
+    const signed = (value) => `${Number(value) > 0 ? "+" : ""}${number(value)}`;
+    const tone = (value) => Number(value) > 0 ? "positive" : Number(value) < 0 ? "negative" : "neutral";
+    async function loadPositioning() {
+      const response = await fetch(`/api/v1/intelligence/cot-positioning?market=${encodeURIComponent(selectedMarket)}&weeks=${selectedWeeks}`);
+      if (!response.ok) throw new Error((await response.json()).detail || "CFTC request failed.");
+      const data = await response.json();
+      if (!data.available) { document.getElementById("mode").textContent = data.message; return; }
+      const item = data.latest;
+      document.getElementById("mode").textContent = `${data.data_mode} / observed ${data.as_of} / weekly delayed reporting`;
+      document.getElementById("report-date").textContent = data.latest_report_date;
+      document.getElementById("contract").textContent = `${data.contract_name} / ${data.report_family}`;
+      document.getElementById("primary-label").textContent = `${item.primary_label} net`;
+      const primary = document.getElementById("primary-net");
+      primary.textContent = signed(item.primary_net);
+      primary.className = tone(item.primary_net);
+      const pct = document.getElementById("primary-pct");
+      pct.textContent = `${Number(item.primary_net_pct_oi) > 0 ? "+" : ""}${item.primary_net_pct_oi}%`;
+      pct.className = tone(item.primary_net);
+      document.getElementById("open-interest").textContent = number(item.open_interest);
+      document.getElementById("secondary-label").textContent = `${item.secondary_label} net`;
+      const secondary = document.getElementById("secondary-net");
+      secondary.textContent = signed(item.secondary_net);
+      secondary.className = tone(item.secondary_net);
+      document.getElementById("explain").textContent = `${item.primary_label} reports ${signed(item.primary_net)} net contracts, or ${item.primary_net_pct_oi}% of open interest, for ${data.market_label}.`;
+      if (data.comparison_available) {
+        const comp = data.comparison;
+        document.getElementById("shift").textContent = `${selectedWeeks}-week net change: ${signed(comp.primary_net_change)} contracts`;
+        document.getElementById("comparison").innerHTML = `${text(comp.reference_date)} to ${text(comp.latest_date)}: ${text(item.primary_label)} net <strong class="${tone(comp.primary_net_change)}">${text(signed(comp.primary_net_change))}</strong>, ${text(item.secondary_label)} net <strong class="${tone(comp.secondary_net_change)}">${text(signed(comp.secondary_net_change))}</strong>, open interest <strong class="${tone(comp.open_interest_change)}">${text(signed(comp.open_interest_change))}</strong>.`;
+      } else {
+        document.getElementById("shift").textContent = `${selectedWeeks}-week comparison unavailable`;
+        document.getElementById("comparison").textContent = "The loaded artifact does not yet include enough weekly reports for this comparison window.";
+      }
+      document.getElementById("history").innerHTML = data.history.map((row) => `<tr><td>${text(row.report_date)}</td><td class="${tone(row.primary_net)}">${text(signed(row.primary_net))}</td><td>${text(row.primary_net_pct_oi)}%</td><td>${text(number(row.open_interest))}</td></tr>`).join("");
+      document.getElementById("boundary").textContent = data.publication_boundary;
+    }
+    function showError(error) { const node = document.getElementById("error"); node.style.display = "block"; node.textContent = error.message; }
+    document.querySelectorAll(".market").forEach((button) => button.addEventListener("click", () => { selectedMarket = button.dataset.market; document.querySelectorAll(".market").forEach((item) => item.classList.toggle("active", item === button)); loadPositioning().catch(showError); }));
+    document.querySelectorAll(".weeks").forEach((button) => button.addEventListener("click", () => { selectedWeeks = button.dataset.weeks; document.querySelectorAll(".weeks").forEach((item) => item.classList.toggle("active", item === button)); loadPositioning().catch(showError); }));
+    loadPositioning().catch(showError);
   </script>
 </body>
 </html>"""
@@ -2429,7 +2583,7 @@ def market_context_html() -> str:
           <p class="eyebrow">Selected comparison</p>
           <h3 id="curve-shift">Choose a window</h3>
           <p id="curve-comparison">Waiting for observed rates...</p>
-          <div class="curve-links"><a href="/dashboard/market-context/treasury-report">Open observations</a><a href="https://home.treasury.gov/treasury-daily-interest-rate-xml-feed" target="_blank" rel="noopener">Official XML source</a></div>
+          <div class="curve-links"><a href="/dashboard/market-context/treasury-report">Open observations</a><a href="/dashboard/cot-positioning">Inspect CFTC positioning</a><a href="https://home.treasury.gov/treasury-daily-interest-rate-xml-feed" target="_blank" rel="noopener">Official XML source</a></div>
         </article>
         <article class="curve-history">
           <p class="eyebrow">Latest daily observations</p>

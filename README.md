@@ -1,7 +1,7 @@
 # MarketWitness
 
 **Evidence-first market intelligence for public listings, analyst research,
-volatility, ETF evidence, and presidential communication research.**
+volatility, futures positioning, ETF evidence, and presidential communication research.**
 
 `v0.1.0-rc.1` | Open Edition | MIT licensed | No paid data required | Responsive dashboard
 
@@ -42,6 +42,7 @@ rights are visible product outcomes, not hidden limitations.
 | Market Intelligence | Organize market context and future connectors | Source-first workspace with documented constraints |
 | Cross-Asset Markets | Explore official Treasury curve regimes beside Bitcoin, Ethereum, energy, metals, FX and benchmarks | Treasury 2Y/10Y observations are stored official context; TradingView widget values remain display-only |
 | Macro Catalyst Calendar | Plan research around upcoming FOMC decisions and selected CPI, PPI, payrolls and JOLTS releases | Official Federal Reserve/BLS schedule metadata; timing is not a forecast or trading signal |
+| COT Positioning Lab | Compare reported category exposure in WTI, Gold and U.S. Dollar Index futures | Official CFTC weekly observations; positions are aggregated and delayed, not trade recommendations |
 | VIX Reaction Explorer | Compare rising or cooling VIX scenarios across forward windows | Synthetic quantitative validation table; real episode results require rights-approved inputs |
 | Presidential Impact Lab | Search official communications and compare nearby Treasury-rate sessions before testing broader reactions | White House News/Actions plus official Treasury 2Y/10Y context; broader returns and Truth Social remain gated |
 
@@ -68,6 +69,7 @@ collapsed sidebar with quick access to the product's key paths:
 - `VIX Reaction Explorer` and `Presidential Impact Lab`;
 - `Crypto / Commodities`, `Analyst Scorecards`, and `Tokenized Assets / RWA`;
 - `Macro Catalysts` for scheduled Federal Reserve and BLS event context;
+- `COT Positioning` for official weekly WTI, Gold and USD Index net-position context;
 - the international `Contribute Connectors` gateway.
 
 This makes the Open Edition practical to review from a phone browser while
@@ -117,6 +119,7 @@ Open <http://127.0.0.1:8000/>. High-signal views include:
 | `/dashboard/intelligence` | Market Intelligence workspace |
 | `/dashboard/market-context` | Cross-Asset Markets: official Treasury curve explorer plus BTC, ETH, energy, metals and FX displays |
 | `/dashboard/macro-calendar` | Macro Catalyst Calendar: official FOMC and selected BLS scheduled events |
+| `/dashboard/cot-positioning` | COT Positioning Lab: official weekly WTI, Gold and USD Index category positions |
 | `/dashboard/volatility` | VIX Reaction Explorer: rising/cooling volatility research |
 | `/dashboard/presidential-impact` | Official White House event queue and gated Donald Trump communication study |
 | `/dashboard/rwa-watch` | Tokenized Assets / RWA synthetic evidence sandbox |
@@ -151,6 +154,8 @@ the boundary auditable:
   trade feed.
 - TradingView displays are attributed external context, not stored or scored
   MarketWitness data.
+- CFTC COT observations are weekly, aggregated and delayed positioning
+  context; they do not reveal individual trades or recommend a position.
 - Real price-target rankings require an authorized data contribution or a
   license that permits the intended public output.
 - Truth Social collection remains blocked unless permission or an authorized
@@ -180,6 +185,7 @@ rules:
 | South Korea | OpenDART path where registration/key requirements apply |
 | Singapore | SGX path; MAS OPERA remains manual/restricted as recorded |
 | United States policy communications | White House official RSS feeds |
+| Energy, metals and USD futures positioning | CFTC Commitments of Traders public reporting API |
 
 The operational source of truth is `data/samples/source_registry.csv`, where
 each provider is classified by evidence role and publication status.
@@ -198,6 +204,7 @@ The project includes CLI workflows for:
 - source governance, provider approvals, and scorecard readiness;
 - ETF holdings evidence and SEC N-PORT synchronization;
 - Open Edition, licensed-extension, volatility, and policy research reports.
+- official CFTC COT benchmark-positioning collection and report generation.
 
 ## Contributing
 

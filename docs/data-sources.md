@@ -27,6 +27,7 @@ narrative below summarizes why sources exist in the product.
 | European prospectuses | ESMA Prospectus III | `SHRS` review evidence for Germany, Netherlands, Italy |
 | South Korean offerings | OpenDART | KRX data not republished under reviewed terms |
 | Official presidential events | White House RSS | Wire links remain metadata only |
+| Futures positioning context | CFTC Commitments of Traders API | Weekly aggregated category positions, not trade signals |
 
 ## Analyst Targets And Ratings
 
@@ -77,6 +78,9 @@ successful calculation.
 - Federal Reserve FOMC calendar HTML and BLS release-calendar iCalendar now
   supply attributed scheduled-event metadata for the Macro Catalyst Calendar;
   MarketWitness stores no release result or directional forecast from them.
+- CFTC public reporting JSON supplies weekly benchmark-only positioning for
+  `WTI-PHYSICAL`, `GOLD`, and `USD INDEX`. The lab retains the official
+  category labels and treats delayed aggregate net positions as context only.
 
 ## Official Reference Set
 
@@ -85,6 +89,8 @@ successful calculation.
 - U.S. Treasury Daily Interest Rate XML Feed: <https://home.treasury.gov/treasury-daily-interest-rate-xml-feed>
 - Federal Reserve FOMC Calendars: <https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm>
 - BLS Release Calendar: <https://www.bls.gov/schedule/>
+- CFTC Commitments of Traders: <https://www.cftc.gov/MarketReports/CommitmentsofTraders/index.htm>
+- CFTC Public Reporting API guide: <https://publicreporting.cftc.gov/stories/s/User-s-Guide/p2fg-u73y/>
 - FCA NSM: <https://data.fca.org.uk/#/nsm/nationalstoragemechanism>
 - London Stock Exchange: <https://www.londonstockexchange.com/>
 - HKEX: <https://www.hkex.com.hk/>

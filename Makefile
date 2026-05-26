@@ -1,7 +1,7 @@
-PYTHONPATH := src
+PYTHONPATH := $(if $(PYTHONPATH),$(PYTHONPATH):)src
 PYTHON := python3
 
-.PHONY: test demo package verify clean
+.PHONY: test demo package verify release-hygiene clean
 
 test:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m unittest discover -s tests -v
@@ -123,6 +123,13 @@ demo:
 		--output build/demo/macro-calendar.csv \
 		--report build/demo/macro-calendar.md \
 		--html build/demo/macro-calendar.html \
+		--as-of 2026-05-26
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness cftc-positioning \
+		--disaggregated-snapshot data/samples/cftc-disaggregated-synthetic.json \
+		--financial-snapshot data/samples/cftc-financial-synthetic.json \
+		--output build/demo/cftc-positioning.csv \
+		--report build/demo/cftc-positioning.md \
+		--html build/demo/cftc-positioning.html \
 		--as-of 2026-05-26
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness rwa-watch \
 		--snapshot data/samples/rwa-watch-synthetic.csv \
@@ -420,6 +427,9 @@ package:
 	$(PYTHON) -m pip wheel --no-deps --no-build-isolation . -w build/dist
 
 verify: test demo package
+
+release-hygiene:
+	sh scripts/release_hygiene_check.sh
 
 clean:
 	rm -rf build

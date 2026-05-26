@@ -91,6 +91,16 @@ CAPABILITIES = (
         "limitation": "Calendar times identify known catalysts only; they do not predict releases, prices or positions.",
     },
     {
+        "key": "cftc_positioning_context",
+        "title": "COT Positioning Lab",
+        "status": "public_source_no_key",
+        "cost": "No data fee",
+        "provider_ids": ("cftc-cot",),
+        "output": "Weekly benchmark net-position context for WTI, Gold and U.S. Dollar Index categories",
+        "route": "/dashboard/cot-positioning",
+        "limitation": "CFTC observations are aggregated and delayed; they are not individual trades or position recommendations.",
+    },
+    {
         "key": "real_analyst_rankings",
         "title": "Real Analyst Rankings",
         "status": "bring_authorized_data",
