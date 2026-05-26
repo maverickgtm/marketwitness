@@ -1,0 +1,55 @@
+name: Research methodology proposal
+description: Propose an event study, statistic, validation rule, or evidence control.
+title: "[Methodology] "
+labels: ["methodology"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A MarketWitness research method must declare its observation period, sample construction, benchmark, uncertainty and data rights before it becomes a public result.
+  - type: textarea
+    id: question
+    attributes:
+      label: Research question
+      placeholder: How do selected assets react over 1, 5 and 20 sessions after a defined VIX threshold event?
+    validations:
+      required: true
+  - type: textarea
+    id: event_definition
+    attributes:
+      label: Event rule and temporal scope
+      description: State thresholds, start/end dates, forward windows, exclusion rules and treatment of overlapping events.
+    validations:
+      required: true
+  - type: textarea
+    id: measures
+    attributes:
+      label: Measures, comparison and uncertainty
+      description: Describe returns, benchmark or control series, sample size disclosure and statistics to publish.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Input sources and publication rights
+      description: Link official or permitted data sources and describe retention and derived-output rights.
+    validations:
+      required: true
+  - type: textarea
+    id: claim_boundary
+    attributes:
+      label: Claim boundary
+      description: What can the method report, and what causal or investment conclusion must it avoid?
+    validations:
+      required: true
+  - type: checkboxes
+    id: review
+    attributes:
+      label: Review readiness
+      options:
+        - label: I identified the study dates and forward horizons.
+          required: true
+        - label: I identified the data rights needed for public results.
+          required: true
+        - label: I am not claiming a trading recommendation from this proposal.
+          required: true

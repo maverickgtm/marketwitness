@@ -47,6 +47,25 @@ rights are visible product outcomes, not hidden limitations.
 | VIX Reaction Explorer | Compare rising or cooling VIX scenarios across forward windows | Synthetic quantitative validation table; real episode results require rights-approved inputs |
 | Presidential Impact Lab | Search official communications and compare nearby Treasury-rate sessions before testing broader reactions | White House News/Actions plus official Treasury 2Y/10Y context; broader returns and Truth Social remain gated |
 
+## What You Can Do With It
+
+MarketWitness is not only a gallery of market pages. The Open Edition gives a
+researcher concrete workflows that remain honest about what the evidence can
+support:
+
+- inspect an IPO or global listing candidate, follow its official evidence
+  trail, filter changes and export a review set;
+- compare dated VIX stress and cooling study designs across equities, crypto,
+  energy and haven lenses, with the observation window stated on screen;
+- review official White House communication events beside Treasury-session
+  context without confusing correlation with a tradable claim;
+- filter SEC insider classifications and delayed CFTC positioning context by
+  issuer, owner, instrument or time period;
+- audit whether a proposed source is free, publishable, current and strong
+  enough for the claim a dashboard would make;
+- run the read-only API and reproducible reports locally, then contribute an
+  official-source connector or a better validation method.
+
 ## Product Views
 
 ### IPO Watch Center
@@ -229,6 +248,21 @@ its provenance, terms, cost, update cadence, and claim boundary. See
 The contributor gateway intentionally supports multiple languages for global
 source proposals. The repository documentation and default product interface
 are maintained in English.
+
+## Community Paths
+
+- Use [Discussions](https://github.com/maverickgtm/marketwitness/discussions)
+  for research ideas, official-market connector candidates, questions and
+  community showcases.
+- Use the [data source proposal form](https://github.com/maverickgtm/marketwitness/issues/new?template=source-proposal.yml)
+  when you can identify an official source, its terms and the exact claim it
+  can support.
+- Use the [feature request form](https://github.com/maverickgtm/marketwitness/issues/new?template=feature_request.yml)
+  for a user workflow or dashboard capability with a verifiable outcome.
+- Use the [methodology proposal form](https://github.com/maverickgtm/marketwitness/issues/new?template=methodology_proposal.yml)
+  for event-study design, metrics, validation windows or uncertainty controls.
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting code and
+  [SECURITY.md](SECURITY.md) before reporting any sensitive problem.
 
 ## Release Candidate Status
 

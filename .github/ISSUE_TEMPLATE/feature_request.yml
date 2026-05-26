@@ -1,0 +1,62 @@
+name: Product feature request
+description: Propose a useful dashboard, API, report, or workflow improvement.
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        MarketWitness prioritizes useful research workflows whose evidence, freshness and claim boundaries remain visible.
+  - type: textarea
+    id: user_need
+    attributes:
+      label: Research need
+      description: What decision, review task, or investigation should become easier?
+      placeholder: As a researcher reviewing upcoming listings, I want to...
+    validations:
+      required: true
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Proposed workflow
+      description: Describe the filters, calculations, dashboard interaction, API response, export, or alert behavior.
+    validations:
+      required: true
+  - type: dropdown
+    id: product_area
+    attributes:
+      label: Product area
+      options:
+        - IPO Watch / Global Listings
+        - VIX Reaction Explorer
+        - Presidential Impact Lab
+        - ETF / SEC / CFTC Evidence
+        - Cross-Asset Markets / Macro Catalysts
+        - Evidence Commons / API
+        - Dashboard / Mobile / Accessibility
+        - New research area
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and data requirements
+      description: Identify required sources, expected cadence, licensing concerns, or whether synthetic fixtures are sufficient.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Verifiable outcome
+      description: How could a contributor test that this feature works and communicates its limitations?
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Public product boundaries
+      options:
+        - label: This request does not require publishing unlicensed data or private credentials.
+          required: true
+        - label: I understand that MarketWitness does not present investment recommendations.
+          required: true

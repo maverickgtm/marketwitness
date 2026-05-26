@@ -1,2 +1,8 @@
 blank_issues_enabled: false
-
+contact_links:
+  - name: Research idea or connector discussion
+    url: https://github.com/maverickgtm/marketwitness/discussions/categories/ideas
+    about: Discuss exploratory ideas before opening implementation work.
+  - name: Sensitive security report
+    url: https://github.com/maverickgtm/marketwitness/blob/main/SECURITY.md
+    about: Read the private reporting instructions. Do not publish credentials or sensitive evidence in an issue.

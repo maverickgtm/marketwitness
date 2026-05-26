@@ -1,0 +1,39 @@
+title: "[Idea] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping shape MarketWitness. Ideas are strongest when they explain the research utility, the evidence path and the claim the product must not overstate.
+  - type: dropdown
+    id: idea_area
+    attributes:
+      label: Area
+      options:
+        - Official market or regulator connector
+        - VIX / event-study research
+        - Policy-event research
+        - ETF / insider / CFTC evidence
+        - Cross-asset or macro context
+        - API / dashboard / hosted product
+        - Community or documentation
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What should MarketWitness make possible?
+      description: Explain the user value before proposing implementation detail.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence path or references
+      description: For data ideas, include official links, market, language, update cadence and any known access restrictions.
+  - type: textarea
+    id: boundary
+    attributes:
+      label: What should this never imply?
+      description: Describe the publication, causality or investment-advice boundary that should remain visible.
+    validations:
+      required: true
