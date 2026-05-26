@@ -10,63 +10,195 @@ def open_edition_html() -> str:
   <title>TargetAudit | Open Edition</title>
   <style>
     :root {
-      --bg:#071016; --panel:#0f1c24; --panel2:#14242d; --line:#20343d;
-      --text:#edf1ef; --muted:#98abb0; --mint:#56daac; --gold:#f0bc62;
-      --blue:#62a6ff; --red:#ff7d72;
+      --bg:#060b13; --shell:#09121c; --panel:#101a27; --panel2:#142131;
+      --line:#223246; --line-bright:#314b62; --text:#f2f6f7; --muted:#96aab8;
+      --mint:#38dfad; --mint-soft:rgba(56,223,173,.12); --gold:#f3bf66;
+      --blue:#62a6ff; --red:#ff7d72; --shadow:0 24px 72px rgba(0,0,0,.24);
     }
     * { box-sizing:border-box; }
-    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
-    header, main { max-width:1240px; margin:auto; padding:30px 28px; }
-    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
-    a { color:var(--mint); text-decoration:none; }
-    h1 { font-size:clamp(40px,5vw,62px); line-height:1.04; margin:38px 0 14px; }
-    h2 { margin:44px 0 16px; font-size:22px; }
-    h3 { margin:13px 0 8px; }
-    .lead { color:var(--muted); font-size:18px; max-width:930px; }
-    .notice { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--mint);
-      border-radius:14px; padding:15px 18px; color:var(--muted); margin:18px 0; }
-    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
-    .card,.feature,.mode { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
-    .card { padding:17px 20px; }
-    .card p { color:var(--muted); margin:0; }
-    .card strong { display:block; font-size:37px; color:var(--mint); margin-top:4px; }
-    .features { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
-    .feature { padding:18px; }
+    body { margin:0; min-height:100vh; color:var(--text); font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 84% 0%, rgba(56,223,173,.12), transparent 31%),
+        radial-gradient(circle at 35% 5%, rgba(98,166,255,.1), transparent 27%), var(--bg); }
+    a { color:inherit; text-decoration:none; }
+    .shell { display:grid; grid-template-columns:248px minmax(0,1fr); min-height:100vh; }
+    .sidebar { position:sticky; top:0; height:100vh; padding:26px 18px; border-right:1px solid var(--line);
+      background:rgba(7,13,21,.8); display:flex; flex-direction:column; gap:26px; }
+    .brand { display:flex; align-items:center; gap:12px; padding:0 9px; font-weight:700; letter-spacing:.01em; font-size:18px; }
+    .brand-mark { display:grid; place-items:center; width:36px; height:36px; border-radius:11px;
+      color:#051016; background:linear-gradient(145deg,var(--mint),#25a9db); font-size:18px; }
+    .side-label,.meta,.eyebrow { color:var(--muted); text-transform:uppercase; letter-spacing:.13em; font-size:11px; }
+    .nav-group { display:grid; gap:5px; }
+    .side-label { padding:0 11px 7px; }
+    .nav-link { display:flex; align-items:center; gap:11px; color:var(--muted); padding:10px 11px; border-radius:11px; }
+    .nav-link:hover,.nav-link.active { color:var(--text); background:var(--panel2); }
+    .dot { width:7px; height:7px; flex:none; border-radius:50%; background:var(--line-bright); }
+    .nav-link.active .dot,.online .dot { background:var(--mint); box-shadow:0 0 10px var(--mint); }
+    .side-foot { margin-top:auto; padding:14px; border:1px solid var(--line); border-radius:14px; color:var(--muted); }
+    .side-foot strong { color:var(--mint); display:block; font-size:12px; margin:9px 0 4px; }
+    .workspace { min-width:0; padding:22px 28px 42px; }
+    .topbar { height:54px; display:flex; justify-content:space-between; align-items:center; gap:18px; max-width:1370px; margin:auto; }
+    .crumbs { color:var(--muted); font-size:13px; }
+    .actions { display:flex; gap:10px; align-items:center; }
+    .status { display:flex; align-items:center; gap:8px; color:var(--muted); border:1px solid var(--line);
+      border-radius:999px; padding:7px 13px; font-size:12px; }
+    .button { display:inline-flex; align-items:center; height:38px; border-radius:10px; padding:0 15px; font-weight:600;
+      color:#061117; background:var(--mint); }
+    .market-strip { max-width:1370px; margin:18px auto 0; display:grid; grid-template-columns:175px minmax(0,1fr);
+      overflow:hidden; border:1px solid var(--line); border-radius:15px; background:rgba(16,26,39,.9); height:56px; }
+    .strip-label { padding:9px 15px; border-right:1px solid var(--line); display:flex; flex-direction:column; justify-content:center; }
+    .strip-label strong { font-size:12px; color:var(--mint); }
+    .strip-label span { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
+    .ticker { overflow:hidden; height:54px; }
+    .hero { max-width:1370px; margin:19px auto 0; display:grid; grid-template-columns:minmax(480px,1.1fr) minmax(370px,.9fr); gap:18px; }
+    .hero-copy,.market-card,.card,.feature,.mode,.command,.notice { background:var(--panel); border:1px solid var(--line);
+      border-radius:18px; box-shadow:var(--shadow); }
+    .hero-copy { padding:34px 36px 28px; position:relative; overflow:hidden; }
+    .hero-copy:after { content:""; position:absolute; right:-120px; bottom:-140px; height:280px; width:280px;
+      border-radius:50%; background:rgba(56,223,173,.07); }
+    h1 { font-size:clamp(42px,4.4vw,66px); letter-spacing:-.045em; line-height:1.02; margin:15px 0 16px; position:relative; }
+    h1 span { color:var(--mint); }
+    h2 { margin:39px 0 16px; font-size:21px; letter-spacing:-.02em; }
+    h3 { margin:13px 0 8px; letter-spacing:-.01em; }
+    .lead { color:var(--muted); font-size:17px; max-width:630px; position:relative; }
+    .hero-links { display:flex; flex-wrap:wrap; gap:11px; margin-top:29px; position:relative; }
+    .hero-links a { padding:11px 16px; border-radius:11px; font-weight:600; border:1px solid var(--line-bright); }
+    .hero-links .primary { color:#041017; border-color:var(--mint); background:var(--mint); }
+    .hero-links a:not(.primary):hover { border-color:var(--mint); }
+    .market-card { padding:16px; min-height:435px; }
+    .panel-head { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; padding:5px 5px 14px; }
+    .panel-head h2 { margin:0; font-size:17px; }
+    .panel-head p { color:var(--muted); font-size:12px; margin:3px 0 0; }
+    .external { color:var(--blue); background:rgba(98,166,255,.12); border-radius:999px; padding:5px 9px; font-size:11px; white-space:nowrap; }
+    .market-widget { height:365px; overflow:hidden; border-radius:12px; }
+    .tradingview-widget-container,.tradingview-widget-container__widget { height:100%; width:100%; }
+    .ticker-fallback,.market-fallback { height:100%; display:flex; align-items:center; color:var(--muted); font-size:12px;
+      letter-spacing:.04em; background:linear-gradient(100deg,var(--panel),var(--panel2),var(--panel)); }
+    .ticker-fallback { padding:0 18px; text-transform:uppercase; letter-spacing:.12em; }
+    .market-fallback { justify-content:center; }
+    .tradingview-widget-copyright { height:26px; color:var(--muted); font-size:11px; line-height:26px; }
+    .tradingview-widget-copyright .blue-text { color:var(--blue); }
+    .content { max-width:1370px; margin:auto; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin:18px 0 0; }
+    .card { padding:16px 18px; box-shadow:none; }
+    .card p { color:var(--muted); margin:0; font-size:13px; }
+    .card strong { display:block; font-size:34px; letter-spacing:-.04em; color:var(--mint); margin-top:5px; }
+    .notice { box-shadow:none; border-left:3px solid var(--gold); padding:14px 18px; color:var(--muted); margin:18px 0 0; }
+    .command-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; }
+    .command { padding:17px; box-shadow:none; min-height:132px; }
+    .command small { display:block; color:var(--muted); margin-bottom:13px; text-transform:uppercase; letter-spacing:.1em; font-size:10px; }
+    .command strong { display:block; font-size:16px; margin-bottom:7px; }
+    .command p { margin:0 0 12px; color:var(--muted); font-size:13px; }
+    .command a { color:var(--mint); font-size:13px; font-weight:600; }
+    .features { display:grid; grid-template-columns:repeat(2,1fr); gap:13px; }
+    .feature { padding:18px; box-shadow:none; }
     .feature strong { color:var(--mint); display:block; margin:8px 0; }
     .feature p,.feature small,.mode small { color:var(--muted); display:block; }
+    .feature a { display:inline-block; color:var(--mint); margin-top:14px; font-weight:600; }
     .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:12px; white-space:nowrap; }
     .bundled_offline_demo { color:var(--blue); background:rgba(98,166,255,.12); }
     .public_source_no_key { color:var(--mint); background:rgba(86,218,172,.12); }
     .attributed_external_widget { color:var(--mint); background:rgba(86,218,172,.12); }
     .bring_authorized_data { color:var(--gold); background:rgba(240,188,98,.12); }
-    .modes { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-    .mode { padding:18px; }
+    .modes { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; }
+    .mode { padding:18px; box-shadow:none; }
     .mode p { color:var(--mint); }
     #error { display:none; border-left-color:var(--red); color:var(--red); }
-    @media(max-width:920px) { .cards,.features,.modes { grid-template-columns:1fr; } }
+    @media(max-width:1120px) { .shell { grid-template-columns:1fr; } .sidebar { display:none; }
+      .hero { grid-template-columns:1fr; } .command-grid { grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:720px) { .workspace { padding:16px 14px 34px; } .topbar { height:auto; align-items:flex-start; flex-direction:column; }
+      .market-strip { grid-template-columns:126px minmax(0,1fr); } .strip-label { padding:8px 10px; }
+      .hero-copy { padding:26px 20px; } .cards,.features,.modes,.command-grid { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
-  <header>
-    <nav>TargetAudit / Open Edition / <a href="/dashboard/reports">Report Center</a> / <a href="/dashboard/market-context">Market Context</a> / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/extensions">Licensed Extensions</a> / <a href="/dashboard/financials">Financials Sandbox</a> / <a href="/dashboard/release">Release Center</a> / <a href="/dashboard/governance">Governance</a></nav>
-    <h1>Market research.<br>No paid data required.</h1>
-    <p class="lead" id="promise">Loading the zero-cost product profile...</p>
-    <p class="meta" id="reviewed">Loading source controls...</p>
-    <section class="cards">
-      <article class="card"><p>No-cost capabilities</p><strong id="free">-</strong></article>
-      <article class="card"><p>Offline demo</p><strong id="offline">-</strong></article>
-      <article class="card"><p>Public-data monitors</p><strong id="public">-</strong></article>
-      <article class="card"><p>Optional extensions</p><strong id="optional">-</strong></article>
-    </section>
-  </header>
-  <main>
-    <p class="notice">This GitHub edition runs without commercial subscriptions. Real analyst ranking inputs are optional and must arrive with usage rights.</p>
-    <p id="error" class="notice"></p>
-    <h2>Included Capabilities</h2>
-    <section class="features" id="capabilities"></section>
-    <h2>Run Modes</h2>
-    <section class="modes" id="modes"></section>
-  </main>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="/dashboard/open"><span class="brand-mark">T</span>TargetAudit</a>
+      <div class="nav-group">
+        <span class="side-label">Workspace</span>
+        <a class="nav-link active" href="/dashboard/open"><span class="dot"></span>Open Edition</a>
+        <a class="nav-link" href="/dashboard/market-context"><span class="dot"></span>Market Context</a>
+        <a class="nav-link" href="/dashboard/reports"><span class="dot"></span>Report Center</a>
+      </div>
+      <div class="nav-group">
+        <span class="side-label">Evidence</span>
+        <a class="nav-link" href="/dashboard/ipo"><span class="dot"></span>IPO Watch</a>
+        <a class="nav-link" href="/dashboard/etf"><span class="dot"></span>ETF Activity</a>
+        <a class="nav-link" href="/dashboard/financials-evidence"><span class="dot"></span>Financials</a>
+        <a class="nav-link" href="/dashboard/global-listings"><span class="dot"></span>Global Listings</a>
+      </div>
+      <div class="nav-group">
+        <span class="side-label">Controls</span>
+        <a class="nav-link" href="/dashboard/policy"><span class="dot"></span>Public Use Policy</a>
+        <a class="nav-link" href="/dashboard/governance"><span class="dot"></span>Governance</a>
+        <a class="nav-link" href="/dashboard/release"><span class="dot"></span>Release Center</a>
+      </div>
+      <div class="side-foot online"><span class="dot"></span><strong>Open Edition</strong>No paid market-data subscription required.</div>
+    </aside>
+    <div class="workspace">
+      <div class="topbar">
+        <p class="crumbs">Research terminal / public workspace</p>
+        <div class="actions"><span class="status online"><span class="dot"></span>Evidence controls active</span><a class="button" href="/dashboard/contribute?lang=en">Contribute source</a></div>
+      </div>
+      <section class="market-strip" aria-label="External TradingView ticker display">
+        <div class="strip-label"><strong>Market strip</strong><span>External display</span></div>
+        <div class="ticker">
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"><div class="ticker-fallback">Loads with Internet access</div></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+            {"symbols":[{"proName":"AMEX:SPY","title":"S&P 500"},{"proName":"NASDAQ:QQQ","title":"Nasdaq 100"},{"proName":"AMEX:XLF","title":"Financials"},{"proName":"NASDAQ:NVDA","title":"NVIDIA"},{"proName":"NASDAQ:MSFT","title":"Microsoft"},{"proName":"NYSE:JPM","title":"JPMorgan"}],"showSymbolLogo":true,"isTransparent":true,"displayMode":"adaptive","colorTheme":"dark","locale":"en"}
+            </script>
+          </div>
+        </div>
+      </section>
+      <section class="hero">
+        <article class="hero-copy">
+          <p class="eyebrow">Open source market intelligence</p>
+          <h1>Audit the signal.<br><span>Verify the source.</span></h1>
+          <p class="lead" id="promise">Loading the zero-cost product profile...</p>
+          <p class="meta" id="reviewed">Loading source controls...</p>
+          <div class="hero-links">
+            <a class="primary" href="/dashboard/reports">Explore reports</a>
+            <a href="/dashboard/market-context">Open market context</a>
+            <a href="/dashboard/policy">Data boundaries</a>
+          </div>
+        </article>
+        <article class="market-card">
+          <div class="panel-head"><div><h2>Market Pulse</h2><p>Macro context for monitored research themes</p></div><span class="external">TradingView display</span></div>
+          <div class="market-widget">
+            <div class="tradingview-widget-container">
+              <div class="tradingview-widget-container__widget"><div class="market-fallback">Loading attributed market context...</div></div>
+              <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/" rel="noopener nofollow" target="_blank"><span class="blue-text">World markets</span></a> by TradingView</div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+              {"colorTheme":"dark","dateRange":"12M","showChart":true,"locale":"en","width":"100%","height":"100%","isTransparent":true,"showSymbolLogo":true,"tabs":[{"title":"Benchmarks","symbols":[{"s":"AMEX:SPY","d":"S&P 500 ETF"},{"s":"NASDAQ:QQQ","d":"Nasdaq 100 ETF"},{"s":"AMEX:XLF","d":"Financials ETF"},{"s":"AMEX:KRE","d":"Regional Banks"}]},{"title":"AI Leaders","symbols":[{"s":"NASDAQ:NVDA","d":"NVIDIA"},{"s":"NASDAQ:MSFT","d":"Microsoft"},{"s":"NASDAQ:GOOGL","d":"Alphabet"},{"s":"NASDAQ:AMZN","d":"Amazon"}]}]}
+              </script>
+            </div>
+          </div>
+        </article>
+      </section>
+      <main class="content">
+        <section class="cards" aria-label="Edition metrics">
+          <article class="card"><p>No-cost capabilities</p><strong id="free">-</strong></article>
+          <article class="card"><p>Offline demo</p><strong id="offline">-</strong></article>
+          <article class="card"><p>Public-data monitors</p><strong id="public">-</strong></article>
+          <article class="card"><p>Optional extensions</p><strong id="optional">-</strong></article>
+        </section>
+        <p class="notice"><strong>No paid data required.</strong> TradingView panels above are attributed external market context only. This GitHub edition does not store widget data or treat it as ranking evidence. Real analyst inputs require usage rights.</p>
+        <p id="error" class="notice"></p>
+        <h2>Research Modules</h2>
+        <section class="command-grid">
+          <article class="command"><small>Listings</small><strong>IPO Watch</strong><p>Follow filings, reviews and verified milestones.</p><a href="/dashboard/ipo">Enter workflow</a></article>
+          <article class="command"><small>Ownership</small><strong>ETF Activity</strong><p>Separate periodic evidence from daily claims.</p><a href="/dashboard/etf">Open evidence</a></article>
+          <article class="command"><small>Targets</small><strong>Financials Lab</strong><p>Inspect methodology and blocked real-data release.</p><a href="/dashboard/financials-evidence">Audit scorecard</a></article>
+          <article class="command"><small>International</small><strong>Global Listings</strong><p>Monitor official signals across global markets.</p><a href="/dashboard/global-listings">View markets</a></article>
+        </section>
+        <h2>Included Capabilities</h2>
+        <section class="features" id="capabilities"></section>
+        <h2>Run Modes</h2>
+        <section class="modes" id="modes"></section>
+      </main>
+    </div>
+  </div>
   <script>
     const $ = (id) => document.getElementById(id);
     function text(value) {
@@ -773,69 +905,121 @@ def market_context_html() -> str:
   <title>TargetAudit | Market Context</title>
   <style>
     :root {
-      --bg:#071016; --panel:#0f1c24; --line:#20343d; --text:#edf1ef;
-      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff;
+      --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246;
+      --text:#f2f6f7; --muted:#96aab8; --mint:#38dfad; --gold:#f3bf66; --blue:#62a6ff;
+      --shadow:0 24px 72px rgba(0,0,0,.23);
     }
     * { box-sizing:border-box; }
-    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Inter,Arial,sans-serif; }
-    header,main { max-width:1240px; margin:auto; padding:30px 28px; }
-    nav,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:13px; }
+    body { margin:0; background:radial-gradient(circle at 82% 0%,rgba(56,223,173,.12),transparent 29%),var(--bg);
+      color:var(--text); font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+    header,main { max-width:1370px; margin:auto; padding:23px 28px; }
+    nav,.meta,.eyebrow { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-size:11px; }
     a { color:var(--mint); text-decoration:none; }
-    h1 { font-size:clamp(38px,5vw,60px); line-height:1.04; margin:38px 0 14px; }
-    h2 { font-size:22px; margin:40px 0 16px; }
-    .lead { color:var(--muted); font-size:18px; max-width:930px; }
-    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }
-    .card,.notice,.chart-shell { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
-    .card { padding:17px 20px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:22px; }
+    .back { border:1px solid var(--line); border-radius:10px; padding:9px 14px; color:var(--text); font-weight:600; }
+    .market-strip { display:grid; grid-template-columns:175px minmax(0,1fr); height:56px; overflow:hidden; border:1px solid var(--line); border-radius:15px; background:var(--panel); margin-bottom:25px; }
+    .strip-label { padding:9px 15px; border-right:1px solid var(--line); display:flex; flex-direction:column; justify-content:center; }
+    .strip-label strong { font-size:12px; color:var(--mint); }
+    .strip-label span { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
+    .ticker { height:54px; overflow:hidden; }
+    .intro { display:grid; grid-template-columns:1.08fr .92fr; align-items:end; gap:22px; }
+    h1 { font-size:clamp(40px,5vw,60px); letter-spacing:-.045em; line-height:1.04; margin:13px 0 13px; }
+    h1 span { color:var(--mint); }
+    h2 { font-size:20px; margin:36px 0 15px; letter-spacing:-.02em; }
+    .lead { color:var(--muted); font-size:17px; max-width:680px; }
+    .cards { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .card,.notice,.chart-shell,.overview-shell { background:var(--panel); border:1px solid var(--line); border-radius:16px; }
+    .card { padding:15px 17px; }
     .card p { color:var(--muted); margin:0; }
-    .card strong { display:block; color:var(--mint); margin-top:5px; font-size:16px; }
+    .card strong { display:block; color:var(--mint); margin-top:5px; font-size:17px; }
     .notice { border-left:3px solid var(--gold); color:var(--muted); padding:15px 18px; margin:18px 0; }
-    .chart-shell { padding:18px; height:min(680px, calc(100vh - 230px)); min-height:520px; }
+    .terminal { display:grid; grid-template-columns:minmax(540px,1fr) 385px; gap:16px; }
+    .panel-head { padding:16px 18px 0; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .panel-head h2 { margin:0; }
+    .external { color:var(--blue); background:rgba(98,166,255,.12); border-radius:999px; padding:5px 9px; font-size:11px; }
+    .chart-shell { padding:0 16px 12px; height:632px; min-height:540px; box-shadow:var(--shadow); }
+    .chart-shell .panel-head { padding-left:2px; padding-right:2px; height:58px; }
+    .chart-body { height:calc(100% - 58px); }
+    .overview-shell { padding:0 14px 12px; height:632px; min-height:540px; }
+    .overview-shell .panel-head { height:58px; padding-left:3px; padding-right:3px; }
+    .overview-body { height:calc(100% - 58px); }
     .tradingview-widget-container { height:100%; width:100%; }
     .tradingview-widget-container__widget { height:calc(100% - 32px); width:100%; }
+    .ticker .tradingview-widget-container__widget { height:100%; }
+    .ticker-fallback,.market-fallback { height:100%; display:flex; align-items:center; color:var(--muted); font-size:12px;
+      background:linear-gradient(100deg,var(--panel),var(--panel2),var(--panel)); }
+    .ticker-fallback { padding:0 18px; text-transform:uppercase; letter-spacing:.12em; }
+    .market-fallback { justify-content:center; }
     .tradingview-widget-copyright { font-size:13px; line-height:32px; color:var(--muted); text-align:left; }
     .tradingview-widget-copyright .blue-text { color:var(--blue); }
-    @media(max-width:900px) { .cards { grid-template-columns:1fr 1fr; } .chart-shell { height:560px; } }
-    @media(max-width:570px) { .cards { grid-template-columns:1fr; } }
+    @media(max-width:1040px) { .intro,.terminal { grid-template-columns:1fr; } .chart-shell,.overview-shell { height:560px; } }
+    @media(max-width:570px) { header,main { padding:18px 14px; } .top { flex-direction:column; align-items:flex-start; }
+      .market-strip { grid-template-columns:126px minmax(0,1fr); } .strip-label { padding:8px 10px; } .cards { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
   <header>
-    <nav><a href="/dashboard/open">Open Edition</a> / Market Context / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/financials">Financials Sandbox</a></nav>
-    <h1>Sector context.<br>Separate from scoring.</h1>
-    <p class="lead">A visual chart for the Financials benchmark, embedded from TradingView with attribution intact. TargetAudit does not collect, normalize or export widget data.</p>
-    <p class="meta">External attributed display / default symbol: AMEX:XLF</p>
-    <section class="cards">
-      <article class="card"><p>Role</p><strong>Context only</strong></article>
-      <article class="card"><p>Data collection</p><strong>None</strong></article>
-      <article class="card"><p>Scorecard input</p><strong>Never</strong></article>
-      <article class="card"><p>Attribution</p><strong>TradingView visible</strong></article>
+    <div class="top">
+      <nav><a href="/dashboard/open">Open Edition</a> / Market Context / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/financials">Financials Sandbox</a></nav>
+      <a class="back" href="/dashboard/open">Back to terminal</a>
+    </div>
+    <section class="market-strip" aria-label="External TradingView ticker display">
+      <div class="strip-label"><strong>Market strip</strong><span>External display</span></div>
+      <div class="ticker">
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"><div class="ticker-fallback">Loads with Internet access</div></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+          {"symbols":[{"proName":"AMEX:SPY","title":"S&P 500"},{"proName":"NASDAQ:QQQ","title":"Nasdaq 100"},{"proName":"AMEX:XLF","title":"Financials"},{"proName":"AMEX:KRE","title":"Regional Banks"},{"proName":"NYSE:JPM","title":"JPMorgan"},{"proName":"NYSE:GS","title":"Goldman Sachs"}],"showSymbolLogo":true,"isTransparent":true,"displayMode":"adaptive","colorTheme":"dark","locale":"en"}
+          </script>
+        </div>
+      </div>
+    </section>
+    <section class="intro">
+      <div>
+        <p class="eyebrow">External visual workspace</p>
+        <h1>Sector context.<br><span>Separate from scoring.</span></h1>
+        <p class="lead">A visual workspace for the Financials benchmark and surrounding market context, embedded from TradingView with attribution intact. TargetAudit does not collect, normalize or export widget data.</p>
+        <p class="meta">External attributed display / default symbol: AMEX:XLF</p>
+      </div>
+      <section class="cards">
+        <article class="card"><p>Role</p><strong>Context only</strong></article>
+        <article class="card"><p>Data collection</p><strong>None</strong></article>
+        <article class="card"><p>Scorecard input</p><strong>Never</strong></article>
+        <article class="card"><p>Attribution</p><strong>TradingView visible</strong></article>
+      </section>
     </section>
   </header>
   <main>
     <p class="notice">This third-party chart is for visual context only. It is not investment advice, a TargetAudit data source, a verified real-time record or evidence for analyst ranking results.</p>
-    <h2>XLF Visual Context</h2>
-    <section class="chart-shell">
-      <!-- TradingView Widget BEGIN -->
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/AMEX-XLF/" rel="noopener nofollow" target="_blank"><span class="blue-text">XLF chart</span></a><span class="trademark"> by TradingView</span></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-        {
-          "autosize": true,
-          "symbol": "AMEX:XLF",
-          "interval": "D",
-          "timezone": "Etc/UTC",
-          "theme": "dark",
-          "style": "1",
-          "locale": "en",
-          "allow_symbol_change": true,
-          "calendar": false,
-          "support_host": "https://www.tradingview.com"
-        }
-        </script>
-      </div>
-      <!-- TradingView Widget END -->
+    <section class="terminal" aria-label="Market visual context">
+      <article class="chart-shell">
+        <div class="panel-head"><h2>XLF Visual Context</h2><span class="external">TradingView display</span></div>
+        <div class="chart-body">
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"><div class="market-fallback">Loading XLF chart from TradingView...</div></div>
+            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/AMEX-XLF/" rel="noopener nofollow" target="_blank"><span class="blue-text">XLF chart</span></a><span class="trademark"> by TradingView</span></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+            {"autosize":true,"symbol":"AMEX:XLF","interval":"D","timezone":"Etc/UTC","theme":"dark","style":"1","locale":"en","allow_symbol_change":true,"calendar":false,"support_host":"https://www.tradingview.com"}
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
+        </div>
+      </article>
+      <article class="overview-shell">
+        <div class="panel-head"><h2>Cross-Market Lens</h2><span class="external">External only</span></div>
+        <div class="overview-body">
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"><div class="market-fallback">Loading comparative market context...</div></div>
+            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/" rel="noopener nofollow" target="_blank"><span class="blue-text">Markets</span></a> by TradingView</div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+            {"colorTheme":"dark","dateRange":"12M","showChart":true,"locale":"en","width":"100%","height":"100%","isTransparent":true,"showSymbolLogo":true,"tabs":[{"title":"Financials","symbols":[{"s":"AMEX:XLF","d":"Financial Select Sector"},{"s":"AMEX:KRE","d":"Regional Banks"},{"s":"NYSE:JPM","d":"JPMorgan"},{"s":"NYSE:GS","d":"Goldman Sachs"}]},{"title":"Benchmarks","symbols":[{"s":"AMEX:SPY","d":"S&P 500"},{"s":"NASDAQ:QQQ","d":"Nasdaq 100"},{"s":"AMEX:IWM","d":"Russell 2000"}]}]}
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
+        </div>
+      </article>
     </section>
   </main>
 </body>

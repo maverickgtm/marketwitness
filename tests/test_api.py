@@ -278,6 +278,12 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/reports", page.text)
         self.assertIn("/dashboard/policy", page.text)
         self.assertIn("/dashboard/market-context", page.text)
+        self.assertIn("Market Pulse", page.text)
+        self.assertIn("TradingView display", page.text)
+        self.assertIn("embed-widget-ticker-tape.js", page.text)
+        self.assertIn("embed-widget-market-overview.js", page.text)
+        self.assertIn("does not store widget data", page.text)
+        self.assertIn("Loads with Internet access", page.text)
 
     def test_serves_allowlisted_report_center_for_periodic_bundle(self) -> None:
         page = self.client.get("/dashboard/reports")
@@ -404,6 +410,10 @@ class ApiTests(unittest.TestCase):
         self.assertIn("AMEX:XLF", page.text)
         self.assertIn("by TradingView", page.text)
         self.assertIn("embed-widget-advanced-chart.js", page.text)
+        self.assertIn("embed-widget-ticker-tape.js", page.text)
+        self.assertIn("embed-widget-market-overview.js", page.text)
+        self.assertIn("Cross-Market Lens", page.text)
+        self.assertIn("Loading XLF chart from TradingView", page.text)
         self.assertIn("does not collect, normalize or export widget data", page.text)
 
     def test_serves_public_use_policy_with_blocked_source_boundaries(self) -> None:

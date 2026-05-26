@@ -27,6 +27,11 @@ Objetivo: mostrar desde el primer acceso que la versión GitHub funciona sin
 comprar datos comerciales.
 
 - La raíz `/` y `/dashboard/open` consumen `/api/v1/open-edition`.
+- Su diseno de terminal incorpora navegacion lateral, accesos directos a IPO,
+  ETF, Financials y Global Listings, y metricas visibles al primer vistazo.
+- Presenta una franja `Ticker Tape` y un panel `Market Overview` oficiales de
+  TradingView, marcados como contexto externo atribuido; ninguno alimenta el
+  motor auditable ni se conserva como evidencia.
 - Distingue un sandbox offline con fixtures redistribuibles, monitores
   regulatorios públicos sin cuota de datos y extensiones autorizadas
   opcionales.
@@ -87,12 +92,18 @@ fuente de datos del motor auditable.
 
 - La ruta `/dashboard/market-context` incrusta el widget oficial `Advanced
   Chart` de TradingView para `AMEX:XLF`.
+- Tambien incorpora una franja `Ticker Tape` y un panel `Market Overview`
+  comparativo para Financials y benchmarks, siempre como display externo.
 - Mantiene visible la atribucion `by TradingView` y enlaza la pagina oficial
   del simbolo.
 - Declara que el widget es display externo: TargetAudit no almacena, exporta
   ni utiliza sus datos para puntuar targets.
 - La pagina requiere Internet para cargar el tercero, pero no exige clave ni
   suscripcion de datos a los usuarios de TargetAudit.
+
+La direccion visual, las decisiones sobre widgets y la siguiente fase de
+rediseño se documentan en
+[Direccion Visual Del Dashboard](dashboard-visual-direction.md).
 
 ## Pagina: Public Use Policy
 

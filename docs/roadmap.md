@@ -179,6 +179,9 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] Portal multilingue de contribucion global en ingles, japones,
   portugues de Brasil, chino tradicional y coreano para proponer fuentes con
   evidencia de derechos antes de activar conectores.
+- [x] Primera renovacion premium del dashboard: terminal Open Edition con
+  navegacion operativa y `Market Pulse`, mas workspace `Market Context` con
+  widgets oficiales atribuidos de TradingView separados del scoring.
 - [x] Politica publica visible de no-recomendacion, capas de datos y fuentes
   bloqueadas en `/dashboard/policy`, declarada como control interno.
 - [ ] Revision legal externa del producto y de sus disclaimers antes de

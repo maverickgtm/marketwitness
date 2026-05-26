@@ -56,7 +56,7 @@ Finnhub y Financial Modeling Prep ofrecen rutas programaticas potenciales
 para consenso o targets, pero sus paginas oficiales no convierten el plan
 gratis en permiso de publicacion: Finnhub situa redistribucion en Enterprise
 y FMP exige un acuerdo especifico de display/licencia. TradingView ya se
-integra mediante su widget gratuito atribuido en `Market Context` para
+integra mediante widgets gratuitos atribuidos en la portada y `Market Context` para
 visualizar `XLF`, no como fuente de historial de analistas.
 
 Un ultimo barrido realizado el `2026-05-25` encontro una puerta gratuita que
@@ -877,9 +877,12 @@ distingue capacidades gratuitas y extensiones opcionales. La ruta
 son investigacion y no recomendaciones de inversion, y la revision legal
 externa aun es un pendiente antes de operar un servicio publico con datos
 reales. La ruta
-`/dashboard/market-context` muestra el benchmark `XLF` en un widget atribuido
-de TradingView que no alimenta el scorecard ni se almacena como evidencia. La
-ruta
+La portada incluye un pulso de mercado atribuido de TradingView, y
+`/dashboard/market-context` muestra el benchmark `XLF` junto con una lente
+comparativa de Financials y benchmarks. Estos widgets no alimentan el
+scorecard ni se almacenan como evidencia. La direccion de diseno esta
+documentada en [Dashboard Visual Direction](docs/dashboard-visual-direction.md).
+La ruta
 `/dashboard/reports` organiza veintisiete paginas generadas permitidas del
 bundle semanal de Open Edition y enlaza sus controles de publicacion; no
 expone libremente archivos del directorio de construccion. Entre ellas se

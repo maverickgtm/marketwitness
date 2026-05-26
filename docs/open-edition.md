@@ -34,10 +34,13 @@ los monitores son evidencia para investigacion y no recomendaciones de
 inversion, muestra las fuentes bloqueadas desde el registro validado y declara
 que la revision legal externa continua pendiente.
 
-La ruta `/dashboard/market-context` integra el widget oficial atribuido de
-TradingView para contexto visual de `XLF`. El componente carga directamente
-desde TradingView; TargetAudit no almacena, exporta ni usa esos datos en el
-ranking, y el widget no reemplaza una licencia de historial de targets.
+La portada integra una franja `Ticker Tape` y `Market Overview` oficiales de
+TradingView como pulso visual, y `/dashboard/market-context` amplía ese
+contexto con el grafico atribuido de `XLF` y una comparación de Financials y
+benchmarks. Los componentes cargan directamente desde TradingView; TargetAudit
+no almacena, exporta ni usa esos datos en el ranking, y los widgets no
+reemplazan una licencia de historial de targets. Ver
+[Direccion Visual Del Dashboard](dashboard-visual-direction.md).
 
 La investigacion inicial de `RWA Watch` mapea 20 exchanges centralizados y
 Pepperstone. Los terminos revisados bloquean la recoleccion/republicacion
@@ -107,8 +110,9 @@ permiso explicito de output publico.
 
 ### Market Context
 
-- Incrusta el widget oficial gratuito de TradingView con atribucion visible.
-- Muestra `XLF` como contexto visual del benchmark sectorial.
+- Incrusta widgets oficiales gratuitos de TradingView con atribucion visible.
+- Muestra `XLF` como contexto visual del benchmark sectorial y una lente
+  comparativa de Financials/benchmarks.
 - No convierte contenido del widget en dataset, evidencia o input del
   scorecard.
 
