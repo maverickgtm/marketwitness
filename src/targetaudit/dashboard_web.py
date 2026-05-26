@@ -1189,7 +1189,7 @@ def market_intelligence_html() -> str:
         <h1>Events. Context.<br><span>Positioning.</span></h1>
         <p class="lead">A planned intelligence layer connecting IPO and listing evidence to macro catalysts, selected market regimes and declared positioning. It begins with provenance, not promises.</p>
         <p class="meta" id="reviewed">Loading reviewed sources...</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/volatility">Open Volatility Lab</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/policy-signals">Open Policy Signal Lab</a><a href="/dashboard/volatility">Volatility Lab</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
       </article>
       <article class="sequence"><p class="eyebrow">Delivery sequence</p><ol id="sequence"></ol></article>
     </section>
@@ -1258,8 +1258,8 @@ def volatility_lab_html() -> str:
     .chart { padding:16px; min-height:443px; } .panel-head { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:4px 5px 13px; }
     .panel-head h2 { margin:0; font-size:17px; } .external { color:var(--blue); background:rgba(98,166,255,.13); border-radius:999px; padding:5px 9px; font-size:11px; }
     .market-widget { height:375px; overflow:hidden; border-radius:12px; position:relative; background:var(--panel2); }
-    .tradingview-widget-container,.tradingview-widget-container__widget { width:100%; height:100%; position:relative; z-index:1; }
-    .widget-idle { position:absolute; inset:0 0 25px; display:flex; align-items:center; justify-content:center; text-align:center; color:var(--muted); padding:30px; }
+    .fred-chart { position:relative; z-index:1; display:block; width:100%; height:340px; object-fit:contain; background:#f2f6fb; border-radius:12px; }
+    .widget-idle { position:absolute; z-index:0; inset:0 0 25px; display:none; align-items:center; justify-content:center; text-align:center; color:var(--muted); padding:30px; }
     .widget-idle strong { display:block; color:var(--text); font-size:18px; margin-bottom:7px; } .widget-idle p { margin:0; max-width:320px; }
     .tradingview-widget-copyright { color:var(--muted); font-size:11px; line-height:25px; } .tradingview-widget-copyright .blue-text { color:var(--blue); }
     .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-top:17px; }
@@ -1288,18 +1288,11 @@ def volatility_lab_html() -> str:
         <div class="hero-links"><a class="primary" href="/dashboard/ipo">Overlay IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Passports</a></div>
       </article>
       <article class="chart">
-        <div class="panel-head"><div><h2>VIX Visual Context</h2><p class="meta">Not an audit input</p></div><span class="external">TradingView display</span></div>
+        <div class="panel-head"><div><h2>VIX Visual Context</h2><p class="meta">Not an audit input</p></div><span class="external">FRED attributed display</span></div>
         <div class="market-widget">
-          <div class="widget-idle"><div><strong>External VIX display</strong><p>Available when TradingView loads. The research design below remains usable offline.</p></div></div>
-          <!-- TradingView Widget BEGIN -->
-          <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/CBOE-VIX/" rel="noopener nofollow" target="_blank"><span class="blue-text">VIX chart</span></a><span> by TradingView</span></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-            {"autosize":true,"symbol":"CBOE:VIX","interval":"D","timezone":"Etc/UTC","theme":"dark","style":"1","locale":"en","withdateranges":true,"allow_symbol_change":false,"save_image":false,"calendar":false,"support_host":"https://www.tradingview.com"}
-            </script>
-          </div>
-          <!-- TradingView Widget END -->
+          <div class="widget-idle" id="fred-fallback"><div><strong>External VIX display unavailable</strong><p>The research design below remains usable offline.</p></div></div>
+          <img class="fred-chart" src="https://fred.stlouisfed.org/graph/fredgraph.png?id=VIXCLS&amp;cosd=2025-01-20" alt="FRED externally hosted CBOE Volatility Index VIX graph since January 20 2025" onerror="this.style.display='none'; document.getElementById('fred-fallback').style.display='flex'">
+          <div class="tradingview-widget-copyright"><a href="https://fred.stlouisfed.org/series/VIXCLS" rel="noopener nofollow" target="_blank"><span class="blue-text">CBOE Volatility Index: VIX [VIXCLS]</span></a><span> via FRED / citation required</span></div>
         </div>
       </article>
     </section>
@@ -1332,6 +1325,122 @@ def volatility_lab_html() -> str:
         $("boundary").textContent = data.publication_boundary;
         $("indicators").innerHTML = data.indicators.map((item) => `<article class="panel"><div class="indicator-head"><div><span class="family">${text(item.family)}</span><h3>${text(item.symbol)}</h3></div><span class="pill ${text(item.priority)}">${text(item.priority)}</span></div><p>${text(item.role)}</p><small><strong>Connects to:</strong> ${text(item.linked_context)}</small><p class="source"><a href="${text(item.source.official_url)}" target="_blank" rel="noopener">${text(item.source.provider_name)}</a> / ${text(item.source.deployment_state)}</p></article>`).join("");
         $("designs").innerHTML = data.episode_designs.map((item) => `<article class="panel"><h3>${text(item.key.replaceAll("_", " "))}</h3><p class="trigger">${text(item.trigger)}</p><p>${text(item.comparison)}</p><small>${text(item.output)}</small><div class="windows">${item.windows.map((window) => `<span class="window">${text(window)}</span>`).join("")}</div></article>`).join("");
+      } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
+    }
+    initialize();
+  </script>
+</body>
+</html>"""
+
+
+def policy_signal_lab_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Policy Signal Impact Lab</title>
+  <style>
+    :root { --bg:#070a12; --panel:#111827; --panel2:#182133; --line:#29354a; --text:#f2f5f8; --muted:#98a7ba;
+      --mint:#58dfb0; --electric:#66a5ff; --amber:#ffcc68; --coral:#ff7c73; --purple:#a48bff; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--text); font:15px/1.45 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 74% 0%,rgba(255,124,115,.14),transparent 29%),
+        radial-gradient(circle at 9% 20%,rgba(102,165,255,.13),transparent 27%),var(--bg); }
+    a { color:var(--mint); text-decoration:none; } header,main { max-width:1410px; margin:auto; padding:25px 28px; }
+    nav,.eyebrow,.micro { font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:25px; }
+    .back { border:1px solid var(--line); padding:10px 15px; border-radius:11px; color:var(--text); font-weight:600; }
+    .hero { display:grid; grid-template-columns:minmax(480px,1fr) minmax(520px,1fr); gap:16px; }
+    .intro,.visual,.panel,.metric,.guardrail { background:rgba(17,24,39,.94); border:1px solid var(--line); border-radius:19px; }
+    .intro { padding:31px 34px; } h1 { font-size:clamp(43px,5.4vw,65px); line-height:1.02; letter-spacing:-.055em; margin:14px 0; }
+    h1 span { color:var(--coral); } .lead { color:var(--muted); font-size:17px; max-width:530px; }
+    .case { display:inline-flex; margin:11px 0 15px; border:1px solid rgba(88,223,176,.32); background:rgba(88,223,176,.1); color:var(--mint); border-radius:999px; padding:7px 12px; font-size:12px; font-weight:600; }
+    .buttons { display:flex; gap:9px; flex-wrap:wrap; margin-top:23px; } .buttons a { padding:10px 14px; border:1px solid var(--line); border-radius:10px; font-weight:600; }
+    .buttons .primary { background:var(--mint); border-color:var(--mint); color:#071318; }
+    .visual { padding:18px; } .visual-head { display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:14px; }
+    .visual-head h2 { font-size:18px; margin:0; } .disabled { font-size:11px; color:var(--amber); background:rgba(255,204,104,.12); border-radius:999px; padding:5px 9px; }
+    .fred { height:286px; width:100%; display:block; object-fit:contain; background:#f1f5fa; border-radius:12px; }
+    .citation { color:var(--muted); font-size:11px; margin:9px 2px 0; }
+    .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin:17px 0; }
+    .metric { padding:15px 18px; } .metric p { color:var(--muted); margin:0 0 7px; font-size:12px; } .metric strong { color:var(--mint); font-size:27px; letter-spacing:-.03em; }
+    .metric .locked { color:var(--amber); font-size:16px; }
+    .guardrail { padding:15px 18px; border-left:3px solid var(--amber); color:var(--muted); margin-bottom:32px; }
+    .section-title { font-size:22px; margin:33px 0 16px; letter-spacing:-.025em; }
+    .pipeline { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; } .panel { padding:18px; }
+    .number { color:var(--electric); font-weight:700; font-size:12px; } .panel h3 { font-size:17px; margin:10px 0 7px; } .panel p { color:var(--muted); margin:0; }
+    .state { display:inline-block; margin-top:14px; padding:5px 8px; font-size:11px; border-radius:999px; color:var(--mint); background:rgba(88,223,176,.11); }
+    .permission_required,.data_rights_required { color:var(--amber); background:rgba(255,204,104,.11); }
+    .split { display:grid; grid-template-columns:1fr 1fr; gap:14px; } .assets { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .window-row { display:flex; gap:7px; flex-wrap:wrap; margin-top:15px; } .window { color:var(--electric); background:var(--panel2); padding:5px 9px; border-radius:8px; font-size:12px; }
+    .prior { margin-top:10px; padding-top:11px; border-top:1px solid var(--line); } .prior:first-of-type { border-top:0; margin-top:0; padding-top:0; }
+    #error { display:none; border-left-color:var(--coral); color:var(--coral); }
+    @media(max-width:1030px) { .hero,.metrics,.pipeline,.split,.assets { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top"><nav><a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/intelligence">Market Intelligence</a> / Policy Signals</nav><a class="back" href="/dashboard/intelligence">Back to intelligence</a></div>
+    <section class="hero">
+      <article class="intro">
+        <p class="eyebrow">Communication-to-market event research</p>
+        <h1>Policy signals.<br><span>Market fingerprints.</span></h1>
+        <span class="case" id="case">Loading first case study...</span>
+        <p class="lead" id="question">Loading research question...</p>
+        <p class="micro" id="reviewed"></p>
+        <div class="buttons"><a class="primary" href="/dashboard/volatility">Compare volatility</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/commons">Source passports</a></div>
+      </article>
+      <article class="visual">
+        <div class="visual-head"><div><p class="micro">Market reaction context</p><h2>VIX since the second inauguration</h2></div><span class="disabled">External display only</span></div>
+        <img class="fred" src="https://fred.stlouisfed.org/graph/fredgraph.png?id=VIXCLS&amp;cosd=2025-01-20" alt="FRED externally hosted CBOE Volatility Index VIX graph since January 20 2025">
+        <p class="citation"><a href="https://fred.stlouisfed.org/series/VIXCLS" target="_blank" rel="noopener">CBOE Volatility Index: VIX [VIXCLS]</a>, retrieved from FRED / citation required / not scored.</p>
+      </article>
+    </section>
+    <section class="metrics">
+      <article class="metric"><p>Study begins</p><strong id="starts">-</strong></article>
+      <article class="metric"><p>Reaction windows</p><strong id="windowCount">-</strong></article>
+      <article class="metric"><p>Asset lenses</p><strong id="assetCount">-</strong></article>
+      <article class="metric"><p>Live Truth feed</p><strong class="locked">LOCKED</strong></article>
+    </section>
+    <p class="guardrail" id="boundary">Loading publication control...</p>
+    <p class="guardrail" id="error"></p>
+  </header>
+  <main>
+    <h2 class="section-title">Policy Signal Impact Trace</h2>
+    <section class="pipeline" id="pipeline"></section>
+    <section class="split">
+      <article>
+        <h2 class="section-title">Reaction Lenses</h2>
+        <section class="assets" id="assets"></section>
+        <div class="window-row" id="windows"></div>
+      </article>
+      <article>
+        <h2 class="section-title">Why This Is Different</h2>
+        <section class="panel">
+          <p>The concept is not entirely new. The differentiator is an evidence passport for every communication event, cross-asset windows, IPO/listing overlays and a visible rights gate before collection.</p>
+          <div id="priorArt"></div>
+        </section>
+      </article>
+    </section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    function text(value) { return String(value == null ? "" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;"); }
+    async function initialize() {
+      try {
+        const response = await fetch("/api/v1/intelligence/policy-signals");
+        if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+        const data = await response.json();
+        $("case").textContent = `Initial case: ${data.case_study}`;
+        $("question").textContent = data.research_question;
+        $("reviewed").textContent = `${data.product} / reviewed as of ${data.as_of}`;
+        $("starts").textContent = data.coverage_start;
+        $("windowCount").textContent = data.event_windows.length;
+        $("assetCount").textContent = data.asset_lenses.length;
+        $("boundary").textContent = data.publication_boundary;
+        $("pipeline").innerHTML = data.pipeline.map((item, index) => `<article class="panel"><span class="number">0${index + 1}</span><h3>${text(item.step)}</h3><p>${text(item.output)}</p><span class="state ${text(item.state)}">${text(item.state)}</span></article>`).join("");
+        $("assets").innerHTML = data.asset_lenses.map((item) => `<article class="panel"><p class="micro">${text(item.group)}</p><h3>${text(item.assets)}</h3><p>${text(item.question)}</p></article>`).join("");
+        $("windows").innerHTML = data.event_windows.map((item) => `<span class="window">${text(item)}</span>`).join("");
+        $("priorArt").innerHTML = data.prior_art.map((item) => `<div class="prior"><h3><a href="${text(item.url)}" target="_blank" rel="noopener">${text(item.name)}</a> <span class="micro">${text(item.year)}</span></h3><p>${text(item.difference)}</p></div>`).join("");
       } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
     }
     initialize();

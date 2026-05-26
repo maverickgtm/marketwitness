@@ -35,6 +35,19 @@ MODULES = (
         "claim_limit": "Volatility regimes describe conditions; they do not prescribe a trade.",
     },
     {
+        "key": "policy_signal_lab",
+        "title": "Policy Signal Impact Lab",
+        "theme": "Public Communications / Market Reaction",
+        "stage": "foundation_available",
+        "priority": "now",
+        "provider_ids": ("truth-social-public-content", "fred-vixcls-display"),
+        "coverage": "Donald Trump / Truth Social case-study design linked to volatility and cross-asset reaction windows.",
+        "cadence": "Methodology and attributed VIX display available; social-post collection disabled by terms",
+        "route": "/dashboard/policy-signals",
+        "next_delivery": "Seek written permission or an authorized communication feed before collecting posts.",
+        "claim_limit": "Observed reaction is not proof of causation, manipulation or a position to take.",
+    },
+    {
         "key": "market_regimes",
         "title": "Market Regimes",
         "theme": "Digital Assets / Energy / Rates",
@@ -120,6 +133,7 @@ def build_market_intelligence_snapshot(
         "planned_connector_count": stages["connector_planned"],
         "implementation_sequence": [
             "Volatility Lab foundation: VIX display and auditable stress-episode design.",
+            "Policy Signal Impact Lab: communications methodology with source-rights gate.",
             "Market Regimes: BTC, ETH, WTI, Brent and Treasury 2Y/10Y.",
             "Macro Calendar, Insider Activity, ownership and CFTC after connector review.",
         ],

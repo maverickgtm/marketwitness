@@ -94,10 +94,20 @@ como recomendaciones.
 El primer sublaboratorio ya navega en `/dashboard/volatility` y publica su
 contrato en `/api/v1/intelligence/volatility`: organiza `VIX`,
 `VIX1D/VIX9D/VIX3M`, `VXN`, `MOVE`, `VVIX/SKEW` y `OVX/GVZ`, con un chart
-externo atribuido de `VIX` y diseños de episodios para reacción cross-asset e
-IPOs. Cboe e ICE quedan registrados como fuentes sujetas a derechos antes de
+externo atribuido de FRED `VIXCLS` y diseños de episodios para reacción
+cross-asset e IPOs. Cboe e ICE quedan registrados como fuentes sujetas a derechos antes de
 almacenar series o publicar resultados históricos reales. Ver
 [Volatility Intelligence Lab](docs/volatility-intelligence-lab.md).
+
+El nuevo `/dashboard/policy-signals` abre el **Policy Signal Impact Lab**:
+un caso inicial `Donald Trump / Truth Social` para investigar comunicaciones
+de política y reacción posterior de volatilidad, equities, tasas, energía,
+cripto e IPOs verificadas. Su contrato
+`/api/v1/intelligence/policy-signals` publica ventanas y trazabilidad, pero
+no activa un feed Truth Social: los términos oficiales revisados prohíben
+colección automatizada sin permiso. Se diferencia por un pasaporte de
+evidencia por evento, no por atribuir causalidad o recomendar operaciones.
+Ver [Policy Signal Impact Lab](docs/policy-signal-impact-lab.md).
 
 Un ultimo barrido realizado el `2026-05-25` encontro una puerta gratuita que
 vale intentar formalmente: `AnalystCentral` anuncia un CSV historico gratuito
@@ -1022,6 +1032,8 @@ Endpoints iniciales:
 | `/api/v1/intelligence/modules` | Mapa fuente-primero de capas de inteligencia, prioridades y límites de interpretación |
 | `/dashboard/intelligence` | Workspace Market Intelligence para eventos, contexto y posicionamiento planificado |
 | `/api/v1/intelligence/volatility` | Diseño estructurado de indicadores y episodios del laboratorio de volatilidad |
+| `/api/v1/intelligence/policy-signals` | Diseño controlado de impacto de comunicaciones públicas y ventanas cross-asset |
+| `/dashboard/policy-signals` | Policy Signal Impact Lab: caso Donald Trump / Truth Social sin recolección prohibida |
 | `/dashboard/volatility` | Volatility Intelligence Lab con VIX atribuido y mapa de investigación de propagación |
 | `/dashboard/reports` | Centro de reportes reproducibles con las rutas generadas permitidas del bundle Open Edition |
 | `/api/v1/policy/public-use` | Politica estructurada de uso responsable, capas de datos y fuentes bloqueadas |

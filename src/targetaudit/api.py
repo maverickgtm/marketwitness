@@ -27,6 +27,7 @@ from .dashboard_web import (
     market_context_html,
     open_edition_html,
     operations_quality_html,
+    policy_signal_lab_html,
     provider_approvals_html,
     public_use_policy_html,
     report_center_html,
@@ -44,6 +45,7 @@ from .models import Evaluation
 from .market_intelligence import build_market_intelligence_snapshot
 from .open_edition import build_open_edition_snapshot
 from .operations_quality import build_quality_snapshot
+from .policy_signal_lab import build_policy_signal_lab_snapshot
 from .provider_approvals import (
     ProviderApprovalDataError,
     build_approval_queue,
@@ -314,6 +316,12 @@ def create_app(
         return volatility_lab_html()
 
     @application.get(
+        "/dashboard/policy-signals", response_class=HTMLResponse, include_in_schema=False
+    )
+    def policy_signal_lab_page() -> str:
+        return policy_signal_lab_html()
+
+    @application.get(
         "/dashboard/financials", response_class=HTMLResponse, include_in_schema=False
     )
     def scorecard() -> str:
@@ -453,6 +461,15 @@ def create_app(
         try:
             as_of = max((item.reviewed_on for item in providers), default=date.today())
             return build_volatility_lab_snapshot(providers, as_of)
+        except SourceRegistryDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @application.get("/api/v1/intelligence/policy-signals")
+    def policy_signal_lab_snapshot() -> dict[str, object]:
+        providers = _read_sources(registry)
+        try:
+            as_of = max((item.reviewed_on for item in providers), default=date.today())
+            return build_policy_signal_lab_snapshot(providers, as_of)
         except SourceRegistryDataError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 

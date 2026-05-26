@@ -30,6 +30,9 @@ complementarios:
 - `Volatility Intelligence Lab`: investigacion de episodios `VIX`, tecnologia
   (`VXN`), tasas (`MOVE`) y commodities, enlazada a filings/listings
   verificados en lugar de duplicar un dashboard de volatilidad.
+- `Policy Signal Impact Lab`: caso inicial Donald Trump / Truth Social para
+  estudiar comunicaciones y reacciones de mercado con un bloqueo explicito
+  de ingesta automatica hasta obtener derechos.
 
 ## Problema
 
@@ -53,6 +56,8 @@ Competidores observados al `2026-05-24`:
 | Yahoo Finance / Investing.com | Consulta visual de ratings y targets | Referencia manual solamente; sus terminos no sustentan ingestion o redistribucion |
 | Finnhub / FMP | Endpoints programaticos de tendencia o consenso de target | Conectores futuros solo bajo licencia explicita de display/redistribucion |
 | TradingView | Widgets gratuitos con atribucion conservada | `Market Pulse` y `Market Context` implementados para benchmarks y `XLF`, separados del motor de targets |
+| FRED `VIXCLS` | Grafica externa atribuida con cita requerida | VIX visible en `Volatility Lab` y `Policy Signal Impact Lab`, separado de calculos |
+| Truth Social | Comunicaciones publicas relevantes para event studies | Caso Donald Trump documentado; coleccion automatica bloqueada por terminos hasta permiso escrito |
 | xStocks / Ondo / venues CEX | Emisores de activos tokenizados y mercados como Bybit, Kraken, Gate y Bitget | `RWA Watch Sandbox` ya demuestra el modelo; xStocks queda bloqueado por terminos y ningun venue suministra analyst targets |
 | Quiver Quantitative | Desempeno historico de analistas usando datos Benzinga | Examinar firmas especialistas contra generalistas dentro de financials |
 | AnaChart | Charts y hit ratios de price targets publicos | Comparar precision con benchmark sectorial y versionar reglas |
@@ -84,6 +89,11 @@ ya visualizan `VIX` y term structure:
 
 > ?Como se propagaron episodios de estres hacia activos e IPOs verificadas,
 > y que evidencia permite sostener esa lectura?
+
+`Policy Signal Impact Lab` plantea una hipotesis especialmente visible:
+
+> ?Que cambio en volatilidad y activos vinculados despues de una comunicacion
+> publica verificable, con que ventana y con que evidencia?
 
 Una expansión posterior de activos tokenizados preguntaria:
 
@@ -158,3 +168,20 @@ Estas hipotesis son preguntas de investigacion, no conclusiones del producto.
 - AnaChart: <https://anachart.com/>
 - State Street XLF: <https://www.ssga.com/us/en/intermediary/etfs/state-street-financial-select-sector-spdr-etf-xlf>
 - S&P sectors: <https://www.spglobal.com/spdji/en/index-family/equity/us-equity/sp-sectors/>
+## Policy Signal Impact Lab
+
+La propuesta mas distintiva agregada al producto es vincular comunicaciones
+publicas verificables con ventanas de reaccion de mercado sin fingir
+causalidad. El primer caso es `Donald Trump / Truth Social` desde
+`2025-01-20`, bajo el nombre metodologico `Policy Signal Impact Trace`.
+
+Existe prior art: JPMorgan creo el `Volfefe Index` en 2019 para tweets y
+volatilidad de tasas, y `Trump & Dump` anuncia monitoreo de Truth Social. La
+ventaja que TargetAudit puede construir es otra: cada episodio exige fuente,
+permiso, timestamp, clasificacion, ventana, activos, exclusiones y enlace con
+IPOs/listings verificadas.
+
+Truth Social no se incorpora como scraper: sus terminos oficiales revisados
+restringen medios automatizados, recuperacion sistematica y data mining sin
+permiso. La pagina y API se publican ahora como metodologia y control de
+derechos; un feed live solo procede con autorizacion o fuente licenciada.

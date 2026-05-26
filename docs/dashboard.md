@@ -119,9 +119,9 @@ Objetivo: convertir la expansion cross-asset en una capa verificable de
 contexto y posicionamiento, sin prometer feeds que aun no estan activos.
 
 - La ruta `/dashboard/intelligence` consume
-  `/api/v1/intelligence/modules` y muestra siete capas: Pre-IPO Radar,
-  Volatility Intelligence Lab, Market Regimes, Macro Calendar, Insider
-  Activity, Ownership Watch y Futures Positioning.
+  `/api/v1/intelligence/modules` y muestra ocho capas: Pre-IPO Radar,
+  Volatility Intelligence Lab, Policy Signal Impact Lab, Market Regimes,
+  Macro Calendar, Insider Activity, Ownership Watch y Futures Positioning.
 - Reconoce como bases existentes el flujo IPO SEC y la evidencia ETF N-PORT;
   los conectores de nuevos valores permanecen etiquetados como planificados.
 - Registra como siguientes fuentes `Kraken Spot` para `BTC`/`ETH`, `EIA` para
@@ -140,8 +140,9 @@ generico de VIX o en una fuente de senales.
 - La ruta `/dashboard/volatility` consume
   `/api/v1/intelligence/volatility` y presenta el `Stress Map` de `VIX`,
   curva corta, `VXN`, `MOVE`, `VVIX/SKEW`, `OVX/GVZ` y horizontes largos.
-- El grafico `CBOE:VIX` se carga como widget atribuido de TradingView y queda
-  expresamente fuera de la evidencia calculada.
+- El grafico `VIXCLS` se carga como imagen externa atribuida de FRED y queda
+  expresamente fuera de la evidencia calculada; esto evita que el panel quede
+  vacio si un script de widget no carga.
 - Publica diseños de episodios para estudiar reaccion posterior cross-asset,
   estres tecnologico alrededor de IPOs y estres de tasas previo al mercado de
   equity.
@@ -149,6 +150,27 @@ generico de VIX o en una fuente de senales.
   como resultado derivado hasta aprobar derechos de output.
 - Su diferencia frente a dashboards de volatilidad existentes es conectar
   episodios con IPO Watch, ETF/ownership y Evidence Passport Commons.
+
+## Pagina: Policy Signal Impact Lab
+
+Objetivo: estudiar comunicaciones públicas que pueden coincidir con
+reacciones de mercado, sin convertir correlacion en causalidad ni violar
+terminos de una plataforma social.
+
+- La ruta `/dashboard/policy-signals` consume
+  `/api/v1/intelligence/policy-signals` y presenta el caso inicial
+  `Donald Trump / Truth Social`, comenzando el `2025-01-20`.
+- Propone el `Policy Signal Impact Trace`: evidencia de la comunicacion,
+  clasificacion tematica, ventanas de reaccion y un pasaporte auditable por
+  episodio.
+- Muestra VIX diario mediante el grafico externo atribuido `VIXCLS` de FRED,
+  sin almacenar la serie ni utilizarla como resultado calculado.
+- Hace visible el antecedente `Volfefe Index` de JPMorgan y el sitio
+  `Trump & Dump`; el diferenciador es conectar cada evento a evidencia,
+  derechos, multiples activos e IPO/listing milestones.
+- Mantiene bloqueada la coleccion automatica de Truth Social porque sus
+  terminos oficiales restringen automatizacion, recuperacion sistematica y
+  data mining sin permiso escrito.
 
 La direccion visual, las decisiones sobre widgets y la siguiente fase de
 rediseño se documentan en

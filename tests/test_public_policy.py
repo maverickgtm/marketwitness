@@ -13,8 +13,8 @@ class PublicUsePolicyTests(unittest.TestCase):
         policy = build_public_use_policy(providers, date(2026, 5, 25))
 
         self.assertEqual(policy["review_status"], "pending_external_legal_review")
-        self.assertEqual(policy["tracked_source_count"], 44)
-        self.assertEqual(policy["blocked_source_count"], 5)
+        self.assertEqual(policy["tracked_source_count"], 46)
+        self.assertEqual(policy["blocked_source_count"], 6)
         self.assertIn("not investment advice", policy["headline"].lower())
         self.assertEqual(
             {item["provider_id"] for item in policy["blocked_sources"]},
@@ -24,6 +24,7 @@ class PublicUsePolicyTests(unittest.TestCase):
                 "xstocks-backing-api",
                 "bybit-xstocks-v5",
                 "kraken-xstocks",
+                "truth-social-public-content",
             },
         )
         self.assertIn(

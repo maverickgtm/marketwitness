@@ -296,8 +296,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/api/v1/intelligence/modules", page.text)
         self.assertIn("Source-first expansion blueprint", page.text)
         self.assertEqual(snapshot.status_code, 200)
-        self.assertEqual(snapshot.json()["module_count"], 7)
-        self.assertEqual(snapshot.json()["foundation_count"], 3)
+        self.assertEqual(snapshot.json()["module_count"], 8)
+        self.assertEqual(snapshot.json()["foundation_count"], 4)
         self.assertEqual(snapshot.json()["planned_connector_count"], 4)
         self.assertIn("no newly collected live values", snapshot.json()["publication_boundary"])
         keys = {item["key"] for item in snapshot.json()["modules"]}
@@ -305,7 +305,9 @@ class ApiTests(unittest.TestCase):
         self.assertIn("insider_activity", keys)
         self.assertIn("futures_positioning", keys)
         self.assertIn("volatility_lab", keys)
+        self.assertIn("policy_signal_lab", keys)
         self.assertIn("/dashboard/volatility", page.text)
+        self.assertIn("/dashboard/policy-signals", page.text)
 
     def test_serves_volatility_research_lab_without_implying_a_trading_signal(self) -> None:
         page = self.client.get("/dashboard/volatility")
@@ -314,9 +316,9 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Volatility", page.text)
         self.assertIn("propagation.", page.text)
-        self.assertIn("CBOE:VIX", page.text)
-        self.assertIn("by TradingView", page.text)
-        self.assertIn("Available when TradingView loads", page.text)
+        self.assertIn("VIXCLS", page.text)
+        self.assertIn("via FRED", page.text)
+        self.assertIn("External VIX display unavailable", page.text)
         self.assertIn("/api/v1/intelligence/volatility", page.text)
         self.assertEqual(snapshot.status_code, 200)
         self.assertEqual(snapshot.json()["indicator_group_count"], 7)
@@ -324,6 +326,22 @@ class ApiTests(unittest.TestCase):
         self.assertIn("VXN", snapshot.json()["phase_1"])
         self.assertIn("MOVE", snapshot.json()["phase_1"])
         self.assertIn("does not ingest Cboe or ICE", snapshot.json()["publication_boundary"])
+
+    def test_serves_policy_signal_lab_with_truth_social_collection_disabled(self) -> None:
+        page = self.client.get("/dashboard/policy-signals")
+        snapshot = self.client.get("/api/v1/intelligence/policy-signals")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Policy signals.", page.text)
+        self.assertIn("Market fingerprints.", page.text)
+        self.assertIn("VIXCLS", page.text)
+        self.assertIn("/api/v1/intelligence/policy-signals", page.text)
+        self.assertEqual(snapshot.status_code, 200)
+        self.assertEqual(snapshot.json()["case_study"], "Donald Trump / Truth Social communications")
+        self.assertEqual(snapshot.json()["coverage_start"], "2025-01-20")
+        self.assertIn("disabled_pending_written_permission", snapshot.json()["live_feed_status"])
+        self.assertIn("prohibit automated access", snapshot.json()["publication_boundary"])
+        self.assertIn("JPMorgan Volfefe Index", {item["name"] for item in snapshot.json()["prior_art"]})
 
     def test_serves_allowlisted_report_center_for_periodic_bundle(self) -> None:
         page = self.client.get("/dashboard/reports")
@@ -472,8 +490,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/api/v1/policy/public-use", page.text)
         self.assertEqual(policy.status_code, 200)
         self.assertEqual(policy.json()["review_status"], "pending_external_legal_review")
-        self.assertEqual(policy.json()["tracked_source_count"], 44)
-        self.assertEqual(policy.json()["blocked_source_count"], 5)
+        self.assertEqual(policy.json()["tracked_source_count"], 46)
+        self.assertEqual(policy.json()["blocked_source_count"], 6)
         self.assertIn(
             "mas-opera-reference",
             {item["provider_id"] for item in policy.json()["blocked_sources"]},
@@ -646,9 +664,9 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Open code.", page.text)
         self.assertIn("Run Exclusions And Pending", page.text)
         self.assertIn("Provider Control", page.text)
-        self.assertEqual(sources.json()["provider_count"], 44)
+        self.assertEqual(sources.json()["provider_count"], 46)
         self.assertGreater(sources.json()["open_review_count"], 0)
-        self.assertEqual(sources.json()["blocked_count"], 5)
+        self.assertEqual(sources.json()["blocked_count"], 6)
         self.assertEqual(
             {item["provider_id"] for item in blocked.json()["sources"]},
             {
@@ -657,6 +675,7 @@ class ApiTests(unittest.TestCase):
                 "xstocks-backing-api",
                 "bybit-xstocks-v5",
                 "kraken-xstocks",
+                "truth-social-public-content",
             },
         )
         self.assertEqual(len(holdings.json()["sources"]), 3)
@@ -697,8 +716,8 @@ class ApiTests(unittest.TestCase):
             passports.json()["protocol_status"],
             "source_and_rights_published_cadence_enrichment_open",
         )
-        self.assertEqual(passports.json()["passport_count"], 44)
-        self.assertEqual(passports.json()["states"]["blocked"], 5)
+        self.assertEqual(passports.json()["passport_count"], 46)
+        self.assertEqual(passports.json()["states"]["blocked"], 6)
         passport = passports.json()["passports"][0]
         self.assertIn("source", passport)
         self.assertIn("rights", passport)

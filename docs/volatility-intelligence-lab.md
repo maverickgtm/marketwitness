@@ -64,14 +64,15 @@ TargetAudit no gana copiando ese catálogo. La capa diferenciadora es:
 | Cboe Historical Data for VIX and Other Volatility Indices | Pagina oficial que enlaza historia diaria para `VIX`, `VVIX`, `VIX9D`, `OVX` y `GVZ`, entre otros | Registrada para estudio; output derivado y almacenamiento público pendientes de revision de derechos |
 | Cboe Index Dashboards / Data Feed | Familia temporal y oferta de datos de indices | Referencia oficial para alcance; no feed integrado |
 | ICE BofA MOVE Index | Producto oficial de volatilidad del mercado de bonos con oferta intraday/diaria/historica | Fuente planificada; no activada sin autorizacion de display/output |
-| TradingView widget | Display atribuido de `CBOE:VIX` | Visualizacion externa; no se almacena ni alimenta calculos |
+| FRED `VIXCLS` graph | Display atribuido de VIX desde `2025-01-20` | Visualizacion externa con cita requerida; no se almacena ni alimenta calculos |
 
 Fuentes oficiales:
 
 - Cboe Historical Data: <https://www.cboe.com/tradable_products/vix/vix_historical_data>
 - Cboe Index Data Access: <https://www.cboe.com/us/indices/accessing-index-data/>
 - ICE MOVE Index: <https://developer.ice.com/fixed-income-data-services/catalog/ice-data-indices-move-index>
-- TradingView VIX chart: <https://www.tradingview.com/symbols/CBOE-VIX/>
+- FRED VIXCLS chart and citation: <https://fred.stlouisfed.org/series/VIXCLS>
+- FRED graph sharing: <https://fredhelp.stlouisfed.org/category/fred/graphs/share-my-fred-graph/>
 
 Competidores utilizados para posicionamiento:
 

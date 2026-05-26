@@ -41,9 +41,9 @@ copias revisadas de ambos registros y su auditoría. El fixture inicial
 documenta que la página premium de Alpha Vantage todavía no demuestra permiso
 de salida pública y por eso conserva el expediente pendiente.
 
-Al `2026-05-25`, el inventario contiene 44 fuentes: 20 conectores o fixtures
+Al `2026-05-25`, el inventario contiene 46 fuentes: 20 conectores o fixtures
 implementados, 25 fuentes que aun exigen revision de terminos/licencia para
-uso público real, 1 integracion limitada a descarga manual y 5 referencias
+uso público real, 1 integracion limitada a descarga manual y 6 referencias
 bloqueadas para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto
 público".
@@ -81,6 +81,20 @@ Esta decision responde a la competencia: otros dashboards ya muestran el
 universo VIX. TargetAudit enfoca la investigación futura en reacción de
 activos y eventos regulatorios/listings auditables. Ver
 [Volatility Intelligence Lab](volatility-intelligence-lab.md).
+
+### Policy Signal Impact Lab
+
+| Fuente | Uso Propuesto | Decision Actual |
+|---|---|---|
+| FRED `VIXCLS` | Grafica diaria VIX desde `2025-01-20` | Display externo con cita visible; no se ingieren observaciones |
+| Truth Social Public Content | Comunicaciones de Donald Trump para event studies | Bloqueado para coleccion automatica: los terminos restringen bots, scraping, data mining y recuperacion sistematica sin permiso |
+
+La idea de medir comunicaciones presidenciales y mercado tiene precedentes:
+JPMorgan publico el `Volfefe Index` sobre tweets y volatilidad de tasas en
+2019, y `Trump & Dump` anuncia actualmente monitoreo de Truth Social. El
+diseño de TargetAudit agrega pasaporte de evidencia, control de derechos,
+ventanas cross-asset e interseccion con IPO/listing evidence. Ver
+[Policy Signal Impact Lab](policy-signal-impact-lab.md).
 
 ## Targets Y Ratings
 

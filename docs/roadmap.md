@@ -196,6 +196,13 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] `Volatility Intelligence Lab` inicial con vista VIX atribuida, API de
   diseño de episodios, mapa `VIX`/`VXN`/`MOVE`/commodities y fuentes Cboe/ICE
   registradas sin declarar series reales publicables.
+- [x] Sustituir el panel VIX vacio por un grafico externo FRED `VIXCLS`
+  atribuido y visible desde el inicio del segundo mandato (`2025-01-20`).
+- [x] `Policy Signal Impact Lab` inicial para el caso Donald Trump / Truth
+  Social, con API metodologica, precedentes competitivos y bloqueo explicito
+  de coleccion automatica por terminos oficiales.
+- [ ] Obtener permiso escrito o un feed autorizado de comunicaciones antes de
+  calcular episodios historicos o activar alertas en tiempo real.
 - [ ] Aprobar derechos o una ruta autorizada para historia Cboe/ICE antes de
   calcular y publicar episodios reales de volatilidad.
 - [ ] Implementar `Market Regimes` con `BTC`/`ETH`, `WTI`/`Brent` y curva

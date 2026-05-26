@@ -121,14 +121,14 @@ permiso explicito de output publico.
 - Abre `/dashboard/intelligence` como workspace fuente-primero para conectar
   IPOs y ETF con regimenes de mercado, catalizadores macro e informacion
   declarada de posicionamiento.
-- Expone por API el plan de seis modulos y registra fuentes oficiales para
+- Expone por API el plan de ocho modulos y registra fuentes oficiales para
   `BTC`/`ETH`, `WTI`/`Brent`, Treasury, Fed/BLS, SEC insiders y CFTC.
 - Conserva los conectores nuevos como `connector_planned`: la pagina no
   contiene precios live nuevos ni recomendaciones de compra o venta.
 
 ### Volatility Intelligence Lab
 
-- La ruta `/dashboard/volatility` presenta un grafico `VIX` de TradingView
+- La ruta `/dashboard/volatility` presenta un grafico `VIXCLS` de FRED
   atribuido como contexto externo y un mapa de indicadores para estudiar
   propagacion de estres.
 - La API `/api/v1/intelligence/volatility` describe los episodios futuros:
@@ -137,6 +137,18 @@ permiso explicito de output publico.
 - Cboe e ICE quedan registrados como fuentes pendientes de derechos para
   resultados historicos reales; esta version no descarga sus series ni
   recomienda posiciones.
+
+### Policy Signal Impact Lab
+
+- La ruta `/dashboard/policy-signals` estudia la hipotesis de impacto de
+  comunicaciones públicas con el caso inicial `Donald Trump / Truth Social`.
+- Declara ventanas observacionales y activos conectados, incluyendo VIX
+  externo de FRED, tasas, energia, cripto e IPO evidence.
+- El feed live de Truth Social esta bloqueado: esta edicion no ejecuta
+  scraping ni almacena publicaciones porque los terminos oficiales requieren
+  permiso para automatizacion y compilacion sistematica.
+- Documenta competidores y precedentes sin afirmar que un movimiento fue
+  causado por una publicacion o que indique una operacion.
 
 ## Ejecutar Sin Costos
 
@@ -177,8 +189,9 @@ La ruta `/dashboard/intelligence` es navegable aun sin red porque presenta el
 mapa de fuentes y limites; las futuras ingestas solo se activaran tras pruebas
 y validacion de output público.
 `/dashboard/volatility` conserva la misma regla: sin Internet mantiene visible
-el diseño de investigacion, mientras el chart atribuido requiere cargar el
-widget externo.
+el diseño de investigacion, mientras el chart atribuido requiere cargar la
+imagen externa de FRED. `/dashboard/policy-signals` conserva tambien su
+metodologia y control de derechos aunque el contexto VIX externo no cargue.
 
 ## Reporte Periodico En GitHub
 
