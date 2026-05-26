@@ -733,6 +733,10 @@ def evidence_commons_html() -> str:
     .facts { display:grid; gap:6px; margin:15px 0; color:var(--muted); font-size:12px; }
     .facts b { color:var(--text); font-weight:500; }
     .passport a { font-weight:600; font-size:13px; }
+    .developer-access { margin-top:18px; padding:18px 20px; background:var(--panel); border:1px solid var(--line); border-radius:18px; color:var(--muted); }
+    .developer-access summary { color:var(--text); font-weight:650; cursor:pointer; }
+    .developer-access p { max-width:700px; line-height:1.55; }
+    .developer-access a { display:inline-block; padding:10px 14px; border:1px solid var(--line); border-radius:10px; color:var(--green); font-weight:650; }
     .join { display:grid; grid-template-columns:1fr auto; align-items:center; gap:20px; background:var(--panel2); border:1px solid var(--line);
       border-radius:18px; padding:24px; margin:38px 0; }
     .join p { color:var(--muted); margin:7px 0 0; }
@@ -751,7 +755,7 @@ def evidence_commons_html() -> str:
         <p class="eyebrow">Open verification network</p>
         <h1>Every signal needs<br><span>a passport.</span></h1>
         <p class="lead">A public protocol for where market evidence comes from, what rights govern it, how frequently it changes and what it cannot prove. Version 0.1 publishes source and rights passports while contributors expand cadence and claim-limit fields.</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/contribute?lang=en">Contribute a passport</a><a href="/api/v1/commons/passports" target="_blank" rel="noopener" title="Machine-readable JSON response for developers">Developer API (JSON)</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/contribute?lang=en">Contribute a passport</a></div>
       </article>
       <article class="protocol">
         <div class="protocol-head"><strong>Passport Protocol</strong><span class="pill open">Open standard v0.1</span></div>
@@ -780,6 +784,11 @@ def evidence_commons_html() -> str:
       <div><h3>Contributors wanted worldwide</h3><p>Know an official regulator or exchange source? Submit its passport with terms and confirmation rules. Code can follow once the evidence is approved.</p></div>
       <a href="/dashboard/contribute?lang=en">Join the Commons</a>
     </section>
+    <details class="developer-access">
+      <summary>Developer access</summary>
+      <p>The registry is also available as a machine-readable JSON file for integrations and reproducible research. This is raw data, not a visual dashboard page.</p>
+      <a href="/api/v1/commons/passports" download="marketwitness-evidence-passports.json">Download registry JSON</a>
+    </details>
   </main>
   <script>
     const $ = (id) => document.getElementById(id);
