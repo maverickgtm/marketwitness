@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "marketwitness"
 version = "0.1.0rc1"
-description = "Auditable research engine for analyst price-target accuracy."
+description = "Evidence-first market intelligence dashboard with auditable public-source research labs."
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
 authors = [{name = "MarketWitness contributors"}]
-keywords = ["finance", "price-targets", "analysts", "backtesting", "research"]
+keywords = ["finance", "market-intelligence", "ipo", "sec", "volatility", "research"]
 
 [project.optional-dependencies]
 warehouse = ["duckdb>=1.2,<2"]

@@ -19,6 +19,10 @@ promise real analyst rankings or investment recommendations.
 - [x] Registry of 49 sources with permission and evidence classifications.
 - [x] Official free presidential-event intake through `White House News RSS`
   and `Presidential Actions RSS`, with a deduplicated topic-triage artifact.
+- [x] Official Treasury, macro-catalyst and CFTC positioning laboratories with
+  explicitly non-prescriptive output boundaries.
+- [x] SEC Insider Activity Lab with quarterly Forms `3`/`4`/`5`
+  classification, issuer/owner search, anomaly holds and filing-review rules.
 
 ## Before Publishing The Repository
 
@@ -28,11 +32,17 @@ promise real analyst rankings or investment recommendations.
   `README.md`: IPO Watch, Global Listings, and Presidential Impact Lab.
 - [ ] Create the GitHub repository with description, topics, and the correct
   link before adding permanent badges.
+- [ ] Configure `MARKETWITNESS_SEC_USER_AGENT` and
+  `MARKETWITNESS_MACRO_USER_AGENT` as repository secrets before enabling the
+  official policy-monitor workflow.
 - [ ] Enable `Private vulnerability reporting` under the GitHub `Security` tab.
-- [ ] Perform a final secret scan and confirm that email addresses, API keys,
+- [x] Perform a final secret scan and confirm that email addresses, API keys,
   `data/private/`, `data/raw/`, and `build/` are not versioned.
-- [ ] Publish from a clean or rewritten history: a private permission draft
-  previously included a personal email address in local commits.
+- [x] Confirm the publishable `main` branch history contains only GitHub
+  noreply author identities and no private permission draft.
+- [ ] Push only the sanitized `main` branch. Do not use `git push --all` or
+  publish local stash/backup refs, which may still retain pre-rewrite local
+  history containing personal author identities.
 - [ ] Create the `v0.1.0-rc.1` tag and release notes only after Actions passes
   from the public repository.
 
@@ -82,5 +92,6 @@ python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 
 Open `http://127.0.0.1:8000/` and review `/dashboard/ipo`,
 `/dashboard/global-listings`, `/dashboard/intelligence`,
-`/dashboard/volatility`, `/dashboard/presidential-impact`, and
+`/dashboard/volatility`, `/dashboard/presidential-impact`,
+`/dashboard/cot-positioning`, `/dashboard/insider-activity`, and
 `/dashboard/policy`.
