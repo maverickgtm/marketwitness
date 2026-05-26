@@ -723,6 +723,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Every signal needs", page.text)
         self.assertIn("Passport Protocol", page.text)
         self.assertIn("/api/v1/commons/passports", page.text)
+        self.assertIn("Developer API (JSON)", page.text)
+        self.assertIn('target="_blank"', page.text)
         self.assertIn("/dashboard/contribute?lang=en", page.text)
         self.assertEqual(passports.status_code, 200)
         self.assertEqual(passports.json()["passport_version"], "0.1")

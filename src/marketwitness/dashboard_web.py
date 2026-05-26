@@ -751,7 +751,7 @@ def evidence_commons_html() -> str:
         <p class="eyebrow">Open verification network</p>
         <h1>Every signal needs<br><span>a passport.</span></h1>
         <p class="lead">A public protocol for where market evidence comes from, what rights govern it, how frequently it changes and what it cannot prove. Version 0.1 publishes source and rights passports while contributors expand cadence and claim-limit fields.</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/contribute?lang=en">Contribute a passport</a><a href="/api/v1/commons/passports">Open API</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/contribute?lang=en">Contribute a passport</a><a href="/api/v1/commons/passports" target="_blank" rel="noopener" title="Machine-readable JSON response for developers">Developer API (JSON)</a></div>
       </article>
       <article class="protocol">
         <div class="protocol-head"><strong>Passport Protocol</strong><span class="pill open">Open standard v0.1</span></div>
