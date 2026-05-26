@@ -28,7 +28,7 @@ promise real analyst rankings or investment recommendations.
 
 - [x] Run `make verify` and `make release-hygiene` from a local clean clone of
   the candidate branch.
-- [ ] Retain a green GitHub Actions result on the candidate commit after
+- [x] Retain a green GitHub Actions result on the candidate commit after
   pushing the public repository.
 - [x] Publish three selected screenshots in `docs/assets/` and use them in
   `README.md`: IPO Watch, Global Listings, and Presidential Impact Lab.
@@ -36,10 +36,10 @@ promise real analyst rankings or investment recommendations.
   link: `https://github.com/maverickgtm/marketwitness`.
 - [x] Enable GitHub Discussions with a pinned welcome announcement and open
   initial roadmap issues for connectors, VIX inputs, and hosted deployment.
-- [ ] Configure `MARKETWITNESS_SEC_USER_AGENT` and
+- [x] Configure `MARKETWITNESS_SEC_USER_AGENT` and
   `MARKETWITNESS_MACRO_USER_AGENT` as repository secrets before enabling the
   official policy-monitor workflow.
-- [ ] Enable `Private vulnerability reporting` under the GitHub `Security` tab.
+- [x] Enable `Private vulnerability reporting` under the GitHub `Security` tab.
 - [x] Perform a final secret scan and confirm that email addresses, API keys,
   `data/private/`, `data/raw/`, and `build/` are not versioned.
 - [x] Confirm the publishable `main` branch history contains only GitHub
@@ -50,7 +50,7 @@ promise real analyst rankings or investment recommendations.
 - [x] Push only the sanitized `main` branch. Do not use `git push --all` or
   publish local stash/backup refs, which may still retain pre-rewrite local
   history containing personal author identities.
-- [ ] Create the `v0.1.0-rc.1` tag and release notes only after Actions passes
+- [x] Create the `v0.1.0-rc.1` tag and release notes only after Actions passes
   from the public repository.
 
 Run this publication hygiene check before pushing a public candidate:

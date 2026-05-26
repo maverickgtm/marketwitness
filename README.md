@@ -266,16 +266,16 @@ are maintained in English.
 
 ## Release Candidate Status
 
-`v0.1.0-rc.1` is intended as a credible public Open Edition candidate:
+`v0.1.0-rc.1` is published as a public Open Edition pre-release:
 
 - no paid subscription or mandatory provider key is required for the demo;
 - blocked and pending source rights remain visible;
 - security and contribution policies are included;
-- a clean public repository history is still required before publication
-  because an earlier local draft contained a personal email address.
+- GitHub Actions passed on the tagged candidate, and private request identity
+  settings remain outside the repository history.
 
-Use the [release candidate checklist](docs/release-candidate-checklist.md) for
-the final publication steps.
+See the [release candidate checklist](docs/release-candidate-checklist.md) for
+the recorded publication controls and verification steps.
 
 ## Documentation
 
