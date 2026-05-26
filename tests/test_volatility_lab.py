@@ -25,9 +25,35 @@ class VolatilityLabTests(unittest.TestCase):
             ["vix_rises", "vix_cools"],
         )
         self.assertEqual(explorer["horizons"][2]["key"], "5_sessions")
-        self.assertIn("observed returns", explorer["boundary"])
+        self.assertIn("Real observed returns", explorer["boundary"])
         rise = explorer["scenarios"][0]
         self.assertIn("BTC / ETH", {item["assets"] for item in rise["lenses"]})
+        validation = explorer["validation_sample"]
+        self.assertEqual(validation["mode"], "project_authored_not_market_observations")
+        self.assertEqual(validation["episode_count"], 6)
+        self.assertEqual(validation["result_count"], 10)
+        rises_five = next(
+            result
+            for result in validation["results"]
+            if result["scenario_key"] == "vix_rises"
+            and result["horizon_key"] == "5_sessions"
+        )
+        cools_twenty = next(
+            result
+            for result in validation["results"]
+            if result["scenario_key"] == "vix_cools"
+            and result["horizon_key"] == "20_sessions"
+        )
+        rise_equities = next(
+            item for item in rises_five["lens_results"] if item["family"] == "Equities"
+        )
+        cool_equities = next(
+            item for item in cools_twenty["lens_results"] if item["family"] == "Equities"
+        )
+        self.assertEqual(rise_equities["median_return_pct"], -1.6)
+        self.assertEqual(rise_equities["positive_frequency_pct"], 33)
+        self.assertEqual(cool_equities["median_return_pct"], 3.35)
+        self.assertGreater(cool_equities["positive_frequency_pct"], rise_equities["positive_frequency_pct"])
         move = next(item for item in snapshot["indicators"] if item["symbol"] == "MOVE")
         self.assertEqual(move["source"]["provider_id"], "ice-move-index")
         tech = next(item for item in snapshot["episode_designs"] if item["key"] == "technology_stress_gap")

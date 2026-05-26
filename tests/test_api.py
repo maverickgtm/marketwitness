@@ -333,7 +333,10 @@ class ApiTests(unittest.TestCase):
         self.assertIn("When VIX moves", page.text)
         self.assertIn("what reacts?", page.text)
         self.assertIn("VIX Reaction Explorer", page.text)
-        self.assertIn("Results gated / design live", page.text)
+        self.assertIn("Real results gated / validation live", page.text)
+        self.assertIn("Forward Reaction Statistics", page.text)
+        self.assertIn("Median return", page.text)
+        self.assertIn("Synthetic validation sample", page.text)
         self.assertIn("VIXCLS", page.text)
         self.assertIn("via FRED", page.text)
         self.assertIn("External VIX display unavailable", page.text)
@@ -341,6 +344,11 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(snapshot.status_code, 200)
         self.assertEqual(snapshot.json()["indicator_group_count"], 7)
         self.assertEqual(snapshot.json()["episode_design_count"], 4)
+        self.assertEqual(snapshot.json()["reaction_explorer"]["validation_sample"]["result_count"], 10)
+        self.assertEqual(
+            snapshot.json()["reaction_explorer"]["validation_sample"]["mode"],
+            "project_authored_not_market_observations",
+        )
         self.assertEqual(
             [scenario["key"] for scenario in snapshot.json()["reaction_explorer"]["scenarios"]],
             ["vix_rises", "vix_cools"],

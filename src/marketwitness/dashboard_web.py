@@ -1362,12 +1362,38 @@ def volatility_lab_html() -> str:
     .horizon-button.active { color:var(--text); border-color:var(--blue); background:rgba(98,166,255,.16); }
     .selection { background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin:15px 0; }
     .selection h3 { font-size:20px; margin:5px 0; } .selection p { color:var(--muted); margin:7px 0 0; }
+    .validation-head { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin:21px 0 12px; }
+    .validation-head h3 { margin:0; font-size:19px; } .validation-head p { margin:3px 0 0; color:var(--muted); font-size:13px; }
+    .validation-pill { color:var(--mint); background:rgba(56,223,173,.12); border-radius:999px; padding:6px 10px; font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
+    .technical-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:13px 0; }
+    .technical-kpi { border:1px solid var(--line); border-radius:12px; padding:11px 13px; background:rgba(6,10,18,.26); }
+    .technical-kpi p { margin:0; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.1em; }
+    .technical-kpi strong { display:block; margin-top:5px; font-size:17px; color:var(--text); }
+    .stat-wrap { border:1px solid var(--line); border-radius:13px; overflow:auto; margin-bottom:18px; }
+    .stat-table { width:100%; border-collapse:collapse; min-width:630px; background:rgba(6,10,18,.24); }
+    .stat-table th { color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-size:10px; font-weight:600; text-align:right; padding:11px 12px; border-bottom:1px solid var(--line); }
+    .stat-table th:first-child,.stat-table td:first-child { text-align:left; }
+    .stat-table td { text-align:right; padding:12px; border-bottom:1px solid rgba(35,49,66,.7); font-variant-numeric:tabular-nums; }
+    .stat-table tbody tr:last-child td { border-bottom:0; }
+    .stat-table td:first-child { color:var(--text); font-weight:600; }
+    .positive { color:var(--mint); } .negative { color:var(--red); } .neutral { color:var(--muted); }
+    .technical-note { color:var(--muted); font-size:12px; margin:0 0 18px; }
     .reaction-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:11px; margin-top:16px; }
     .reaction-card { border:1px solid var(--line); border-radius:13px; padding:14px; background:rgba(6,10,18,.3); }
     .reaction-card h3 { font-size:17px; margin:7px 0; } .reaction-card p { color:var(--muted); font-size:13px; margin:0; }
     .explorer-boundary { color:var(--gold); border-top:1px solid var(--line); padding-top:15px; margin:18px 0 0; font-size:13px; }
     #error { display:none; border-left-color:var(--red); color:var(--red); }
-    @media(max-width:1000px) { .hero,.metrics,.grid,.designs,.reaction-grid { grid-template-columns:1fr; } .explorer-head { flex-direction:column; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
+    @media(max-width:1000px) { .hero,.metrics,.grid,.designs,.reaction-grid,.technical-kpis { grid-template-columns:1fr; } .explorer-head { flex-direction:column; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
+    @media(max-width:700px) {
+      .stat-wrap { border:0; overflow:visible; }
+      .stat-table { min-width:0; background:transparent; }
+      .stat-table thead { display:none; }
+      .stat-table,.stat-table tbody,.stat-table tr { display:block; }
+      .stat-table tr { border:1px solid var(--line); border-radius:12px; padding:7px 12px; margin-bottom:9px; background:rgba(6,10,18,.24); }
+      .stat-table td { display:flex; justify-content:space-between; gap:14px; padding:7px 0; text-align:right; }
+      .stat-table td::before { content:attr(data-label); color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.08em; font-weight:500; }
+      .stat-table td:first-child { text-align:right; }
+    }
   </style>
 </head>
 <body>
@@ -1394,7 +1420,7 @@ def volatility_lab_html() -> str:
       <article class="card"><p>Indicator groups</p><strong id="groups">-</strong></article>
       <article class="card"><p>Episode designs</p><strong id="episodes">-</strong></article>
       <article class="card"><p>Phase 1 anchors</p><strong id="phase1">-</strong></article>
-      <article class="card"><p>New live calculations</p><strong>0</strong></article>
+      <article class="card"><p>Validation combinations</p><strong id="validation-count">-</strong></article>
     </section>
     <p class="notice" id="boundary">Loading publication boundary...</p>
     <p class="notice" id="error"></p>
@@ -1402,8 +1428,8 @@ def volatility_lab_html() -> str:
   <main>
     <section class="explorer" aria-label="VIX Reaction Explorer">
       <div class="explorer-head">
-        <div><p class="eyebrow">Interactive study design</p><h2>VIX Reaction Explorer</h2><p id="explorer-prompt">Loading reaction workspace...</p></div>
-        <span class="gated">Results gated / design live</span>
+        <div><p class="eyebrow">Quantitative event-study prototype</p><h2>VIX Reaction Explorer</h2><p id="explorer-prompt">Loading reaction workspace...</p></div>
+        <span class="gated">Real results gated / validation live</span>
       </div>
       <p class="meta">1 / Choose the VIX move</p>
       <div class="scenario-bar" id="scenarios"></div>
@@ -1414,7 +1440,23 @@ def volatility_lab_html() -> str:
         <h3 id="selected-headline">Loading...</h3>
         <p id="selected-question"></p>
       </article>
-      <p class="meta">3 / Observe these reaction lenses</p>
+      <div class="validation-head">
+        <div><h3>Forward Reaction Statistics</h3><p id="validation-method"></p></div>
+        <span class="validation-pill" id="validation-label">Synthetic validation sample</span>
+      </div>
+      <section class="technical-kpis">
+        <article class="technical-kpi"><p>Episode rule</p><strong id="stat-rule">-</strong></article>
+        <article class="technical-kpi"><p>Sample size</p><strong id="stat-sample">-</strong></article>
+        <article class="technical-kpi"><p>Forward window</p><strong id="stat-window">-</strong></article>
+      </section>
+      <div class="stat-wrap">
+        <table class="stat-table">
+          <thead><tr><th>Reaction lens</th><th>Median return</th><th>Positive</th><th>Worst episode</th><th>Dispersion</th></tr></thead>
+          <tbody id="stat-rows"></tbody>
+        </table>
+      </div>
+      <p class="technical-note">All table values are percentages computed from project-authored validation episodes, not historical trading outcomes.</p>
+      <p class="meta">3 / Interpret these reaction lenses</p>
       <section class="reaction-grid" id="reaction-lenses"></section>
       <p class="explorer-boundary" id="explorer-boundary"></p>
     </section>
@@ -1426,15 +1468,25 @@ def volatility_lab_html() -> str:
   <script>
     const $ = (id) => document.getElementById(id);
     function text(value) { return String(value == null ? "" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;"); }
+    function percent(value) { return `${value > 0 ? "+" : ""}${Number(value).toFixed(2)}%`; }
+    function tone(value) { return value > 0 ? "positive" : value < 0 ? "negative" : "neutral"; }
     function renderReactionExplorer(explorer) {
       let selectedScenario = explorer.scenarios[0];
       let selectedHorizon = explorer.horizons[2];
+      const validation = explorer.validation_sample;
       const render = () => {
+        const result = validation.results.find((item) => item.scenario_key === selectedScenario.key && item.horizon_key === selectedHorizon.key);
         $("scenarios").innerHTML = explorer.scenarios.map((scenario) => `<button type="button" class="scenario-button ${scenario.key === "vix_cools" ? "relief" : ""} ${scenario.key === selectedScenario.key ? "active" : ""}" data-scenario="${text(scenario.key)}">${text(scenario.label)}</button>`).join("");
         $("horizons").innerHTML = explorer.horizons.map((horizon) => `<button type="button" class="horizon-button ${horizon.key === selectedHorizon.key ? "active" : ""}" data-horizon="${text(horizon.key)}">${text(horizon.label)}</button>`).join("");
-        $("selected-trigger").textContent = `${selectedScenario.trigger} / ${selectedHorizon.label}`;
+        $("selected-trigger").textContent = `${result.threshold} / ${selectedHorizon.label}`;
         $("selected-headline").textContent = selectedScenario.headline;
         $("selected-question").textContent = selectedScenario.question;
+        $("validation-label").textContent = validation.label;
+        $("validation-method").textContent = validation.method;
+        $("stat-rule").textContent = result.threshold.replace("VIX close-to-close change ", "");
+        $("stat-sample").textContent = `${validation.episode_count} episodes`;
+        $("stat-window").textContent = selectedHorizon.label;
+        $("stat-rows").innerHTML = result.lens_results.map((lens) => `<tr><td data-label="Reaction lens">${text(lens.family)}</td><td data-label="Median return" class="${tone(lens.median_return_pct)}">${percent(lens.median_return_pct)}</td><td data-label="Positive">${text(lens.positive_frequency_pct)}%</td><td data-label="Worst episode" class="${tone(lens.worst_return_pct)}">${percent(lens.worst_return_pct)}</td><td data-label="Dispersion">${percent(lens.dispersion_pct)}</td></tr>`).join("");
         $("reaction-lenses").innerHTML = selectedScenario.lenses.map((lens) => `<article class="reaction-card"><p class="eyebrow">${text(lens.family)}</p><h3>${text(lens.assets)}</h3><p>${text(lens.measurement)}</p></article>`).join("");
         document.querySelectorAll("[data-scenario]").forEach((button) => button.addEventListener("click", () => { selectedScenario = explorer.scenarios.find((scenario) => scenario.key === button.dataset.scenario); render(); }));
         document.querySelectorAll("[data-horizon]").forEach((button) => button.addEventListener("click", () => { selectedHorizon = explorer.horizons.find((horizon) => horizon.key === button.dataset.horizon); render(); }));
@@ -1450,7 +1502,7 @@ def volatility_lab_html() -> str:
         const data = await response.json();
         $("question").textContent = data.research_question;
         $("reviewed").textContent = `${data.product} / reviewed as of ${data.as_of}`;
-        $("groups").textContent = data.indicator_group_count; $("episodes").textContent = data.episode_design_count; $("phase1").textContent = data.phase_1.length;
+        $("groups").textContent = data.indicator_group_count; $("episodes").textContent = data.episode_design_count; $("phase1").textContent = data.phase_1.length; $("validation-count").textContent = data.reaction_explorer.validation_sample.result_count;
         $("boundary").textContent = data.publication_boundary;
         renderReactionExplorer(data.reaction_explorer);
         $("indicators").innerHTML = data.indicators.map((item) => `<article class="panel"><div class="indicator-head"><div><span class="family">${text(item.family)}</span><h3>${text(item.symbol)}</h3></div><span class="pill ${text(item.priority)}">${text(item.priority)}</span></div><p>${text(item.role)}</p><small><strong>Connects to:</strong> ${text(item.linked_context)}</small><p class="source"><a href="${text(item.source.official_url)}" target="_blank" rel="noopener">${text(item.source.provider_name)}</a> / ${text(item.source.deployment_state)}</p></article>`).join("");

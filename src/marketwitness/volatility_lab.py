@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import date
+from statistics import median, pstdev
 from typing import Any
 
 from .source_registry import SourceProvider, SourceRegistryDataError
@@ -171,6 +172,65 @@ REACTION_HORIZONS = (
     {"key": "60_sessions", "label": "60 sessions"},
 )
 
+VALIDATION_RETURN_PATHS = {
+    "vix_rises": {
+        "threshold": "VIX close-to-close change >= +10%",
+        "same_day": {
+            "Equities": (-1.4, -0.6, 0.3, -2.1, -0.9, -1.7),
+            "Crypto": (-2.5, -1.3, 0.9, -4.2, -1.4, -3.1),
+            "Energy / Havens": (0.4, 0.7, -0.2, 1.2, 0.3, 0.9),
+        },
+        "1_session": {
+            "Equities": (-1.1, -0.2, 0.7, -2.5, -0.3, -1.2),
+            "Crypto": (-2.0, -0.8, 2.1, -5.0, -1.0, -2.6),
+            "Energy / Havens": (0.6, 1.1, -0.4, 1.6, 0.4, 1.0),
+        },
+        "5_sessions": {
+            "Equities": (-2.8, 1.4, -1.0, -4.0, 0.5, -2.2),
+            "Crypto": (-5.6, 3.0, -2.4, -8.3, 1.2, -4.1),
+            "Energy / Havens": (1.4, 2.1, -0.8, 2.9, 1.0, 1.8),
+        },
+        "20_sessions": {
+            "Equities": (-3.4, 2.8, 0.9, -6.1, 1.5, -1.8),
+            "Crypto": (-7.1, 8.5, 2.3, -12.4, 4.1, -4.0),
+            "Energy / Havens": (2.2, 3.0, -1.6, 3.8, 1.2, 2.6),
+        },
+        "60_sessions": {
+            "Equities": (1.2, 6.5, 4.0, -8.2, 2.3, -3.1),
+            "Crypto": (3.8, 18.2, 9.6, -22.0, 7.2, -9.1),
+            "Energy / Havens": (0.8, 2.4, -2.8, 2.1, -0.4, 1.0),
+        },
+    },
+    "vix_cools": {
+        "threshold": "VIX close-to-close change <= -10%",
+        "same_day": {
+            "Equities": (0.5, 1.0, -0.3, 0.8, 0.4, -0.2),
+            "Crypto": (0.9, 1.8, -1.0, 1.2, 0.7, -0.6),
+            "Energy / Havens": (-0.1, -0.4, 0.5, -0.2, 0.1, 0.3),
+        },
+        "1_session": {
+            "Equities": (0.9, 1.4, -0.5, 1.1, 0.7, 0.2),
+            "Crypto": (1.6, 2.7, -1.4, 2.0, 1.3, 0.1),
+            "Energy / Havens": (-0.3, -0.8, 0.7, -0.4, 0.2, 0.4),
+        },
+        "5_sessions": {
+            "Equities": (2.2, 3.5, -1.1, 2.8, 1.7, 0.6),
+            "Crypto": (3.7, 6.2, -3.0, 4.4, 2.8, 1.0),
+            "Energy / Havens": (-0.8, -1.4, 1.2, -1.0, 0.3, 0.6),
+        },
+        "20_sessions": {
+            "Equities": (4.6, 5.2, -1.7, 3.9, 2.8, 1.6),
+            "Crypto": (8.4, 11.0, -5.1, 7.2, 5.7, 2.4),
+            "Energy / Havens": (-1.6, -2.7, 2.0, -1.9, 0.7, 1.1),
+        },
+        "60_sessions": {
+            "Equities": (7.5, 8.1, -3.0, 5.9, 4.2, 2.5),
+            "Crypto": (14.2, 19.5, -8.4, 10.8, 8.1, 4.5),
+            "Energy / Havens": (-2.1, -3.4, 3.2, -2.2, 1.4, 1.8),
+        },
+    },
+}
+
 
 def build_volatility_lab_snapshot(
     providers: list[SourceProvider], as_of: date
@@ -204,20 +264,63 @@ def build_volatility_lab_snapshot(
                 "time windows the lab is designed to test."
             ),
             "boundary": (
-                "Measurement workspace only: observed returns and reaction statistics "
-                "remain unavailable until rights-approved historical inputs are enabled."
+                "Quantitative validation uses project-authored synthetic episode paths only. "
+                "Real observed returns remain unavailable until rights-approved historical "
+                "inputs are enabled."
             ),
             "horizons": [dict(item) for item in REACTION_HORIZONS],
             "scenarios": [
                 {**item, "lenses": [dict(lens) for lens in item["lenses"]]}
                 for item in REACTION_SCENARIOS
             ],
+            "validation_sample": {
+                "label": "Synthetic validation sample",
+                "mode": "project_authored_not_market_observations",
+                "episode_count": 6,
+                "result_count": len(REACTION_SCENARIOS) * len(REACTION_HORIZONS),
+                "method": (
+                    "Forward-return paths validate calculations and controls; "
+                    "they are not observed historical market episodes."
+                ),
+                "results": _validation_results(),
+            },
         },
         "indicators": indicators,
         "episode_designs": [
             {**item, "windows": list(item["windows"])} for item in EPISODE_DESIGNS
         ],
     }
+
+
+def _validation_results() -> list[dict[str, Any]]:
+    results = []
+    for scenario_key, scenario in VALIDATION_RETURN_PATHS.items():
+        threshold = scenario["threshold"]
+        for horizon in REACTION_HORIZONS:
+            horizon_key = horizon["key"]
+            lens_results = []
+            for family, values in scenario[horizon_key].items():
+                lens_results.append(
+                    {
+                        "family": family,
+                        "sample_count": len(values),
+                        "median_return_pct": round(float(median(values)), 2),
+                        "positive_frequency_pct": round(
+                            sum(value > 0 for value in values) / len(values) * 100
+                        ),
+                        "worst_return_pct": round(min(values), 2),
+                        "dispersion_pct": round(pstdev(values), 2),
+                    }
+                )
+            results.append(
+                {
+                    "scenario_key": scenario_key,
+                    "horizon_key": horizon_key,
+                    "threshold": threshold,
+                    "lens_results": lens_results,
+                }
+            )
+    return results
 
 
 def _indicator_payload(

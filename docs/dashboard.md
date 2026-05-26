@@ -119,8 +119,9 @@ confirmed manager buy or sell without additional evidence.
   insiders, ownership, and futures-positioning layers; planned sources are not
   described as collected values.
 - `/dashboard/volatility` presents a FRED-attributed VIX display, an
-  interactive rising-versus-cooling reaction explorer, and planned
-  `VIX`/`VXN`/`MOVE`/commodity episode designs.
+  interactive rising-versus-cooling quantitative validation explorer with
+  synthetic statistics, and planned real `VIX`/`VXN`/`MOVE`/commodity
+  episode designs once rights permit them.
 - `/dashboard/presidential-impact` presents the Donald Trump communication
   event-study design, human-readable White House source links alongside
   labeled RSS intake paths, and the visible Truth Social collection block.

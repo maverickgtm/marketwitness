@@ -41,7 +41,7 @@ rights are visible product outcomes, not hidden limitations.
 | Financials Evidence Center | Audit a price-target scoring pipeline and its release gates | Redistributable fixtures; real rankings blocked |
 | Market Intelligence | Organize market context and future connectors | Source-first workspace with documented constraints |
 | Cross-Asset Markets | View Bitcoin, Ethereum, energy, metals, FX and benchmarks | Attributed TradingView displays; no widget data is stored or scored |
-| VIX Reaction Explorer | Choose rising or cooling VIX scenarios and map cross-asset reaction windows | Interactive study design; real episode results require rights-approved inputs |
+| VIX Reaction Explorer | Compare rising or cooling VIX scenarios across forward windows | Synthetic quantitative validation table; real episode results require rights-approved inputs |
 | Presidential Impact Lab | Study documented Donald Trump communications against market-reaction windows | Official White House RSS path; Truth Social blocked without permission |
 
 ## Product Views
