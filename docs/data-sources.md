@@ -28,6 +28,7 @@ narrative below summarizes why sources exist in the product.
 | South Korean offerings | OpenDART | KRX data not republished under reviewed terms |
 | Official presidential events | White House RSS | Wire links remain metadata only |
 | Futures positioning context | CFTC Commitments of Traders API | Weekly aggregated category positions, not trade signals |
+| U.S. insider ownership activity | SEC Insider Transactions Data Sets | Quarterly as-filed Forms 3/4/5; P/S codes may include private transactions and require filing review |
 
 ## Analyst Targets And Ratings
 
@@ -81,11 +82,19 @@ successful calculation.
 - CFTC public reporting JSON supplies weekly benchmark-only positioning for
   `WTI-PHYSICAL`, `GOLD`, and `USD INDEX`. The lab retains the official
   category labels and treats delayed aggregate net positions as context only.
+- SEC Insider Transactions Data Sets supply quarterly Forms `3`, `4` and `5`
+  non-derivative rows. MarketWitness totals only priced `P`/`S` purchase or
+  sale codes, excludes awards/gifts/other codes from those totals, and does
+  not assume a `P`/`S` row is an open-market trade. Rows dated after their
+  filing, code-unspecified rows, and extraordinary declared values remain
+  outside public summary totals for review.
 
 ## Official Reference Set
 
 - SEC EDGAR: <https://www.sec.gov/search-filings>
 - SEC N-PORT datasets: <https://www.sec.gov/data-research/sec-markets-data/form-n-port-data-sets>
+- SEC Insider Transactions Data Sets: <https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets>
+- SEC Insider Transactions README: <https://www.sec.gov/files/insider_transactions_readme.pdf>
 - U.S. Treasury Daily Interest Rate XML Feed: <https://home.treasury.gov/treasury-daily-interest-rate-xml-feed>
 - Federal Reserve FOMC Calendars: <https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm>
 - BLS Release Calendar: <https://www.bls.gov/schedule/>

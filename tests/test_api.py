@@ -159,6 +159,17 @@ class ApiTests(unittest.TestCase):
             "<html><h1>CFTC COT Positioning generated page</h1></html>",
             encoding="utf-8",
         )
+        (self.reports / "sec-insider-activity.csv").write_text(
+            "accession_number,filing_date,transaction_date,issuer_cik,issuer_name,ticker,document_type,reporting_owners,owner_relationships,security_title,transaction_code,transaction_class,shares,price_per_share,transaction_value,aff10b5one,source_mode,observed_on,source_url\n"
+            "0000000001-26-000001,2026-03-31,2026-03-30,0000320193,Apple Inc.,AAPL,4,Example Director,Director,Common Stock,P,reported_purchase,1000,200.00,200000.00,false,synthetic_fixture,2026-05-26,https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets\n"
+            "0000000001-26-000001,2026-03-31,2026-03-29,0000320193,Apple Inc.,AAPL,4,Example Director,Director,Common Stock,A,other_nonderivative,500,0.00,,false,synthetic_fixture,2026-05-26,https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets\n"
+            "0000000002-26-000002,2026-03-25,2026-03-24,0000789019,Microsoft Corporation,MSFT,4,Example Officer,Officer,Common Stock,S,reported_sale,750,420.00,315000.00,true,synthetic_fixture,2026-05-26,https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets\n",
+            encoding="utf-8",
+        )
+        (self.reports / "sec-insider-activity.html").write_text(
+            "<html><h1>SEC Insider Activity generated page</h1></html>",
+            encoding="utf-8",
+        )
         (self.reports / "ipo-watch.html").write_text(
             "<html><h1>IPO Watch generated page</h1></html>", encoding="utf-8"
         )
@@ -339,9 +350,9 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("/api/v1/open-edition", page.text)
         self.assertEqual(snapshot.status_code, 200)
-        self.assertEqual(snapshot.json()["zero_cost_available_count"], 9)
+        self.assertEqual(snapshot.json()["zero_cost_available_count"], 10)
         self.assertEqual(snapshot.json()["offline_ready_count"], 2)
-        self.assertEqual(snapshot.json()["public_data_ready_count"], 7)
+        self.assertEqual(snapshot.json()["public_data_ready_count"], 8)
         self.assertEqual(snapshot.json()["attributed_widget_count"], 0)
         self.assertEqual(snapshot.json()["optional_extension_count"], 1)
         self.assertIn("/dashboard/reports", page.text)
@@ -353,6 +364,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/presidential-impact", page.text)
         self.assertIn("/dashboard/macro-calendar", page.text)
         self.assertIn("/dashboard/cot-positioning", page.text)
+        self.assertIn("/dashboard/insider-activity", page.text)
         self.assertIn("/dashboard/rwa-watch", page.text)
         self.assertIn("Tokenized Assets / RWA", page.text)
         self.assertIn("Analyst Scorecards", page.text)
@@ -426,6 +438,7 @@ class ApiTests(unittest.TestCase):
             "/dashboard/market-context",
             "/dashboard/macro-calendar",
             "/dashboard/cot-positioning",
+            "/dashboard/insider-activity",
             "/dashboard/intelligence",
             "/dashboard/volatility",
             "/dashboard/policy-signals",
@@ -457,8 +470,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Source-first expansion blueprint", page.text)
         self.assertEqual(snapshot.status_code, 200)
         self.assertEqual(snapshot.json()["module_count"], 8)
-        self.assertEqual(snapshot.json()["foundation_count"], 7)
-        self.assertEqual(snapshot.json()["planned_connector_count"], 1)
+        self.assertEqual(snapshot.json()["foundation_count"], 8)
+        self.assertEqual(snapshot.json()["planned_connector_count"], 0)
         self.assertIn("Official document metadata may be loaded", snapshot.json()["publication_boundary"])
         keys = {item["key"] for item in snapshot.json()["modules"]}
         self.assertIn("market_regimes", keys)
@@ -470,6 +483,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/volatility", page.text)
         self.assertIn("/dashboard/presidential-impact", page.text)
         self.assertIn("/dashboard/cot-positioning", page.text)
+        self.assertIn("/dashboard/insider-activity", page.text)
         self.assertIn("VIX Reaction Explorer", page.text)
         regimes = next(
             item for item in snapshot.json()["modules"] if item["key"] == "market_regimes"
@@ -494,6 +508,31 @@ class ApiTests(unittest.TestCase):
         self.assertIn("delayed", usd.json()["publication_boundary"])
         self.assertEqual(report.status_code, 200)
         self.assertIn("CFTC COT Positioning generated page", report.text)
+
+    def test_serves_sec_insider_activity_lab_with_classification_filters(self) -> None:
+        page = self.client.get("/dashboard/insider-activity")
+        snapshot = self.client.get(
+            "/api/v1/intelligence/insider-activity?days=90&side=all"
+        )
+        owner = self.client.get(
+            "/api/v1/intelligence/insider-activity?days=365&side=sale&query=Officer"
+        )
+        report = self.client.get("/dashboard/insider-activity/report")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Insider Activity Lab", page.text)
+        self.assertIn("/api/v1/intelligence/insider-activity", page.text)
+        self.assertIn("Ticker, issuer or insider", page.text)
+        self.assertEqual(snapshot.status_code, 200)
+        self.assertEqual(snapshot.json()["purchase_value"], "200000.00")
+        self.assertEqual(snapshot.json()["sale_value"], "315000.00")
+        self.assertEqual(snapshot.json()["other_nonderivative_count"], 1)
+        self.assertIn("private transactions", snapshot.json()["publication_boundary"])
+        self.assertEqual(owner.status_code, 200)
+        self.assertEqual(owner.json()["sale_count"], 1)
+        self.assertEqual(owner.json()["purchase_count"], 0)
+        self.assertEqual(report.status_code, 200)
+        self.assertIn("SEC Insider Activity generated page", report.text)
 
     def test_serves_volatility_research_lab_without_implying_a_trading_signal(self) -> None:
         page = self.client.get("/dashboard/volatility")

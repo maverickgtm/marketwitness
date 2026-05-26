@@ -16,9 +16,9 @@ class OpenEditionTests(unittest.TestCase):
 
         snapshot = build_open_edition_snapshot(providers, date(2026, 5, 25))
 
-        self.assertEqual(snapshot["zero_cost_available_count"], 9)
+        self.assertEqual(snapshot["zero_cost_available_count"], 10)
         self.assertEqual(snapshot["offline_ready_count"], 2)
-        self.assertEqual(snapshot["public_data_ready_count"], 7)
+        self.assertEqual(snapshot["public_data_ready_count"], 8)
         self.assertEqual(snapshot["attributed_widget_count"], 0)
         self.assertEqual(snapshot["optional_extension_count"], 1)
         rankings = next(
@@ -48,7 +48,7 @@ class OpenEditionTests(unittest.TestCase):
         self.assertEqual(context["title"], "Cross-Asset Markets")
         self.assertIn("Treasury curve-regime explorer", context["output"])
         self.assertIn("widget values remain display-only", context["limitation"])
-        self.assertIn("Available without paid data subscriptions: `9`", report)
+        self.assertIn("Available without paid data subscriptions: `10`", report)
         events = next(
             item for item in snapshot["capabilities"] if item["key"] == "presidential_event_intake"
         )
@@ -64,6 +64,12 @@ class OpenEditionTests(unittest.TestCase):
         )
         self.assertEqual(cot["route"], "/dashboard/cot-positioning")
         self.assertIn("WTI", cot["output"])
+        insider = next(
+            item for item in snapshot["capabilities"] if item["key"] == "sec_insider_activity"
+        )
+        self.assertEqual(insider["route"], "/dashboard/insider-activity")
+        self.assertIn("Form 3/4/5", insider["output"])
+        self.assertIn("private transactions", insider["limitation"])
 
     def test_rejects_a_public_capability_if_its_free_source_becomes_unavailable(self) -> None:
         providers = load_source_registry(Path("data/samples/source_registry.csv"))

@@ -101,6 +101,16 @@ CAPABILITIES = (
         "limitation": "CFTC observations are aggregated and delayed; they are not individual trades or position recommendations.",
     },
     {
+        "key": "sec_insider_activity",
+        "title": "Insider Activity Lab",
+        "status": "public_source_no_key",
+        "cost": "No data fee",
+        "provider_ids": ("sec-insider-transactions",),
+        "output": "Quarterly SEC Form 3/4/5 non-derivative P/S purchase and sale classification with issuer search",
+        "route": "/dashboard/insider-activity",
+        "limitation": "P/S codes may include private transactions; source filings require review and output is not investment advice.",
+    },
+    {
         "key": "real_analyst_rankings",
         "title": "Real Analyst Rankings",
         "status": "bring_authorized_data",

@@ -52,6 +52,8 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   selected BLS release times, horizon/agency filters and source-linked output.
 - [x] COT Positioning Lab with official CFTC weekly WTI, Gold and U.S. Dollar
   Index benchmark-category net exposure and comparison windows.
+- [x] Insider Activity Lab with quarterly SEC Forms `3`/`4`/`5`
+  non-derivative `P`/`S` classification, filters and original-filing boundary.
 - [x] Interactive Listings Radar combining the reviewed U.S. IPO registry with
   dated global listing-evidence changes, filters, source links and a
   browser-local research watchlist.
@@ -75,8 +77,8 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   real `xStocks / Backed`, Ondo, or secondary-venue RWA connector.
 - [ ] Approve Cboe/ICE rights or an authorized route before publishing real
   volatility episodes.
-- [ ] Implement SEC insider-activity classification after output policy and
-  tests are approved; extend market-regime inputs as rights allow.
+- [ ] Extend market-regime inputs as rights allow and join classified insider
+  disclosures to issuer watchlists without inferring intent.
 - [ ] Obtain external legal review before operating a public service with real
   data, subscriptions, advertising, or third-party-facing signals.
 

@@ -146,6 +146,7 @@ def open_edition_html() -> str:
         <a class="nav-link" href="/dashboard/market-context"><span class="dot"></span>Cross-Asset Markets</a>
         <a class="nav-link" href="/dashboard/macro-calendar"><span class="dot"></span>Macro Calendar</a>
         <a class="nav-link" href="/dashboard/cot-positioning"><span class="dot"></span>COT Positioning</a>
+        <a class="nav-link" href="/dashboard/insider-activity"><span class="dot"></span>Insider Activity</a>
         <a class="nav-link" href="/dashboard/reports"><span class="dot"></span>Report Center</a>
       </div>
       <div class="nav-group">
@@ -177,6 +178,7 @@ def open_edition_html() -> str:
         <a href="/dashboard/market-context">Crypto / Commodities</a>
         <a href="/dashboard/macro-calendar">Macro Catalysts</a>
         <a href="/dashboard/cot-positioning">COT Positioning</a>
+        <a href="/dashboard/insider-activity">Insider Activity</a>
         <a href="/dashboard/financials-evidence">Analyst Scorecards</a>
         <a href="/dashboard/rwa-watch">Tokenized Assets / RWA</a>
         <a href="/dashboard/contribute?lang=en">Contribute Connectors</a>
@@ -1581,7 +1583,7 @@ def market_intelligence_html() -> str:
         <h1>Events. Context.<br><span>Positioning.</span></h1>
         <p class="lead">A planned intelligence layer connecting IPO and listing evidence to macro catalysts, selected market regimes and declared positioning. It begins with provenance, not promises.</p>
         <p class="meta" id="reviewed">Loading reviewed sources...</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/presidential-impact">Open Presidential Impact Lab</a><a href="/dashboard/volatility">VIX Reaction Explorer</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/macro-calendar">Macro calendar</a><a href="/dashboard/cot-positioning">COT positioning</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/presidential-impact">Open Presidential Impact Lab</a><a href="/dashboard/volatility">VIX Reaction Explorer</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/macro-calendar">Macro calendar</a><a href="/dashboard/cot-positioning">COT positioning</a><a href="/dashboard/insider-activity">Insider activity</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
       </article>
       <article class="sequence"><p class="eyebrow">Delivery sequence</p><ol id="sequence"></ol></article>
     </section>
@@ -1880,6 +1882,146 @@ def cot_positioning_html() -> str:
     document.querySelectorAll(".market").forEach((button) => button.addEventListener("click", () => { selectedMarket = button.dataset.market; document.querySelectorAll(".market").forEach((item) => item.classList.toggle("active", item === button)); loadPositioning().catch(showError); }));
     document.querySelectorAll(".weeks").forEach((button) => button.addEventListener("click", () => { selectedWeeks = button.dataset.weeks; document.querySelectorAll(".weeks").forEach((item) => item.classList.toggle("active", item === button)); loadPositioning().catch(showError); }));
     loadPositioning().catch(showError);
+  </script>
+</body>
+</html>"""
+
+
+def insider_activity_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MarketWitness | Insider Activity Lab</title>
+  <style>
+    :root { --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246; --text:#f2f6f7;
+      --muted:#96aab8; --mint:#38dfad; --gold:#f3bf66; --blue:#62a6ff; --red:#ff8176; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--text); font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 82% 2%,rgba(98,166,255,.13),transparent 30%),radial-gradient(circle at 10% 16%,rgba(56,223,173,.09),transparent 28%),var(--bg); }
+    a { color:var(--mint); text-decoration:none; } header,main { max-width:1360px; margin:auto; padding:23px 28px; }
+    nav,.eyebrow,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-size:11px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:27px; }
+    .back { color:var(--text); border:1px solid var(--line); padding:9px 14px; border-radius:10px; font-weight:600; }
+    .hero,.lab,.stat,.issuers,.ledger,.notice { border:1px solid var(--line); border-radius:18px; background:var(--panel); }
+    .hero { display:grid; grid-template-columns:minmax(500px,1fr) 410px; gap:24px; padding:33px 35px; }
+    h1 { font-size:clamp(43px,5vw,64px); line-height:1.02; letter-spacing:-.05em; margin:13px 0 15px; }
+    h1 span { color:var(--blue); } h2 { margin:4px 0 8px; font-size:25px; } h3 { margin:0 0 8px; }
+    .lead { color:var(--muted); font-size:17px; max-width:690px; }
+    .hero-card { padding:20px; background:var(--panel2); border-radius:15px; align-self:center; }
+    .hero-card strong { display:block; font-size:32px; letter-spacing:-.04em; color:var(--gold); margin:7px 0; }
+    .hero-card p { color:var(--muted); margin:5px 0; }
+    .lab { margin-top:20px; padding:22px; } .lab-head { display:flex; justify-content:space-between; gap:18px; align-items:start; margin-bottom:18px; }
+    .official { color:var(--mint); background:rgba(56,223,173,.12); border-radius:999px; padding:7px 11px; font-size:11px; text-transform:uppercase; letter-spacing:.09em; white-space:nowrap; }
+    .controls { display:flex; flex-wrap:wrap; gap:13px; justify-content:space-between; padding:15px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .buttons { display:flex; flex-wrap:wrap; gap:8px; } button,input { font:inherit; border:1px solid var(--line); border-radius:10px; background:var(--panel2); color:var(--muted); padding:10px 14px; }
+    button { font-weight:600; cursor:pointer; } button.active { background:var(--mint); color:#061117; border-color:var(--mint); }
+    .search { display:flex; gap:8px; flex:1; justify-content:flex-end; } input { min-width:245px; color:var(--text); } input:focus { outline:1px solid var(--blue); }
+    .stats { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin:18px 0; }
+    .stat { background:var(--panel2); padding:15px 16px; } .stat small { display:block; color:var(--muted); margin-bottom:6px; }
+    .stat strong { display:block; font-size:26px; letter-spacing:-.03em; } .positive { color:var(--mint); } .negative { color:var(--red); } .neutral { color:var(--gold); }
+    .detail { display:grid; grid-template-columns:minmax(370px,.86fr) minmax(540px,1.14fr); gap:13px; }
+    .issuers,.ledger { background:var(--panel2); padding:17px; overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; } th,td { text-align:left; padding:10px 7px; border-bottom:1px solid var(--line); white-space:nowrap; }
+    th { color:var(--muted); text-transform:uppercase; font-size:10px; letter-spacing:.1em; font-weight:500; }
+    td small { display:block; color:var(--muted); max-width:240px; overflow:hidden; text-overflow:ellipsis; }
+    .links { display:flex; gap:16px; flex-wrap:wrap; margin:18px 0 4px; font-size:13px; font-weight:600; }
+    .notice { border-left:3px solid var(--gold); padding:14px 18px; margin-top:18px; color:var(--muted); }
+    #error { display:none; border-left-color:var(--red); }
+    @media(max-width:1040px) { .hero,.detail { grid-template-columns:1fr; } .stats { grid-template-columns:repeat(2,1fr); } header,main { padding:18px 14px; } }
+    @media(max-width:600px) { .top,.lab-head { flex-direction:column; align-items:flex-start; } .hero { padding:24px 20px; } .stats { grid-template-columns:1fr; } .search { justify-content:flex-start; } input { min-width:0; width:100%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top"><nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/intelligence">Market Intelligence</a> / Insider Activity</nav><a class="back" href="/dashboard/open">Back to terminal</a></div>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Official quarterly SEC ownership disclosure / no data fee</p>
+        <h1>What insiders reported.<br><span>What the code proves.</span></h1>
+        <p class="lead">Search declared non-derivative transactions from Forms 3, 4 and 5. MarketWitness isolates priced purchase and sale codes from awards, gifts and unpriced rows, while keeping original-filing review visible.</p>
+        <p class="meta" id="mode">Loading SEC insider artifact...</p>
+      </div>
+      <article class="hero-card">
+        <p class="eyebrow">Dataset anchor date</p>
+        <strong id="anchor">-</strong>
+        <p>Latest transaction date in the selected quarterly artifact.</p>
+        <p id="range">Waiting for the selected period...</p>
+      </article>
+    </section>
+  </header>
+  <main>
+    <section class="lab">
+      <div class="lab-head"><div><p class="eyebrow">Ownership classification explorer</p><h2>Insider Activity Lab</h2><p class="lead">Filter SEC purchase/sale codes by reporting window, side or company/owner name.</p></div><span class="official">SEC official dataset</span></div>
+      <div class="controls">
+        <div class="buttons" aria-label="Transaction-side filter">
+          <button class="side active" data-side="all" type="button">All P / S</button>
+          <button class="side" data-side="purchase" type="button">Purchases (P)</button>
+          <button class="side" data-side="sale" type="button">Sales (S)</button>
+        </div>
+        <div class="buttons" aria-label="Period filter">
+          <button class="days" data-days="30" type="button">30 days</button>
+          <button class="days" data-days="60" type="button">60 days</button>
+          <button class="days active" data-days="90" type="button">90 days</button>
+          <button class="days" data-days="365" type="button">1 year</button>
+        </div>
+        <form class="search" id="search-form">
+          <input id="query" type="search" placeholder="Ticker, issuer or insider" aria-label="Search ticker issuer or insider">
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <section class="stats" aria-label="Selected declared totals">
+        <article class="stat"><small>Priced P codes</small><strong class="positive" id="purchases">-</strong><small id="purchase-count"></small></article>
+        <article class="stat"><small>Priced S codes</small><strong class="negative" id="sales">-</strong><small id="sale-count"></small></article>
+        <article class="stat"><small>Net declared value</small><strong id="net">-</strong></article>
+        <article class="stat"><small>Selected P/S rows</small><strong id="rows">-</strong></article>
+        <article class="stat"><small>Excluded / review rows</small><strong class="neutral" id="excluded">-</strong></article>
+      </section>
+      <section class="detail">
+        <article class="issuers">
+          <p class="eyebrow">Issuer totals in selected view</p>
+          <table><thead><tr><th>Issuer</th><th>P value</th><th>S value</th><th>Net</th></tr></thead><tbody id="issuers"><tr><td colspan="4">Loading...</td></tr></tbody></table>
+        </article>
+        <article class="ledger">
+          <p class="eyebrow">Classified transaction ledger</p>
+          <table><thead><tr><th>Date</th><th>Issuer</th><th>Code</th><th>Value</th><th>Reporting owner</th></tr></thead><tbody id="transactions"><tr><td colspan="5">Loading...</td></tr></tbody></table>
+        </article>
+      </section>
+      <div class="links"><a href="/dashboard/insider-activity/report">Open normalized report</a><a href="https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets" target="_blank" rel="noopener">Official SEC datasets</a><a href="https://www.sec.gov/files/insider_transactions_readme.pdf" target="_blank" rel="noopener">SEC dataset readme</a></div>
+      <p class="notice" id="boundary">P/S codes require filing review and do not recommend a position.</p>
+      <p class="notice" id="error"></p>
+    </section>
+  </main>
+  <script>
+    let selectedDays = "90", selectedSide = "all";
+    const clean = (value) => String(value == null || value === "" ? "-" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    const money = (value) => `${Number(value) < 0 ? "-" : ""}$${Math.abs(Number(value)).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
+    const tone = (value) => Number(value) > 0 ? "positive" : Number(value) < 0 ? "negative" : "neutral";
+    async function loadActivity() {
+      const query = document.getElementById("query").value.trim();
+      const response = await fetch(`/api/v1/intelligence/insider-activity?days=${selectedDays}&side=${encodeURIComponent(selectedSide)}&query=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error((await response.json()).detail || "SEC insider request failed.");
+      const data = await response.json();
+      if (!data.available) { document.getElementById("mode").textContent = data.message; return; }
+      document.getElementById("mode").textContent = `${data.data_mode} / observed ${data.as_of}`;
+      document.getElementById("anchor").textContent = data.latest_transaction_date;
+      document.getElementById("range").textContent = `${data.period_start} to ${data.latest_transaction_date} / ${selectedDays}-day window`;
+      document.getElementById("purchases").textContent = money(data.purchase_value);
+      document.getElementById("sales").textContent = money(data.sale_value);
+      document.getElementById("purchase-count").textContent = `${data.purchase_count} priced row(s)`;
+      document.getElementById("sale-count").textContent = `${data.sale_count} priced row(s)`;
+      const net = document.getElementById("net"); net.textContent = money(data.net_declared_value); net.className = tone(data.net_declared_value);
+      document.getElementById("rows").textContent = data.transaction_count;
+      document.getElementById("excluded").textContent = Number(data.other_nonderivative_count) + Number(data.post_filing_dated_count) + Number(data.value_review_required_count);
+      document.getElementById("issuers").innerHTML = data.issuers.map((item) => `<tr><td><strong>${clean(item.ticker)}</strong><small>${clean(item.issuer_name)}</small></td><td class="positive">${money(item.purchase_value)}</td><td class="negative">${money(item.sale_value)}</td><td class="${tone(item.net_declared_value)}">${money(item.net_declared_value)}</td></tr>`).join("") || "<tr><td colspan='4'>No priced P/S rows match this filter.</td></tr>";
+      document.getElementById("transactions").innerHTML = data.transactions.map((item) => `<tr><td>${clean(item.transaction_date)}</td><td><strong>${clean(item.ticker)}</strong><small>${clean(item.issuer_name)}</small></td><td>${clean(item.transaction_code)}</td><td class="${item.transaction_class === "reported_purchase" ? "positive" : "negative"}">${money(item.transaction_value)}</td><td>${clean(item.reporting_owners)}</td></tr>`).join("") || "<tr><td colspan='5'>No classified rows match this filter.</td></tr>";
+      document.getElementById("boundary").textContent = data.publication_boundary;
+    }
+    function showError(error) { const node = document.getElementById("error"); node.style.display = "block"; node.textContent = error.message; }
+    document.querySelectorAll(".side").forEach((button) => button.addEventListener("click", () => { selectedSide = button.dataset.side; document.querySelectorAll(".side").forEach((item) => item.classList.toggle("active", item === button)); loadActivity().catch(showError); }));
+    document.querySelectorAll(".days").forEach((button) => button.addEventListener("click", () => { selectedDays = button.dataset.days; document.querySelectorAll(".days").forEach((item) => item.classList.toggle("active", item === button)); loadActivity().catch(showError); }));
+    document.getElementById("search-form").addEventListener("submit", (event) => { event.preventDefault(); loadActivity().catch(showError); });
+    loadActivity().catch(showError);
   </script>
 </body>
 </html>"""

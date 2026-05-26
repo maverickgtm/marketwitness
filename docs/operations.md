@@ -139,10 +139,13 @@ or live collection remains disabled without permission.
 `.github/workflows/public-presidential-events-monitor.yml` runs that intake
 alongside the official Treasury 2Y/10Y daily-yield context collector, the
 official Federal Reserve/BLS macro-catalyst schedule collector, and official
-CFTC weekly benchmark-positioning collection each weekday at
+CFTC weekly benchmark-positioning collection plus SEC quarterly
+insider-transaction classification each weekday at
 `12:43 UTC`, restores a deduplicated archive and publishes a 30-day
 downloadable artifact without a paid data API; BLS requests use the configured
-contact identity described below. To load a downloaded
+contact identity described below. The SEC insider artifact is retained across
+weekday runs and is refreshed on manual dispatch or initial collection rather
+than downloading an unchanged quarterly ZIP each day. To load a downloaded
 artifact into the dashboard:
 
 ```bash
@@ -166,6 +169,15 @@ benchmark contract codes: WTI, Gold and U.S. Dollar Index. Its output records
 the latest available weekly report date and keeps Managed Money separate from
 Leveraged Money. This artifact is delayed aggregated context and must not be
 represented as a trade alert.
+
+`sec-insider-activity` requests the latest published SEC Insider Transactions
+Data Sets quarterly ZIP and normalizes non-derivative Forms `3`, `4` and `5`
+records. It totals only priced transaction codes `P` and `S`; those codes may
+include private transactions and must not be described as confirmed
+open-market trades. Awards, gifts and other codes remain visible as excluded
+classifications. Live SEC access requires the private
+`MARKETWITNESS_SEC_USER_AGENT` contact setting already described for SEC
+workflows; no paid API key is required.
 
 `VIX Reaction Explorer` displays attributed FRED VIX context and publishes
 rising/cooling scenario design. Do not publish calculated historical episodes

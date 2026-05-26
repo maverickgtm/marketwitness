@@ -26,6 +26,7 @@ from .dashboard_web import (
     listings_radar_html,
     macro_calendar_html,
     cot_positioning_html,
+    insider_activity_html,
     market_intelligence_html,
     market_context_html,
     open_edition_html,
@@ -59,6 +60,11 @@ from .providers.macro_calendar import (
     load_macro_calendar_csv,
 )
 from .providers.cftc import CftcDataError, build_cftc_snapshot, load_cftc_csv
+from .providers.sec_insider import (
+    SecInsiderDataError,
+    build_insider_snapshot,
+    load_insider_csv,
+)
 from .providers.whitehouse import WhiteHouseDataError, load_event_archive
 from .provider_approvals import (
     ProviderApprovalDataError,
@@ -402,6 +408,12 @@ def create_app(
     )
     def cot_positioning_page() -> str:
         return _dashboard_html(cot_positioning_html())
+
+    @application.get(
+        "/dashboard/insider-activity", response_class=HTMLResponse, include_in_schema=False
+    )
+    def insider_activity_page() -> str:
+        return _dashboard_html(insider_activity_html())
 
     @application.get(
         "/dashboard/volatility", response_class=HTMLResponse, include_in_schema=False
@@ -797,6 +809,31 @@ def create_app(
         except CftcDataError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+    @application.get("/api/v1/intelligence/insider-activity")
+    def insider_activity_snapshot(
+        days: int = Query(default=90),
+        side: str = Query(default="all"),
+        query: str = Query(default=""),
+    ) -> dict[str, object]:
+        path = policy_monitor_reports / "sec-insider-activity.csv"
+        if not path.is_file():
+            return {
+                "available": False,
+                "data_mode": "Optional official SEC quarterly artifact",
+                "message": (
+                    "Load the official SEC Form 3/4/5 artifact to inspect priced "
+                    "P/S purchase or sale codes separately from other transactions."
+                ),
+                "issuers": [],
+                "transactions": [],
+            }
+        try:
+            return build_insider_snapshot(
+                load_insider_csv(path), days=days, side=side, query=query
+            )
+        except SecInsiderDataError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
     @application.get("/api/v1/intelligence/policy-signals")
     def policy_signal_lab_snapshot() -> dict[str, object]:
         providers = _read_sources(registry)
@@ -939,6 +976,14 @@ def create_app(
     )
     def cot_positioning_report() -> str:
         return _generated_html(policy_monitor_reports, "cftc-positioning.html")
+
+    @application.get(
+        "/dashboard/insider-activity/report",
+        response_class=HTMLResponse,
+        include_in_schema=False,
+    )
+    def insider_activity_report() -> str:
+        return _generated_html(policy_monitor_reports, "sec-insider-activity.html")
 
     @application.get(
         "/dashboard/presidential-impact/treasury-report",

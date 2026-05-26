@@ -82,16 +82,16 @@ MODULES = (
     },
     {
         "key": "insider_activity",
-        "title": "Insider Activity",
+        "title": "Insider Activity Lab",
         "theme": "Declared Ownership",
-        "stage": "connector_planned",
+        "stage": "foundation_available",
         "priority": "next",
         "provider_ids": ("sec-insider-transactions",),
-        "coverage": "SEC Forms 3, 4 and 5 for listed companies under observation.",
-        "cadence": "Regulatory filing evidence; dataset refresh cadence disclosed at ingestion",
-        "route": "",
-        "next_delivery": "Parse open-market purchases and sales separately from grants or awards.",
-        "claim_limit": "A declared insider transaction is evidence, not investment advice.",
+        "coverage": "SEC Forms 3, 4 and 5 non-derivative P/S purchase or sale codes separated from awards, gifts and other activity.",
+        "cadence": "Quarterly official SEC structured-data releases",
+        "route": "/dashboard/insider-activity",
+        "next_delivery": "Join classified disclosures to issuer watchlists without inferring insider intent.",
+        "claim_limit": "P/S codes may include private transactions; each filing requires review and is not investment advice.",
     },
     {
         "key": "ownership_watch",
@@ -144,7 +144,7 @@ def build_market_intelligence_snapshot(
             "Market Regimes: observed Treasury 2Y/10Y curve explorer plus attributed external BTC, ETH, WTI and Brent views.",
             "Macro Catalyst Calendar: official FOMC and selected BLS release timing with source links.",
             "COT Positioning Lab: official weekly WTI, Gold and U.S. Dollar Index category exposure.",
-            "Insider Activity after SEC transaction-classification review.",
+            "Insider Activity Lab: quarterly SEC P/S classification with original-filing review boundary.",
         ],
         "publication_boundary": (
             "This workspace maps verifiable evidence and implementation order. "

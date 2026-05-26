@@ -31,6 +31,7 @@ stored, exported, or used as scoring evidence.
 | Cross-Asset Markets | Official Treasury 2Y/10Y curve-regime explorer plus TradingView views for BTC, ETH, metals, energy, FX and benchmarks | Treasury observations are stored context; widget values are not stored or scored |
 | Macro Catalyst Calendar | Official FOMC meetings and selected BLS CPI, PPI, payrolls and JOLTS release schedule | Event times are known context, not release forecasts or positions |
 | COT Positioning Lab | Official CFTC benchmark-category positioning for WTI, Gold and U.S. Dollar Index with weekly comparisons | COT reports are delayed aggregated exposure, not trading instructions |
+| Insider Activity Lab | SEC Form 3/4/5 non-derivative P/S classification with issuer/owner and period filters | P/S codes may include private transactions; check original filings before interpretation |
 | Market Intelligence | Planned cross-asset sources and operating boundaries | No new live values or position recommendation |
 | VIX Reaction Explorer | VIX display, rising/cooling scenarios and episode-design API | Cboe/ICE derived output pending rights |
 | Presidential Impact Lab | Official White House archive, Treasury 2Y/10Y session context and themed calculation sandbox | Treasury changes are observational only; synthetic paths, Truth Social and broader reactions retain visible gates |
@@ -96,12 +97,16 @@ available but explicitly reports that no official run is loaded.
 `.github/workflows/public-presidential-events-monitor.yml` collects official
 White House News/Presidential Actions metadata, official Treasury daily
 2Y/10Y par-yield observations, and official Federal Reserve/BLS schedule
-metadata on weekdays. Once its artifact is loaded through
+metadata, delayed CFTC positioning, and quarterly SEC insider classifications
+on weekdays. Once its artifact is loaded through
 `MARKETWITNESS_POLICY_MONITOR_REPORTS`, Presidential Impact displays
 session-to-session basis-point context for thematic events, Macro Catalyst
 Calendar exposes upcoming known release times, and COT Positioning exposes
-delayed weekly CFTC benchmark-category context. None predicts an outcome,
-attributes causation, or recommends a trade.
+delayed weekly CFTC benchmark-category context and Insider Activity exposes
+priced P/S disclosure totals separately from other transaction codes. None
+predicts an outcome, attributes causation, or recommends a trade.
+The quarterly SEC insider artifact is cached between scheduled weekday runs
+and refreshed by manual workflow dispatch when a new SEC release is available.
 
 ## Optional Extensions
 

@@ -131,6 +131,12 @@ demo:
 		--report build/demo/cftc-positioning.md \
 		--html build/demo/cftc-positioning.html \
 		--as-of 2026-05-26
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness sec-insider-activity \
+		--snapshot-dir data/samples/sec-insider \
+		--output build/demo/sec-insider-activity.csv \
+		--report build/demo/sec-insider-activity.md \
+		--html build/demo/sec-insider-activity.html \
+		--as-of 2026-05-26
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness rwa-watch \
 		--snapshot data/samples/rwa-watch-synthetic.csv \
 		--report build/demo/rwa-watch.md \

@@ -203,6 +203,14 @@ from .providers.cftc import (
     write_cftc_html,
     write_cftc_report,
 )
+from .providers.sec_insider import (
+    SecInsiderDataError,
+    fetch_insider_transactions,
+    load_insider_dataset,
+    write_insider_csv,
+    write_insider_html,
+    write_insider_report,
+)
 from .providers.opendart import (
     OpenDartDataError,
     fetch_opendart_equity_filings,
@@ -1227,6 +1235,30 @@ def main() -> int:
         default=date.today().isoformat(),
         help="Observation date in YYYY-MM-DD format.",
     )
+    insider_parser = subparsers.add_parser(
+        "sec-insider-activity",
+        help="Classify SEC Form 3/4/5 non-derivative purchase and sale codes.",
+    )
+    insider_parser.add_argument("--output", required=True, help="Normalized output CSV path.")
+    insider_parser.add_argument("--report", required=True, help="Markdown report path.")
+    insider_parser.add_argument("--html", help="Optional HTML dashboard page output path.")
+    insider_parser.add_argument(
+        "--snapshot-dir",
+        help="Read SEC-shaped TSV fixture files instead of requesting the official quarterly ZIP.",
+    )
+    insider_parser.add_argument(
+        "--quarter",
+        help="Official release quarter such as 2026q1. Defaults to the latest SEC catalog release.",
+    )
+    insider_parser.add_argument(
+        "--user-agent",
+        help="Identified contact User-Agent; alternatively set MARKETWITNESS_SEC_USER_AGENT.",
+    )
+    insider_parser.add_argument(
+        "--as-of",
+        default=date.today().isoformat(),
+        help="Observation date in YYYY-MM-DD format.",
+    )
     opendart_parser = subparsers.add_parser(
         "opendart-monitor", help="Read South Korea OpenDART equity-offering filings."
     )
@@ -1577,6 +1609,31 @@ def main() -> int:
         print(
             f"Wrote CFTC COT positioning context for {len(positions)} weekly "
             f"observations to {args.report}."
+        )
+        return 0
+
+    if args.command == "sec-insider-activity":
+        try:
+            as_of = date.fromisoformat(args.as_of)
+            if args.snapshot_dir:
+                transactions = load_insider_dataset(
+                    args.snapshot_dir, as_of, synthetic_fixture=True
+                )
+                source_mode = "synthetic_fixture"
+            else:
+                transactions, release = fetch_insider_transactions(
+                    as_of, args.quarter, args.user_agent
+                )
+                source_mode = f"official_quarterly_dataset/{release.quarter}"
+            write_insider_csv(args.output, transactions)
+            write_insider_report(args.report, transactions, as_of, source_mode)
+            if args.html:
+                write_insider_html(args.html, transactions, as_of, source_mode)
+        except (SecInsiderDataError, ValueError) as exc:
+            parser.error(str(exc))
+        print(
+            f"Wrote SEC insider activity context for {len(transactions)} non-derivative "
+            f"transaction records to {args.report}."
         )
         return 0
 
