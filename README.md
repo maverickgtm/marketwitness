@@ -4,6 +4,7 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-3776AB.svg)](https://www.python.org/)
 [![MIT License](https://img.shields.io/badge/license-MIT-2ea44f.svg)](LICENSE)
 [![Open Edition](https://img.shields.io/badge/Open%20Edition-no%20paid%20data%20required-32d6b0.svg)](docs/open-edition.md)
+[![Live Demo](https://img.shields.io/badge/live%20demo-explore%20now-32d6b0.svg)](https://marketwitness-43-157-95-145.nip.io/dashboard/open)
 [![Discussions](https://img.shields.io/badge/community-Discussions-7B61FF.svg)](https://github.com/maverickgtm/marketwitness/discussions)
 
 **Evidence-first market intelligence for public listings, analyst research,
@@ -101,6 +102,13 @@ collapsed sidebar with quick access to the product's key paths:
 
 This makes the Open Edition practical to review from a phone browser while
 preserving the evidence and rights boundaries shown on desktop.
+
+## Live Demo
+
+Explore the public, read-only Open Edition at
+[marketwitness-43-157-95-145.nip.io](https://marketwitness-43-157-95-145.nip.io/dashboard/open).
+It demonstrates the dashboard, evidence passports, research workflows and API
+without publishing investment recommendations or restricted datasets.
 
 ## Quick Start
 
@@ -289,6 +297,7 @@ the recorded publication controls and verification steps.
 - [Product strategy](docs/product-strategy.md)
 - [Public positioning and sustainability](docs/market-positioning-and-sustainability.md)
 - [Dashboard guide](docs/dashboard.md)
+- [Hosted Open Edition demo](docs/hosted-demo.md)
 - [Open Edition](docs/open-edition.md)
 - [Data sources](docs/data-sources.md)
 - [Methodology](docs/methodology.md)
