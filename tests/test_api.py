@@ -370,10 +370,19 @@ class ApiTests(unittest.TestCase):
         self.assertIn("prohibit automated access", snapshot.json()["publication_boundary"])
         self.assertIn("JPMorgan Volfefe Index", {item["name"] for item in snapshot.json()["prior_art"]})
         self.assertIn("Authorized Intake Map", page.text)
+        self.assertIn("Browse official page", page.text)
+        self.assertIn("RSS feed (machine-readable)", page.text)
         self.assertIn(
             "https://www.whitehouse.gov/news/feed/",
             {item["url"] for item in snapshot.json()["approved_intake_candidates"]},
         )
+        news_channel = next(
+            item
+            for item in snapshot.json()["approved_intake_candidates"]
+            if item["name"] == "White House News RSS"
+        )
+        self.assertEqual(news_channel["page_url"], "https://www.whitehouse.gov/news/")
+        self.assertEqual(news_channel["url"], "https://www.whitehouse.gov/news/feed/")
 
     def test_serves_allowlisted_report_center_for_periodic_bundle(self) -> None:
         page = self.client.get("/dashboard/reports")

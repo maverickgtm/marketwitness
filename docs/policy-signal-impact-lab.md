@@ -64,6 +64,9 @@ authorized provider with sufficient rights.
 Government-produced White House material follows the site's copyright policy;
 third-party linked material remains subject to its own conditions. Official
 RSS should therefore be implemented before any Truth Social extension.
+The dashboard links visitors to the corresponding human-readable White House
+pages first and labels each raw RSS endpoint separately as machine-readable
+intake for developers and connectors.
 
 ## VIX Display
 

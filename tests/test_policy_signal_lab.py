@@ -39,6 +39,23 @@ class PolicySignalLabTests(unittest.TestCase):
             if item["provider_id"] == "whitehouse-presidential-actions-rss"
         )
         self.assertEqual(presidential_actions["deployment_state"], "usable_with_policy")
+        channels = {item["name"]: item for item in snapshot["approved_intake_candidates"]}
+        self.assertEqual(
+            channels["White House News RSS"]["page_url"],
+            "https://www.whitehouse.gov/news/",
+        )
+        self.assertEqual(
+            channels["Presidential Actions RSS"]["page_url"],
+            "https://www.whitehouse.gov/presidential-actions/",
+        )
+        self.assertEqual(
+            channels["White House Wire RSS"]["page_url"],
+            "https://www.whitehouse.gov/wire/",
+        )
+        self.assertEqual(
+            channels["White House Wire RSS"]["url"],
+            "https://www.whitehouse.gov/wire/feed/",
+        )
         self.assertEqual(
             {item["state"] for item in snapshot["approved_intake_candidates"]},
             {"eligible", "metadata_only", "blocked_without_permission"},

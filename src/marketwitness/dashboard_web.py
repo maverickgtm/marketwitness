@@ -1505,6 +1505,10 @@ def policy_signal_lab_html() -> str:
     .prior { margin-top:10px; padding-top:11px; border-top:1px solid var(--line); } .prior:first-of-type { border-top:0; margin-top:0; padding-top:0; }
     .channels { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:28px; }
     .channel-state { display:inline-block; margin-top:13px; border-radius:999px; padding:5px 8px; font-size:11px; color:var(--mint); background:rgba(88,223,176,.11); }
+    .channel-links { display:flex; flex-wrap:wrap; gap:9px; margin:14px 0 2px; }
+    .channel-links a { border:1px solid var(--line); border-radius:9px; padding:7px 10px; font-size:12px; font-weight:600; }
+    .channel-links .primary { background:rgba(88,223,176,.1); border-color:rgba(88,223,176,.3); }
+    .channel-links .feed { color:var(--muted); }
     .metadata_only { color:var(--electric); background:rgba(102,165,255,.12); } .blocked_without_permission { color:var(--amber); background:rgba(255,204,104,.12); }
     #error { display:none; border-left-color:var(--coral); color:var(--coral); }
     @media(max-width:1030px) { .hero,.metrics,.pipeline,.split,.assets,.channels { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
@@ -1573,7 +1577,11 @@ def policy_signal_lab_html() -> str:
         $("assetCount").textContent = data.asset_lenses.length;
         $("boundary").textContent = data.publication_boundary;
         const intakeLabels = { eligible: "Eligible", metadata_only: "Metadata only", blocked_without_permission: "Permission required" };
-        $("channels").innerHTML = data.approved_intake_candidates.map((item) => `<article class="panel"><p class="micro">${text(item.name)}</p><h3>${text(item.role)}</h3><p><a href="${text(item.url)}" target="_blank" rel="noopener">Open source</a></p><span class="channel-state ${text(item.state)}">${text(intakeLabels[item.state] || item.state)}</span></article>`).join("");
+        $("channels").innerHTML = data.approved_intake_candidates.map((item) => {
+          const primaryLabel = item.state === "blocked_without_permission" ? "View public profile" : "Browse official page";
+          const feedLink = item.state === "blocked_without_permission" ? "" : `<a class="feed" href="${text(item.url)}" target="_blank" rel="noopener">RSS feed (machine-readable)</a>`;
+          return `<article class="panel"><p class="micro">${text(item.name)}</p><h3>${text(item.role)}</h3><div class="channel-links"><a class="primary" href="${text(item.page_url)}" target="_blank" rel="noopener">${text(primaryLabel)}</a>${feedLink}</div><span class="channel-state ${text(item.state)}">${text(intakeLabels[item.state] || item.state)}</span></article>`;
+        }).join("");
         $("pipeline").innerHTML = data.pipeline.map((item, index) => `<article class="panel"><span class="number">0${index + 1}</span><h3>${text(item.step)}</h3><p>${text(item.output)}</p><span class="state ${text(item.state)}">${text(item.state)}</span></article>`).join("");
         $("assets").innerHTML = data.asset_lenses.map((item) => `<article class="panel"><p class="micro">${text(item.group)}</p><h3>${text(item.assets)}</h3><p>${text(item.question)}</p></article>`).join("");
         $("windows").innerHTML = data.event_windows.map((item) => `<span class="window">${text(item)}</span>`).join("");

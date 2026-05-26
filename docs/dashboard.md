@@ -122,8 +122,8 @@ confirmed manager buy or sell without additional evidence.
   interactive rising-versus-cooling reaction explorer, and planned
   `VIX`/`VXN`/`MOVE`/commodity episode designs.
 - `/dashboard/presidential-impact` presents the Donald Trump communication
-  event-study design, official White House RSS intake path, and visible Truth
-  Social collection block.
+  event-study design, human-readable White House source links alongside
+  labeled RSS intake paths, and the visible Truth Social collection block.
 
 ## Controls
 

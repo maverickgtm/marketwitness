@@ -131,24 +131,28 @@ def build_policy_signal_lab_snapshot(
             {
                 "name": "White House News RSS",
                 "url": "https://www.whitehouse.gov/news/feed/",
+                "page_url": "https://www.whitehouse.gov/news/",
                 "role": "Primary official communications intake",
                 "state": "eligible",
             },
             {
                 "name": "Presidential Actions RSS",
                 "url": "https://www.whitehouse.gov/presidential-actions/feed/",
+                "page_url": "https://www.whitehouse.gov/presidential-actions/",
                 "role": "Formal orders, memoranda and proclamations",
                 "state": "eligible",
             },
             {
                 "name": "White House Wire RSS",
                 "url": "https://www.whitehouse.gov/wire/feed/",
+                "page_url": "https://www.whitehouse.gov/wire/",
                 "role": "Headline/link radar; third-party bodies excluded",
                 "state": "metadata_only",
             },
             {
                 "name": "Truth Social",
                 "url": "https://truthsocial.com/@realDonaldTrump",
+                "page_url": "https://truthsocial.com/@realDonaldTrump",
                 "role": "Direct-post source",
                 "state": "blocked_without_permission",
             },
