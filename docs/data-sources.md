@@ -41,12 +41,31 @@ copias revisadas de ambos registros y su auditoría. El fixture inicial
 documenta que la página premium de Alpha Vantage todavía no demuestra permiso
 de salida pública y por eso conserva el expediente pendiente.
 
-Al `2026-05-24`, el inventario contiene 29 fuentes: 15 conectores o fixtures
-implementados, 19 fuentes que aun exigen revision de terminos/licencia para
-uso público real, 1 integracion limitada a descarga manual y 4 referencias
+Al `2026-05-25`, el inventario contiene 42 fuentes: 20 conectores o fixtures
+implementados, 23 fuentes que aun exigen revision de terminos/licencia para
+uso público real, 1 integracion limitada a descarga manual y 5 referencias
 bloqueadas para colección automatizada. Esta separación evita confundir "el
 endpoint responde" con "sus datos se pueden redistribuir en un producto
 público".
+
+## Market Intelligence: Contexto Y Posicionamiento
+
+La expansion cross-asset se inicia como un mapa auditable, no como un feed
+live. `/dashboard/intelligence` y `/api/v1/intelligence/modules` distinguen
+las bases ya activas de los conectores pendientes:
+
+| Fuente Oficial | Capa Propuesta | Estado Inicial |
+|---|---|---|
+| Kraken Spot REST Market Data | Contexto `BTC` y `ETH` | Candidato; confirmar retencion/display publico antes de activar |
+| U.S. EIA Open Data API | `WTI` y `Brent` | Candidato oficial para conector gratuito de energia |
+| U.S. Treasury Daily Rates | Curva `2Y`/`10Y` y liquidez | Candidato oficial diario |
+| Federal Reserve FOMC Calendar / BLS Schedule | Calendario de catalizadores macro | Candidatos oficiales para anotaciones de eventos |
+| SEC Insider Transactions Data Sets | Actividad declarada Forms `3`, `4` y `5` | Candidato regulatorio para clasificacion de compras/ventas |
+| CFTC Commitments of Traders | Posicionamiento agregado en futuros | Candidato oficial semanal; no identifica operaciones individuales |
+
+Ninguna de estas filas convierte contexto en recomendacion. Antes de almacenar
+o publicar datos nuevos, cada conector debe documentar cadencia, output
+permitido y limites en su Evidence Passport.
 
 ## Targets Y Ratings
 

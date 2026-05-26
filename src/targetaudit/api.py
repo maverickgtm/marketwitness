@@ -23,6 +23,7 @@ from .dashboard_web import (
     global_contributors_html,
     ipo_watch_center_html,
     licensed_extensions_html,
+    market_intelligence_html,
     market_context_html,
     open_edition_html,
     operations_quality_html,
@@ -39,6 +40,7 @@ from .licensed_extensions import (
     load_licensed_extensions,
 )
 from .models import Evaluation
+from .market_intelligence import build_market_intelligence_snapshot
 from .open_edition import build_open_edition_snapshot
 from .operations_quality import build_quality_snapshot
 from .provider_approvals import (
@@ -298,6 +300,12 @@ def create_app(
         return market_context_html()
 
     @application.get(
+        "/dashboard/intelligence", response_class=HTMLResponse, include_in_schema=False
+    )
+    def market_intelligence_page() -> str:
+        return market_intelligence_html()
+
+    @application.get(
         "/dashboard/financials", response_class=HTMLResponse, include_in_schema=False
     )
     def scorecard() -> str:
@@ -419,6 +427,15 @@ def create_app(
         try:
             as_of = max((item.reviewed_on for item in providers), default=date.today())
             return build_open_edition_snapshot(providers, as_of)
+        except SourceRegistryDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @application.get("/api/v1/intelligence/modules")
+    def market_intelligence_snapshot() -> dict[str, object]:
+        providers = _read_sources(registry)
+        try:
+            as_of = max((item.reviewed_on for item in providers), default=date.today())
+            return build_market_intelligence_snapshot(providers, as_of)
         except SourceRegistryDataError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 

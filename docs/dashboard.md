@@ -113,6 +113,25 @@ fuente de datos del motor auditable.
 - La pagina requiere Internet para cargar el tercero, pero no exige clave ni
   suscripcion de datos a los usuarios de TargetAudit.
 
+## Pagina: Market Intelligence
+
+Objetivo: convertir la expansion cross-asset en una capa verificable de
+contexto y posicionamiento, sin prometer feeds que aun no estan activos.
+
+- La ruta `/dashboard/intelligence` consume
+  `/api/v1/intelligence/modules` y muestra seis capas: Pre-IPO Radar, Market
+  Regimes, Macro Calendar, Insider Activity, Ownership Watch y Futures
+  Positioning.
+- Reconoce como bases existentes el flujo IPO SEC y la evidencia ETF N-PORT;
+  los conectores de nuevos valores permanecen etiquetados como planificados.
+- Registra como siguientes fuentes `Kraken Spot` para `BTC`/`ETH`, `EIA` para
+  `WTI`/`Brent` y `U.S. Treasury` para la curva `2Y`/`10Y`; Kraken conserva
+  revisión de términos antes de output público.
+- Documenta `Federal Reserve` y `BLS` para catalizadores macro, `SEC Forms
+  3/4/5` para insiders y `CFTC COT` para posicionamiento futuro agregado.
+- Declara en interfaz y API que no hay nuevos valores live recolectados ni
+  recomendación de posiciones en esta etapa.
+
 La direccion visual, las decisiones sobre widgets y la siguiente fase de
 rediseño se documentan en
 [Direccion Visual Del Dashboard](dashboard-visual-direction.md).
@@ -177,6 +196,10 @@ Commons`: fichas estructuradas de origen, derechos y estado de revision para
 las fuentes registradas. La ruta visual `/dashboard/commons` invita a
 contributors a completar la siguiente capa de cadencia y limites de
 afirmacion antes de activar nuevos conectores.
+
+`/api/v1/intelligence/modules` publica el plan de activacion de Market
+Intelligence con sus fuentes registradas, cadencias esperadas, rutas ya
+disponibles y limites de cada futura capa.
 
 ## Aplicacion Financials Scorecard
 

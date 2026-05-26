@@ -30,6 +30,9 @@ comerciales. Incluye:
 - `U.S. IPO Filing Watch` sobre filings públicos SEC EDGAR.
 - `ETF Regulatory Holdings` sobre datos públicos SEC N-PORT.
 - Verificaciones documentales regulatorias públicas mediante FCA NSM.
+- `Market Intelligence`, un workspace de expansion que ordena fuentes
+  oficiales para regimenes de mercado, calendario macro, insiders y
+  posicionamiento antes de activar nuevos feeds.
 
 Los rankings de analistas con observaciones reales permanecen como extensión
 opcional: el usuario puede aportar entradas autorizadas, pero TargetAudit no
@@ -76,6 +79,14 @@ gratis en permiso de publicacion: Finnhub situa redistribucion en Enterprise
 y FMP exige un acuerdo especifico de display/licencia. TradingView ya se
 integra mediante widgets gratuitos atribuidos en la portada y `Market Context` para
 visualizar `XLF`, no como fuente de historial de analistas.
+
+La nueva ruta `/dashboard/intelligence` conecta la siguiente fase de producto:
+`Pre-IPO Radar` y evidencia ETF ya disponible, mas conectores planificados
+para `BTC`/`ETH`, `WTI`/`Brent`, curva Treasury, calendario Fed/BLS,
+transacciones insider SEC y posicionamiento agregado CFTC. La API
+`/api/v1/intelligence/modules` declara fuentes, prioridad, cadencia y limite
+de interpretacion; por ahora no presenta esos conectores como precios live ni
+como recomendaciones.
 
 Un ultimo barrido realizado el `2026-05-25` encontro una puerta gratuita que
 vale intentar formalmente: `AnalystCentral` anuncia un CSV historico gratuito
@@ -900,6 +911,10 @@ La portada incluye un pulso de mercado atribuido de TradingView, y
 comparativa de Financials y benchmarks. Estos widgets no alimentan el
 scorecard ni se almacenan como evidencia. La direccion de diseno esta
 documentada en [Dashboard Visual Direction](docs/dashboard-visual-direction.md).
+La ruta `/dashboard/intelligence` expone el nuevo mapa de inteligencia de
+mercado: enlaza las bases IPO/ETF existentes y ordena la futura incorporacion
+de cripto seleccionada, energia, tasas, calendario macro, insiders y CFTC con
+sus fuentes y limites visibles.
 La ruta
 `/dashboard/reports` organiza veintisiete paginas generadas permitidas del
 bundle semanal de Open Edition y enlaza sus controles de publicacion; no
@@ -989,6 +1004,8 @@ Endpoints iniciales:
 | `/api/v1/health` | Estado y versión metodológica |
 | `/api/v1/open-edition` | Capacidades ejecutables sin suscripciones pagadas y límites declarados |
 | `/dashboard/open` | Portada de la edición gratuita de GitHub |
+| `/api/v1/intelligence/modules` | Mapa fuente-primero de capas de inteligencia, prioridades y límites de interpretación |
+| `/dashboard/intelligence` | Workspace Market Intelligence para eventos, contexto y posicionamiento planificado |
 | `/dashboard/reports` | Centro de reportes reproducibles con las rutas generadas permitidas del bundle Open Edition |
 | `/api/v1/policy/public-use` | Politica estructurada de uso responsable, capas de datos y fuentes bloqueadas |
 | `/dashboard/policy` | Pagina publica de no-recomendacion y derechos de datos pendientes |

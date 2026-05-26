@@ -13,7 +13,7 @@ class PublicUsePolicyTests(unittest.TestCase):
         policy = build_public_use_policy(providers, date(2026, 5, 25))
 
         self.assertEqual(policy["review_status"], "pending_external_legal_review")
-        self.assertEqual(policy["tracked_source_count"], 35)
+        self.assertEqual(policy["tracked_source_count"], 42)
         self.assertEqual(policy["blocked_source_count"], 5)
         self.assertIn("not investment advice", policy["headline"].lower())
         self.assertEqual(

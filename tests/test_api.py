@@ -278,6 +278,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/reports", page.text)
         self.assertIn("/dashboard/policy", page.text)
         self.assertIn("/dashboard/market-context", page.text)
+        self.assertIn("/dashboard/intelligence", page.text)
         self.assertIn("/dashboard/commons", page.text)
         self.assertIn("Market Pulse", page.text)
         self.assertIn("TradingView display", page.text)
@@ -285,6 +286,24 @@ class ApiTests(unittest.TestCase):
         self.assertIn("embed-widget-market-overview.js", page.text)
         self.assertIn("does not store widget data", page.text)
         self.assertIn("Loads with Internet access", page.text)
+
+    def test_serves_market_intelligence_blueprint_without_live_data_claims(self) -> None:
+        page = self.client.get("/dashboard/intelligence")
+        snapshot = self.client.get("/api/v1/intelligence/modules")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Events. Context.", page.text)
+        self.assertIn("/api/v1/intelligence/modules", page.text)
+        self.assertIn("Source-first expansion blueprint", page.text)
+        self.assertEqual(snapshot.status_code, 200)
+        self.assertEqual(snapshot.json()["module_count"], 6)
+        self.assertEqual(snapshot.json()["foundation_count"], 2)
+        self.assertEqual(snapshot.json()["planned_connector_count"], 4)
+        self.assertIn("no newly collected live values", snapshot.json()["publication_boundary"])
+        keys = {item["key"] for item in snapshot.json()["modules"]}
+        self.assertIn("market_regimes", keys)
+        self.assertIn("insider_activity", keys)
+        self.assertIn("futures_positioning", keys)
 
     def test_serves_allowlisted_report_center_for_periodic_bundle(self) -> None:
         page = self.client.get("/dashboard/reports")
@@ -433,7 +452,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/api/v1/policy/public-use", page.text)
         self.assertEqual(policy.status_code, 200)
         self.assertEqual(policy.json()["review_status"], "pending_external_legal_review")
-        self.assertEqual(policy.json()["tracked_source_count"], 35)
+        self.assertEqual(policy.json()["tracked_source_count"], 42)
         self.assertEqual(policy.json()["blocked_source_count"], 5)
         self.assertIn(
             "mas-opera-reference",
@@ -607,7 +626,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Open code.", page.text)
         self.assertIn("Run Exclusions And Pending", page.text)
         self.assertIn("Provider Control", page.text)
-        self.assertEqual(sources.json()["provider_count"], 35)
+        self.assertEqual(sources.json()["provider_count"], 42)
         self.assertGreater(sources.json()["open_review_count"], 0)
         self.assertEqual(sources.json()["blocked_count"], 5)
         self.assertEqual(
@@ -658,7 +677,7 @@ class ApiTests(unittest.TestCase):
             passports.json()["protocol_status"],
             "source_and_rights_published_cadence_enrichment_open",
         )
-        self.assertEqual(passports.json()["passport_count"], 35)
+        self.assertEqual(passports.json()["passport_count"], 42)
         self.assertEqual(passports.json()["states"]["blocked"], 5)
         passport = passports.json()["passports"][0]
         self.assertIn("source", passport)

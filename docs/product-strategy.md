@@ -24,6 +24,9 @@ complementarios:
 - `RWA Watch Sandbox`: pagina funcional con evidencia sintetica sobre acciones
   y ETF tokenizados; los conectores reales de `xStocks / Backed`, `Ondo` y
   venues quedan condicionados a derechos escritos de uso publico.
+- `Market Intelligence`: workspace de eventos, contexto y posicionamiento que
+  ordena la integracion futura de cripto seleccionada, energia, tasas,
+  catalizadores macro, insiders y CFTC sin emitir senales de operacion.
 
 ## Problema
 
@@ -67,6 +70,11 @@ el registro de fuente y derechos ya controlado.
 
 > ?Que companias de alto interes realmente avanzaron hacia una cotizacion y
 > que documentos/riesgos debe revisar un investigador antes de evaluarlas?
+
+`Market Intelligence` agrega contexto alrededor de esos eventos:
+
+> ?Que regimen de tasas, energia, activos digitales y posicionamiento
+> declarado rodeaba un evento verificado, con que fuente y frecuencia?
 
 Una expansión posterior de activos tokenizados preguntaria:
 

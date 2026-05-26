@@ -190,6 +190,15 @@ verificables de cotizaciones tecnologicas/estrategicas.
 - [x] `Evidence Passport Commons` v0.1 con pagina publica, API de origen y
   derechos, e invitacion a contributors para ampliar cadencia y limites de
   afirmacion de forma verificable.
+- [x] Workspace inicial `Market Intelligence` y API de modulos, con seis
+  capas priorizadas y fuentes oficiales registradas sin presentar nuevos
+  conectores como feeds live.
+- [ ] Implementar `Market Regimes` con `BTC`/`ETH`, `WTI`/`Brent` y curva
+  Treasury despues de aprobar politica de output y pruebas de cada conector.
+- [ ] Implementar `Macro Calendar` Fed/BLS e `Insider Activity` SEC como
+  contexto verificable enlazado a companias vigiladas.
+- [ ] Implementar `CFTC Futures Positioning` y expandir ownership SEC
+  solamente despues de validar las primeras capas.
 - [x] Politica publica visible de no-recomendacion, capas de datos y fuentes
   bloqueadas en `/dashboard/policy`, declarada como control interno.
 - [ ] Revision legal externa del producto y de sus disclaimers antes de

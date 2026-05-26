@@ -116,6 +116,16 @@ permiso explicito de output publico.
 - No convierte contenido del widget en dataset, evidencia o input del
   scorecard.
 
+### Market Intelligence
+
+- Abre `/dashboard/intelligence` como workspace fuente-primero para conectar
+  IPOs y ETF con regimenes de mercado, catalizadores macro e informacion
+  declarada de posicionamiento.
+- Expone por API el plan de seis modulos y registra fuentes oficiales para
+  `BTC`/`ETH`, `WTI`/`Brent`, Treasury, Fed/BLS, SEC insiders y CFTC.
+- Conserva los conectores nuevos como `connector_planned`: la pagina no
+  contiene precios live nuevos ni recomendaciones de compra o venta.
+
 ## Ejecutar Sin Costos
 
 ```bash
@@ -151,6 +161,9 @@ La portada tambien enlaza `/dashboard/policy`, que debe revisarse antes de
 habilitar datos live o publicar resultados.
 Tambien enlaza `/dashboard/market-context`, cuya carga de TradingView requiere
 conexion a Internet pero no suscripcion de datos de TargetAudit.
+La ruta `/dashboard/intelligence` es navegable aun sin red porque presenta el
+mapa de fuentes y limites; las futuras ingestas solo se activaran tras pruebas
+y validacion de output público.
 
 ## Reporte Periodico En GitHub
 

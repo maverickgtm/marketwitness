@@ -83,7 +83,7 @@ def open_edition_html() -> str:
     .card p { color:var(--muted); margin:0; font-size:13px; }
     .card strong { display:block; font-size:34px; letter-spacing:-.04em; color:var(--mint); margin-top:5px; }
     .notice { box-shadow:none; border-left:3px solid var(--gold); padding:14px 18px; color:var(--muted); margin:18px 0 0; }
-    .command-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; }
+    .command-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:13px; }
     .command { padding:17px; box-shadow:none; min-height:132px; }
     .command small { display:block; color:var(--muted); margin-bottom:13px; text-transform:uppercase; letter-spacing:.1em; font-size:10px; }
     .command strong { display:block; font-size:16px; margin-bottom:7px; }
@@ -117,6 +117,7 @@ def open_edition_html() -> str:
       <div class="nav-group">
         <span class="side-label">Workspace</span>
         <a class="nav-link active" href="/dashboard/open"><span class="dot"></span>Open Edition</a>
+        <a class="nav-link" href="/dashboard/intelligence"><span class="dot"></span>Market Intelligence</a>
         <a class="nav-link" href="/dashboard/market-context"><span class="dot"></span>Market Context</a>
         <a class="nav-link" href="/dashboard/reports"><span class="dot"></span>Report Center</a>
       </div>
@@ -160,6 +161,7 @@ def open_edition_html() -> str:
           <p class="meta" id="reviewed">Loading source controls...</p>
           <div class="hero-links">
             <a class="primary" href="/dashboard/reports">Explore reports</a>
+            <a href="/dashboard/intelligence">Market intelligence</a>
             <a href="/dashboard/market-context">Open market context</a>
             <a href="/dashboard/commons">Evidence Commons</a>
             <a href="/dashboard/policy">Data boundaries</a>
@@ -193,6 +195,7 @@ def open_edition_html() -> str:
           <article class="command"><small>Ownership</small><strong>ETF Activity</strong><p>Separate periodic evidence from daily claims.</p><a href="/dashboard/etf">Open evidence</a></article>
           <article class="command"><small>Targets</small><strong>Financials Lab</strong><p>Inspect methodology and blocked real-data release.</p><a href="/dashboard/financials-evidence">Audit scorecard</a></article>
           <article class="command"><small>International</small><strong>Global Listings</strong><p>Monitor official signals across global markets.</p><a href="/dashboard/global-listings">View markets</a></article>
+          <article class="command"><small>Context</small><strong>Market Intelligence</strong><p>Connect listings, catalysts and positioning with source-first plans.</p><a href="/dashboard/intelligence">Open workspace</a></article>
         </section>
         <h2>Included Capabilities</h2>
         <section class="features" id="capabilities"></section>
@@ -1127,6 +1130,99 @@ def licensed_extensions_html() -> str:
     function showExtension(extensionId) {
       const item = extensions.find((candidate) => candidate.extension_id === extensionId);
       $("detail").innerHTML = `<h3>${text(item.extension_name)}</h3><p>${text(item.coverage)}</p><div class="fact"><small>Listed price</small>${text(item.price_display)}<br>${text(item.price_basis)}</div><div class="fact"><small>Allowed integration mode</small>${text(item.allowed_mode)}</div><div class="fact"><small>Public output status</small>${text(item.public_output_status)}</div><p>${text(item.review_note)}</p><p><a href="${href(item.official_url)}" target="_blank" rel="noopener">Product</a> / <a href="${href(item.pricing_url)}" target="_blank" rel="noopener">Pricing</a> / <a href="${href(item.terms_url)}" target="_blank" rel="noopener">Terms</a></p>`;
+    }
+    initialize();
+  </script>
+</body>
+</html>"""
+
+
+def market_intelligence_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Market Intelligence</title>
+  <style>
+    :root { --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246; --text:#f2f6f7;
+      --muted:#96aab8; --mint:#38dfad; --gold:#f3bf66; --blue:#62a6ff; --violet:#a28bff; --red:#ff7d72; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--text); font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 82% 0%,rgba(98,166,255,.13),transparent 31%),radial-gradient(circle at 12% 12%,rgba(56,223,173,.08),transparent 27%),var(--bg); }
+    a { color:var(--mint); text-decoration:none; } header,main { max-width:1370px; margin:auto; padding:24px 28px; }
+    nav,.eyebrow,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-size:11px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:32px; }
+    .back { color:var(--text); border:1px solid var(--line); padding:9px 14px; border-radius:10px; font-weight:600; }
+    .hero { display:grid; grid-template-columns:minmax(470px,1.12fr) minmax(360px,.88fr); gap:18px; }
+    .hero-copy,.sequence,.card,.module,.notice { background:var(--panel); border:1px solid var(--line); border-radius:18px; }
+    .hero-copy { padding:34px 36px; } h1 { font-size:clamp(42px,5vw,64px); letter-spacing:-.05em; line-height:1.02; margin:14px 0 17px; }
+    h1 span { color:var(--blue); } h2 { margin:40px 0 16px; font-size:21px; } h3 { margin:11px 0 8px; letter-spacing:-.01em; }
+    .lead { color:var(--muted); font-size:17px; max-width:660px; } .hero-links { display:flex; gap:10px; flex-wrap:wrap; margin-top:27px; }
+    .hero-links a { border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-weight:600; }
+    .hero-links .primary { color:#061117; background:var(--mint); border-color:var(--mint); }
+    .sequence { padding:22px; } .sequence ol { margin:19px 0 0; padding:0; list-style:none; display:grid; gap:13px; }
+    .sequence li { display:grid; grid-template-columns:34px 1fr; gap:12px; padding:13px; border-radius:12px; background:var(--panel2); color:var(--muted); }
+    .sequence b { display:grid; place-items:center; width:31px; height:31px; border-radius:9px; color:var(--blue); background:rgba(98,166,255,.13); }
+    .sequence strong { color:var(--text); display:block; font-size:14px; }
+    .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; margin-top:18px; }
+    .card { padding:16px 18px; } .card p { margin:0; color:var(--muted); } .card strong { display:block; color:var(--mint); font-size:34px; letter-spacing:-.04em; margin-top:5px; }
+    .notice { border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); margin-top:18px; }
+    .modules { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; } .module { padding:19px; min-height:232px; }
+    .module-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+    .theme { color:var(--muted); text-transform:uppercase; font-size:10px; letter-spacing:.12em; }
+    .pill { display:inline-block; border-radius:999px; padding:4px 9px; font-size:11px; white-space:nowrap; }
+    .implemented_foundation,.foundation_available { color:var(--mint); background:rgba(56,223,173,.12); }
+    .connector_planned { color:var(--gold); background:rgba(243,191,102,.12); }
+    .module p { color:var(--muted); margin:0 0 9px; } .module small { color:var(--muted); display:block; margin:9px 0; }
+    .sources { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; } .sources a { font-size:12px; padding:4px 8px; border:1px solid var(--line); border-radius:999px; }
+    .next { margin-top:13px; border-top:1px solid var(--line); padding-top:11px; color:var(--blue)!important; font-size:13px; }
+    #error { display:none; color:var(--red); border-left-color:var(--red); }
+    @media(max-width:920px) { .hero,.modules,.cards { grid-template-columns:1fr; } header,main { padding:18px 14px; } .hero-copy { padding:26px 21px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top"><nav><a href="/dashboard/open">Open Edition</a> / Market Intelligence / <a href="/dashboard/commons">Evidence Commons</a></nav><a class="back" href="/dashboard/open">Back to terminal</a></div>
+    <section class="hero">
+      <article class="hero-copy">
+        <p class="eyebrow">Source-first expansion blueprint</p>
+        <h1>Events. Context.<br><span>Positioning.</span></h1>
+        <p class="lead">A planned intelligence layer connecting IPO and listing evidence to macro catalysts, selected market regimes and declared positioning. It begins with provenance, not promises.</p>
+        <p class="meta" id="reviewed">Loading reviewed sources...</p>
+        <div class="hero-links"><a class="primary" href="/dashboard/ipo">Open IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
+      </article>
+      <article class="sequence"><p class="eyebrow">Delivery sequence</p><ol id="sequence"></ol></article>
+    </section>
+    <section class="cards">
+      <article class="card"><p>Intelligence modules</p><strong id="modules">-</strong></article>
+      <article class="card"><p>Foundations available</p><strong id="foundations">-</strong></article>
+      <article class="card"><p>Planned connectors</p><strong id="planned">-</strong></article>
+    </section>
+    <p class="notice" id="boundary">Loading publication boundary...</p>
+    <p class="notice" id="error"></p>
+  </header>
+  <main>
+    <h2>Evidence Layers</h2>
+    <section class="modules" id="layers"></section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    function text(value) { return String(value == null ? "" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;"); }
+    async function initialize() {
+      try {
+        const response = await fetch("/api/v1/intelligence/modules");
+        if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+        const data = await response.json();
+        $("reviewed").textContent = `${data.product} / reviewed as of ${data.as_of}`;
+        $("modules").textContent = data.module_count; $("foundations").textContent = data.foundation_count; $("planned").textContent = data.planned_connector_count;
+        $("boundary").textContent = data.publication_boundary;
+        $("sequence").innerHTML = data.implementation_sequence.map((step, index) => `<li><b>${index + 1}</b><span><strong>Phase ${index + 1}</strong>${text(step)}</span></li>`).join("");
+        $("layers").innerHTML = data.modules.map((item) => {
+          const sourceLinks = item.sources.map((source) => `<a href="${text(source.official_url)}" target="_blank" rel="noopener">${text(source.provider_name)}</a>`).join("");
+          const route = item.route ? `<a href="${text(item.route)}">Open existing foundation</a>` : "";
+          return `<article class="module"><div class="module-head"><div><span class="theme">${text(item.theme)}</span><h3>${text(item.title)}</h3></div><span class="pill ${text(item.stage)}">${text(item.stage)}</span></div><p>${text(item.coverage)}</p><small><strong>Cadence:</strong> ${text(item.cadence)}</small><small><strong>Boundary:</strong> ${text(item.claim_limit)}</small><div class="sources">${sourceLinks}</div><p class="next">${text(item.next_delivery)} ${route}</p></article>`;
+        }).join("");
+      } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
     }
     initialize();
   </script>
