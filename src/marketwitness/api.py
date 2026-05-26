@@ -47,6 +47,7 @@ from .models import Evaluation
 from .market_intelligence import build_market_intelligence_snapshot
 from .open_edition import build_open_edition_snapshot
 from .operations_quality import build_quality_snapshot
+from .policy_reaction import build_policy_reaction_snapshot
 from .policy_signal_lab import build_policy_signal_lab_snapshot
 from .providers.whitehouse import WhiteHouseDataError, load_event_archive
 from .provider_approvals import (
@@ -717,6 +718,19 @@ def create_app(
         try:
             as_of = max((item.reviewed_on for item in providers), default=date.today())
             return build_policy_signal_lab_snapshot(providers, as_of)
+        except SourceRegistryDataError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @application.get("/api/v1/intelligence/policy-reactions")
+    def policy_reaction_snapshot(
+        theme: str = Query(default="all"),
+        period_start: Optional[date] = Query(default=None, alias="start"),
+        period_end: Optional[date] = Query(default=None, alias="end"),
+    ) -> dict[str, object]:
+        providers = _read_sources(registry)
+        try:
+            as_of = max((item.reviewed_on for item in providers), default=date.today())
+            return build_policy_reaction_snapshot(as_of, theme, period_start, period_end)
         except SourceRegistryDataError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 

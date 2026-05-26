@@ -42,6 +42,8 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   sources; Truth Social collection remains blocked without permission.
 - [x] Archived White House News/Presidential Actions RSS intake with URL
   deduplication, transparent topic classification and dashboard/API queue.
+- [x] Presidential Communication Reaction Sandbox with topic, horizon and
+  calendar filters over explicitly synthetic numerical validation paths.
 - [x] Interactive Listings Radar combining the reviewed U.S. IPO registry with
   dated global listing-evidence changes, filters, source links and a
   browser-local research watchlist.

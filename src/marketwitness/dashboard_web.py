@@ -1926,10 +1926,25 @@ def policy_signal_lab_html() -> str:
     .event-list { display:grid; gap:10px; } .event { padding:16px 18px; }
     .event h3 { margin:7px 0 10px; font-size:17px; } .event-meta { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
     .theme { display:inline-block; color:var(--electric); background:rgba(102,165,255,.12); border-radius:999px; padding:4px 8px; margin:0 5px 6px 0; font-size:11px; }
+    button.theme { border:0; cursor:pointer; font:inherit; font-size:11px; } button.theme:hover { background:rgba(102,165,255,.24); }
     .review_candidate { color:var(--amber); background:rgba(255,204,104,.11); } .context_only { color:var(--muted); background:var(--panel2); }
     .empty { padding:22px; color:var(--muted); }
+    .reaction-workspace { display:grid; grid-template-columns:360px 1fr; gap:14px; margin-bottom:32px; }
+    .reaction-controls { padding:19px; } .reaction-controls h3 { margin:5px 0 10px; }
+    .reaction-presets,.reaction-windows { display:flex; gap:7px; flex-wrap:wrap; margin-top:12px; }
+    .reaction-button { color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-radius:9px; padding:8px 10px; font-weight:600; cursor:pointer; }
+    .reaction-button.active { color:#071318; background:var(--mint); border-color:var(--mint); }
+    .date-pair { display:grid; grid-template-columns:1fr 1fr; gap:8px; } .date-pair label { margin-top:12px; }
+    .apply { margin-top:11px; width:100%; border:1px solid rgba(88,223,176,.35); background:rgba(88,223,176,.11); color:var(--mint); border-radius:9px; padding:10px; font-weight:700; cursor:pointer; }
+    .reaction-output { padding:20px; } .reaction-head { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .synthetic { align-self:start; color:var(--amber); background:rgba(255,204,104,.12); border-radius:999px; padding:6px 10px; font-size:11px; text-transform:uppercase; letter-spacing:.1em; }
+    .reaction-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:16px 0; }
+    .reaction-stat { background:var(--panel2); border-radius:10px; padding:11px; } .reaction-stat strong { display:block; margin-top:5px; font-size:20px; }
+    .reaction-table { width:100%; border-collapse:collapse; margin-top:15px; } .reaction-table th { text-align:left; color:var(--muted); font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
+    .reaction-table td,.reaction-table th { padding:10px 9px; border-bottom:1px solid var(--line); } .positive { color:var(--mint); } .negative { color:var(--coral); }
+    .formula { color:var(--muted); font-size:12px; border-top:1px solid var(--line); padding-top:13px; margin:15px 0 0; }
     #error { display:none; border-left-color:var(--coral); color:var(--coral); }
-    @media(max-width:1030px) { .hero,.metrics,.pipeline,.split,.assets,.channels,.event-workspace { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
+    @media(max-width:1030px) { .hero,.metrics,.pipeline,.split,.assets,.channels,.event-workspace,.reaction-workspace { grid-template-columns:1fr; } header,main { padding:18px 14px; } .intro { padding:25px 21px; } }
   </style>
 </head>
 <body>
@@ -1976,6 +1991,28 @@ def policy_signal_lab_html() -> str:
       </article>
       <section class="event-list" id="events"><article class="panel empty">Loading official-event artifact...</article></section>
     </section>
+    <h2 class="section-title" id="reaction-sandbox">Communication Reaction Sandbox</h2>
+    <section class="reaction-workspace">
+      <article class="panel reaction-controls">
+        <p class="micro">Quantitative validation workspace</p>
+        <h3>Test a tagged theme</h3>
+        <label for="reaction-theme">Communication theme</label>
+        <select id="reaction-theme"><option value="all">All tagged themes</option><option value="financial_regulation">Financial regulation</option><option value="energy">Energy</option><option value="trade_tariffs">Trade / tariffs</option><option value="technology_ai">Technology / AI</option></select>
+        <label>Calendar period</label><div class="reaction-presets" id="reaction-presets"></div>
+        <div class="date-pair"><div><label for="reaction-start">Start</label><input id="reaction-start" type="date"></div><div><label for="reaction-end">End</label><input id="reaction-end" type="date"></div></div>
+        <button class="apply" type="button" id="reaction-apply">Apply dates</button>
+        <label>Forward window</label><div class="reaction-windows" id="reaction-windows"></div>
+      </article>
+      <article class="panel reaction-output">
+        <div class="reaction-head"><div><p class="micro">Policy Signal Impact Trace</p><h3 id="reaction-title">Loading calculation sample...</h3></div><span class="synthetic">Synthetic validation only</span></div>
+        <p id="reaction-period"></p>
+        <div class="reaction-stats"><div class="reaction-stat"><small>Included checkpoints</small><strong id="reaction-count">-</strong></div><div class="reaction-stat"><small>Selected window</small><strong id="reaction-window">-</strong></div><div class="reaction-stat"><small>Theme</small><strong id="reaction-theme-stat">-</strong></div></div>
+        <table class="reaction-table"><thead><tr><th>Reaction lens</th><th>Median move</th><th>Positive</th><th>Worst</th><th>Dispersion</th></tr></thead><tbody id="reaction-rows"></tbody></table>
+        <p class="formula" id="reaction-formula"></p>
+        <p class="guardrail" id="reaction-boundary"></p>
+        <p class="guardrail" id="reaction-error" style="display:none"></p>
+      </article>
+    </section>
     <h2 class="section-title">Policy Signal Impact Trace</h2>
     <section class="pipeline" id="pipeline"></section>
     <section class="split">
@@ -1997,7 +2034,12 @@ def policy_signal_lab_html() -> str:
     const $ = (id) => document.getElementById(id);
     function text(value) { return String(value == null ? "" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;"); }
     function officialHref(value) { const url = String(value || ""); return url.startsWith("https://www.whitehouse.gov/") ? text(url) : "#"; }
+    function percent(value) { return `${Number(value) > 0 ? "+" : ""}${Number(value).toFixed(2)}%`; }
+    function tone(value) { return Number(value) >= 0 ? "positive" : "negative"; }
     let policyEvents = [];
+    let policyReaction = null;
+    let selectedReactionWindow = "5_sessions";
+    const supportedReactionThemes = new Set(["financial_regulation", "energy", "trade_tariffs", "technology_ai"]);
     function renderPolicyEvents() {
       const query = $("event-search").value.toLowerCase().trim();
       const channel = $("event-channel").value;
@@ -2007,7 +2049,12 @@ def policy_signal_lab_html() -> str:
         (!channel || item.feed === channel) &&
         (!theme || item.themes.split(";").includes(theme))
       );
-      $("events").innerHTML = selected.length ? selected.map((item) => `<article class="panel event"><div class="event-meta"><span class="micro">${text(item.published_at)} / ${text(item.feed.replaceAll("_", " "))}</span><span class="state ${text(item.market_relevance)}">${text(item.market_relevance.replaceAll("_", " "))}</span></div><h3>${text(item.title)}</h3><p>${item.themes.split(";").map((tag) => `<span class="theme">${text(tag.replaceAll("_", " "))}</span>`).join("")}</p><a href="${officialHref(item.source_url)}" target="_blank" rel="noopener">Open official source</a></article>`).join("") : `<article class="panel empty">${policyEvents.length ? "No events match these filters." : "No loaded official-event artifact. Run the White House RSS monitor or load its downloadable artifact."}</article>`;
+      $("events").innerHTML = selected.length ? selected.map((item) => `<article class="panel event"><div class="event-meta"><span class="micro">${text(item.published_at)} / ${text(item.feed.replaceAll("_", " "))}</span><span class="state ${text(item.market_relevance)}">${text(item.market_relevance.replaceAll("_", " "))}</span></div><h3>${text(item.title)}</h3><p>${item.themes.split(";").map((tag) => supportedReactionThemes.has(tag) ? `<button type="button" class="theme" data-study-theme="${text(tag)}" title="Open calculation sandbox for this theme">${text(tag.replaceAll("_", " "))} study</button>` : `<span class="theme">${text(tag.replaceAll("_", " "))}</span>`).join("")}</p><a href="${officialHref(item.source_url)}" target="_blank" rel="noopener">Open official source</a></article>`).join("") : `<article class="panel empty">${policyEvents.length ? "No events match these filters." : "No loaded official-event artifact. Run the White House RSS monitor or load its downloadable artifact."}</article>`;
+      document.querySelectorAll("[data-study-theme]").forEach((button) => button.addEventListener("click", () => {
+        $("reaction-theme").value = button.dataset.studyTheme;
+        loadPolicyReaction(button.dataset.studyTheme);
+        $("reaction-sandbox").scrollIntoView({ behavior: "smooth", block: "start" });
+      }));
     }
     async function loadPolicyEvents() {
       const response = await fetch("/api/v1/intelligence/policy-events");
@@ -2020,6 +2067,36 @@ def policy_signal_lab_html() -> str:
       $("event-count").textContent = data.record_count;
       $("event-candidates").textContent = data.review_candidate_count;
       renderPolicyEvents();
+    }
+    function renderPolicyReaction() {
+      if (!policyReaction) return;
+      const period = policyReaction.period;
+      const window = policyReaction.windows.find((item) => item.key === selectedReactionWindow);
+      const result = policyReaction.results.find((item) => item.window_key === selectedReactionWindow);
+      $("reaction-theme").value = policyReaction.selected_theme.key;
+      $("reaction-title").textContent = `${policyReaction.selected_theme.label} / ${window.label}`;
+      $("reaction-period").textContent = `Study period: ${period.start} to ${period.end}. Included authored dates: ${policyReaction.included_checkpoints.length ? policyReaction.included_checkpoints.map((item) => item.date).join(", ") : "none"}.`;
+      $("reaction-count").textContent = policyReaction.episode_count;
+      $("reaction-window").textContent = window.label;
+      $("reaction-theme-stat").textContent = policyReaction.selected_theme.label;
+      $("reaction-start").min = period.available_start; $("reaction-start").max = period.available_end; $("reaction-start").value = period.start;
+      $("reaction-end").min = period.available_start; $("reaction-end").max = period.available_end; $("reaction-end").value = period.end;
+      $("reaction-presets").innerHTML = period.presets.map((item) => `<button type="button" class="reaction-button ${item.start === period.start && item.end === period.end ? "active" : ""}" data-reaction-start="${text(item.start)}" data-reaction-end="${text(item.end)}">${text(item.label)}</button>`).join("");
+      $("reaction-windows").innerHTML = policyReaction.windows.map((item) => `<button type="button" class="reaction-button ${item.key === selectedReactionWindow ? "active" : ""}" data-reaction-window="${text(item.key)}">${text(item.label)}</button>`).join("");
+      $("reaction-rows").innerHTML = result.lens_results.length ? result.lens_results.map((item) => `<tr><td>${text(item.lens)}</td><td class="${tone(item.median_move_pct)}">${percent(item.median_move_pct)}</td><td>${text(item.positive_frequency_pct)}%</td><td class="${tone(item.worst_move_pct)}">${percent(item.worst_move_pct)}</td><td>${percent(item.dispersion_pct)}</td></tr>`).join("") : `<tr><td colspan="5">No authored checkpoints match this selected theme and period.</td></tr>`;
+      $("reaction-formula").textContent = policyReaction.formula;
+      $("reaction-boundary").textContent = policyReaction.boundary;
+      document.querySelectorAll("[data-reaction-window]").forEach((button) => button.addEventListener("click", () => { selectedReactionWindow = button.dataset.reactionWindow; renderPolicyReaction(); }));
+      document.querySelectorAll("[data-reaction-start][data-reaction-end]").forEach((button) => button.addEventListener("click", () => loadPolicyReaction($("reaction-theme").value, button.dataset.reactionStart, button.dataset.reactionEnd)));
+    }
+    async function loadPolicyReaction(theme = $("reaction-theme").value, start = "", end = "") {
+      $("reaction-error").style.display = "none";
+      const query = new URLSearchParams({ theme });
+      if (start && end) { query.set("start", start); query.set("end", end); }
+      const response = await fetch(`/api/v1/intelligence/policy-reactions?${query}`);
+      if (!response.ok) { $("reaction-error").style.display = "block"; $("reaction-error").textContent = (await response.json()).detail || "Reaction sample request failed."; return; }
+      policyReaction = await response.json();
+      renderPolicyReaction();
     }
     async function initialize() {
       try {
@@ -2044,9 +2121,12 @@ def policy_signal_lab_html() -> str:
         $("windows").innerHTML = data.event_windows.map((item) => `<span class="window">${text(item)}</span>`).join("");
         $("priorArt").innerHTML = data.prior_art.map((item) => `<div class="prior"><h3><a href="${text(item.url)}" target="_blank" rel="noopener">${text(item.name)}</a> <span class="micro">${text(item.year)}</span></h3><p>${text(item.difference)}</p></div>`).join("");
         await loadPolicyEvents();
+        await loadPolicyReaction();
       } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
     }
     ["event-search", "event-channel", "event-theme"].forEach((id) => $(id).addEventListener("input", renderPolicyEvents));
+    $("reaction-theme").addEventListener("change", () => loadPolicyReaction());
+    $("reaction-apply").addEventListener("click", () => loadPolicyReaction($("reaction-theme").value, $("reaction-start").value, $("reaction-end").value));
     initialize();
   </script>
 </body>

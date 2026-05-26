@@ -82,6 +82,20 @@ The dashboard exposes the loaded archive at
 The included GitHub demo uses clearly marked synthetic fixtures; the optional
 weekday workflow artifact contains official RSS observations.
 
+## Implemented Reaction Sandbox
+
+`/api/v1/intelligence/policy-reactions` and the dashboard's
+`Communication Reaction Sandbox` implement the calculation layer without
+overstating evidence. Users can select a classified theme, forward window,
+calendar preset or custom date range, then inspect median move, positive
+frequency, worst move and dispersion across included checkpoints. Topic
+buttons in the official event queue route a candidate into this study design.
+
+The numerical paths are project-authored validation data, not measured
+returns from the official communications archive. Connecting a real event to
+an observed return remains gated until a permitted price-data input can be
+published or supplied under appropriate rights.
+
 ## VIX Display
 
 The lab uses an FRED-hosted image for `CBOE Volatility Index: VIX [VIXCLS]`

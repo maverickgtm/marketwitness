@@ -485,6 +485,10 @@ class ApiTests(unittest.TestCase):
         legacy_page = self.client.get("/dashboard/policy-signals")
         snapshot = self.client.get("/api/v1/intelligence/policy-signals")
         events = self.client.get("/api/v1/intelligence/policy-events")
+        reactions = self.client.get("/api/v1/intelligence/policy-reactions")
+        filtered_reactions = self.client.get(
+            "/api/v1/intelligence/policy-reactions?theme=financial_regulation&start=2025-01-20&end=2026-05-25"
+        )
         exported = self.client.get("/api/v1/intelligence/policy-events/export.csv")
         report = self.client.get("/dashboard/presidential-impact/events-report")
 
@@ -504,6 +508,9 @@ class ApiTests(unittest.TestCase):
         self.assertIn("prohibit automated access", snapshot.json()["publication_boundary"])
         self.assertIn("JPMorgan Volfefe Index", {item["name"] for item in snapshot.json()["prior_art"]})
         self.assertIn("Authorized Intake Map", page.text)
+        self.assertIn("Communication Reaction Sandbox", page.text)
+        self.assertIn("Synthetic validation only", page.text)
+        self.assertIn("/api/v1/intelligence/policy-reactions", page.text)
         self.assertIn("Browse official page", page.text)
         self.assertIn("RSS feed (machine-readable)", page.text)
         self.assertIn(
@@ -524,6 +531,15 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(events.json()["data_mode"], "Synthetic reproducible RSS fixture")
         self.assertEqual(events.json()["record_count"], 2)
         self.assertIn("does not collect Truth Social", events.json()["publication_boundary"])
+        self.assertEqual(reactions.status_code, 200)
+        self.assertEqual(reactions.json()["episode_count"], 6)
+        self.assertEqual(reactions.json()["mode"], "project_authored_not_market_observations")
+        self.assertIn("not assigned", reactions.json()["boundary"])
+        self.assertEqual(filtered_reactions.status_code, 200)
+        self.assertEqual(filtered_reactions.json()["episode_count"], 2)
+        self.assertEqual(
+            filtered_reactions.json()["selected_theme"]["key"], "financial_regulation"
+        )
         self.assertEqual(exported.status_code, 200)
         self.assertIn("Financial Technology Innovation", exported.text)
         self.assertEqual(report.status_code, 200)
