@@ -40,7 +40,7 @@ rights are visible product outcomes, not hidden limitations.
 | ETF Evidence Center | Separate reported holdings evidence from daily-activity claims | Synthetic snapshots and SEC N-PORT workflow |
 | Financials Evidence Center | Audit a price-target scoring pipeline and its release gates | Redistributable fixtures; real rankings blocked |
 | Market Intelligence | Organize market context and future connectors | Source-first workspace with documented constraints |
-| Cross-Asset Markets | View Bitcoin, Ethereum, energy, metals, FX and benchmarks | Attributed TradingView displays; no widget data is stored or scored |
+| Cross-Asset Markets | Explore official Treasury curve regimes beside Bitcoin, Ethereum, energy, metals, FX and benchmarks | Treasury 2Y/10Y observations are stored official context; TradingView widget values remain display-only |
 | VIX Reaction Explorer | Compare rising or cooling VIX scenarios across forward windows | Synthetic quantitative validation table; real episode results require rights-approved inputs |
 | Presidential Impact Lab | Search official communications and compare nearby Treasury-rate sessions before testing broader reactions | White House News/Actions plus official Treasury 2Y/10Y context; broader returns and Truth Social remain gated |
 
@@ -113,7 +113,7 @@ Open <http://127.0.0.1:8000/>. High-signal views include:
 | `/dashboard/etf` | ETF Evidence Center |
 | `/dashboard/financials-evidence` | Analyst scorecard evidence gates |
 | `/dashboard/intelligence` | Market Intelligence workspace |
-| `/dashboard/market-context` | Cross-Asset Markets: BTC, ETH, energy, metals and FX |
+| `/dashboard/market-context` | Cross-Asset Markets: official Treasury curve explorer plus BTC, ETH, energy, metals and FX displays |
 | `/dashboard/volatility` | VIX Reaction Explorer: rising/cooling volatility research |
 | `/dashboard/presidential-impact` | Official White House event queue and gated Donald Trump communication study |
 | `/dashboard/rwa-watch` | Tokenized Assets / RWA synthetic evidence sandbox |

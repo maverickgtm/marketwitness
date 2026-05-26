@@ -69,6 +69,7 @@ from .storage import (
     read_run_assets,
     read_run_summary,
 )
+from .treasury_regimes import build_treasury_regime_snapshot
 from .volatility_lab import build_volatility_lab_snapshot
 
 DEFAULT_DATABASE_PATH = "build/live/marketwitness.duckdb"
@@ -714,6 +715,24 @@ def create_app(
         except SourceRegistryDataError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 
+    @application.get("/api/v1/intelligence/treasury-regimes")
+    def treasury_regime_snapshot(sessions: int = Query(default=1)) -> dict[str, object]:
+        path = policy_monitor_reports / "treasury-yields.csv"
+        if not path.is_file():
+            return {
+                "available": False,
+                "data_mode": "Optional official Treasury artifact",
+                "message": (
+                    "Load a Treasury yield artifact to inspect official 2Y/10Y curve regimes."
+                ),
+            }
+        try:
+            return build_treasury_regime_snapshot(
+                load_treasury_csv(path), sessions=sessions
+            )
+        except (TreasuryDataError, ValueError) as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
     @application.get("/api/v1/intelligence/policy-signals")
     def policy_signal_lab_snapshot() -> dict[str, object]:
         providers = _read_sources(registry)
@@ -832,6 +851,14 @@ def create_app(
         except (WhiteHouseDataError, TreasuryDataError) as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
         return build_policy_treasury_context(events, yields)
+
+    @application.get(
+        "/dashboard/market-context/treasury-report",
+        response_class=HTMLResponse,
+        include_in_schema=False,
+    )
+    def market_context_treasury_report() -> str:
+        return _generated_html(policy_monitor_reports, "treasury-yields.html")
 
     @application.get(
         "/dashboard/presidential-impact/treasury-report",

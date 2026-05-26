@@ -28,7 +28,7 @@ stored, exported, or used as scoring evidence.
 | ETF Regulatory Holdings | Synthetic holding differences plus SEC N-PORT periodic workflow | Not daily or real-time manager trading |
 | Public Document Checks | FCA NSM corroboration flow | Documentation does not automatically prove admission/trading |
 | RWA Watch Sandbox | Synthetic token/reference observations | No real xStocks, Ondo, or venue collection |
-| Cross-Asset Markets | TradingView views for BTC, ETH, metals, energy, FX and benchmarks | External visual context only; no stored or scored widget values |
+| Cross-Asset Markets | Official Treasury 2Y/10Y curve-regime explorer plus TradingView views for BTC, ETH, metals, energy, FX and benchmarks | Treasury observations are stored context; widget values are not stored or scored |
 | Market Intelligence | Planned cross-asset sources and operating boundaries | No new live values or position recommendation |
 | VIX Reaction Explorer | VIX display, rising/cooling scenarios and episode-design API | Cboe/ICE derived output pending rights |
 | Presidential Impact Lab | Official White House archive, Treasury 2Y/10Y session context and themed calculation sandbox | Treasury changes are observational only; synthetic paths, Truth Social and broader reactions retain visible gates |

@@ -35,6 +35,7 @@ rights and claim boundaries as product features.
 | Evidence Passport Commons | Public protocol and API for source provenance and rights | A passport may be accepted before a connector is enabled |
 | ETF Evidence Center | Study holdings evidence and changes | Periodic regulatory reports are separated from daily-trade claims |
 | RWA Watch Sandbox | Model tokenized-asset observations | Live venue or issuer collection stays subject to documented rights |
+| Cross-Asset Markets | Inspect Treasury curve regime alongside external crypto, commodity, FX and benchmark displays | Official rates are observed context; widget values are not stored or treated as signals |
 | Market Intelligence | Organize events, context, and future connectors | Does not issue trading signals |
 | VIX Reaction Explorer | Select rising/cooling volatility scenarios and examine planned reaction windows across assets and events | Visible research workflow; proprietary series are not bundled |
 | Presidential Impact Lab | Link documented Donald Trump communications to event windows | Truth Social automation is blocked without permission |

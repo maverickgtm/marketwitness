@@ -22,7 +22,7 @@ workspace or the report directory without relying on browser history.
 | `/dashboard/etf` | ETF Evidence Center | Synthetic change examples are separated from SEC periodic evidence |
 | `/dashboard/financials-evidence` | Financials evidence and release-gate sequence | Demo scorecard is not real analyst performance |
 | `/dashboard/intelligence` | Cross-asset research workspace | Planned stored connectors are not live feeds |
-| `/dashboard/market-context` | Cross-Asset Markets terminal | TradingView displays context only; values are not stored or scored |
+| `/dashboard/market-context` | Cross-Asset Markets terminal with Treasury Curve Regime Explorer | Official Treasury 2Y/10Y observations support regime calculations; TradingView values are not stored or scored |
 | `/dashboard/volatility` | VIX Reaction Explorer | Select rising/cooling scenarios and windows; no unlicensed episode calculations |
 | `/dashboard/presidential-impact` | Presidential Impact Lab: event intake, official Treasury context and calculation sandbox | News/Actions RSS and Treasury 2Y/10Y session changes are observable context; broader reactions and Truth Social remain gated |
 | `/dashboard/commons` | Evidence Passport Commons | Source rights and claim boundaries are visible |
@@ -47,11 +47,14 @@ entry to IPO, ETF, Financials, Market Intelligence, Data Rights, and generated
 report workflows so visitors do not have to discover the system through
 documentation first.
 
-`/dashboard/market-context` adds a TradingView `Advanced Chart` defaulting to
-`BINANCE:BTCUSDT` plus watchlists for `BTC`, `ETH`, `WTI`, `Brent`, gold,
-silver, foreign exchange and equity benchmarks. MarketWitness does not read,
-store, export, or score widget values. The dashboard remains usable offline
-while third-party visual content may require Internet access.
+`/dashboard/market-context` now starts with an interactive `Treasury Curve
+Regime Explorer` over the official daily `2Y`, `10Y`, and derived `2s10s`
+series. Users can choose 1-, 5-, 20-, or 60-session comparisons to inspect
+curve regime, steepening or flattening and basis-point changes. It then adds
+a TradingView `Advanced Chart` defaulting to `BINANCE:BTCUSDT` plus watchlists
+for `BTC`, `ETH`, `WTI`, `Brent`, gold, silver, foreign exchange and equity
+benchmarks. MarketWitness stores only the official Treasury artifact in this
+view; it does not read, store, export, or score widget values.
 
 ## Research Workspaces
 
@@ -178,6 +181,7 @@ registry files, and DuckDB runs. Key contracts include:
 - `/api/v1/commons/passports`
 - `/api/v1/intelligence/modules`
 - `/api/v1/intelligence/volatility`
+- `/api/v1/intelligence/treasury-regimes`
 - `/api/v1/intelligence/policy-signals`
 - `/api/v1/intelligence/policy-events`
 - `/api/v1/intelligence/policy-reactions`

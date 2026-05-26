@@ -319,8 +319,8 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(snapshot.status_code, 200)
         self.assertEqual(snapshot.json()["zero_cost_available_count"], 7)
         self.assertEqual(snapshot.json()["offline_ready_count"], 2)
-        self.assertEqual(snapshot.json()["public_data_ready_count"], 4)
-        self.assertEqual(snapshot.json()["attributed_widget_count"], 1)
+        self.assertEqual(snapshot.json()["public_data_ready_count"], 5)
+        self.assertEqual(snapshot.json()["attributed_widget_count"], 0)
         self.assertEqual(snapshot.json()["optional_extension_count"], 1)
         self.assertIn("/dashboard/reports", page.text)
         self.assertIn("/dashboard/policy", page.text)
@@ -431,8 +431,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Source-first expansion blueprint", page.text)
         self.assertEqual(snapshot.status_code, 200)
         self.assertEqual(snapshot.json()["module_count"], 8)
-        self.assertEqual(snapshot.json()["foundation_count"], 4)
-        self.assertEqual(snapshot.json()["planned_connector_count"], 4)
+        self.assertEqual(snapshot.json()["foundation_count"], 5)
+        self.assertEqual(snapshot.json()["planned_connector_count"], 3)
         self.assertIn("Official document metadata may be loaded", snapshot.json()["publication_boundary"])
         keys = {item["key"] for item in snapshot.json()["modules"]}
         self.assertIn("market_regimes", keys)
@@ -443,6 +443,10 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/volatility", page.text)
         self.assertIn("/dashboard/presidential-impact", page.text)
         self.assertIn("VIX Reaction Explorer", page.text)
+        regimes = next(
+            item for item in snapshot.json()["modules"] if item["key"] == "market_regimes"
+        )
+        self.assertIn("curve-regime calculations are active", regimes["coverage"])
 
     def test_serves_volatility_research_lab_without_implying_a_trading_signal(self) -> None:
         page = self.client.get("/dashboard/volatility")
@@ -827,11 +831,17 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Evidence Layers", page.text)
         self.assertIn("Open regulatory view", page.text)
 
-    def test_serves_attributed_market_context_without_a_data_endpoint(self) -> None:
+    def test_serves_market_context_with_official_curve_regime_and_attributed_widgets(self) -> None:
         page = self.client.get("/dashboard/market-context")
+        regime = self.client.get("/api/v1/intelligence/treasury-regimes?sessions=1")
+        treasury_report = self.client.get("/dashboard/market-context/treasury-report")
 
         self.assertEqual(page.status_code, 200)
         self.assertIn("Crypto. Energy. Metals.", page.text)
+        self.assertIn("Treasury Curve Regime Explorer", page.text)
+        self.assertIn("/api/v1/intelligence/treasury-regimes", page.text)
+        self.assertIn("Official XML source", page.text)
+        self.assertIn("/dashboard/market-context/treasury-report", page.text)
         self.assertIn("BINANCE:BTCUSDT", page.text)
         self.assertIn("BINANCE:ETHUSDT", page.text)
         self.assertIn("TVC:GOLD", page.text)
@@ -844,6 +854,13 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Asset Watchlists", page.text)
         self.assertIn("Loading BTC chart from TradingView", page.text)
         self.assertIn("MarketWitness-collected data", page.text)
+        self.assertEqual(regime.status_code, 200)
+        self.assertTrue(regime.json()["available"])
+        self.assertEqual(regime.json()["curve_regime"]["key"], "upward_sloping")
+        self.assertEqual(regime.json()["comparison"]["two_year_change_bps"], "-6.00")
+        self.assertIn("do not predict returns", regime.json()["publication_boundary"])
+        self.assertEqual(treasury_report.status_code, 200)
+        self.assertIn("Treasury Yield Context generated page", treasury_report.text)
 
     def test_serves_public_use_policy_with_blocked_source_boundaries(self) -> None:
         page = self.client.get("/dashboard/policy")

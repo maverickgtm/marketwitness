@@ -46,6 +46,8 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   calendar filters over explicitly synthetic numerical validation paths.
 - [x] Official Treasury 2Y/10Y daily context joined to thematic White House
   communications as non-causal session-to-session basis-point observations.
+- [x] Treasury Curve Regime Explorer in Cross-Asset Markets with official
+  `2Y`/`10Y`/`2s10s` observations and selectable session comparisons.
 - [x] Interactive Listings Radar combining the reviewed U.S. IPO registry with
   dated global listing-evidence changes, filters, source links and a
   browser-local research watchlist.

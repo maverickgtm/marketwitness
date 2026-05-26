@@ -2207,11 +2207,32 @@ def market_context_html() -> str:
     h2 { font-size:20px; margin:36px 0 15px; letter-spacing:-.02em; }
     .lead { color:var(--muted); font-size:17px; max-width:680px; }
     .cards { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-    .card,.notice,.chart-shell,.overview-shell { background:var(--panel); border:1px solid var(--line); border-radius:16px; }
+    .card,.notice,.chart-shell,.overview-shell,.curve-lab { background:var(--panel); border:1px solid var(--line); border-radius:16px; }
     .card { padding:15px 17px; }
     .card p { color:var(--muted); margin:0; }
     .card strong { display:block; color:var(--mint); margin-top:5px; font-size:17px; }
     .notice { border-left:3px solid var(--gold); color:var(--muted); padding:15px 18px; margin:18px 0; }
+    .curve-lab { padding:21px; margin-bottom:23px; box-shadow:var(--shadow); }
+    .curve-head { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:19px; }
+    .curve-head h2 { margin:4px 0 7px; font-size:25px; }
+    .curve-head p { color:var(--muted); margin:0; max-width:710px; }
+    .official { color:var(--mint); background:rgba(56,223,173,.12); border-radius:999px; padding:7px 11px; font-size:11px; text-transform:uppercase; letter-spacing:.09em; white-space:nowrap; }
+    .curve-windows { display:flex; gap:9px; flex-wrap:wrap; margin-bottom:19px; }
+    .curve-window { font:inherit; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:9px 14px; cursor:pointer; font-weight:600; }
+    .curve-window.active { color:#061117; background:var(--mint); border-color:var(--mint); }
+    .curve-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:11px; margin-bottom:18px; }
+    .curve-stat { background:var(--panel2); border-radius:12px; padding:13px 15px; min-height:82px; }
+    .curve-stat small { color:var(--muted); display:block; margin-bottom:6px; }
+    .curve-stat strong { font-size:23px; }
+    .positive { color:var(--mint); } .negative { color:#ff8176; } .neutral { color:var(--gold); }
+    .curve-detail { display:grid; grid-template-columns:minmax(340px,.72fr) minmax(420px,1.28fr); gap:13px; }
+    .curve-explain,.curve-history { background:var(--panel2); border-radius:12px; padding:15px; }
+    .curve-explain h3 { margin:0 0 8px; } .curve-explain p { color:var(--muted); margin:8px 0; }
+    .curve-links { display:flex; flex-wrap:wrap; gap:13px; margin-top:14px; font-weight:600; font-size:13px; }
+    .curve-history table { width:100%; border-collapse:collapse; }
+    .curve-history th,.curve-history td { text-align:left; padding:8px 7px; border-bottom:1px solid var(--line); }
+    .curve-history th { color:var(--muted); font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:500; }
+    .curve-boundary { color:var(--muted); border-top:1px solid var(--line); padding-top:14px; margin:17px 0 0; }
     .terminal { display:grid; grid-template-columns:minmax(540px,1fr) 385px; gap:16px; }
     .panel-head { padding:16px 18px 0; display:flex; justify-content:space-between; align-items:center; gap:12px; }
     .panel-head h2 { margin:0; }
@@ -2231,9 +2252,9 @@ def market_context_html() -> str:
     .market-fallback { justify-content:center; }
     .tradingview-widget-copyright { font-size:13px; line-height:32px; color:var(--muted); text-align:left; }
     .tradingview-widget-copyright .blue-text { color:var(--blue); }
-    @media(max-width:1040px) { .intro,.terminal { grid-template-columns:1fr; } .chart-shell,.overview-shell { height:560px; } }
+    @media(max-width:1040px) { .intro,.terminal,.curve-detail { grid-template-columns:1fr; } .curve-grid { grid-template-columns:repeat(2,1fr); } .chart-shell,.overview-shell { height:560px; } }
     @media(max-width:570px) { header,main { padding:18px 14px; } .top { flex-direction:column; align-items:flex-start; }
-      .market-strip { grid-template-columns:126px minmax(0,1fr); } .strip-label { padding:8px 10px; } .cards { grid-template-columns:1fr; } }
+      .market-strip { grid-template-columns:126px minmax(0,1fr); } .strip-label { padding:8px 10px; } .cards,.curve-grid { grid-template-columns:1fr; } .curve-head { flex-direction:column; } .curve-history { overflow-x:auto; } }
   </style>
 </head>
 <body>
@@ -2269,6 +2290,41 @@ def market_context_html() -> str:
     </section>
   </header>
   <main>
+    <section class="curve-lab" aria-label="Official Treasury curve regime explorer">
+      <div class="curve-head">
+        <div>
+          <p class="eyebrow">Stored official observations / no paid feed</p>
+          <h2>Treasury Curve Regime Explorer</h2>
+          <p id="curve-status">Loading official 2Y and 10Y curve context...</p>
+        </div>
+        <span class="official" id="curve-mode">Official rates context</span>
+      </div>
+      <div class="curve-windows" aria-label="Treasury comparison window">
+        <button class="curve-window active" data-curve-window="1" type="button">1 session</button>
+        <button class="curve-window" data-curve-window="5" type="button">5 sessions</button>
+        <button class="curve-window" data-curve-window="20" type="button">20 sessions</button>
+        <button class="curve-window" data-curve-window="60" type="button">60 sessions</button>
+      </div>
+      <section class="curve-grid">
+        <article class="curve-stat"><small>Curve regime</small><strong id="curve-regime">-</strong></article>
+        <article class="curve-stat"><small>2Y yield</small><strong id="curve-two-year">-</strong></article>
+        <article class="curve-stat"><small>10Y yield</small><strong id="curve-ten-year">-</strong></article>
+        <article class="curve-stat"><small>2s10s spread</small><strong id="curve-spread">-</strong></article>
+      </section>
+      <section class="curve-detail">
+        <article class="curve-explain">
+          <p class="eyebrow">Selected comparison</p>
+          <h3 id="curve-shift">Choose a window</h3>
+          <p id="curve-comparison">Waiting for observed rates...</p>
+          <div class="curve-links"><a href="/dashboard/market-context/treasury-report">Open observations</a><a href="https://home.treasury.gov/treasury-daily-interest-rate-xml-feed" target="_blank" rel="noopener">Official XML source</a></div>
+        </article>
+        <article class="curve-history">
+          <p class="eyebrow">Latest daily observations</p>
+          <table><thead><tr><th>Date</th><th>2Y</th><th>10Y</th><th>2s10s</th></tr></thead><tbody id="curve-history"><tr><td colspan="4">Loading...</td></tr></tbody></table>
+        </article>
+      </section>
+      <p class="curve-boundary" id="curve-boundary"></p>
+    </section>
     <p class="notice">These third-party charts are external visual context only. They are not investment advice, MarketWitness-collected data, a verified real-time record or evidence used in audit scores.</p>
     <section class="terminal" aria-label="Market visual context">
       <article class="chart-shell">
@@ -2301,6 +2357,41 @@ def market_context_html() -> str:
       </article>
     </section>
   </main>
+  <script>
+    const curveText = (value) => String(value == null ? "-" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    const curveTone = (value) => Number(value) > 0 ? "positive" : Number(value) < 0 ? "negative" : "neutral";
+    async function loadTreasuryRegime(sessions = "1") {
+      const response = await fetch(`/api/v1/intelligence/treasury-regimes?sessions=${sessions}`);
+      if (!response.ok) throw new Error((await response.json()).detail || "Treasury curve request failed.");
+      const data = await response.json();
+      document.querySelectorAll("[data-curve-window]").forEach((button) => button.classList.toggle("active", button.dataset.curveWindow === String(sessions)));
+      if (!data.available) {
+        document.getElementById("curve-status").textContent = data.message;
+        document.getElementById("curve-mode").textContent = "Artifact not loaded";
+        return;
+      }
+      document.getElementById("curve-status").textContent = `${data.data_mode} / rates through ${data.latest_rate_date} / ${data.observation_count} observations`;
+      document.getElementById("curve-mode").textContent = data.data_mode.includes("Official") ? "Observed official data" : "Synthetic fixture";
+      document.getElementById("curve-regime").textContent = data.curve_regime.label;
+      document.getElementById("curve-two-year").textContent = `${data.latest.two_year_pct}%`;
+      document.getElementById("curve-ten-year").textContent = `${data.latest.ten_year_pct}%`;
+      const spread = document.getElementById("curve-spread");
+      spread.textContent = `${data.latest.curve_2s10s_bps} bps`;
+      spread.className = curveTone(data.latest.curve_2s10s_bps);
+      if (data.comparison_available) {
+        const comparison = data.comparison;
+        document.getElementById("curve-shift").textContent = `${comparison.curve_shift} / ${comparison.sessions} session${comparison.sessions === 1 ? "" : "s"}`;
+        document.getElementById("curve-comparison").innerHTML = `${curveText(comparison.reference_date)} to ${curveText(comparison.latest_date)}: 2Y <strong class="${curveTone(comparison.two_year_change_bps)}">${curveText(comparison.two_year_change_bps)} bps</strong>, 10Y <strong class="${curveTone(comparison.ten_year_change_bps)}">${curveText(comparison.ten_year_change_bps)} bps</strong>, curve <strong class="${curveTone(comparison.curve_change_bps)}">${curveText(comparison.curve_change_bps)} bps</strong>.`;
+      } else {
+        document.getElementById("curve-shift").textContent = `${sessions}-session window unavailable`;
+        document.getElementById("curve-comparison").textContent = "This loaded artifact does not yet contain enough daily observations for that comparison window.";
+      }
+      document.getElementById("curve-history").innerHTML = data.history.slice(0, 6).map((item) => `<tr><td>${curveText(item.rate_date)}</td><td>${curveText(item.two_year_pct)}%</td><td>${curveText(item.ten_year_pct)}%</td><td class="${curveTone(item.curve_2s10s_bps)}">${curveText(item.curve_2s10s_bps)} bps</td></tr>`).join("");
+      document.getElementById("curve-boundary").textContent = data.publication_boundary;
+    }
+    document.querySelectorAll("[data-curve-window]").forEach((button) => button.addEventListener("click", () => loadTreasuryRegime(button.dataset.curveWindow).catch((error) => { document.getElementById("curve-status").textContent = error.message; })));
+    loadTreasuryRegime().catch((error) => { document.getElementById("curve-status").textContent = error.message; });
+  </script>
 </body>
 </html>"""
 

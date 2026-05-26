@@ -16,8 +16,8 @@ market context.
 | Purpose and KPIs visible on arrival | The home view opens with the Open Edition promise, status metrics, and primary modules. |
 | Stable navigation hierarchy | A sidebar separates workspace, evidence, and control areas. |
 | Market context without report clutter | `Market Pulse` and the ticker strip are labeled external visual context. |
-| Dedicated cross-asset charting view | `/dashboard/market-context` contains a BTC-first interactive chart and crypto, commodity, FX, and benchmark lenses. |
-| Clear data origin | TradingView panels state that they do not feed scoring. |
+| Dedicated cross-asset research view | `/dashboard/market-context` starts with an official Treasury curve-regime explorer, followed by a BTC-first chart and crypto, commodity, FX, and benchmark lenses. |
+| Clear data origin | Treasury calculations cite the official feed; TradingView panels state that they do not feed scoring. |
 | Graceful offline state | External areas display a loading/information state when widgets are unavailable. |
 
 ## TradingView Widgets
@@ -35,11 +35,16 @@ Only official embedded widgets with visible attribution are used:
 MarketWitness does not read widget values, store them in DuckDB, export them, or
 treat them as evidence for targets, IPOs, or holdings changes.
 
+Above those widgets, `Treasury Curve Regime Explorer` calculates `2Y`, `10Y`
+and `2s10s` context from the official Treasury artifact with selectable
+session windows. Its observed rates are distinct from the external widgets
+and do not become a trading recommendation.
+
 ## Next Visual Phase
 
 1. Extend the premium visual language across secondary reports.
-2. Build first-party charts only for data MarketWitness can publish, such as
-   document counts by market or approval states.
+2. Extend first-party visualizations over publishable data, beginning with
+   Treasury curve history, document counts by market and approval states.
 3. Produce launch captures and complete responsive review before publishing.
 
 ## Official Design And Integration Sources
@@ -48,3 +53,4 @@ treat them as evidence for targets, IPOs, or holdings changes.
 - TradingView Market Overview: <https://www.tradingview.com/widget-docs/widgets/watchlists/market-overview/>
 - TradingView Symbol Overview: <https://www.tradingview.com/widget-docs/widgets/charts/symbol-overview/>
 - TradingView integration tutorial: <https://www.tradingview.com/widget-docs/tutorials/build-page/widget-integration/>
+- U.S. Treasury Daily Interest Rate XML Feed: <https://home.treasury.gov/treasury-daily-interest-rate-xml-feed>

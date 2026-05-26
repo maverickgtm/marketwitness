@@ -18,8 +18,8 @@ class OpenEditionTests(unittest.TestCase):
 
         self.assertEqual(snapshot["zero_cost_available_count"], 7)
         self.assertEqual(snapshot["offline_ready_count"], 2)
-        self.assertEqual(snapshot["public_data_ready_count"], 4)
-        self.assertEqual(snapshot["attributed_widget_count"], 1)
+        self.assertEqual(snapshot["public_data_ready_count"], 5)
+        self.assertEqual(snapshot["attributed_widget_count"], 0)
         self.assertEqual(snapshot["optional_extension_count"], 1)
         rankings = next(
             item for item in snapshot["capabilities"] if item["key"] == "real_analyst_rankings"
@@ -41,13 +41,13 @@ class OpenEditionTests(unittest.TestCase):
         self.assertEqual(rwa["route"], "/dashboard/rwa-watch")
         self.assertIn("No live token data", rwa["limitation"])
         context = next(
-            item for item in snapshot["capabilities"] if item["key"] == "market_context_widget"
+            item for item in snapshot["capabilities"] if item["key"] == "market_context_workspace"
         )
         self.assertEqual(context["route"], "/dashboard/market-context")
-        self.assertEqual(context["status"], "attributed_external_widget")
+        self.assertEqual(context["status"], "public_source_no_key")
         self.assertEqual(context["title"], "Cross-Asset Markets")
-        self.assertIn("crypto", context["output"])
-        self.assertIn("not stored", context["limitation"])
+        self.assertIn("Treasury curve-regime explorer", context["output"])
+        self.assertIn("widget values remain display-only", context["limitation"])
         self.assertIn("Available without paid data subscriptions: `7`", report)
         events = next(
             item for item in snapshot["capabilities"] if item["key"] == "presidential_event_intake"

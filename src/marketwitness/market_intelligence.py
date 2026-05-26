@@ -58,13 +58,13 @@ MODULES = (
         "key": "market_regimes",
         "title": "Market Regimes",
         "theme": "Digital Assets / Energy / Rates",
-        "stage": "connector_planned",
+        "stage": "foundation_available",
         "priority": "next",
         "provider_ids": ("kraken-spot-public", "eia-open-data", "treasury-yield-curve"),
-        "coverage": "BTC, ETH, WTI, Brent and U.S. Treasury 2Y/10Y context.",
-        "cadence": "Mixed: public market endpoint plus official daily series",
+        "coverage": "Official U.S. Treasury 2Y/10Y curve-regime calculations are active; BTC, ETH, WTI and Brent remain external-display context.",
+        "cadence": "Official Treasury daily observations; external TradingView panels for uncollected asset views",
         "route": "/dashboard/market-context",
-        "next_delivery": "Build normalized observations only after each output policy is accepted.",
+        "next_delivery": "Extend normalized observations only after crypto and energy output policies are accepted.",
         "claim_limit": "Regime context is not a buy, sell or position-sizing signal.",
     },
     {
@@ -141,7 +141,7 @@ def build_market_intelligence_snapshot(
         "implementation_sequence": [
             "VIX Reaction Explorer: rising/cooling scenarios and auditable stress-episode design.",
             "Presidential Impact Lab: official White House intake with observed Treasury session context and Truth Social rights gate.",
-            "Market Regimes: BTC, ETH, WTI, Brent and Treasury 2Y/10Y.",
+            "Market Regimes: observed Treasury 2Y/10Y curve explorer plus attributed external BTC, ETH, WTI and Brent views.",
             "Macro Calendar, Insider Activity, ownership and CFTC after connector review.",
         ],
         "publication_boundary": (
