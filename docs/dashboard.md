@@ -172,6 +172,12 @@ Esta API puede alimentar el dashboard web con datos sinteticos o autorizados.
 Una base que contenga datos reales no debe exponerse publicamente hasta
 resolver los permisos de targets, precios y cualquier fuente redistribuida.
 
+`/api/v1/commons/passports` publica la version `0.1` de `Evidence Passport
+Commons`: fichas estructuradas de origen, derechos y estado de revision para
+las fuentes registradas. La ruta visual `/dashboard/commons` invita a
+contributors a completar la siguiente capa de cadencia y limites de
+afirmacion antes de activar nuevos conectores.
+
 ## Aplicacion Financials Scorecard
 
 La ruta web inicial `/dashboard/financials` consume esta API y presenta:
@@ -503,6 +509,9 @@ Cada jurisdiccion conserva sus propias etapas:
   traduce aun todos los reportes generados: orienta propuestas de conectores
   y exige URL oficial, terminos, costo y derechos de output antes de activar
   datos reales.
+- `/dashboard/commons` convierte la gobernanza de fuentes en `Evidence
+  Passport Commons`: un registro consultable por API para que contributors
+  propongan fuentes, terminos y limites de uso antes de escribir ingesta.
 
 ## Pagina 4: ETF Holdings Activity
 

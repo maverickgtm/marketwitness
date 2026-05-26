@@ -15,6 +15,14 @@ La oportunidad real es mas estrecha y mas creible:
 > trazabilidad de fuente, derechos de publicacion y reglas de verificacion
 > visibles, comenzando por IPOs/listings globales y evidencia regulatoria ETF.
 
+La propuesta concreta para diferenciar el lanzamiento es `Evidence Passport
+Commons`: un registro visual y una API publica donde cada fuente muestra
+origen y derechos revisados, y donde contributors pueden proponer la capa
+faltante de cadencia y limite de afirmacion. En la revision realizada no se
+encontro que `OpenBB`, `Stocknear` o `AnaChart` presentaran este protocolo de
+contribucion y derechos como su producto central; esto no prueba inexistencia
+absoluta de propuestas semejantes.
+
 El ranking real de targets sigue siendo un modulo importante, pero debe
 activarse solo cuando el proyecto obtenga datos utilizables con permiso.
 
@@ -38,6 +46,8 @@ instalable y verificable desde el primer minuto:
    diferencia de holdings;
 4. conectores internacionales que permiten contribuciones concretas;
 5. documentacion transparente sobre que datos faltan y por que no se publican.
+6. un `Evidence Passport Commons` ampliable sin pedir al contributor que
+   compre datos o escriba un conector antes de validar derechos.
 
 Lo que probablemente no atraera por si solo es una gran promesa futura de
 ranking de analistas sin un dataset real ya autorizado.

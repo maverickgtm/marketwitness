@@ -31,6 +31,24 @@ se prefieren fuentes regulatorias publicas, fixtures redistribuibles y
 contribuciones de datos cuyos derechos estén documentados. Un conector
 comercial puede añadirse como extensión opcional, no como requisito de uso.
 
+## Evidence Passport Commons
+
+TargetAudit busca contributors globales para ampliar su red de evidencia
+oficial. Antes de proponer codigo para una fuente nueva, prepara un
+`Evidence Passport` mediante la plantilla `Propuesta de fuente de datos`.
+Debe identificar:
+
+- fuente oficial y clase de evidencia;
+- terminos, licencia o permiso de output derivado;
+- frecuencia o cadencia de actualizacion;
+- regla de confirmacion y la afirmacion que la fuente no demuestra;
+- costo, clave o requisito de registro.
+
+Los passports aceptados pueden incorporarse al registro publico y a
+`/api/v1/commons/passports`. Un conector se implementa despues, cuando su
+uso publico es defendible. Esta separacion permite contribuir aun sin pagar
+datasets ni desarrollar Python.
+
 Antes de proponer una salida publica o un collector nuevo, revisa
 [Politica De Uso Publico Y Derechos De Datos](docs/public-use-policy.md): una
 fuente marcada como bloqueada o manual no debe automatizarse desde una

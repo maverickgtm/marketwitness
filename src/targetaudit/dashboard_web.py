@@ -129,6 +129,7 @@ def open_edition_html() -> str:
       </div>
       <div class="nav-group">
         <span class="side-label">Controls</span>
+        <a class="nav-link" href="/dashboard/commons"><span class="dot"></span>Evidence Commons</a>
         <a class="nav-link" href="/dashboard/policy"><span class="dot"></span>Public Use Policy</a>
         <a class="nav-link" href="/dashboard/governance"><span class="dot"></span>Governance</a>
         <a class="nav-link" href="/dashboard/release"><span class="dot"></span>Release Center</a>
@@ -160,6 +161,7 @@ def open_edition_html() -> str:
           <div class="hero-links">
             <a class="primary" href="/dashboard/reports">Explore reports</a>
             <a href="/dashboard/market-context">Open market context</a>
+            <a href="/dashboard/commons">Evidence Commons</a>
             <a href="/dashboard/policy">Data boundaries</a>
           </div>
         </article>
@@ -325,6 +327,7 @@ def report_center_html() -> str:
       <article class="control"><h3>ETF Evidence Center</h3><p>Separate synthetic comparisons from periodic SEC N-PORT evidence before reading changes.</p><a href="/dashboard/etf">Open ETF evidence</a></article>
       <article class="control"><h3>Financials Evidence Center</h3><p>Trace controlled inputs, scoring guards and release blockers before opening a ranking.</p><a href="/dashboard/financials-evidence">Open financials evidence</a></article>
       <article class="control"><h3>Global Contributors</h3><p>Propose official market connectors or lawful target-data access in five languages.</p><a href="/dashboard/contribute?lang=en">Open contributor gateway</a></article>
+      <article class="control"><h3>Evidence Passport Commons</h3><p>Inspect machine-readable source passports and the public contribution protocol.</p><a href="/dashboard/commons">Open evidence commons</a></article>
       <article class="control"><h3>Public Use Policy</h3><p>See data boundaries, blocked sources and no-recommendation rules.</p><a href="/dashboard/policy">Open policy</a></article>
       <article class="control"><h3>Source Governance</h3><p>Inspect provider states, rights review and excluded observations.</p><a href="/dashboard/governance">Open governance</a></article>
       <article class="control"><h3>Release Center</h3><p>Review why demo evidence cannot become a public real-data scorecard.</p><a href="/dashboard/release">Open release controls</a></article>
@@ -613,6 +616,157 @@ def etf_evidence_center_html() -> str:
 </html>"""
 
 
+def evidence_commons_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | Evidence Passport Commons</title>
+  <style>
+    :root {
+      --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246; --text:#f2f6f7;
+      --muted:#96aab8; --mint:#38dfad; --gold:#f3bf66; --blue:#62a6ff; --rose:#ff7d72;
+      --shadow:0 22px 68px rgba(0,0,0,.24);
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--text); font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 88% 0%,rgba(56,223,173,.13),transparent 29%),
+        radial-gradient(circle at 14% 14%,rgba(98,166,255,.09),transparent 24%),var(--bg); }
+    a { color:var(--mint); text-decoration:none; }
+    header,main { max-width:1370px; margin:auto; padding:23px 28px; }
+    nav,.eyebrow,.meta { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-size:11px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:32px; }
+    .back { color:var(--text); border:1px solid var(--line); border-radius:10px; padding:9px 14px; font-weight:600; }
+    .hero { display:grid; grid-template-columns:minmax(500px,1.05fr) minmax(395px,.95fr); gap:18px; }
+    .hero-copy,.protocol,.card,.passport,.callout { background:var(--panel); border:1px solid var(--line); border-radius:18px; }
+    .hero-copy { padding:32px 34px; box-shadow:var(--shadow); }
+    h1 { font-size:clamp(42px,5vw,62px); letter-spacing:-.05em; line-height:1.04; margin:14px 0; }
+    h1 span { color:var(--mint); }
+    h2 { font-size:21px; letter-spacing:-.02em; margin:39px 0 16px; }
+    h3 { margin:8px 0; }
+    .lead { color:var(--muted); font-size:17px; max-width:650px; }
+    .hero-links { display:flex; flex-wrap:wrap; gap:10px; margin-top:28px; }
+    .hero-links a { border:1px solid var(--line); padding:10px 14px; border-radius:10px; font-weight:600; }
+    .hero-links .primary { color:#061117; background:var(--mint); border-color:var(--mint); }
+    .protocol { padding:21px; box-shadow:var(--shadow); }
+    .protocol-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:17px; }
+    .protocol-head strong { font-size:17px; }
+    .pill { display:inline-block; border-radius:999px; padding:5px 10px; font-size:11px; }
+    .open { color:var(--mint); background:rgba(56,223,173,.12); }
+    .review { color:var(--gold); background:rgba(243,191,102,.13); }
+    .blocked { color:var(--rose); background:rgba(255,125,114,.12); }
+    .steps { display:grid; gap:10px; }
+    .step { display:grid; grid-template-columns:39px 1fr; gap:12px; padding:12px; background:var(--panel2); border-radius:12px; }
+    .step b { width:36px; height:36px; display:grid; place-items:center; border-radius:10px; color:var(--mint); background:rgba(56,223,173,.12); }
+    .step small { color:var(--muted); display:block; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin:18px 0 0; }
+    .card { padding:16px 18px; }
+    .card p { color:var(--muted); margin:0; font-size:13px; }
+    .card strong { color:var(--mint); font-size:32px; letter-spacing:-.04em; display:block; margin-top:5px; }
+    .callout { border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); margin-top:18px; }
+    .toolbar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; }
+    .filters { display:flex; gap:8px; flex-wrap:wrap; }
+    .filters button { color:var(--muted); background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:7px 12px; cursor:pointer; }
+    .filters button.active { color:#061117; background:var(--mint); border-color:var(--mint); }
+    .passports { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; }
+    .passport { padding:16px; min-height:198px; }
+    .passport-head { display:flex; justify-content:space-between; align-items:flex-start; gap:9px; }
+    .passport strong { display:block; font-size:15px; }
+    .passport small { display:block; color:var(--muted); margin-top:3px; }
+    .facts { display:grid; gap:6px; margin:15px 0; color:var(--muted); font-size:12px; }
+    .facts b { color:var(--text); font-weight:500; }
+    .passport a { font-weight:600; font-size:13px; }
+    .join { display:grid; grid-template-columns:1fr auto; align-items:center; gap:20px; background:var(--panel2); border:1px solid var(--line);
+      border-radius:18px; padding:24px; margin:38px 0; }
+    .join p { color:var(--muted); margin:7px 0 0; }
+    .join a { color:#061117; background:var(--mint); padding:12px 17px; border-radius:10px; font-weight:700; }
+    #error { display:none; color:var(--rose); }
+    @media(max-width:1080px) { .hero,.passports { grid-template-columns:1fr; } }
+    @media(max-width:800px) { header,main { padding:18px 14px; } .top,.join { align-items:flex-start; flex-direction:column; }
+      .hero-copy { padding:25px 20px; } .cards { grid-template-columns:repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top"><nav><a href="/dashboard/open">Open Edition</a> / Evidence Passport Commons</nav><a class="back" href="/dashboard/open">Back to terminal</a></div>
+    <section class="hero">
+      <article class="hero-copy">
+        <p class="eyebrow">Open verification network</p>
+        <h1>Every signal needs<br><span>a passport.</span></h1>
+        <p class="lead">A public protocol for where market evidence comes from, what rights govern it, how frequently it changes and what it cannot prove. Version 0.1 publishes source and rights passports while contributors expand cadence and claim-limit fields.</p>
+        <div class="hero-links"><a class="primary" href="/dashboard/contribute?lang=en">Contribute a passport</a><a href="/api/v1/commons/passports">Open API</a></div>
+      </article>
+      <article class="protocol">
+        <div class="protocol-head"><strong>Passport Protocol</strong><span class="pill open">Open standard v0.1</span></div>
+        <div class="steps">
+          <div class="step"><b>01</b><div><strong>Identity</strong><small>Official source and evidence class</small></div></div>
+          <div class="step"><b>02</b><div><strong>Rights</strong><small>Terms, storage and output permission</small></div></div>
+          <div class="step"><b>03</b><div><strong>Cadence</strong><small>Filing, snapshot or live-feed boundary</small></div></div>
+          <div class="step"><b>04</b><div><strong>Claim limit</strong><small>What the evidence cannot confirm</small></div></div>
+        </div>
+      </article>
+    </section>
+    <section class="cards">
+      <article class="card"><p>Source passports</p><strong id="passports-count">-</strong></article>
+      <article class="card"><p>Usable with policy</p><strong id="usable-count">-</strong></article>
+      <article class="card"><p>Open review</p><strong id="review-count">-</strong></article>
+      <article class="card"><p>Blocked paths</p><strong id="blocked-count">-</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="callout"><strong>Why this matters:</strong> most market tools display an answer. The Commons exposes the evidence contract behind that answer before a user or developer relies on it. A free endpoint is not automatically a reusable public dataset; cadence and claim-limit enrichment remains an open contribution mission.</p>
+    <h2>Public Passport Registry</h2>
+    <div class="toolbar"><p class="meta" id="reviewed">Loading passport registry...</p><div class="filters"><button class="active" data-filter="all">All</button><button data-filter="usable_with_policy">Usable</button><button data-filter="review_required">Review</button><button data-filter="blocked">Blocked</button></div></div>
+    <p class="callout" id="error"></p>
+    <section class="passports" id="passports"></section>
+    <section class="join">
+      <div><h3>Contributors wanted worldwide</h3><p>Know an official regulator or exchange source? Submit its passport with terms and confirmation rules. Code can follow once the evidence is approved.</p></div>
+      <a href="/dashboard/contribute?lang=en">Join the Commons</a>
+    </section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const text = (value) => String(value == null || value === "" ? "-" : value)
+      .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    let passports = [];
+    function stateClass(state) {
+      if (state === "usable_with_policy") return "open";
+      if (state === "blocked") return "blocked";
+      return "review";
+    }
+    function render(filter) {
+      const visible = filter === "all" ? passports : passports.filter((passport) => passport.rights.deployment_state === filter);
+      $("passports").innerHTML = visible.map((passport) => `<article class="passport"><div class="passport-head"><div><strong>${text(passport.source.name)}</strong><small>${text(passport.evidence.data_class)}</small></div><span class="pill ${stateClass(passport.rights.deployment_state)}">${text(passport.rights.deployment_state)}</span></div><div class="facts"><span>Access: <b>${text(passport.evidence.access_model)}</b></span><span>Output: <b>${text(passport.rights.publication_policy)}</b></span><span>Reviewed: <b>${text(passport.review.reviewed_on)}</b></span></div><a href="${text(passport.source.official_url)}" rel="noopener" target="_blank">Official source</a></article>`).join("");
+    }
+    async function initialize() {
+      try {
+        const response = await fetch("/api/v1/commons/passports");
+        if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
+        const data = await response.json();
+        passports = data.passports;
+        $("passports-count").textContent = data.passport_count;
+        $("usable-count").textContent = data.states.usable_with_policy || 0;
+        $("review-count").textContent = (data.states.review_required || 0) + (data.states.license_required || 0);
+        $("blocked-count").textContent = data.states.blocked || 0;
+        $("reviewed").textContent = `Protocol ${data.passport_version} / Sources reviewed as of ${data.reviewed_as_of}`;
+        render("all");
+      } catch (error) {
+        $("error").style.display = "block";
+        $("error").textContent = error.message;
+      }
+    }
+    document.querySelectorAll("button[data-filter]").forEach((button) => button.addEventListener("click", () => {
+      document.querySelectorAll("button[data-filter]").forEach((item) => item.classList.remove("active"));
+      button.classList.add("active");
+      render(button.dataset.filter);
+    }));
+    initialize();
+  </script>
+</body>
+</html>"""
+
+
 _GLOBAL_CONTRIBUTOR_COPY = {
     "en": {
         "page_title": "Global Contributor Gateway",
@@ -645,6 +799,8 @@ _GLOBAL_CONTRIBUTOR_COPY = {
         "not_accept": "Not accepted as activation evidence",
         "not_accept_body": "Screenshots, scraped pages, unofficial wrappers and free sign-up access alone cannot unlock a real public ranking.",
         "github": "Use the GitHub Data Source Proposal issue template after launch. TargetAudit will review the source before any connector is enabled.",
+        "commons": "Accepted proposals become Evidence Passports: machine-readable records of source, rights, cadence and claim limits.",
+        "commons_link": "Explore the Evidence Passport Commons",
     },
     "ja": {
         "page_title": "グローバル貢献者ゲートウェイ",
@@ -671,6 +827,8 @@ _GLOBAL_CONTRIBUTOR_COPY = {
         "not_accept": "有効化の根拠にならないもの",
         "not_accept_body": "スクリーンショット、スクレイピング、非公式ラッパー、無料登録だけでは公開ランキングを有効化できません。",
         "github": "公開後は GitHub の Data Source Proposal テンプレートを使用してください。コネクターを有効化する前にソースを審査します。",
+        "commons": "採用された提案は、ソース、権利、更新周期、主張の限界を記録する機械可読な Evidence Passport になります。",
+        "commons_link": "Evidence Passport Commons を見る",
     },
     "pt-BR": {
         "page_title": "Portal Global de Colaboradores",
@@ -697,6 +855,8 @@ _GLOBAL_CONTRIBUTOR_COPY = {
         "not_accept": "Não basta para ativar",
         "not_accept_body": "Capturas de tela, scraping, wrappers não oficiais e apenas acesso gratuito não liberam um ranking público real.",
         "github": "Depois do lançamento, use o template GitHub Data Source Proposal. O TargetAudit revisará a fonte antes de ativar qualquer conector.",
+        "commons": "Propostas aceitas tornam-se Evidence Passports: registros legíveis por máquina da fonte, direitos, frequência e limites de afirmação.",
+        "commons_link": "Explorar o Evidence Passport Commons",
     },
     "zh-Hant": {
         "page_title": "全球貢獻者入口",
@@ -723,6 +883,8 @@ _GLOBAL_CONTRIBUTOR_COPY = {
         "not_accept": "不能作為啟用依據",
         "not_accept_body": "截圖、爬取頁面、非官方包裝器或僅有免費註冊，都不足以啟用真實公開排名。",
         "github": "發布後請使用 GitHub Data Source Proposal issue 範本。TargetAudit 會在啟用任何連接器前審查來源。",
+        "commons": "通過的提案會成為 Evidence Passport，以機器可讀格式記錄來源、權利、更新頻率與主張限制。",
+        "commons_link": "查看 Evidence Passport Commons",
     },
     "ko": {
         "page_title": "글로벌 기여자 게이트웨이",
@@ -749,6 +911,8 @@ _GLOBAL_CONTRIBUTOR_COPY = {
         "not_accept": "활성화 근거로 인정되지 않는 것",
         "not_accept_body": "스크린샷, 스크래핑 페이지, 비공식 래퍼, 무료 가입만으로는 실제 공개 순위를 활성화할 수 없습니다.",
         "github": "출시 후 GitHub Data Source Proposal 이슈 템플릿을 사용하세요. TargetAudit은 커넥터를 활성화하기 전에 출처를 검토합니다.",
+        "commons": "승인된 제안은 출처, 권리, 갱신 주기와 주장 한계를 기록하는 기계 판독형 Evidence Passport가 됩니다.",
+        "commons_link": "Evidence Passport Commons 살펴보기",
     },
 }
 
@@ -799,6 +963,8 @@ def global_contributors_html(locale: str = "en") -> str:
     .two-col {{ display:grid; grid-template-columns:1.15fr .85fr; gap:16px; }}
     .checklist {{ padding:18px 22px; }} .checklist ul {{ margin:10px 0 0; padding-left:21px; color:var(--muted); }}
     .github {{ margin-top:28px; color:var(--mint); font-weight:600; }}
+    .commons {{ margin-top:18px; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; color:var(--muted); }}
+    .commons a {{ display:block; margin-top:10px; font-weight:600; }}
     @media(max-width:900px) {{ .cards,.paths,.two-col {{ grid-template-columns:1fr; }} .languages {{ border-radius:14px; }} }}
   </style>
 </head>
@@ -830,6 +996,7 @@ def global_contributors_html(locale: str = "en") -> str:
       <article class="checklist"><h3>{copy["not_accept"]}</h3><p>{copy["not_accept_body"]}</p></article>
     </section>
     <p class="github">{copy["github"]}</p>
+    <p class="commons">{copy["commons"]}<a href="/dashboard/commons">{copy["commons_link"]}</a></p>
   </main>
 </body>
 </html>"""

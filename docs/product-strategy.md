@@ -19,6 +19,8 @@ complementarios:
   tecnologicas/estrategicas.
 - `Global Listings Watch`: mapa y futuros conectores de listings fuera de
   Estados Unidos, comenzando por Londres y Hong Kong.
+- `Evidence Passport Commons`: protocolo publico y API de fichas de fuente y
+  derechos, extensible por contributors antes de activar nuevos conectores.
 - `RWA Watch Sandbox`: pagina funcional con evidencia sintetica sobre acciones
   y ETF tokenizados; los conectores reales de `xStocks / Backed`, `Ondo` y
   venues quedan condicionados a derechos escritos de uso publico.
@@ -51,6 +53,12 @@ Competidores observados al `2026-05-24`:
 
 La propuesta no es declarar que una plataforma existente esta equivocada. Es
 ofrecer una investigacion publica, replicable y verticalizada:
+
+La diferencia transversal nueva es `Evidence Passport Commons`: en vez de
+competir primero por mas senales, el proyecto publica fichas de procedencia y
+derechos, e invita a la comunidad global a enriquecer cadencia y limites de
+afirmacion. La version `0.1` no declara completo ese enriquecimiento; expone
+el registro de fuente y derechos ya controlado.
 
 > Cuando una firma opina sobre bancos y financials de EE. UU., ?su target fue
 > preciso y aporto valor frente al sector?

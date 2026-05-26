@@ -16,6 +16,7 @@ from fastapi.responses import HTMLResponse, Response
 
 from . import METHODOLOGY_VERSION, __version__
 from .dashboard_web import (
+    evidence_commons_html,
     etf_evidence_center_html,
     financials_evidence_center_html,
     financials_scorecard_html,
@@ -250,6 +251,12 @@ def create_app(
         return global_contributors_html(lang)
 
     @application.get(
+        "/dashboard/commons", response_class=HTMLResponse, include_in_schema=False
+    )
+    def evidence_commons() -> str:
+        return evidence_commons_html()
+
+    @application.get(
         "/dashboard/global/{monitor}", response_class=HTMLResponse, include_in_schema=False
     )
     def global_monitor_report(monitor: str) -> str:
@@ -376,6 +383,25 @@ def create_app(
             "deployment_states": sorted({item.deployment_state for item in all_providers}),
             "data_classes": sorted({item.data_class for item in all_providers}),
             "sources": [_public_source(item) for item in providers],
+        }
+
+    @application.get("/api/v1/commons/passports")
+    def evidence_passports() -> dict[str, object]:
+        providers = _read_sources(registry)
+        states = Counter(item.deployment_state for item in providers)
+        return {
+            "passport_version": "0.1",
+            "protocol_status": "source_and_rights_published_cadence_enrichment_open",
+            "reviewed_as_of": max(item.reviewed_on for item in providers).isoformat()
+            if providers
+            else None,
+            "passport_count": len(providers),
+            "states": dict(states),
+            "publication_boundary": (
+                "A passport documents available evidence and output rights; "
+                "it is not an investment recommendation or listing confirmation."
+            ),
+            "passports": [_evidence_passport(item) for item in providers],
         }
 
     @application.get("/api/v1/readiness/scorecard")
@@ -685,6 +711,31 @@ def _public_source(item: SourceProvider) -> dict[str, object]:
         "reference_url": item.reference_url,
         "reviewed_on": item.reviewed_on.isoformat(),
         "review_note": item.review_note,
+    }
+
+
+def _evidence_passport(item: SourceProvider) -> dict[str, object]:
+    return {
+        "passport_id": item.provider_id,
+        "source": {
+            "name": item.provider_name,
+            "official_url": item.official_url,
+            "reference_url": item.reference_url,
+        },
+        "evidence": {
+            "data_class": item.data_class,
+            "access_model": item.access_model,
+            "integration_status": item.integration_status,
+        },
+        "rights": {
+            "license_status": item.license_status,
+            "publication_policy": item.publication_policy,
+            "deployment_state": item.deployment_state,
+        },
+        "review": {
+            "reviewed_on": item.reviewed_on.isoformat(),
+            "note": item.review_note,
+        },
     }
 
 

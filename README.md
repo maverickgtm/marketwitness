@@ -6,6 +6,21 @@ Plataforma abierta para evaluar, con datos verificables, la precision historica 
 la utilidad economica de los `price targets` publicados por analistas financieros
 en bancos y companias financieras cotizadas en Estados Unidos.
 
+## Evidence Passport Commons: La Diferencia Abierta
+
+TargetAudit no comienza vendiendo una senal: comienza publicando el contrato
+de evidencia que permite auditarla. `Evidence Passport Commons` publica en su
+version `0.1` fichas legibles por personas y por API con origen oficial,
+derechos de output y estado de revision. La comunidad podra enriquecer la
+capa siguiente de cadencia y limites de afirmacion mediante passports
+propuestos. La interfaz vive en `/dashboard/commons` y la API en
+`/api/v1/commons/passports`.
+
+Buscamos contributors globales para proponer passports y conectores oficiales
+de sus mercados. Ver
+[Evidence Passport Commons](docs/evidence-passport-commons.md) y
+[Como contribuir](CONTRIBUTING.md).
+
 ## Open Edition: Funcional Sin Costos De Datos
 
 La edicion principal para GitHub no requiere suscripciones pagadas ni claves
@@ -996,6 +1011,7 @@ Endpoints iniciales:
 | `/dashboard/document-checks` | Verificaciones documentales regulatorias generadas |
 | `/dashboard/global-listings` | Mapa navegable de cobertura y monitores oficiales internacionales |
 | `/dashboard/contribute?lang=en` | Portal multilingue para proponer fuentes globales y permisos de targets con evidencia verificable |
+| `/dashboard/commons` | Evidence Passport Commons: registro visual de origen, derechos y limites de cada fuente |
 | `/dashboard/global-alerts` | Cola comparada de cambios en señales de listings y documentos internacionales |
 | `/dashboard/issuer-confirmations` | Hitos de cotización verificados desde comunicados oficiales revisados |
 | `/dashboard/global/{monitor}` | Monitor permitido: `hkex`, `lse-upcoming`, `asx`, `tsx`, `jpx`, `edinet`, `cvm`, `esma`, `opendart` o `sgx` |

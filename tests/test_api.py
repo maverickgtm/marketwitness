@@ -278,6 +278,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/reports", page.text)
         self.assertIn("/dashboard/policy", page.text)
         self.assertIn("/dashboard/market-context", page.text)
+        self.assertIn("/dashboard/commons", page.text)
         self.assertIn("Market Pulse", page.text)
         self.assertIn("TradingView display", page.text)
         self.assertIn("embed-widget-ticker-tape.js", page.text)
@@ -314,6 +315,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/issuer-confirmations", page.text)
         self.assertIn("/dashboard/contribute?lang=en", page.text)
         self.assertIn("Global Contributors", page.text)
+        self.assertIn("/dashboard/commons", page.text)
+        self.assertIn("Evidence Passport Commons", page.text)
         self.assertIn("/dashboard/audit/target-import", page.text)
         self.assertIn("/dashboard/audit/adjusted-prices", page.text)
         self.assertIn("/dashboard/audit/corporate-actions", page.text)
@@ -366,6 +369,7 @@ class ApiTests(unittest.TestCase):
                 self.assertEqual(page.status_code, 200)
                 self.assertIn(marker, page.text)
                 self.assertIn("/dashboard/global-listings", page.text)
+                self.assertIn("/dashboard/commons", page.text)
                 self.assertIn("Data Source Proposal", page.text)
 
         fallback = self.client.get("/dashboard/contribute?lang=xx")
@@ -638,6 +642,29 @@ class ApiTests(unittest.TestCase):
             "mas-opera-reference",
             {item["provider_id"] for item in sources.json()["sources"]},
         )
+
+    def test_serves_evidence_passport_commons_and_machine_readable_registry(self) -> None:
+        page = self.client.get("/dashboard/commons")
+        passports = self.client.get("/api/v1/commons/passports")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Every signal needs", page.text)
+        self.assertIn("Passport Protocol", page.text)
+        self.assertIn("/api/v1/commons/passports", page.text)
+        self.assertIn("/dashboard/contribute?lang=en", page.text)
+        self.assertEqual(passports.status_code, 200)
+        self.assertEqual(passports.json()["passport_version"], "0.1")
+        self.assertEqual(
+            passports.json()["protocol_status"],
+            "source_and_rights_published_cadence_enrichment_open",
+        )
+        self.assertEqual(passports.json()["passport_count"], 35)
+        self.assertEqual(passports.json()["states"]["blocked"], 5)
+        passport = passports.json()["passports"][0]
+        self.assertIn("source", passport)
+        self.assertIn("rights", passport)
+        self.assertIn("publication_policy", passport["rights"])
+        self.assertIn("not an investment recommendation", passports.json()["publication_boundary"])
 
     def test_serves_public_scorecard_readiness_without_treating_demo_as_production(self) -> None:
         readiness = self.client.get("/api/v1/readiness/scorecard")

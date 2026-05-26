@@ -187,6 +187,9 @@ verificables de cotizaciones tecnologicas/estrategicas.
   inventan datos de mercado.
 - [x] Revision de competencia y sostenibilidad frente a `OpenBB`, `Stocknear`,
   `AnaChart` y herramientas SEC para definir un lanzamiento gratuito creible.
+- [x] `Evidence Passport Commons` v0.1 con pagina publica, API de origen y
+  derechos, e invitacion a contributors para ampliar cadencia y limites de
+  afirmacion de forma verificable.
 - [x] Politica publica visible de no-recomendacion, capas de datos y fuentes
   bloqueadas en `/dashboard/policy`, declarada como control interno.
 - [ ] Revision legal externa del producto y de sus disclaimers antes de
