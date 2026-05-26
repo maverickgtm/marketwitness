@@ -1,30 +1,30 @@
-# Seguridad
+# Security
 
-## Alcance
+## Scope
 
-TargetAudit procesa archivos de evidencia, realiza solicitudes opcionales a
-fuentes publicas y expone una API/dashboard local de solo lectura. Reporta de
-forma privada problemas que puedan permitir:
+TargetAudit processes evidence files, makes optional requests to public
+sources, and exposes a local read-only API/dashboard. Please privately report
+issues that could allow:
 
-- ejecucion de codigo o escritura de archivos al importar evidencia;
-- fuga de credenciales, datos en `data/private/` o contactos de `User-Agent`;
-- elusion de controles de licencias, procedencia o bloqueo de publicacion;
-- solicitudes inesperadas a destinos externos desde un conector.
+- code execution or file writes when importing evidence;
+- disclosure of credentials, data under `data/private/`, or `User-Agent`
+  contact details;
+- bypassing license, provenance, or publication-block controls;
+- unexpected external requests from a connector.
 
-## Como Reportar
+## Reporting
 
-Usa un reporte privado de vulnerabilidad en la pestana `Security` del
-repositorio GitHub. No publiques en un issue claves, datos privados ni una
-prueba de concepto explotable. El mantenedor debe habilitar `Private
-vulnerability reporting` al publicar el repositorio.
+Use a private vulnerability report from the repository's GitHub `Security`
+tab. Do not publish keys, private data, or an exploitable proof of concept in
+an issue. The maintainer must enable `Private vulnerability reporting` when
+publishing the repository.
 
-Incluye version o commit, componente afectado, impacto, pasos minimos de
-reproduccion y una correccion sugerida si existe.
+Include the version or commit, affected component, impact, minimal
+reproduction steps, and a suggested fix when available.
 
-## Datos Y Credenciales
+## Data And Credentials
 
-No subas claves API, archivos descargados de proveedores, datasets sin permiso
-de redistribucion ni correos personales usados para identificar solicitudes
-SEC. El proyecto reserva `data/private/`, `data/raw/`, `.env` y `build/` para
-uso local.
-
+Do not commit API keys, downloaded provider files, datasets without
+redistribution permission, or personal email addresses used to identify SEC
+requests. The project reserves `data/private/`, `data/raw/`, `.env`, and
+`build/` for local use.

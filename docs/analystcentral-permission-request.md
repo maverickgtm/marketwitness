@@ -1,16 +1,15 @@
-# Solicitud De Permiso: AnalystCentral
+# Permission Request: AnalystCentral
 
-## Proposito
+## Purpose
 
-`AnalystCentral` es el unico candidato gratuito localizado en el barrido final
-que anuncia historial de ratings y price targets estadounidenses con la
-profundidad aproximada que necesita TargetAudit. Sus terminos actuales no
-permiten integrarlo ni producir rankings publicos sin consentimiento escrito.
+`AnalystCentral` is the only no-cost candidate located in the final scan that
+advertises U.S. historical ratings and price targets at approximately the
+depth TargetAudit needs. Its current terms do not permit integration or public
+derived rankings without written consent.
 
-Este borrador permite solicitar una autorizacion limitada, transparente y sin
-presuponer que sera concedida.
+This draft requests narrow permission without assuming it will be granted.
 
-## Mensaje Sugerido
+## Suggested Message
 
 Subject: Permission request for attributed, derived research using AnalystCentral data
 
@@ -23,48 +22,47 @@ republish third-party data without permission.
 
 Your site describes a free historical analyst ratings and price-target dataset
 covering Wall Street securities. I read your Terms of Service and understand
-that personal access does not authorize data mining, republication or derived
-public outputs without your prior written consent.
+that personal access does not authorize data mining, republication, or derived
+public outputs without prior written consent.
 
-Would you consider granting a limited permission for TargetAudit to:
+Would you consider granting limited permission for TargetAudit to:
 
 1. receive or download an agreed historical sample containing dated analyst
    ratings and price targets;
 2. process the sample locally using an open, documented evaluation method;
 3. publish attributed aggregate results only, such as sample size, hit rate,
-   confidence interval and methodology notes, without redistributing your raw
+   confidence interval, and methodology notes, without redistributing the raw
    dataset; and
-4. include an attribution and link to AnalystCentral in every public result?
+4. include attribution and a link to AnalystCentral in every public result?
 
 If GitHub Actions processing or a small illustrative fixture is not acceptable,
 we can keep the raw-data workflow private and publish only code plus synthetic
-demonstration data. We would enable any real-data output only after receiving
-written terms that state what collection, retention and derived display are
-permitted.
+demonstration data. We would enable real-data output only after receiving
+written terms describing permitted collection, retention, and derived display.
 
-Please let us know whether this use is possible, any attribution requirements,
-coverage limits, prohibited outputs or commercial terms that would apply.
+Please let us know whether this use is possible, along with any attribution
+requirements, coverage limits, prohibited outputs, or commercial terms.
 
 Thank you,
 
-Mario Antillon
-TargetAudit project
-[correo monitoreado del proyecto, completar solo al enviar]
+Mario Antillon<br>
+TargetAudit project<br>
+[monitored project email, complete only when sending]
 
-La copia versionada del borrador omite deliberadamente el correo real. Agrega
-el contacto fuera del repositorio al momento de enviar la solicitud.
+The versioned draft deliberately omits a real email address. Add contact
+information outside the repository when sending the request.
 
-## Evidencia A Conservar Si Responden
+## Evidence To Retain If They Reply
 
-- Correo completo o documento de permiso con fecha y remitente identificable.
-- Campos, periodo y simbolos autorizados.
-- Si se permite almacenamiento local y por cuanto tiempo.
-- Si se permiten outputs agregados publicos y atribucion exigida.
-- Si se permite ejecutar procesamiento automatizado.
-- Si se permite compartir una muestra o solamente resultados derivados.
+- Complete email or permission document with date and identifiable sender.
+- Authorized fields, time period, and symbols.
+- Whether local storage is permitted and for how long.
+- Whether public aggregate output is permitted and what attribution is needed.
+- Whether automated processing is permitted.
+- Whether a sample may be shared or only derived results.
 
-## Regla De Activacion
+## Activation Rule
 
-No se incorporara una fila real de AnalystCentral al dashboard publico hasta
-que la autorizacion escrita sea revisada y registrada en la cola de
-aprobaciones de proveedores de TargetAudit.
+No real AnalystCentral row may enter the public dashboard until written
+authorization is reviewed and registered in TargetAudit's provider-approval
+queue.

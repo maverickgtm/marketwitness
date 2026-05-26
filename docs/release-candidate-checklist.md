@@ -1,66 +1,71 @@
 # GitHub Release Candidate Checklist
 
-## Objetivo Del Candidato
+## Candidate Objective
 
-Publicar `TargetAudit Open Edition v0.1.0-rc.1` como proyecto abierto,
-reproducible y util sin pagos obligatorios. El candidato demuestra auditoria
-de evidencia, monitores regulatorios y un dashboard navegable; no promete
-rankings reales de analistas ni recomendaciones de inversion.
+Publish `TargetAudit Open Edition v0.1.0-rc.1` as an open, reproducible,
+useful project without mandatory payments. This candidate demonstrates
+evidence auditing, regulatory monitors, and a navigable dashboard; it does not
+promise real analyst rankings or investment recommendations.
 
-## Listo Para El Candidato
+`MarketWitness` is recorded only as a possible future brand. The release
+candidate remains `TargetAudit`; no repository, package, CLI, API, or
+dashboard identifier should be renamed for this release.
 
-- [x] Codigo bajo licencia MIT.
-- [x] `DISCLAIMER.md`, politica de uso publico y limites de fuentes visibles.
-- [x] `CONTRIBUTING.md`, `SECURITY.md`, plantillas de issues y pull requests.
-- [x] Tests automatizados y workflow de GitHub Actions para Python 3.9 y 3.12.
-- [x] Bundle Open Edition reproducible y wheel instalable sin datos pagados.
-- [x] Dashboard y API de solo lectura con fuentes bloqueadas identificables.
-- [x] Registro de 49 fuentes con clasificacion de permisos y evidencia.
-- [x] Ruta gratuita oficial para futuros eventos presidenciales mediante
-  `White House News RSS` y `Presidential Actions RSS`.
+## Ready For The Candidate
 
-## Antes De Hacer Publico El Repositorio
+- [x] Code licensed under MIT.
+- [x] `DISCLAIMER.md`, public-use policy, and visible source boundaries.
+- [x] `CONTRIBUTING.md`, `SECURITY.md`, issue templates, and pull request
+  template.
+- [x] Automated tests and GitHub Actions workflow for Python 3.9 and 3.12.
+- [x] Reproducible Open Edition bundle and installable wheel without paid data.
+- [x] Read-only dashboard and API with identifiable blocked sources.
+- [x] Registry of 49 sources with permission and evidence classifications.
+- [x] Official free path for future presidential events through
+  `White House News RSS` and `Presidential Actions RSS`.
 
-- [ ] Ejecutar `make verify` desde un clon limpio y conservar el resultado de
-  CI verde en el commit candidato.
-- [x] Publicar tres capturas seleccionadas en `docs/assets/` y usarlas
-  en el `README`: IPO Watch, Global Listings y Policy Signals.
-- [ ] Crear el repositorio GitHub con descripcion, topics y enlace correcto
-  antes de añadir badges permanentes.
-- [ ] Habilitar `Private vulnerability reporting` en la pestana `Security`.
-- [ ] Ejecutar una revision final de secretos y confirmar que correos, API
-  keys, `data/private/`, `data/raw/` y `build/` no estan versionados.
-- [ ] Publicar desde una historia limpia o reescrita: el borrador privado de
-  permiso incluyo anteriormente un correo personal en commits locales.
-- [ ] Crear tag y notas `v0.1.0-rc.1` unicamente despues de que Actions pase
-  desde el repositorio publico.
+## Before Publishing The Repository
 
-## No Bloquea La Open Edition
+- [ ] Run `make verify` from a clean clone and retain a green CI result on the
+  candidate commit.
+- [x] Publish three selected screenshots in `docs/assets/` and use them in
+  `README.md`: IPO Watch, Global Listings, and Policy Signals.
+- [ ] Create the GitHub repository with description, topics, and the correct
+  link before adding permanent badges.
+- [ ] Enable `Private vulnerability reporting` under the GitHub `Security` tab.
+- [ ] Perform a final secret scan and confirm that email addresses, API keys,
+  `data/private/`, `data/raw/`, and `build/` are not versioned.
+- [ ] Publish from a clean or rewritten history: a private permission draft
+  previously included a personal email address in local commits.
+- [ ] Create the `v0.1.0-rc.1` tag and release notes only after Actions passes
+  from the public repository.
 
-- Un historial real publicable de price targets de firmas como Roth MKM,
-  KBW, UBS, Barclays o Citi. Es una extension futura sujeta a licencia.
-- Series historicas propias de Cboe/ICE para episodios VIX/VVIX/MOVE.
-- Activacion de datos RWA, holdings diarios de emisores o fuentes comerciales.
-- Collector automatico de White House RSS. La fuente ya esta aprobada como
-  candidata; el collector es una mejora posterior al candidato inicial.
+## Not Blocking The Open Edition
 
-## Bloquea Cualquier Afirmacion De Datos Reales
+- A publishable real history of price targets from firms such as Roth MKM,
+  KBW, UBS, Barclays, or Citi. This is a future licensed extension.
+- Proprietary Cboe/ICE historical series for VIX/VVIX/MOVE episodes.
+- Activation of RWA data, issuer daily holdings, or commercial sources.
+- An automatic White House RSS collector. The source is already approved as a
+  candidate; the collector is a post-candidate improvement.
 
-- Publicar rankings reales de analistas sin derechos de output y evidencia por
-  observacion.
-- Automatizar Truth Social, fuentes marcadas `restricted_no_collection` o
-  enlaces de terceros de White House Wire.
-- Presentar estudios de reaccion, volatilidad o listings como consejo de
-  inversion o causalidad comprobada.
+## Blocks Any Real-Data Claim
 
-## Comandos De Verificacion
+- Publishing real analyst rankings without output rights and per-observation
+  evidence.
+- Automating Truth Social, sources marked `restricted_no_collection`, or
+  third-party White House Wire links.
+- Presenting reaction, volatility, or listing studies as investment advice or
+  proven causality.
+
+## Verification Commands
 
 ```bash
 python3 -m pip install -e ".[application]"
 make verify
 ```
 
-Para revisar el dashboard construido:
+To review the built dashboard:
 
 ```bash
 export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
@@ -71,6 +76,7 @@ export TARGETAUDIT_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
 python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 ```
 
-Abrir `http://127.0.0.1:8000/` y recorrer `/dashboard/ipo`,
+Open `http://127.0.0.1:8000/` and review `/dashboard/ipo`,
 `/dashboard/global-listings`, `/dashboard/intelligence`,
-`/dashboard/volatility`, `/dashboard/policy-signals` y `/dashboard/policy`.
+`/dashboard/volatility`, `/dashboard/policy-signals`, and
+`/dashboard/policy`.

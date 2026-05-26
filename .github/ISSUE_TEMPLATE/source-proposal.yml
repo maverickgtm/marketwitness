@@ -1,37 +1,37 @@
-name: Propuesta de fuente de datos
-description: Evaluar una fuente nueva sin asumir derechos de uso o publicacion.
-title: "[Fuente] "
+name: Data source proposal
+description: Evaluate a new source without assuming usage or publication rights.
+title: "[Source] "
 labels: ["data-source-review"]
 body:
   - type: markdown
     attributes:
       value: |
-        TargetAudit no activa una fuente real hasta documentar su Evidence Passport: procedencia, costo, cadencia, limite de afirmacion y derechos de output publico.
+        TargetAudit does not activate a real-data source until its Evidence Passport documents provenance, cost, cadence, claim boundary, and public-output rights.
   - type: input
     id: provider
     attributes:
-      label: Proveedor y producto
-      placeholder: SEC EDGAR, Ondo Global Markets, proveedor autorizado de targets...
+      label: Provider and product
+      placeholder: SEC EDGAR, Ondo Global Markets, authorized target-price provider...
     validations:
       required: true
   - type: input
     id: official_url
     attributes:
-      label: URL oficial de datos o documentacion
+      label: Official data or documentation URL
       placeholder: https://...
     validations:
       required: true
   - type: input
     id: terms_url
     attributes:
-      label: URL de terminos, licencia o reglas de acceso
+      label: Terms, license, or access-rules URL
       placeholder: https://...
     validations:
       required: true
   - type: dropdown
     id: data_class
     attributes:
-      label: Clase de datos
+      label: Data class
       options:
         - Analyst targets / ratings
         - Adjusted prices
@@ -39,51 +39,51 @@ body:
         - ETF holdings
         - Tokenized equities / RWA
         - News or market context
-        - Otra
+        - Other
     validations:
       required: true
   - type: textarea
     id: coverage
     attributes:
-      label: Cobertura, campos y frecuencia
-      description: Describe universo, historico disponible, campos y limites tecnicos.
+      label: Coverage, fields, and frequency
+      description: Describe the universe, available history, fields, and technical limits.
     validations:
       required: true
   - type: dropdown
     id: cost
     attributes:
-      label: Costo conocido
+      label: Known cost
       options:
-        - Gratuito sin clave
-        - Gratuito con clave o registro
-        - Freemium con limites
-        - Pago
-        - Desconocido
+        - Free without key
+        - Free with key or registration
+        - Freemium with limits
+        - Paid
+        - Unknown
     validations:
       required: true
   - type: textarea
     id: rights
     attributes:
-      label: Derechos de recoleccion y publicacion
-      description: Cita o resume la regla que autoriza o limita automatizacion, almacenamiento, display y output derivado.
+      label: Collection and publication rights
+      description: Cite or summarize the rule that permits or limits automation, storage, display, and derived output.
     validations:
       required: true
   - type: textarea
     id: claim_boundary
     attributes:
-      label: Regla de confirmacion y limite de afirmacion
-      description: Indica que hecho puede respaldar la fuente y que NO puede afirmarse solo con esta evidencia.
-      placeholder: Un prospecto publicado abre revision; no confirma admision ni primera cotizacion.
+      label: Confirmation rule and claim boundary
+      description: State what fact the source can support and what must NOT be claimed from this evidence alone.
+      placeholder: A published prospectus opens a review; it does not confirm admission or first trading.
     validations:
       required: true
   - type: checkboxes
     id: acknowledgements
     attributes:
-      label: Verificaciones
+      label: Confirmations
       options:
-        - label: No adjunto credenciales ni datos privados en este issue.
+        - label: I am not attaching credentials or private data to this issue.
           required: true
-        - label: Entiendo que una URL publica no equivale a permiso de republicacion.
+        - label: I understand that a public URL does not equal republication permission.
           required: true
-        - label: Acepto que el passport puede publicarse antes de implementar un conector.
+        - label: I accept that a passport may be published before a connector is implemented.
           required: true

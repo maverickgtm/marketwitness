@@ -1,45 +1,45 @@
-# Aviso Legal Y De Investigacion
+# Legal And Research Disclaimer
 
-TargetAudit es software abierto de investigacion y auditoria de evidencia de
-mercados. No es un asesor de inversiones, broker, proveedor de senales ni una
-recomendacion de comprar, vender o mantener ningun activo.
+TargetAudit is open-source software for market-evidence research and auditing.
+It is not an investment adviser, broker, signal provider, or recommendation to
+buy, sell, or hold any asset.
 
-## Alcance De La Open Edition
+## Open Edition Scope
 
-La edicion publica gratuita combina:
+The free public edition combines:
 
-- datos sinteticos redistribuibles para demostrar el scorecard de analistas;
-- documentos o feeds publicos cuando su uso se ha clasificado y documentado;
-- visualizaciones externas atribuidas que no se convierten automaticamente en
-  datasets propios;
-- conectores candidatos que permanecen bloqueados hasta verificar derechos.
+- redistributable synthetic data to demonstrate the analyst scorecard;
+- public documents or feeds when their use has been classified and documented;
+- attributed external visualizations that are not automatically converted into
+  proprietary datasets;
+- candidate connectors that remain blocked until rights are verified.
 
-Los porcentajes, rankings o reacciones que utilicen fixtures del repositorio
-son demostraciones del metodo, no resultados reales del mercado.
+Percentages, rankings, or market reactions calculated from repository fixtures
+demonstrate the method; they are not real market results.
 
-## Datos, Licencias Y Terceros
+## Data, Licenses, And Third Parties
 
-La licencia MIT cubre el codigo original de TargetAudit, no concede derechos
-sobre datos, marcas, graficos o contenido de terceros. Cada usuario debe
-cumplir los terminos de la fuente que conecte o aporte.
+The MIT license covers TargetAudit's original code. It grants no rights over
+third-party data, brands, charts, or content. Each user must comply with the
+terms of any source they connect or contribute.
 
-Una pagina accesible publicamente no significa que permita scraping,
-almacenamiento, redistribucion ni resultados derivados. Las fuentes marcadas
-como bloqueadas, manuales o pendientes de licencia no deben activarse en un
-producto publico sin autorizacion documentada.
+A publicly accessible page does not necessarily permit scraping, storage,
+redistribution, or derived results. Sources marked blocked, manual, or pending
+license approval must not be activated in a public product without documented
+authorization.
 
-## Comunicaciones Publicas Y Reaccion De Mercado
+## Public Communications And Market Reaction
 
-El `Policy Signal Impact Lab` puede estudiar eventos oficiales provenientes
-de feeds de White House cuando se implemente el collector correspondiente.
-No recolecta automaticamente publicaciones de Truth Social y no afirma que
-una comunicacion cause un movimiento de precio.
+The `Policy Signal Impact Lab` can study official events collected from White
+House feeds when its corresponding collector is enabled. It does not
+automatically collect Truth Social posts, and it does not claim that a public
+statement caused a price movement.
 
-## Responsabilidad Del Usuario
+## User Responsibility
 
-Las decisiones financieras requieren investigacion independiente y, cuando
-corresponda, asesoria profesional autorizada. El software y sus reportes se
-proporcionan sin garantias, conforme a la licencia MIT.
+Financial decisions require independent research and, when appropriate,
+licensed professional advice. This software and its reports are provided
+without warranty under the MIT license.
 
-Para controles detallados de publicacion, consulta
-[Politica De Uso Publico Y Derechos De Datos](docs/public-use-policy.md).
+For detailed publication controls, read the
+[Public Use And Data Rights Policy](docs/public-use-policy.md).

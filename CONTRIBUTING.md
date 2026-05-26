@@ -1,61 +1,58 @@
-# Contribuir
+# Contributing
 
-Gracias por ayudar a que TargetAudit sea verificable y util.
+Thank you for helping make TargetAudit verifiable and useful.
 
-## Reglas Basicas
+## Ground Rules
 
-- No agregues datasets de terceros sin documentar licencia y permiso de
-  redistribucion.
-- Toda nueva metrica debe documentarse en `docs/methodology.md` e incluir
-  pruebas.
-- No presentes una firma como "mejor" sin mostrar muestra, periodo y
+- Do not add third-party datasets without documenting the license and
+  redistribution permission.
+- Document every new metric in `docs/methodology.md` and include tests.
+- Do not present a firm as "best" without disclosing the sample, period, and
   benchmark.
-- El vertical publico inicial es `U.S. Financials`; propuestas para otros
-  sectores deben explicar fuente, universo y benchmark.
-- Mantener fuentes originales o identificadores auditables para toda
-  observacion real.
+- The initial public vertical is `U.S. Financials`; proposals for other
+  sectors must explain their source, universe, and benchmark.
+- Preserve original sources or auditable identifiers for every real
+  observation.
 
-## Desarrollo
+## Development
 
 ```bash
 make verify
 ```
 
-Para proponer una fuente de datos, abre un issue indicando cobertura historica,
-campos, limites de uso, costo y condiciones de redistribucion. GitHub ofrece
-la plantilla `Propuesta de fuente de datos` para registrar esas pruebas de
-forma uniforme.
+To propose a data source, open an issue describing historical coverage, fields,
+usage limits, cost, and redistribution conditions. Use the GitHub
+`Data source proposal` template to record this evidence consistently.
 
-La edicion principal debe conservar al menos una ruta funcional sin gastos:
-se prefieren fuentes regulatorias publicas, fixtures redistribuibles y
-contribuciones de datos cuyos derechos estén documentados. Un conector
-comercial puede añadirse como extensión opcional, no como requisito de uso.
+The main edition must preserve at least one no-cost functional path: public
+regulatory sources, redistributable fixtures, and contributed data with
+documented rights are preferred. A commercial connector may be added as an
+optional extension, never as a requirement for basic use.
 
 ## Evidence Passport Commons
 
-TargetAudit busca contributors globales para ampliar su red de evidencia
-oficial. Antes de proponer codigo para una fuente nueva, prepara un
-`Evidence Passport` mediante la plantilla `Propuesta de fuente de datos`.
-Debe identificar:
+TargetAudit welcomes global contributors who can expand its network of
+official evidence sources. Before proposing code for a new source, prepare an
+`Evidence Passport` through the `Data source proposal` template. It must
+identify:
 
-- fuente oficial y clase de evidencia;
-- terminos, licencia o permiso de output derivado;
-- frecuencia o cadencia de actualizacion;
-- regla de confirmacion y la afirmacion que la fuente no demuestra;
-- costo, clave o requisito de registro.
+- the official source and evidence class;
+- terms, license, or permission for public derived output;
+- update frequency or publication cadence;
+- the confirmation rule and the claim the source does not prove;
+- any cost, key, or registration requirement.
 
-Los passports aceptados pueden incorporarse al registro publico y a
-`/api/v1/commons/passports`. Un conector se implementa despues, cuando su
-uso publico es defendible. Esta separacion permite contribuir aun sin pagar
-datasets ni desarrollar Python.
+Accepted passports can be incorporated into the public registry and
+`/api/v1/commons/passports`. A connector is implemented only once its public
+use is defensible. This separation lets people contribute without purchasing
+datasets or writing Python.
 
-Antes de proponer una salida publica o un collector nuevo, revisa
-[Politica De Uso Publico Y Derechos De Datos](docs/public-use-policy.md): una
-fuente marcada como bloqueada o manual no debe automatizarse desde una
-contribucion.
+Before proposing public output or a new collector, read the
+[Public Use And Data Rights Policy](docs/public-use-policy.md): a source
+marked blocked or manual must not be automated through a contribution.
 
-## Seguridad Y Privacidad
+## Security And Privacy
 
-No incluyas claves API, `.env`, descargas en `data/raw/`, evidencia privada ni
-el correo usado en solicitudes SEC. Los problemas de seguridad se reportan de
-forma privada siguiendo [SECURITY.md](SECURITY.md).
+Do not include API keys, `.env` files, downloads in `data/raw/`, private
+evidence, or the email used in SEC request headers. Report security issues
+privately according to [SECURITY.md](SECURITY.md).

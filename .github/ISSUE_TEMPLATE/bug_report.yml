@@ -1,43 +1,42 @@
-name: Reporte de error
-description: Informar un fallo reproducible sin incluir secretos o datos licenciados.
+name: Bug report
+description: Report a reproducible issue without including secrets or licensed data.
 title: "[Bug] "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Para vulnerabilidades o fugas de datos, usa el canal privado descrito en SECURITY.md.
+        For vulnerabilities or data exposure, use the private channel described in SECURITY.md.
   - type: textarea
     id: problem
     attributes:
-      label: Que ocurrio
-      description: Incluye el resultado esperado y el observado.
+      label: What happened
+      description: Include the expected and observed outcome.
     validations:
       required: true
   - type: textarea
     id: reproduce
     attributes:
-      label: Pasos para reproducir
-      placeholder: Comandos, ruta del dashboard o fixture sintetico usado.
+      label: Steps to reproduce
+      placeholder: Commands, dashboard route, or synthetic fixture used.
     validations:
       required: true
   - type: input
     id: version
     attributes:
-      label: Commit o version
-      placeholder: v0.1.0 o hash de commit
+      label: Commit or version
+      placeholder: v0.1.0 or commit hash
     validations:
       required: true
   - type: textarea
     id: logs
     attributes:
-      label: Salida relevante sin secretos
+      label: Relevant output without secrets
       render: shell
   - type: checkboxes
     id: hygiene
     attributes:
-      label: Proteccion de datos
+      label: Data protection
       options:
-        - label: Retire claves API, correos personales y datos no redistribuibles del reporte.
+        - label: I removed API keys, personal email addresses, and non-redistributable data from this report.
           required: true
-

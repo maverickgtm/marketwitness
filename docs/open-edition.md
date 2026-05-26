@@ -1,236 +1,78 @@
 # TargetAudit Open Edition
 
-La edicion principal publicada en GitHub debe poder ejecutarse sin comprar
-datos ni contratar APIs comerciales.
+The GitHub edition must run without purchasing data or subscribing to
+commercial APIs.
 
-## Promesa Del Producto
+## Product Promise
 
-`Open Edition` incluye tres niveles claramente separados:
-
-| Modo | Datos | Costo De Datos | Uso |
+| Mode | Data | Data Cost | Purpose |
 |---|---|---:|---|
-| Offline showcase | Fixtures creados por el proyecto | Ninguno | Probar Financials Scorecard, RWA Watch Sandbox, auditoria y dashboard completo |
-| Public monitors | SEC EDGAR, SEC N-PORT y FCA NSM bajo sus reglas publicas | Ninguno | Seguir filings IPO y evidencia regulatoria ETF/documental |
-| Authorized extension | Archivos aportados por el usuario con derechos documentados | No requerido por TargetAudit | Ejecutar rankings propios sin que el repositorio distribuya datos restringidos |
+| Offline showcase | Project-created fixtures | None | Exercise Financials, RWA, audits, reports, API, and dashboard |
+| Public monitors | Public regulatory/source workflows under recorded rules | None | Follow listing and periodic holdings evidence |
+| Authorized extension | Files supplied by a user with documented rights | Not required by TargetAudit | Run private analysis without redistributing restricted data |
 
-El repositorio no promete un ranking real de analistas construido con un
-dataset comercial. Ese módulo continúa disponible como motor y formato de
-investigación, pero la utilidad de la edición pública no depende de Benzinga,
-Alpha Vantage, Nasdaq, NYSE ni S&P DJI.
+The repository does not promise a real analyst ranking built from commercial
+data. Optional routes are disclosed at `/dashboard/extensions`, while
+`/dashboard/policy` explains collection and publication boundaries.
 
-La ruta `/dashboard/extensions` documenta proveedores opcionales que un
-usuario podria contratar por cuenta propia. Incluye la expansion individual
-Massive / Benzinga publicada a `USD 99/month`, sin presentarla como permiso
-para publicar rankings compartidos.
-Tambien registra MarketBeat como piloto privado potencial de bajo costo y
-WallStreetZen como referencia metodologica; ninguno habilita un ranking
-publico real ni es requisito de esta edicion.
-Finnhub y Financial Modeling Prep quedan registrados como futuras rutas
-programaticas, pero sus planes gratuitos no conceden por si solos derechos de
-mostrar o redistribuir datos en un producto publico.
+TradingView widgets provide attributed external market context. They are not
+stored, exported, or used as scoring evidence.
 
-La ruta `/dashboard/policy` presenta la politica de uso publico: explica que
-los monitores son evidencia para investigacion y no recomendaciones de
-inversion, muestra las fuentes bloqueadas desde el registro validado y declara
-que la revision legal externa continua pendiente.
+## Included Capabilities
 
-La portada integra una franja `Ticker Tape` y `Market Overview` oficiales de
-TradingView como pulso visual, y `/dashboard/market-context` amplía ese
-contexto con el grafico atribuido de `XLF` y una comparación de Financials y
-benchmarks. Los componentes cargan directamente desde TradingView; TargetAudit
-no almacena, exporta ni usa esos datos en el ranking, y los widgets no
-reemplazan una licencia de historial de targets. Ver
-[Direccion Visual Del Dashboard](dashboard-visual-direction.md).
+| Capability | Included Workflow | Critical Boundary |
+|---|---|---|
+| Financials Scorecard Sandbox | Synthetic target evaluation, exclusions, benchmarks, quality, and release gating | No real-firm performance claim |
+| U.S. IPO Filing Watch | SEC-shaped discovery, triage, review, and watchlist workflow | Live SEC calls require identified `User-Agent`; a filing is not an investment signal |
+| Global Listings Watch | Official-source monitor design and implemented evidence paths for multiple jurisdictions | Jurisdiction-specific confirmation rules remain separate |
+| ETF Regulatory Holdings | Synthetic holding differences plus SEC N-PORT periodic workflow | Not daily or real-time manager trading |
+| Public Document Checks | FCA NSM corroboration flow | Documentation does not automatically prove admission/trading |
+| RWA Watch Sandbox | Synthetic token/reference observations | No real xStocks, Ondo, or venue collection |
+| Market Context | TradingView attributed display | External visual context only |
+| Market Intelligence | Planned cross-asset sources and operating boundaries | No new live values or position recommendation |
+| Volatility Intelligence Lab | VIX display and episode-design API | Cboe/ICE derived output pending rights |
+| Policy Signal Impact Lab | Policy-event methodology and official RSS intake path | Truth Social automation blocked without permission |
+| Evidence Passport Commons | Public source/rights registry and contribution path | A passport is not investment advice |
 
-La investigacion inicial de `RWA Watch` mapea 20 exchanges centralizados y
-Pepperstone. Los terminos revisados bloquean la recoleccion/republicacion
-publica automatizada de `xStocks / Backed`, aunque existan endpoints visibles;
-`Ondo Global Markets` documenta APIs para display pero requiere onboarding,
-API key y revision de derechos de output. La Open Edition incluye en su lugar
-un sandbox sintetico que no realiza llamadas reales. Ninguna de estas fuentes
-alimenta analyst targets. Ver
-[RWA Watch: Exchanges Y Fuentes Base](rwa-watch-sources.md).
-Bybit tambien permanece como referencia bloqueada: su producto xStocks tiene
-restricciones jurisdiccionales incompatibles con tratarlo como feed publico
-global del repositorio.
-Kraken queda en la misma categoria porque sus divulgaciones xStocks excluyen
-Estados Unidos. Gate y Bitget solo se conservan como referencias pendientes de
-permiso explicito de output publico.
-
-## Capacidades Incluidas
-
-### Financials Scorecard Sandbox
-
-- Funciona completamente offline con datos sintéticos redistribuibles.
-- Demuestra evaluación de targets, exclusiones, comparaciones, linaje,
-  operaciones de calidad y Release Center.
-- Sus resultados nunca se presentan como desempeño real de una firma.
-- La portada `/dashboard/financials-evidence` conecta el input controlado,
-  las guardas de scoring y la decision de release bloqueada.
-
-### U.S. IPO Filing Watch
-
-- Consume fuentes públicas SEC EDGAR sin clave de pago.
-- Descubre filings potencialmente relacionados con cotizaciones y exige
-  revisión documentada antes de promover una empresa.
-- La portada `/dashboard/ipo` conecta intake, triage, decisiones, tablero y
-  evidencia internacional sin mezclar sus estados.
-- Las solicitudes live deben incluir `TARGETAUDIT_SEC_USER_AGENT` con un
-  correo de contacto conforme a las reglas SEC.
-
-### ETF Regulatory Holdings
-
-- Consume filings y datasets públicos SEC N-PORT.
-- Permite comparar periodos reportados y mantener una evidencia auditable.
-- No se etiqueta como información diaria ni en tiempo real.
-- La portada `/dashboard/etf` separa las capas sintética y regulatoria antes
-  de navegar a sus evidencias.
-- Las vistas `/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory`
-  permanecen separadas de los sandboxes sintéticos `ARKK-DEMO`, `XLF-DEMO`
-  e `IYF-DEMO`.
-- Las vistas `/dashboard/etf/nport-catalog` y `/dashboard/etf/nport-sync`
-  muestran el catálogo trimestral y su control incremental, no operaciones
-  diarias del ETF.
-
-### Public Document Checks
-
-- Usa consulta documental pública FCA NSM para corroborar documentos de
-  emisores seguidos.
-- No sustituye monitores de bolsas cuya reutilización requiera revisar
-  términos.
-
-### RWA Watch Sandbox
-
-- Compara precios sinteticos de referencia y de token/venue en una pagina
-  separada del scorecard.
-- Marca desviaciones para revision metodologica, nunca como senal de compra o
-  venta.
-- No recolecta datos de xStocks, Ondo o exchanges mientras sus derechos de
-  output publico no esten documentados.
-
-### Market Context
-
-- Incrusta widgets oficiales gratuitos de TradingView con atribucion visible.
-- Muestra `XLF` como contexto visual del benchmark sectorial y una lente
-  comparativa de Financials/benchmarks.
-- No convierte contenido del widget en dataset, evidencia o input del
-  scorecard.
-
-### Market Intelligence
-
-- Abre `/dashboard/intelligence` como workspace fuente-primero para conectar
-  IPOs y ETF con regimenes de mercado, catalizadores macro e informacion
-  declarada de posicionamiento.
-- Expone por API el plan de ocho modulos y registra fuentes oficiales para
-  `BTC`/`ETH`, `WTI`/`Brent`, Treasury, Fed/BLS, SEC insiders y CFTC.
-- Conserva los conectores nuevos como `connector_planned`: la pagina no
-  contiene precios live nuevos ni recomendaciones de compra o venta.
-
-### Volatility Intelligence Lab
-
-- La ruta `/dashboard/volatility` presenta un grafico `VIXCLS` de FRED
-  atribuido como contexto externo y un mapa de indicadores para estudiar
-  propagacion de estres.
-- La API `/api/v1/intelligence/volatility` describe los episodios futuros:
-  shocks VIX, divergencia tecnologica `VXN`, estres de tasas `MOVE` y
-  propagacion `OVX/GVZ`.
-- Cboe e ICE quedan registrados como fuentes pendientes de derechos para
-  resultados historicos reales; esta version no descarga sus series ni
-  recomienda posiciones.
-
-### Policy Signal Impact Lab
-
-- La ruta `/dashboard/policy-signals` estudia la hipotesis de impacto de
-  comunicaciones públicas con el caso inicial `Donald Trump / Truth Social`.
-- Declara ventanas observacionales y activos conectados, incluyendo VIX
-  externo de FRED, tasas, energia, cripto e IPO evidence.
-- El feed live de Truth Social esta bloqueado: esta edicion no ejecuta
-  scraping ni almacena publicaciones porque los terminos oficiales requieren
-  permiso para automatizacion y compilacion sistematica.
-- Registra `White House News RSS` y `Presidential Actions RSS` como la ruta
-  gratuita elegible para futuros eventos oficiales; `White House Wire RSS`
-  queda limitado a metadata de enlaces externos.
-- Documenta competidores y precedentes sin afirmar que un movimiento fue
-  causado por una publicacion o que indique una operacion.
-
-## Ejecutar Sin Costos
+## Run Without Data Fees
 
 ```bash
 python3 -m pip install -e ".[application]"
 make verify
+make demo
 export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
 export TARGETAUDIT_SOURCE_REGISTRY="data/samples/source_registry.csv"
+export TARGETAUDIT_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
 export TARGETAUDIT_GENERATED_REPORTS="build/demo"
+export TARGETAUDIT_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
 python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
 ```
 
-Abrir `http://127.0.0.1:8000/` muestra la portada `Open Edition`.
-Desde ella se abre `/dashboard/reports`, un indice de
-`/dashboard/ipo`, `/dashboard/ipo-watch`, `/dashboard/sec-discovery`, `/dashboard/sec-alerts`, `/dashboard/ipo-reviews`,
-`/dashboard/etf`, `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo`, `/dashboard/etf/iyf-demo`,
-`/dashboard/etf/nport-recent`, `/dashboard/etf-regulatory`,
-`/dashboard/etf/nport-catalog`, `/dashboard/etf/nport-sync`,
-`/dashboard/document-checks`, `/dashboard/rwa-watch`,
-`/dashboard/global-listings`, `/dashboard/global-alerts` y
-`/dashboard/issuer-confirmations`; `/dashboard/contribute?lang=en` ofrece una
-entrada multilingue para proponer fuentes internacionales verificables,
-ademas del paquete fijo
-`/dashboard/financials-evidence` y `/dashboard/audit/{report}` para evidencia
-Financials del demo; estas rutas
-solo sirven artefactos HTML conocidos producidos por `make demo`. El paquete
-`/dashboard/governance-report/{snapshot}` expone exclusivamente los snapshots
-generados de manifiesto, extensiones licenciadas, fuentes, permisos,
-revisiones y readiness, separado
-de las pantallas interactivas. La portada global abre exclusivamente
-los diez monitores internacionales incluidos en la lista permitida
-`/dashboard/global/{monitor}`, no un explorador de archivos generados.
-La portada tambien enlaza `/dashboard/policy`, que debe revisarse antes de
-habilitar datos live o publicar resultados.
-Tambien enlaza `/dashboard/market-context`, cuya carga de TradingView requiere
-conexion a Internet pero no suscripcion de datos de TargetAudit.
-La ruta `/dashboard/intelligence` es navegable aun sin red porque presenta el
-mapa de fuentes y limites; las futuras ingestas solo se activaran tras pruebas
-y validacion de output público.
-`/dashboard/volatility` conserva la misma regla: sin Internet mantiene visible
-el diseño de investigacion, mientras el chart atribuido requiere cargar la
-imagen externa de FRED. `/dashboard/policy-signals` conserva tambien su
-metodologia y control de derechos aunque el contexto VIX externo no cargue.
+Open <http://127.0.0.1:8000/>. Key routes are documented in
+[README.md](../README.md) and [Dashboard Product Outline](dashboard.md).
 
-## Reporte Periodico En GitHub
-
-El workflow `.github/workflows/open-edition-report.yml` genera una copia
-probada de la Open Edition cada lunes a las `12:17 UTC` y tambien puede
-ejecutarse manualmente desde GitHub Actions. Ejecuta `make verify` y conserva,
-durante 30 dias, un artefacto descargable con:
-
-- las paginas, CSV y base DuckDB demostrativa de `build/demo/`;
-- el wheel instalable producido en `build/dist/`.
-
-La ejecucion no necesita secrets, claves API ni suscripciones porque procesa
-exclusivamente fixtures redistribuibles incluidos en el repositorio. No
-consulta filings live, no incluye holdings reales de emisores y no publica un
-ranking real de analistas. El bundle puede recorrerse en la aplicacion desde
-`/dashboard/reports`, que enlaza solo rutas permitidas y no expone el
-directorio generado como explorador de archivos.
-El snapshot generado `/dashboard/governance-report/open-edition` tambien
-conserva enlaces directos a cada capacidad que declara.
-
-Para recolectar datos SEC públicos en vez de utilizar fixtures:
+For permitted live SEC access, provide an identifying contact outside Git:
 
 ```bash
-export TARGETAUDIT_SEC_USER_AGENT="TargetAudit contacto@example.com"
+export TARGETAUDIT_SEC_USER_AGENT="TargetAudit contact@example.com"
 ```
 
-No se necesita clave de API ni suscripción de datos para los conectores SEC.
+No paid API key is required for SEC connector workflows.
 
-## Extensiones Opcionales
+## Periodic GitHub Report
 
-Los expedientes de aprobación de proveedores comerciales se conservan como
-arquitectura preparada para quien, en el futuro, decida aportar datos con
-derechos suficientes. No son requisito para instalar, demostrar o utilizar
-los módulos públicos gratuitos de TargetAudit.
+`.github/workflows/open-edition-report.yml` generates a tested Open Edition
+copy each Monday at `12:17 UTC` and on manual dispatch. It runs `make verify`
+and retains a downloadable artifact for 30 days containing demonstration
+output under `build/demo/` and the installable wheel under `build/dist/`.
 
-Ver [Extensiones Licenciadas Opcionales](licensed-extensions.md) para precios
-visibles, condiciones revisadas y el flujo `bring your own license`.
-Ver [Politica De Uso Publico Y Derechos De Datos](public-use-policy.md) para
-los limites visibles de interpretacion, recoleccion y output.
+The workflow requires no secrets or paid subscriptions because it processes
+redistributable repository fixtures only. It does not query live filings,
+include real issuer holdings, or publish a real analyst ranking.
+
+## Optional Extensions
+
+Commercial or user-licensed evidence is architecture-ready but is not required
+to install or use public modules. Read [Optional Licensed
+Extensions](licensed-extensions.md) for documented paths and
+[Public Use And Data Rights Policy](public-use-policy.md) for output limits.

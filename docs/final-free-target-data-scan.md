@@ -1,92 +1,63 @@
-# Ultimo Barrido Gratuito De Targets Historicos
+# Final No-Cost Scan For Historical Target Data
 
-Revision: `2026-05-25`.
+Review date: `2026-05-25`.
 
-## Objetivo
+## Objective And Result
 
-Antes del lanzamiento publico se hizo una ultima busqueda internacional para
-encontrar una fuente gratuita de `price targets` historicos, individualizados
-por firma o analista y con derechos suficientes para publicar resultados
-derivados en TargetAudit.
+Before public launch, TargetAudit performed a final international search for a
+no-cost source of historical price targets, individualized by analyst or firm,
+with rights sufficient to publish derived rankings.
 
-Se buscaron proveedores de Estados Unidos y rutas locales en Japon, Corea,
-Hong Kong, Singapur, Brasil, India, Reino Unido y Alemania. Los repositorios
-de GitHub se trataron solo como pistas tecnicas: una libreria que consulta una
-pagina de terceros no concede derechos sobre sus datos.
+The search covered United States providers and local paths in Japan, South
+Korea, Hong Kong, Singapore, Brazil, India, the United Kingdom, and Germany.
+GitHub repositories were treated as technical clues only: code that queries a
+third-party site does not grant rights to the underlying data.
 
-## Resultado Ejecutivo
+No free dataset was found that can lawfully be activated to publish real
+rankings for Roth MKM, KBW, UBS, Citi, Barclays, or other firms.
 
-No se encontro un dataset gratuito que podamos activar legalmente para
-publicar rankings reales de Roth MKM, KBW, UBS, Citi, Barclays u otras firmas.
+## Candidates Reviewed
 
-El hallazgo mas cercano a la idea original es `AnalystCentral`: anuncia un CSV
-gratuito con diez anos de ratings y price targets de acciones de Wall Street.
-Sin embargo, sus propios terminos limitan el contenido a uso personal y
-prohiben data mining, scraping, republicacion y trabajos derivados sin
-consentimiento escrito. Por tanto, puede convertirse en una solicitud de
-permiso, pero no en una integracion de Open Edition.
-
-## Candidatos Revisados
-
-| Fuente | Cobertura Relevante | Costo Visible | Decision Para TargetAudit |
+| Source | Relevant Coverage | Visible Cost | TargetAudit Decision |
 |---|---|---:|---|
-| AnalystCentral | CSV de ratings y targets de Wall Street, 10 anos, mas de 8,500 acciones e indices anunciados | Gratuito para miembros | `permission_candidate`: contactar para permiso escrito; no descargar ni publicar resultados con los terminos actuales |
-| Intrinio / Zacks Target Prices | Consenso de targets USA, mas de 20 anos, API/CSV/S3/Snowflake | Cotizacion; historia requiere pago unico | Extension licenciada, no Open Edition y no fila individual por firma confirmada |
-| QUICK Data Factory | Ratings y targets de companias japonesas, campos actual/anterior e historia desde enero de 2003 | Contrato mensual | Gran candidato japones para usuario licenciado; no gratuito |
-| FnGuide / FnSpace | Research y consenso coreano; series extensas y API de consenso | FnConsensus `KRW 165,000/mes`; API desde `KRW 70,000/mes` academia | No gratuito; licencia publicada limita datos a uso personal/interno y no exposicion a terceros |
-| Webull OpenAPI | Target alto, bajo, medio y mediano para acciones USA | Requiere `x-app-key`; precio/derechos no confirmados | Solo consenso actual documentado; no demuestra historia individual ni derechos de output publico |
-| StocksSG / SGinvestors | Consenso o cambios recientes de targets en acciones SGX | Pagina visible | Referencia manual; no se encontro API ni licencia de republicacion para un ranking |
-| FMP | Consensus y ratings historicos estructurados | Free para pruebas; display/redistribucion bajo acuerdo | Ya clasificado como extension contractual, no fuente publica gratuita |
-| GitHub wrappers de TipRanks/Yahoo | Acceso tecnico a endpoints o paginas existentes | Codigo gratuito | Excluidos: el codigo no transfiere derechos sobre los datos subyacentes |
+| AnalystCentral | Advertised CSV of Wall Street ratings and targets, 10 years, 8,500+ stocks and indices | Free for members | `permission_candidate`: request written permission; do not download or publish under current terms |
+| Intrinio / Zacks Target Prices | U.S. target consensus, 20+ years, API/CSV/S3/Snowflake | Quote; history involves payment | Licensed extension, not Open Edition; individual-firm rows not confirmed |
+| QUICK Data Factory | Japanese company ratings and targets with history since January 2003 | Monthly contract | Strong licensed Japanese candidate, not free |
+| FnGuide / FnSpace | Korean research and consensus series | Paid published plans | Not free; license limits third-party exposure |
+| Webull OpenAPI | High, low, average, and median U.S. stock targets | Requires `x-app-key`; cost/rights unconfirmed | Current consensus only; no demonstrated individual history or public-output rights |
+| SGinvestors | Visible SGX target changes or consensus | Public page | Manual reference; no API or republication license found |
+| FMP | Structured consensus and historical ratings | Free testing; display/redistribution by agreement | Contractual extension, not free public data |
+| GitHub wrappers for TipRanks/Yahoo | Technical access to pages/endpoints | Free code | Excluded; code transfers no data rights |
 
-## Hallazgo Util: Solicitar Permiso Sin Exigir Pago
+## Permission Path
 
-La unica via gratuita todavia plausible para el ranking inicial es solicitar a
-`AnalystCentral` una autorizacion escrita y acotada. Una autorizacion usable
-deberia permitir, al menos:
+The only still-plausible no-cost route for the initial ranking is narrowly
+scoped written authorization from `AnalystCentral`. It would need to permit
+receipt of dated target rows, local reproducible processing, attributed
+aggregate public output, any shareable illustrative fixture, and either
+GitHub Actions execution or a private-only real-data workflow.
 
-1. Descargar o recibir una muestra historica con fecha, ticker, firma,
-   analista cuando exista, target y recomendacion.
-2. Conservar el dataset localmente para evaluación reproducible.
-3. Publicar exclusivamente salidas derivadas agregadas, con atribucion,
-   metodologia y enlaces de origen.
-4. Publicar un pequeno dataset de ejemplo o fixtures derivados si lo autorizan.
-5. Ejecutar el reporte en GitHub Actions o establecer claramente que el dato
-   real solo se procesa en instalaciones privadas autorizadas.
+Until such authorization exists, TargetAudit keeps the importer and release
+gate ready but does not activate the source.
 
-Mientras esa autorizacion no exista, TargetAudit mantiene el importador y el
-release gate preparados, pero no activa la fuente.
+## Launch Consequence
 
-## Consecuencia Para El Lanzamiento
+The Open Edition remains useful: its evaluation engine and audits run, the
+dashboard exposes what is missing for real data, IPO and global regulatory
+monitors use public evidence, and the multilingual contributor gateway helps
+discover lawful official connectors.
 
-La conclusion no reduce el valor de Open Edition:
+The public promise remains: **TargetAudit audits evidence and exposes when a
+conclusion cannot yet be published.**
 
-- el motor de evaluacion y la auditoria son ejecutables y probados;
-- el dashboard muestra exactamente que falta para habilitar datos reales;
-- IPO Watch y los monitores regulatorios globales aportan evidencia publica
-  sin comprar datos;
-- el nuevo portal `/dashboard/contribute?lang=en` abre colaboracion
-  internacional en cinco idiomas para descubrir conectores o permisos
-  verificables.
+## Sources Reviewed
 
-La promesa publica correcta sigue siendo: **TargetAudit comprueba evidencia y
-expone cuando una conclusion todavia no se puede publicar.**
-
-## Fuentes Revisadas
-
-- AnalystCentral, oferta de datos: <https://analystcentral.com/about-us/>
-- AnalystCentral, terminos: <https://analystcentral.com/terms-of-service>
-- Intrinio, Target Prices: <https://intrinio.com/products/target-prices>
-- QUICK Data Factory, ratings y targets japoneses:
-  <https://corporate.quick.co.jp/data-factory/product/data054/>
-- QUICK APIs, uso sujeto a contrato:
-  <https://corporate.quick.co.jp/en/apis/>
-- FnGuide, planes de research y consenso: <https://www.fnguide.com/Payment/Purchase>
-- FnSpace, licencia y precios API:
-  <https://help-fnspace.fnguide.com/ko/articles/FnSpace-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%9D%B4%EC%9A%A9-%EC%9A%94%EA%B8%88-%EB%B0%8F-%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4-%EC%A0%95%EC%B1%85-%EC%95%88%EB%82%B4-1a2bb37e>
-- Webull, Analyst Target Price API:
-  <https://developer.webull.com/apis/docs/reference/get-analyst-target-price>
-- Financial Modeling Prep, Analyst Estimates and Targets:
-  <https://site.financialmodelingprep.com/datasets/analyst-estimates-targets>
-- SGinvestors, target prices visibles:
-  <https://sginvestors.io/analysts/target-price/latest>
+- AnalystCentral offering: <https://analystcentral.com/about-us/>
+- AnalystCentral terms: <https://analystcentral.com/terms-of-service>
+- Intrinio Target Prices: <https://intrinio.com/products/target-prices>
+- QUICK Data Factory: <https://corporate.quick.co.jp/data-factory/product/data054/>
+- QUICK APIs: <https://corporate.quick.co.jp/en/apis/>
+- FnGuide plans: <https://www.fnguide.com/Payment/Purchase>
+- Webull Analyst Target Price API: <https://developer.webull.com/apis/docs/reference/get-analyst-target-price>
+- Financial Modeling Prep targets: <https://site.financialmodelingprep.com/datasets/analyst-estimates-targets>
+- SGinvestors targets: <https://sginvestors.io/analysts/target-price/latest>

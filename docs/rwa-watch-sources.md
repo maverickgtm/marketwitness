@@ -1,116 +1,73 @@
-# RWA Watch: Exchanges Y Fuentes Base
+# RWA Watch: Exchanges And Base Sources
 
-Revision: `2026-05-24`.
+Review date: `2026-05-24`.
 
-`RWA Watch` es un sandbox incluido en TargetAudit para demostrar como observar
-instrumentos ligados a acciones o ETF mediante tokenizacion. Usa solamente
-observaciones sinteticas redistribuibles. No es parte de `Financials
-Scorecard`: un token negociable o un CFD no proporciona historial de `price
-targets` de analistas.
+`RWA Watch` is a TargetAudit sandbox demonstrating how tokenized instruments
+linked to stocks or ETFs could be observed. It uses redistributable synthetic
+observations only. A tradeable token or CFD does not supply analyst price
+target history and is not part of the Financials Scorecard.
 
-## Metodo De Revision
+## Review Method And Main Finding
 
-El universo de cribado son los primeros 20 exchanges centralizados mostrados
-por CoinGecko bajo `Trust Score` en la fecha de revision. Ese ranking permite
-repetir la busqueda, pero no es una recomendacion de negociar en un exchange.
+The screened universe was the first 20 centralized exchanges displayed by
+CoinGecko under `Trust Score` on the review date. This is a repeatable search
+frame, not a trading recommendation.
 
-Por cada proveedor se busco documentacion oficial de acciones, ETF,
-instrumentos tokenizados, CFD o API publicas. Que una pagina o API sea
-accesible no demuestra permiso para conservar, republicar o mostrar sus datos
-en un producto publico; cualquier conector queda sujeto a revision de
-terminos.
+The efficient architecture is `issuer-first`: understand the asset structure
+and backing from the issuer, then use exchanges only as secondary evidence of
+availability or liquidity. It avoids duplicating connectors for venues listing
+the same issued instrument.
 
-## Hallazgo Principal
-
-La arquitectura mas eficiente es `issuer-first`: obtener la estructura y
-respaldo del activo del emisor, y despues utilizar exchanges como mercados
-secundarios para contrastar disponibilidad o liquidez. Esto evita veinte
-conectores duplicados para productos basados en la misma emision.
-
-| Fuente Base | Evidencia Oficial Encontrada | Decision |
+| Base Source | Official Evidence Found | Decision |
 |---|---|---|
-| xStocks / Backed Public API | Documenta APIs sin autenticacion para metadatos, documentacion legal, NAV, datos de mercado y proof of reserves; sus terminos limitan servicios a fines informativos/internos y restringen retrieval o republicacion automatizados | Referencia tecnica bloqueada; no recolectar ni publicar datos reales sin autorizacion escrita |
-| Ondo Global Markets | Documenta datos de mercado para aplicaciones y APIs autenticadas; la integracion exige onboarding y `x-api-key` | Segundo candidato autorizado, no fuente gratuita abierta; confirmar acceso, elegibilidad y derechos de output |
-| Exchanges compatibles | Pueden exponer mercado spot, disponibilidad o liquidez del instrumento | Capa secundaria solamente; Bybit queda bloqueado por sus restricciones de producto y otros venues requieren revision propia |
+| xStocks / Backed Public API | Unauthenticated metadata, legal-document, NAV, market-data, and proof-of-reserves APIs; reviewed terms restrict automated retrieval/republication | Technical reference blocked from real collection without written authorization |
+| Ondo Global Markets | Application-oriented market data and authenticated APIs requiring onboarding and `x-api-key` | Authorized candidate, not open free source; confirm eligibility and output rights |
+| Compatible exchanges | Spot-market availability or liquidity for instruments | Secondary layer only; each venue requires its own rights review |
 
-## Top 20 CEX Revisados
+## Reviewed Exchange Summary
 
-| # | Exchange | Producto Oficial Relevante Encontrado | Encaje Propuesto |
-|---:|---|---|---|
-| 1 | Coinbase Exchange | Coinbase Capital Markets ofrece stocks y funds para clientes elegibles de EE. UU. | Referencia de brokerage; no se confirmo feed RWA publico |
-| 2 | Binance | No se confirmo una ruta vigente de acciones tokenizadas centralizadas en la revision focalizada | Monitorear, sin conector |
-| 3 | Kraken | `xStocks` respaldados 1:1; su divulgacion oficial declara que no estan disponibles en Estados Unidos | Referencia secundaria bloqueada para dashboard publico global |
-| 4 | Bitstamp by Robinhood | Robinhood publica stock tokens para clientes europeos; no se atribuye ese producto a una API de Bitstamp sin evidencia | Referencia solamente |
-| 5 | OKX | Wallet/DEX ofrece rutas xStocks y Ondo; su ayuda indica que no estan disponibles en OKX CEX | Contexto DEX, no ingestion CEX |
-| 6 | Gate | Publica `xStocks` y `Ondo Stocks` | Referencia secundaria; no se confirmo permiso de output publico |
-| 7 | Bitget | Publica activos tokenizados Ondo de acciones y ETF de EE. UU.; sus terminos API son limitados y revocables | Referencia secundaria; no se confirmo permiso de output publico |
-| 8 | Bitvavo | No se confirmo ruta oficial de acciones tokenizadas en la revision focalizada | Sin conector ahora |
-| 9 | Bybit | `xStocks` Spot y API V5 con `symbolType=xstocks` y `xstockMultiplier`; sus terminos excluyen Estados Unidos y otras jurisdicciones | Referencia secundaria bloqueada para dashboard publico |
-| 10 | BingX | Publica material sobre activos RWA, sin feed de acciones confirmado | Referencia solamente |
-| 11 | MEXC | No se confirmo producto programatico oficial de acciones tokenizadas | Sin conector ahora |
-| 12 | Crypto.com Exchange | App ofrece acciones y ETF a usuarios elegibles de EE. UU. | Referencia de brokerage; no feed publico confirmado |
-| 13 | Gemini | Tokenized stocks de Dinari para la UE; su ayuda dice que no estan disponibles via API | No integrar como conector |
-| 14 | HashKey Exchange | No se confirmo ruta publica oficial de acciones tokenizadas | Sin conector ahora |
-| 15 | Upbit | No se confirmo ruta publica oficial de acciones tokenizadas | Sin conector ahora |
-| 16 | KuCoin | No se confirmo ruta publica oficial de acciones tokenizadas | Sin conector ahora |
-| 17 | Bitso | No se confirmo ruta publica oficial de acciones tokenizadas | Sin conector ahora |
-| 18 | CoinW | No se confirmo ruta publica oficial de acciones tokenizadas | Sin conector ahora |
-| 19 | LBank | Anuncio zona `xStocks` con 55 equities tokenizadas impulsadas por Backed | Venue de referencia; confirmar API antes de integrar |
-| 20 | Bullish | No se confirmo ruta publica oficial de acciones tokenizadas | Sin conector ahora |
+| Exchange Group | Relevant Finding | Treatment |
+|---|---|---|
+| Kraken and Bybit | Official `xStocks` materials; availability/jurisdiction restrictions stated | Blocked as public dashboard collection sources |
+| Gate and Bitget | Published tokenized-stock or Ondo offerings | Secondary references pending output-rights confirmation |
+| LBank | Announced an `xStocks` zone | Reference pending API confirmation |
+| OKX and Gemini | Documented Web3/DEX or regional tokenized-stock routes with API limitations | Do not integrate as public connectors |
+| Coinbase and Crypto.com | Brokerage stocks/ETFs for eligible users | Brokerage reference, not RWA or analyst-target feed |
+| Binance, Bitstamp, Bitvavo, BingX, MEXC, HashKey, Upbit, KuCoin, Bitso, CoinW, Bullish | No confirmed suitable public tokenized-stock data path in the focused review | No connector |
 
 ## Pepperstone
 
-Pepperstone no es una fuente equivalente a xStocks u Ondo. Sus paginas
-oficiales presentan exposicion mediante derivados y servicios vinculados a
-cuenta:
+Pepperstone provides derivatives and account-linked services rather than a
+base xStocks/Ondo-style source:
 
-| Producto | Evidencia Oficial | Decision |
+| Product | Official Evidence | Decision |
 |---|---|---|
-| Share CFDs | Mas de 1,100 CFD de acciones en 23 paises; el instrumento no entrega propiedad de la accion | No usar como activo tokenizado ni como precio objetivo |
-| TradingView | Widget atribuido integrado en `Market Context` y compatibilidad visible con miles de simbolos | Contexto visual externo, no fuente de redistribucion ni de RWA scoring |
-| Trading API | REST API para pricing, liquidez y datos de cuenta | Integracion opcional del usuario; no se confirmo feed abierto publicable |
+| Share CFDs | Exposure to over 1,100 stock CFDs in 23 countries without share ownership | Do not treat as tokenized assets or target prices |
+| TradingView | Attributed charting context | External visual context only |
+| Trading API | REST API for pricing, liquidity, and account data | Optional user integration only; no confirmed open publishable feed |
 
-## Prioridad Tecnica
+## Technical Priority
 
-1. Mantener operativo el `RWA Watch Sandbox` con fixtures propios y sin
-   llamadas a proveedores externos.
-2. Solicitar autorizacion escrita de display, retencion y output derivado
-   antes de construir un adaptador real `xStocks / Backed`.
-3. Confirmar contrato/onboarding y derechos de salida de `Ondo Global Markets`;
-   sus endpoints de precios estan documentados para display, pero requieren
-   API key.
-4. Mantener Bybit y Kraken bloqueados para la edicion publica global, y pedir
-   confirmacion contractual antes de usar Gate o Bitget como venues
-   secundarios; LBank esta pendiente de confirmar API.
-5. Mantener CFDs y productos de brokerage fuera de cualquier comparacion que
-   sugiera propiedad de acciones o historial de analistas.
+1. Keep `RWA Watch Sandbox` operational with first-party fixtures only.
+2. Obtain written display, retention, and derived-output authorization before
+   any real `xStocks / Backed` adapter.
+3. Confirm Ondo onboarding and output rights before enabling its documented
+   price endpoints.
+4. Keep Bybit and Kraken blocked for the global public edition; require terms
+   confirmation for secondary venues.
+5. Keep CFDs and brokerage products out of comparisons suggesting share
+   ownership or analyst-history evidence.
 
-## Fuentes Oficiales
+## Official Sources
 
 - CoinGecko exchanges: <https://www.coingecko.com/en/exchanges>
-- xStocks API: <https://docs.xstocks.fi/apis/openapi>
-- xStocks overview: <https://docs.xstocks.fi/about-xstocks/welcome-to-xstocks/overview>
-- xStocks Terms of Service: <https://xstocks.fi/documents/xstocks-terms-of-service.pdf>
-- Ondo Global Markets overview: <https://docs.ondo.finance/ondo-global-markets/overview>
-- Ondo API reference: <https://docs.ondo.finance/api-reference/overview>
-- Ondo API quickstart: <https://docs.ondo.finance/api-reference/quickstart>
-- Ondo terms of service: <https://docs.ondo.finance/legal/terms-of-service>
-- Ondo important notes: <https://docs.ondo.finance/ondo-global-markets/important-notes>
+- xStocks API and terms: <https://docs.xstocks.fi/apis/openapi> and <https://xstocks.fi/documents/xstocks-terms-of-service.pdf>
+- Ondo Global Markets: <https://docs.ondo.finance/ondo-global-markets/overview>
+- Ondo API: <https://docs.ondo.finance/api-reference/overview>
 - Bybit xStocks: <https://www.bybit.com/en/help-center/article/FAQ-xStocks-on-Bybit>
-- Bybit V5 instruments: <https://bybit-exchange.github.io/docs/v5/market/instrument>
-- Bybit xStocks terms: <https://www.bybit.com/en/help-center/article/Terms-and-Conditions-xStocks>
 - Kraken xStocks: <https://www.kraken.com/xstocks>
-- Kraken xStocks risk disclosure: <https://www.kraken.com/legal/xstocks>
 - Gate xStocks: <https://www.gate.com/xstocks>
-- Gate tokenized stocks: <https://www.gate.com/es/tokenized-stocks>
-- Gate user agreement: <https://www.gate.com/docs/agreement.pdf>
 - Bitget Ondo announcement: <https://www.bitget.com/support/articles/12560603838361>
-- Bitget Ondo expansion: <https://www.bitget.com/blog/articles/bitget-tokenized-stocks-etfs-ondo-expansion>
-- Bitget API key terms: <https://www.bitget.com/support/articles/12560603797947>
-- LBank xStocks announcement: <https://www.lbank.com/support/articles/21431592927001>
-- Gemini tokenized stocks: <https://support.gemini.com/hc/en-us/articles/45788732343963-Tokenized-Stocks-Overview>
-- OKX xStocks help: <https://web3.okx.com/en-eu/help/what-are-xstocks>
-- Coinbase stocks overview: <https://help.coinbase.com/coinbase/trading-and-funding/stocks/overview>
-- Crypto.com stocks and ETF: <https://help.crypto.com/en/articles/10441410-stocks-and-etfs>
+- LBank announcement: <https://www.lbank.com/support/articles/21431592927001>
 - Pepperstone shares: <https://pepperstone.com/en/markets/shares/>
 - Pepperstone Trading API: <https://pepperstone.com/en/platforms/integrations/trading-api/>

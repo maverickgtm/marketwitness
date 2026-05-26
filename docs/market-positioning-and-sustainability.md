@@ -1,102 +1,76 @@
-# Posicionamiento Y Sostenibilidad Publica
+# Public Positioning And Sustainability
 
-Revision: `2026-05-25`
+Review date: `2026-05-25`.
 
-## Respuesta Honesta
+## Honest Position
 
-TargetAudit puede interesar como proyecto publico, pero no debe presentarse
-como "otro terminal de bolsa" ni prometer que derrotara a plataformas con
-datasets licenciados. En investigacion financiera abierta existen productos
-mas grandes, y en ranking de analistas ya existen competidores directos.
+TargetAudit can be interesting as a public project, but it should not be sold
+as another general-purpose market terminal or as a replacement for products
+with licensed datasets. Its credible position is narrower:
 
-La oportunidad real es mas estrecha y mas creible:
+> TargetAudit is an open platform for auditing market evidence with visible
+> source provenance, publication rights, and verification rules, beginning
+> with global IPO/listing workflows and regulatory ETF evidence.
 
-> TargetAudit es una plataforma abierta para auditar senales financieras con
-> trazabilidad de fuente, derechos de publicacion y reglas de verificacion
-> visibles, comenzando por IPOs/listings globales y evidencia regulatoria ETF.
+`Evidence Passport Commons` is the launch differentiator: a visible registry
+and public API where sources expose reviewed origin and rights and contributors
+can add cadence and claim boundaries. The review did not find that OpenBB,
+Stocknear, or AnaChart makes this contribution-and-rights protocol its central
+product; this is an initial positioning observation, not proof that no similar
+approach exists.
 
-La propuesta concreta para diferenciar el lanzamiento es `Evidence Passport
-Commons`: un registro visual y una API publica donde cada fuente muestra
-origen y derechos revisados, y donde contributors pueden proponer la capa
-faltante de cadencia y limite de afirmacion. En la revision realizada no se
-encontro que `OpenBB`, `Stocknear` o `AnaChart` presentaran este protocolo de
-contribucion y derechos como su producto central; esto no prueba inexistencia
-absoluta de propuestas semejantes.
+## Adjacent Products
 
-El ranking real de targets sigue siendo un modulo importante, pero debe
-activarse solo cuando el proyecto obtenga datos utilizables con permiso.
-
-## Con Quien Competimos
-
-| Proyecto / producto | Que ya resuelve | Impacto para TargetAudit |
+| Product | What It Already Solves | TargetAudit Implication |
 |---|---|---|
-| `OpenBB` | Plataforma financiera abierta para analistas, quants y agentes; su repositorio oficial mostraba aproximadamente `68.1k` estrellas al revisar el `2026-05-25`. Ofrece Workspace gratuito para individuos y una capa Pro/enterprise por cotizacion. | No es realista competir como plataforma general de datos. Conviene diferenciarse por auditoria de evidencia, reglas de publicacion y monitores verificables. |
-| `Stocknear` | Plataforma open source visual con acciones, ETFs, IPOs y datos de Wall Street; su repositorio `frontend` mostraba `29` estrellas, mientras la pagina comercial declara `10,000+` inversores. Ofrece plan gratuito, `Plus` anunciado a `USD 10/month` y `Pro` a `USD 30/month`, con descuentos anuales visibles al revisar. | Es el competidor de interfaz y producto mas cercano, y muestra que usuarios de producto y estrellas de GitHub no son la misma metrica. TargetAudit necesita una identidad metodologica fuerte, no solo UI bonita. |
-| `AnaChart` | Producto centrado directamente en precision de analistas: declara `964K` targets/ratings, `5,617` acciones y `4,074` analistas; cobra `USD 45/month` o `USD 399/year` por acceso avanzado. | Confirma que la idea original tiene demanda, pero tambien que el dataset historico es la barrera competitiva central. |
-| `sec-edgar` y herramientas EDGAR abiertas | Descarga y procesamiento de filings SEC; `sec-edgar` mostraba aproximadamente `1.4k` estrellas al revisar el `2026-05-25`. | Son complementarios o competencia parcial del colector, no del producto completo. TargetAudit debe ofrecer flujo de decision y dashboard, no solo descarga. |
+| `OpenBB` | Broad financial platform for analysts, quants, and agents; official repository showed about `68.1k` stars when reviewed on `2026-05-25` | Do not compete as a general data platform; focus on evidence auditability and publication rules |
+| `Stocknear` | Open-source visual product for stocks, ETFs, IPOs, and Wall Street data; published free and paid plans | It is a close interface/product reference; TargetAudit needs methodological identity, not only visual polish |
+| `AnaChart` | Analyst-accuracy product advertising `964K` targets/ratings, `5,617` stocks, and `4,074` analysts; advanced paid access | Confirms demand for the original idea and that historical data is the main barrier |
+| Open EDGAR tooling | SEC filing download and processing libraries | Complementary to a decision workflow and dashboard, rather than the complete product |
 
-## Lo Que Puede Gustar En GitHub
+## What Can Attract Contributors
 
-El publico de GitHub puede encontrar valor si el lanzamiento ensena algo
-instalable y verificable desde el primer minuto:
+- A premium visual demonstration that runs without subscriptions.
+- Regulatory and listings monitors with primary sources and explicit rules.
+- A method that discloses exclusions and does not call holdings differences
+  manager trades.
+- International connector opportunities grounded in official sources.
+- Transparent documentation of unavailable data and publication blocks.
+- A Commons contribution path that does not require buying data or writing a
+  connector before validating rights.
 
-1. una demo visual premium que corre sin suscripciones;
-2. monitores regulatorios y de listings con fuente primaria y reglas claras;
-3. una metodologia que no oculta exclusiones ni llama "operacion" a una
-   diferencia de holdings;
-4. conectores internacionales que permiten contribuciones concretas;
-5. documentacion transparente sobre que datos faltan y por que no se publican.
-6. un `Evidence Passport Commons` ampliable sin pedir al contributor que
-   compre datos o escriba un conector antes de validar derechos.
+A future analyst ranking promise alone is unlikely to attract sustained
+interest without an authorized real dataset.
 
-Lo que probablemente no atraera por si solo es una gran promesa futura de
-ranking de analistas sin un dataset real ya autorizado.
+## Sustainable No-Cost Core
 
-## Modelo Gratuito Y Opciones De Ingreso
+Releasing code at no cost does not prevent revenue, and does not guarantee it.
+The Open Edition should remain genuinely free; possible revenue may come from
+operation, convenience, or data a customer independently licenses.
 
-Lanzar el codigo gratis no impide obtener ingresos despues. Tampoco los
-garantiza. La via mas razonable es mantener la `Open Edition` genuinamente
-gratis y cobrar solo por comodidad, operacion o datos que el usuario decida
-licenciar.
-
-| Camino | Puede convivir con Open Edition | Condicion previa |
+| Path | Compatible With Open Edition | Requirement |
 |---|---|---|
-| GitHub Sponsors | Si; apoyo voluntario al proyecto | Usuarios reales, actividad y confianza; no debe asumirse como ingreso estable inicial. |
-| Hosted alerts / cloud monitor | Si; el repositorio sigue siendo autocontenible | Demanda por alertas continuas, costos de hosting medidos y limites legales de cada fuente. |
-| Equipo privado / compliance workspace | Si; empresas pagan por control de acceso, historial y soporte | Seguridad, autenticacion, retencion y acuerdos de servicio. |
-| Bring-your-own-license analytics | Si; usuario aporta sus derechos y datos | Flujo robusto para importacion privada y prohibicion de republicar outputs no autorizados. |
-| Conectores o reportes patrocinados | Si, con transparencia | Patrocinio declarado y reglas que no alteren resultados. |
+| GitHub Sponsors | Yes; voluntary support | Real users, activity, and trust |
+| Hosted alerts / cloud monitor | Yes; repository remains self-contained | Measured hosting cost and lawful source use |
+| Private compliance workspace | Yes; customers pay for access control, retention, and support | Security and service agreements |
+| Bring-your-own-license analytics | Yes; user supplies rights and data | Strong private import path and no unauthorized republication |
+| Sponsored connectors or reports | Yes, with disclosure | Rules preventing sponsor influence on results |
 
-No debe monetizarse mediante recomendaciones de compra/venta, venta de una
-aparente "senal ganadora" ni rankings publicos armados con datos sin derechos.
+Do not monetize through buy/sell recommendations, alleged winning signals, or
+public rankings assembled from data without rights.
 
-## Plan De Validacion Antes De Cobrar
+## Launch Decision
 
-1. Lanzar Open Edition con capturas, demo reproducible y documentacion clara.
-2. Medir interes real: estrellas, instalaciones, issues utiles, conectores
-   propuestos y personas que pidan alertas alojadas.
-3. Intentar permiso escrito para el primer dataset de targets historicos.
-4. Publicar conectores oficiales adicionales aportados por la comunidad.
-5. Solo despues evaluar un servicio alojado o una capa privada de datos
-   autorizados.
+Launch the Open Edition once installation and the major dashboard flows are
+verified. Position it as a source-aware, internationally extensible research
+system, not a substitute for OpenBB, Stocknear, or AnaChart.
 
-## Decision Recomendada
+## Sources Consulted
 
-Si: conviene lanzar gratis cuando la experiencia visual sea consistente en los
-modulos principales y la instalacion limpia este probada.
-
-No: no conviene venderlo inicialmente como sustituto de OpenBB, Stocknear o
-AnaChart. El mensaje correcto es que TargetAudit convierte evidencia publica
-dispersa en investigacion rastreable, internacional y legalmente consciente.
-
-## Fuentes Consultadas
-
-- OpenBB, repositorio y licencia: <https://github.com/OpenBB-finance/OpenBB>
-- OpenBB, precios de Workspace: <https://openbb.co/pricing>
-- Stocknear, frontend open source: <https://github.com/stocknear/frontend>
-- Stocknear, planes del producto: <https://www.stocknear.com/pricing>
-- AnaChart, producto y cobertura: <https://anachart.com/>
-- AnaChart, planes: <https://anachart.com/register/>
-- `sec-edgar`, repositorio: <https://github.com/sec-edgar/sec-edgar>
-- SEC EDGAR, acceso publico oficial: <https://www.sec.gov/search-filings>
-- GitHub Sponsors, documentacion: <https://docs.github.com/en/sponsors/receiving-sponsorships-through-github-sponsors/about-github-sponsors-for-open-source-contributors>
+- OpenBB repository and license: <https://github.com/OpenBB-finance/OpenBB>
+- OpenBB Workspace pricing: <https://openbb.co/pricing>
+- Stocknear frontend: <https://github.com/stocknear/frontend>
+- Stocknear product plans: <https://www.stocknear.com/pricing>
+- AnaChart coverage and plans: <https://anachart.com/>
+- SEC EDGAR public access: <https://www.sec.gov/search-filings>
+- GitHub Sponsors documentation: <https://docs.github.com/en/sponsors/receiving-sponsorships-through-github-sponsors/about-github-sponsors-for-open-source-contributors>

@@ -1,127 +1,71 @@
-# Busqueda Internacional De Datos Gratuitos
+# International Search For No-Cost Data
 
-Revision: `2026-05-25`.
+Review date: `2026-05-25`.
 
-Esta revision amplia la busqueda de datos para TargetAudit a Reino Unido,
-Japon, Australia, Hong Kong, Singapur y China continental. El objetivo no es
-encontrar paginas que simplemente muestren informacion, sino fuentes que
-permitan construir una edicion publica gratuita sin copiar datos contra sus
-terminos.
+This review extended the data search to the United Kingdom, Japan, Australia,
+Hong Kong, Singapore, and mainland China. The goal was not to find pages that
+display information, but sources that can support a free public edition
+without copying data against their terms.
 
-## Resultado Ejecutivo
+## Executive Result
 
-No se encontro un dataset internacional gratuito y publicable que resuelva el
-faltante central: historial individual de `price targets` para firmas de Wall
-Street sobre acciones de Estados Unidos.
+No international free and publishable dataset solved the central missing
+input: individual historical price targets for Wall Street firms covering U.S.
+stocks.
 
-Si se encontraron rutas nuevas para ampliar el producto:
+Useful expansion routes were found:
 
-| Prioridad | Fuente | Que Podria Aportar | Decision Inicial |
+| Priority | Source | Potential Contribution | Decision |
 |---:|---|---|---|
-| Alta | FSA Japan `EDINET` Documents API | API oficial gratuita de documentos regulatorios, incluidos securities registration statements; requiere clave y acceso responsable | Incorporar Japon como conector prioritario y construir un collector atribuido de documentos de oferta |
-| Media | `EDINET DB` | Enriquecimiento de datos japoneses; declara plan gratis y display publico con atribucion, sin redistribucion masiva | Mantener como candidato secundario, no sustituir la fuente oficial EDINET |
-| Alta | MAS `OPERA` / Singapore Open Data Licence | Prospectos y documentos de ofertas de Singapur | Revisado sin conector: Public Offers exige security code y los terminos OPERA restringen robots, caching y deep links; SGX queda como feed implementado |
-| Media | JPX `J-Quants API` | Precios OHLC japoneses ajustados y listado de valores; plan gratis con dos anos de historial y retraso de 12 semanas | Buen candidato para laboratorio Japon; revisar permiso de output antes de publicar precios |
-| Media | SGX `Analyst Research` | Informes aportados por firmas sobre acciones de Singapur | Referencia documental, no feed estructurado de targets |
-| Baja | HKMA Open API | Series economicas y de mercado monetario de Hong Kong gratis y sin registro | Podria servir para contexto macro futuro; no resuelve targets, precios de acciones ni IPOs |
+| High | Japan FSA `EDINET` Documents API | Official no-cost regulatory-document API including securities registration statements; requires key and responsible access | Priority Japanese offer-document connector |
+| Medium | `EDINET DB` | Japanese enrichment with advertised free plan and attributed public display | Secondary candidate; do not replace official EDINET |
+| High | Singapore `MAS OPERA` / Open Data Licence review | Prospectuses and offer documents | No connector: OPERA terms and security code restrict automation; SGX remains implemented path |
+| Medium | JPX `J-Quants API` | Adjusted Japanese OHLC and security listings; free plan advertised with two years and 12-week delay | Candidate Japan sandbox after public-output rights review |
+| Medium | SGX `Analyst Research` | Contributed reports on Singapore stocks | Documentary reference, not reusable structured targets |
+| Low | HKMA Open API | Free Hong Kong economic and money-market series | Future macro context only |
 
-## Targets Individuales De Analistas
+## Analyst Targets Remain Blocked
 
-Esta categoria sigue siendo el bloqueo principal del `Financials Scorecard`
-real.
+`AnalystCentral` advertises a free CSV with ten years of Wall Street ratings
+and targets, but its terms prohibit republication, derivatives, and data
+mining without written consent. ShareInvestor, SGX research, Wind, and
+Minkabu provide useful visible research context but no open reusable target
+history was identified.
 
-| Mercado / Fuente | Hallazgo | Por Que No Activa Rankings Publicos |
-|---|---|---|
-| Reino Unido / `AnalystCentral` | Declara un CSV gratuito con 10 anos de ratings y price targets de Wall Street para mas de 8,500 acciones e indices | Sus terminos conceden uso personal y prohiben republicacion, derivados y data mining sin consentimiento escrito |
-| Singapur / `ShareInvestor` | Publica consenso y target price agregado a partir de mas de 200 research houses, incluidas companias overseas | Es producto de membresia/terminal y no se encontro permiso para publicar su base historica |
-| Singapur / SGX `Analyst Research` | Aloja informes de research contribuidos por firmas externas | Los documentos pueden orientar revision manual; no constituyen filas reutilizables con licencia para ranking |
-| China / Wind Research Report Platform | Publica cobertura de mas de 4.5 millones de informes de cientos de fuentes, incluidos equities globales | Es plataforma profesional/licenciada, no dataset abierto para republicar targets |
-| Japon / Minkabu | Muestra consenso y evolucion temporal de precios objetivo para acciones japonesas | Vista de producto, sin feed abierto y redistribuible identificado |
+The correct next action is a written permission request to AnalystCentral for
+attributed aggregate output without raw-row redistribution.
 
-`AnalystCentral` merece una accion especifica: solicitar permiso escrito para
-usar un subconjunto derivado y publicar resultados agregados sin distribuir
-sus filas. Sin ese permiso, la afirmacion `100% Free` no supera las
-restricciones de sus propios terminos.
+## Prices, Universes, And ETF Evidence
 
-## Precios Ajustados Y Acciones Corporativas
+- JPX `J-Quants` is technically valuable for a Japanese sandbox, subject to
+  public-display/output confirmation.
+- ASX, LSE, HKEX, SGX, and official China market-data routes reviewed are
+  contractual or subscription paths for the needed price/reference data.
+- International index services may support later local verticals, but they do
+  not rebuild the historical `U.S. Financials` universe for free.
+- Australian and Hong Kong ETF materials require rights review before
+  automated republication. SEC N-PORT remains the defendable no-cost
+  regulatory ETF path currently used by TargetAudit.
 
-| Mercado | Fuente Oficial Revisada | Utilidad | Estado Gratuito / Publicable |
-|---|---|---|---|
-| Japon | JPX `J-Quants API` | OHLC ajustado/no ajustado, splits incorporados y listado historico de valores | Plan gratis: dos anos, retraso de 12 semanas; se debe confirmar display/output publico antes de conectarlo |
-| Australia | ASX `ReferencePoint` | EOD oficial, corporate actions y factores de dilucion | Producto de datos para suscriptores; no ruta gratis de publicacion |
-| Reino Unido | LSE Historical and Reference Data Products | End-of-day summary, Daily Official List y cambios por acciones corporativas | Data Shop/suscripcion; los terminos de market data controlan redistribucion |
-| Hong Kong | HKEX Historical Data / Data Marketplace | Datos historicos, trade files, atributos diarios y descargas programaticas | Productos por suscripcion; no fuente gratis para el dashboard |
-| Singapur | SGX Historical Data y SGXNews XML | Precios, anuncios y corporate actions estructurados | SGX ofrece prueba/contacto comercial; precios web gratuitos son solo para uso personal/no comercial |
-| China | SSE/CIIS historical market data | Snapshots/K-line y datos historicos oficiales de Shanghai | Oferta de suscripcion; CIIS muestra precios comerciales para historia oficial |
+## Implementation Priorities
 
-El hallazgo japones es tecnicamente valioso, pero no reemplaza los precios
-ajustados de acciones estadounidenses que se necesitan para puntuar Roth MKM,
-KBW, Citi, UBS o Barclays.
+1. Use `EDINET` with a key, attribution, and access controls for Japanese
+   offering-document monitoring.
+2. Keep `MAS OPERA` manual and blocked; use implemented `SGX IPO Prospectus`.
+3. Keep a disabled `J-Quants` prices-sandbox design until output rights are
+   confirmed.
+4. Pursue an `AnalystCentral` permission track for aggregate target research.
 
-## Universo Historico E Indices
+## Official Sources Reviewed
 
-Las bolsas internacionales ayudan a crear futuros verticales locales, no a
-reconstruir gratuitamente el universo historico `U.S. Financials`.
-
-| Fuente | Hallazgo | Decision |
-|---|---|---|
-| JPX Index Data Service / TOPIX | Constituents y cambios de componentes disponibles como servicios de datos; JPX indica licencias para provision a terceros | No usar como universo publico gratis |
-| ASX ReferencePoint | Master List y referencias para instrumentos/corporate actions | Ruta contractual, no fuente abierta |
-| HKEX Data Marketplace | Securities Attribute Daily Files y datos oficiales de referencia | Ruta contractual |
-| CSI / SSE / SZSE | Constituyentes y anuncios visibles; servicios de market data operados/licenciados por entidades oficiales | Explorar solo para vertical chino futuro, despues de verificar licencia de reutilizacion |
-
-## ETF Holdings
-
-Australia y Hong Kong confirmaron que existen holdings o divulgaciones utiles,
-pero no una licencia universal de republicacion diaria:
-
-| Fuente | Hallazgo | Uso Prudente |
-|---|---|---|
-| Vanguard Australia | Paginas de ETF muestran holdings y broker basket con actualizaciones declaradas | Consulta de cobertura; revisar terminos antes de recolectar |
-| Betashares Australia | Paginas de ETF ofrecen descarga CSV para ciertos fondos | Candidato para importador local, nunca ingestión publica automatica sin permiso |
-| SFC / HKEX | Reglas de divulgacion continua para ETF autorizados en Hong Kong | Evidencia regulatoria, no feed consolidado de compras/ventas |
-
-La ruta gratuita actualmente defendible en TargetAudit sigue siendo `SEC
-N-PORT`, con frecuencia regulatoria y sin afirmar tiempo real.
-
-## Fuentes Que Si Merecen Siguiente Implementacion
-
-1. `Japan IPO Filing Watch`: implementar un collector sobre el API oficial
-   `EDINET`, configurado con clave, atribucion y controles de acceso justo,
-   para monitorear documentos de oferta japoneses separado de precios.
-2. `Singapore Offer Document Watch`: revision cerrada sin collector `MAS
-   OPERA`; conservarlo como referencia manual bloqueada y usar el conector
-   oficial `SGX IPO Prospectus` ya implementado.
-3. `Japan Prices Sandbox`: preparar un adaptador `J-Quants` apagado por
-   defecto, que solo se active tras confirmar atribucion y output publico del
-   plan gratuito.
-4. `AnalystCentral Permission Track`: enviar una solicitud de autorizacion
-   para publicar estadisticas agregadas de una muestra, sin redistribuir el
-   archivo fuente.
-
-## Fuentes Oficiales Y Referencias Revisadas
-
-- AnalystCentral about/data claim: <https://analystcentral.com/about-us/>
-- AnalystCentral terms: <https://analystcentral.com/terms-of-service>
+- AnalystCentral: <https://analystcentral.com/about-us/> and <https://analystcentral.com/terms-of-service>
 - JPX J-Quants API: <https://www.jpx.co.jp/english/markets/other-data-services/j-quants-api/index.html>
-- JPX J-Quants plan announcement: <https://www.jpx.co.jp/corporate/news/news-releases/6020/20230403-01.html>
-- JPX J-Quants 2026 enhancement: <https://www.jpx.co.jp/english/corporate/news/news-releases/6020/20260119.html>
-- JPX TDnet overview: <https://www.jpx.co.jp/english/equities/listing/disclosure/tdnet/index.html>
-- JPX TDnet paid services: <https://www.jpx.co.jp/english/markets/paid-info-listing/tdnet/>
-- FSA EDINET Documents API guide: <https://disclosure2.edinet-fsa.go.jp/guide/static/disclosure/WZEK0090.html>
-- EDINET DB API documentation: <https://edinetdb.com/docs/api>
-- EDINET DB terms: <https://edinetdb.com/legal/terms>
+- FSA EDINET Documents API: <https://disclosure2.edinet-fsa.go.jp/guide/static/disclosure/WZEK0090.html>
+- EDINET DB API: <https://edinetdb.com/docs/api>
 - ASX ReferencePoint: <https://www.asx.com.au/connectivity-and-data/information-services/reference-data>
-- LSE Historical Data Products: <https://www.londonstockexchange.com/equities-trading/market-data/historical-data-products>
-- LSE market data terms: <https://docs.londonstockexchange.com/sites/default/files/documents/market-data-terms-conditions-2023-combined.pdf>
-- HKEX Historical Data FAQ: <https://www.hkex.com.hk/Global/Exchange/FAQ/Market-Data/Getting-Market-Data/Historical-Data?sc_lang=en>
+- LSE Historical Data: <https://www.londonstockexchange.com/equities-trading/market-data/historical-data-products>
+- HKEX Historical Data: <https://www.hkex.com.hk/Global/Exchange/FAQ/Market-Data/Getting-Market-Data/Historical-Data?sc_lang=en>
 - HKMA Open API: <https://apidocs.hkma.gov.hk/abouthkmasapi/>
 - SGX Historical Data: <https://www.sgx.com/data-connectivity/historical-data>
-- SGX Securities personal-use price download: <https://www.sgx.com/research-education/securities>
-- SGX Analyst Research: <https://www.sgx.com/research-education/analyst-research>
 - MAS OPERA terms: <https://eservices.mas.gov.sg/opera/MASUserTerms.aspx>
-- MAS OPERA Public Offers: <https://eservices.mas.gov.sg/opera/PublicOffers.aspx>
-- Singapore Open Data Licence: <https://data.gov.sg/open-data-licence>
-- SSE market-data services: <https://www.sse.com.cn/transparency/services/index.shtml>
-- SSE/CIIS historical products: <https://www.ciis.com.hk/hongkong/sc/historicaldata1/index.shtml>
 - Wind Research Report Platform: <https://www.wind.com.cn/portal/en/RPP/index.html>

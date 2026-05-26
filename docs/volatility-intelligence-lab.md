@@ -1,80 +1,68 @@
 # Volatility Intelligence Lab
 
-Fecha de diseno y revision inicial: `2026-05-25`.
+Initial design and review date: `2026-05-25`.
 
-## Proposito
+## Purpose
 
-`Volatility Intelligence Lab` no intenta competir como una pantalla generica
-de VIX. Su pregunta es distinta:
+`Volatility Intelligence Lab` does not aim to be a generic VIX screen. Its
+question is:
 
-> Cuando aparece estres verificable en acciones, tecnologia, tasas o
-> commodities, que ocurrio despues con activos monitorizados y eventos de
-> listing confirmados?
+> When verifiable stress appears in equities, technology, rates, or
+> commodities, what happens next to monitored assets and confirmed listing
+> events?
 
-La ruta `/dashboard/volatility` ya publica el diseno de investigacion y una
-visualizacion externa atribuida de `VIX`. La API
-`/api/v1/intelligence/volatility` publica las familias de indicadores y los
-experimentos planificados. Todavia no descarga ni calcula resultados reales
-de series Cboe o ICE.
+`/dashboard/volatility` publishes the research design and an attributed
+external VIX visualization. `/api/v1/intelligence/volatility` publishes the
+indicator families and planned experiments. No real Cboe or ICE series are
+downloaded or scored in this release.
 
-## Familias De Volatilidad
+## Volatility Families
 
-| Fase | Indicadores | Funcion En El Laboratorio |
+| Phase | Indicators | Lab Purpose |
 |---|---|---|
-| 1 | `VIX`, `VIX1D`, `VIX9D`, `VIX3M` | Detectar estres de acciones y distinguir evento inmediato de riesgo persistente |
-| 1 | `VXN` | Vincular volatilidad tecnologica con `QQQ` e IPOs tecnologicas/IA |
-| 1 | `MOVE` | Investigar estres de tasas, curva Treasury, liquidez y condiciones de financiacion para IPOs |
-| 2 | `VVIX`, `SKEW` | Estudiar volatilidad de la volatilidad y demanda de proteccion extrema |
-| 2 | `OVX`, `GVZ` | Contrastar estres de petroleo y oro con energia/refugio |
-| 3 | `VIX6M`, `VIX1Y` | Analizar persistencia estructural una vez validada la curva corta |
+| 1 | `VIX`, `VIX1D`, `VIX9D`, `VIX3M` | Separate immediate equity stress from persistent risk |
+| 1 | `VXN` | Connect technology volatility to `QQQ` and technology/AI IPO candidates |
+| 1 | `MOVE` | Examine rates stress, Treasury conditions, and IPO financing climate |
+| 2 | `VVIX`, `SKEW` | Study volatility-of-volatility and tail-protection demand |
+| 2 | `OVX`, `GVZ` | Compare oil and gold stress with energy/safe-haven context |
+| 3 | `VIX6M`, `VIX1Y` | Examine structural persistence after short-curve validation |
 
-## Diseno De Episodios
+## Episode Design
 
-El motor futuro debe conservar el umbral exacto, fecha de evento, series de
-entrada, derechos de output, numero de episodios y ventanas comparadas. Los
-primeros estudios son:
-
-| Episodio | Pregunta | Ventanas |
+| Episode | Question | Windows |
 |---|---|---|
-| `vix_shock` | Como reaccionaron activos seleccionados despues de una subida fuerte de `VIX`? | mismo dia, 1, 5, 20 y 60 sesiones |
-| `technology_stress_gap` | Que ocurrio con tecnologia/listings cuando `VXN` se separo de `VIX`? | 5, 20 y 60 sesiones |
-| `rates_before_equities` | El estres `MOVE` precedio un regimen `VIX` y cambios en el pipeline IPO? | 5, 20 y 60 sesiones |
-| `commodity_propagation` | Hubo propagacion hacia energia o refugio cuando `OVX`/`GVZ` subieron junto con equity volatility? | 1, 5 y 20 sesiones |
+| `vix_shock` | How did selected assets react after a sharp `VIX` move? | same day, 1, 5, 20, and 60 sessions |
+| `technology_stress_gap` | What happened to technology/listings when `VXN` diverged from `VIX`? | 5, 20, and 60 sessions |
+| `rates_before_equities` | Did `MOVE` stress precede a `VIX` regime and IPO-pipeline changes? | 5, 20, and 60 sessions |
+| `commodity_propagation` | Did stress propagate toward energy or gold when `OVX`/`GVZ` rose with equity volatility? | 1, 5, and 20 sessions |
 
-Cada salida debe informar mediana, frecuencia direccional, dispersion,
-drawdown y muestra disponible. Nunca debe convertir una regularidad historica
-en una instruccion de compra o venta.
+Future outputs must disclose threshold, event date, input series, output
+rights, episode count, windows, medians, directional frequency, dispersion,
+drawdown, and available sample. Historical regularities are never buy/sell
+instructions.
 
-## Diferencia Frente A Otros Dashboards
+## Difference From Volatility Dashboards
 
-Herramientas revisadas como `TheVIXtrader` y `Volatilitaets-Zentrale` ya
-presentan regimenes VIX, term structure y varias medidas cross-asset.
-TargetAudit no gana copiando ese catálogo. La capa diferenciadora es:
+Products such as `TheVIXtrader` and `Volatilitaets-Zentrale` already show VIX
+regimes, term structure, and cross-asset measures. TargetAudit differentiates
+itself by connecting volatility episodes to verified `IPO Watch` evidence,
+technology listings, rates-financing context, ETF evidence when permitted, and
+explicit Evidence Passports and claim boundaries.
 
-- asociar episodios a filings y listings verificados de `IPO Watch`;
-- estudiar tecnologia mediante `VXN` alrededor de candidatas de IPO;
-- cruzar estres de tasas `MOVE` con clima de financiacion y Treasury;
-- vincular evidencia ETF/ownership a las mismas ventanas cuando exista;
-- publicar `Evidence Passports` y limites de cada conclusion.
+## Sources And Limits
 
-## Fuentes Y Limites
-
-| Fuente | Evidencia Disponible | Estado En TargetAudit |
+| Source | Evidence Available | TargetAudit State |
 |---|---|---|
-| Cboe Historical Data for VIX and Other Volatility Indices | Pagina oficial que enlaza historia diaria para `VIX`, `VVIX`, `VIX9D`, `OVX` y `GVZ`, entre otros | Registrada para estudio; output derivado y almacenamiento público pendientes de revision de derechos |
-| Cboe Index Dashboards / Data Feed | Familia temporal y oferta de datos de indices | Referencia oficial para alcance; no feed integrado |
-| ICE BofA MOVE Index | Producto oficial de volatilidad del mercado de bonos con oferta intraday/diaria/historica | Fuente planificada; no activada sin autorizacion de display/output |
-| FRED `VIXCLS` graph | Display atribuido de VIX desde `2025-01-20` | Visualizacion externa con cita requerida; no se almacena ni alimenta calculos |
+| Cboe Historical Data | Official daily history links for `VIX`, `VVIX`, `VIX9D`, `OVX`, `GVZ`, and others | Registered for research; public derived-output and storage rights pending review |
+| Cboe Index Data Access | Index family and data-feed offering | Official scope reference; no integrated feed |
+| ICE BofA MOVE Index | Official fixed-income volatility offering | Planned source; not activated without display/output authorization |
+| FRED `VIXCLS` graph | Attributed VIX display from `2025-01-20` | External visualization with citation required; not stored or calculated |
 
-Fuentes oficiales:
+Sources:
 
 - Cboe Historical Data: <https://www.cboe.com/tradable_products/vix/vix_historical_data>
 - Cboe Index Data Access: <https://www.cboe.com/us/indices/accessing-index-data/>
 - ICE MOVE Index: <https://developer.ice.com/fixed-income-data-services/catalog/ice-data-indices-move-index>
-- FRED VIXCLS chart and citation: <https://fred.stlouisfed.org/series/VIXCLS>
-- FRED graph sharing: <https://fredhelp.stlouisfed.org/category/fred/graphs/share-my-fred-graph/>
-
-Competidores utilizados para posicionamiento:
-
+- FRED VIXCLS: <https://fred.stlouisfed.org/series/VIXCLS>
 - TheVIXtrader: <https://thevixtrader.com/>
 - Volatilitaets-Zentrale: <https://vix-zentrale.de/>

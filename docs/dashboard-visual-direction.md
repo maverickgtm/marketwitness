@@ -1,64 +1,50 @@
-# Direccion Visual Del Dashboard
+# Dashboard Visual Direction
 
-Revision: `2026-05-25`
+Review date: `2026-05-25`.
 
-## Objetivo
+## Objective
 
-TargetAudit debe sentirse como un terminal de investigacion util, no como una
-coleccion de reportes sueltos. La experiencia visual tiene dos obligaciones:
+TargetAudit should feel like a useful research terminal, not a collection of
+unrelated reports. The visual experience must make key modules and controls
+immediately visible while separating auditable evidence from third-party
+market context.
 
-1. hacer visibles en segundos los modulos, estados y controles mas relevantes;
-2. mantener separada la evidencia auditable de cualquier contexto visual
-   cargado desde terceros.
+## Applied Principles
 
-## Referencias Aplicadas
-
-La primera renovacion implementa principios comunes de dashboards financieros:
-
-| Principio | Decision en TargetAudit |
+| Principle | TargetAudit Decision |
 |---|---|
-| KPI y proposito visibles al entrar | La portada abre con promesa, metricas de Open Edition y cuatro modulos principales. |
-| Jerarquia estable de navegacion | La portada incorpora una barra lateral para workspace, evidencia y controles. |
-| Contexto de mercado sin saturar reportes | `Market Pulse` y la franja de tickers solo aparecen como contexto visual atribuido. |
-| Grafico profundo en una vista dedicada | `/dashboard/market-context` conserva el grafico avanzado `XLF` y suma una lente comparativa lateral. |
-| Claridad sobre origen de datos | Cada panel de TradingView se rotula como display externo que no alimenta scoring. |
-| Degradacion sin Internet | Los espacios externos muestran un estado de carga informativo mientras el widget no esta disponible. |
+| Purpose and KPIs visible on arrival | The home view opens with the Open Edition promise, status metrics, and primary modules. |
+| Stable navigation hierarchy | A sidebar separates workspace, evidence, and control areas. |
+| Market context without report clutter | `Market Pulse` and the ticker strip are labeled external visual context. |
+| Dedicated deep charting view | `/dashboard/market-context` contains the advanced `XLF` chart and comparison lens. |
+| Clear data origin | TradingView panels state that they do not feed scoring. |
+| Graceful offline state | External areas display a loading/information state when widgets are unavailable. |
 
-## Widgets TradingView
+## TradingView Widgets
 
-Solo se utilizan widgets oficiales incrustados con atribucion visible:
+Only official embedded widgets with visible attribution are used:
 
-| Superficie | Widget | Uso |
+| Surface | Widget | Use |
 |---|---|---|
-| `/dashboard/open` | `Ticker Tape` | Contexto compacto de benchmarks, Financials y grandes acciones seguidas. |
-| `/dashboard/open` | `Market Overview` | Vista macro inicial en pestanas `Benchmarks` y `AI Leaders`. |
-| `/dashboard/market-context` | `Ticker Tape` | Orientacion rapida antes de abrir el grafico sectorial. |
-| `/dashboard/market-context` | `Advanced Chart` | Inspeccion interactiva de `AMEX:XLF`. |
-| `/dashboard/market-context` | `Market Overview` | Comparacion visual de Financials y benchmarks. |
+| `/dashboard/open` | `Ticker Tape` | Compact benchmark, Financials, and major-stock context |
+| `/dashboard/open` | `Market Overview` | Initial macro view in `Benchmarks` and `AI Leaders` tabs |
+| `/dashboard/market-context` | `Ticker Tape` | Quick orientation before sector chart review |
+| `/dashboard/market-context` | `Advanced Chart` | Interactive inspection of `AMEX:XLF` |
+| `/dashboard/market-context` | `Market Overview` | Visual Financials and benchmark comparison |
 
-Estos widgets cargan desde TradingView. TargetAudit no lee sus valores, no los
-almacena en DuckDB, no los exporta y no los considera evidencia para evaluar
-targets, IPOs o cambios de holdings.
+TargetAudit does not read widget values, store them in DuckDB, export them, or
+treat them as evidence for targets, IPOs, or holdings changes.
 
-## Siguiente Fase Visual
+## Next Visual Phase
 
-La misma direccion debe extenderse progresivamente sin rehacer el alcance de
-datos:
+1. Extend the premium visual language across secondary reports.
+2. Build first-party charts only for data TargetAudit can publish, such as
+   document counts by market or approval states.
+3. Produce launch captures and complete responsive review before publishing.
 
-1. llevar el lenguaje premium a reportes secundarios; `IPO Watch`,
-   `ETF Evidence` y `Global Listings` ya incorporan su primera superficie;
-2. crear graficos propios exclusivamente para datos que TargetAudit ya puede
-   publicar, como conteos de documentos por mercado o estados de aprobacion;
-3. producir capturas de lanzamiento y revisar responsive design antes de
-   publicar el repositorio.
+## Official Design And Integration Sources
 
-## Fuentes Oficiales De Diseno E Integracion
-
-- TradingView, widgets de ticker:
-  <https://www.tradingview.com/widget-docs/widgets/tickers/>
-- TradingView, widget Market Overview:
-  <https://www.tradingview.com/widget-docs/widgets/watchlists/market-overview/>
-- TradingView, widget Symbol Overview:
-  <https://www.tradingview.com/widget-docs/widgets/charts/symbol-overview/>
-- TradingView, tutorial de integracion:
-  <https://www.tradingview.com/widget-docs/tutorials/build-page/widget-integration/>
+- TradingView ticker widgets: <https://www.tradingview.com/widget-docs/widgets/tickers/>
+- TradingView Market Overview: <https://www.tradingview.com/widget-docs/widgets/watchlists/market-overview/>
+- TradingView Symbol Overview: <https://www.tradingview.com/widget-docs/widgets/charts/symbol-overview/>
+- TradingView integration tutorial: <https://www.tradingview.com/widget-docs/tutorials/build-page/widget-integration/>

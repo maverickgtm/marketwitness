@@ -1,234 +1,67 @@
 # Roadmap
 
-TargetAudit inicia con un `Financials Scorecard` para targets de acciones
-financieras estadounidenses y un modulo separado `IPO Watch` para hitos
-verificables de cotizaciones tecnologicas/estrategicas.
+TargetAudit begins with a `Financials Scorecard` for U.S. financial-company
+targets and an independent `IPO Watch` for verifiable listing milestones.
 
-## Milestone 1: Research Engine (`v0.1`)
+## Completed Foundation
 
-- [x] Metodologia inicial y esquema auditado.
-- [x] Importacion CSV de targets y barras ajustadas.
-- [x] Evaluacion direccional, error terminal y comparacion con benchmark.
-- [x] Ranking Markdown y datos sinteticos reproducibles.
-- [x] Especializacion inicial en U.S. Financials con benchmark `XLF`.
-- [x] Desglose de resultados por direccion del target.
-- [x] Registro y reporte inicial de IPO Watch con SpaceX/Cerebras verificados.
-- [x] Pagina Global Listings Watch con fuentes oficiales identificadas.
-- [x] Pruebas unitarias y GitHub Actions.
+- [x] Versioned methodology, audited schema, CLI evaluation, Markdown output,
+  redistributable fixtures, tests, and GitHub Actions.
+- [x] U.S. Financials starting vertical with `XLF` benchmark, directional
+  segmentation, Wilson intervals, point-in-time universe rules, target
+  revisions, corporate-action guards, and stated backtest costs.
+- [x] DuckDB run warehouse, read-only FastAPI API, Financials dashboard, run
+  comparison, source governance, provider approvals, readiness, quality, and
+  release controls.
+- [x] Authorized-export importer and provenance/manifest workflow.
 
-## Milestone 2: Data Adapters (`v0.2`)
+## Listing And Holdings Workflows
 
-- [x] Registro formal de proveedores y licencias.
-- [x] Adaptador SEC para metadatos de emisores/CIK.
-- [x] Adaptador de precios freemium con cache y limites visibles.
-- [x] Importador para exportaciones autorizadas de targets con manifiesto y auditoria.
-- [x] Descubridor SEC para formularios `S-1`, `F-1`, `424B4` y retiros desde
-  un indice diario completo.
-- [x] Ejecucion diaria persistente SEC con historial y cola enlazada por CIK.
-- [x] Pagina HTML `SEC IPO Discovery Queue` para la entrada universal, separada
-  del triage y de cualquier cambio de estado del tablero.
-- [x] Centro navegable `IPO Watch Center` para ordenar intake SEC, decisiones
-  revisadas, tablero e indicadores internacionales sin promover rumores.
-- [x] Triage SEC transparente para coincidencias watchlist, señales SPAC/ETF y prospectos finales.
-- [x] Promocion revisada desde SEC IPO Alerts al tablero IPO Watch mediante decisiones documentadas.
-- [x] Conector LSE `New issues` mediante componente JSON oficial.
-- [x] Conector HKEX/HKEXnews para estados oficiales AP/PHIP.
-- [x] Snapshot trazable de LSE `Upcoming issues`.
-- [x] Agregar contraste documental FCA NSM para LSE.
-- [x] Clasificar metadatos FCA como prospecto, admission document, intention to float u otra revision.
-- [x] Conector ASX `Upcoming floats and listings` desde HTML oficial.
-- [x] Conector TSX `New Company Listings` como confirmacion de listings.
-- [x] Conector SGX `IPO Prospectus` mediante API JSON oficial.
-- [x] Monitor JPX `New Listings` para aprobaciones y fechas de listing de Tokio.
-- [x] Historial y diff diario de diez monitores globales, incluidos JPX, EDINET, CVM, ESMA y OpenDART, con cola de revision.
-- [x] Navegacion de retorno desde monitores globales, alertas y confirmaciones
-  hacia `Global Listings Watch` para conservar contexto jurisdiccional.
-- [x] Ingesta de comunicados oficiales para confirmar listings.
-- [x] Validacion de splits y cambios de ticker.
-- [x] Validacion de barras de precios duplicadas o incoherentes.
+- [x] SEC IPO discovery, alerts, manual review, and IPO Watch views.
+- [x] Global listing registry, daily diff, issuer confirmations, and monitors
+  for LSE/FCA, HKEX, ASX, TSX, SGX, JPX, EDINET, CVM, ESMA, and OpenDART.
+- [x] Documented blocks for MAS OPERA, SEDAR+, KRX public output, and Russia
+  automation/sanctions risk.
+- [x] ETF Evidence Center with synthetic ARKK/XLF/IYF comparisons and SEC
+  N-PORT recent, catalog, sync, and backfill workflows.
 
-## Milestone 3: Rigor Cuantitativo (`v0.3`)
+## Open Edition Product
 
-- [x] Intervalos de confianza Wilson 95% para hit rate.
-- [x] Ranking por sector y por direccion con minimo muestral por segmento.
-- [x] Universo historico punto-en-el-tiempo con membresia y sector auditables.
-- [x] Revision de targets encadenados por firma/accion con exclusion auditable.
-- [x] Reglas de backtest con salida y costos explicitos.
+- [x] No-cost Open Edition bundle with attributed TradingView context,
+  RWA Watch Sandbox, Market Intelligence workspace, Volatility Intelligence
+  Lab, Policy Signal Impact Lab, and visible Public Use Policy.
+- [x] Evidence Passport Commons API and contribution gateway for international
+  source proposals.
+- [x] Multilingual contributor gateway in English, Japanese, Brazilian
+  Portuguese, Traditional Chinese, and Korean.
+- [x] Release-candidate policies, security reporting, contribution templates,
+  dashboard screenshots, and English public documentation migration.
+- [x] Official White House RSS paths classified as eligible policy-event
+  sources; Truth Social collection remains blocked without permission.
 
-## Milestone 4: Aplicacion (`v0.4`)
+## Pending Product Expansion
 
-- [x] DuckDB inicial para conservar corridas de evaluacion, hashes de evidencia
-  y resultados tipados, con esquema relacional portable a PostgreSQL.
-- [x] API FastAPI inicial de solo lectura con endpoints de corridas, ranking
-  de firmas, acciones y auditoria de exclusiones.
-- [x] Dashboard web inicial `Financials Scorecard` con filtros, ranking,
-  detalle por firma/ticker y auditoria de exclusiones sobre la API.
-- [x] Centro navegable `Financials Evidence Center` que reúne input,
-  controles de scoring y decision de release del sandbox.
-- [x] Linea temporal visual de evidencia por ticker y exportaciones CSV del
-  ranking filtrado y las observaciones de una corrida.
-- [ ] Serie diaria completa de precios/targets autorizada para graficos
-  historicos publicos.
-- [x] Pagina de auditoria de fuentes, controles de publicacion y observaciones
-  excluidas o pendientes por corrida.
-- [x] Pagina `Scorecard Readiness` para separar fixtures, uso interno y
-  requisitos productivos, incluido el universo historico punto-en-el-tiempo,
-  antes de habilitar rankings publicos.
-- [x] Persistir `provider_id` por observacion para enlazar resultados y
-  gobernanza de fuentes sin inferencias por URL.
-- [x] Pagina `ETF Holdings Activity` con comparador de snapshots, diferencias
-  de posiciones, sello de fecha/frecuencia y demo sintetica reproducible.
-- [x] Importador local de archivos diarios ARK con normalizacion auditable y
-  politica de no redistribucion de holdings reales pendiente de permiso.
-- [x] Vista `ARKK-DEMO` de variaciones entre fixtures ARK-shaped, visible en
-  el dashboard sin redistribuir holdings oficiales.
-- [x] Centro navegable `ETF Evidence Center` que separa sandboxes sintéticos
-  de evidencia SEC N-PORT periódica y sus controles operativos.
-- [x] Importador local State Street SPDR/XLF para holdings diarios y demo
-  `XLF-DEMO` alineado a Financials.
-- [x] Importador local iShares/IYF para un segundo ETF financiero, con demo
-  `IYF-DEMO` y bloqueo explicito de descarga automatizada por terminos.
-- [ ] Conectores de snapshots diarios oficiales por emisor para la pagina
-  `ETF Holdings Activity`, incluyendo autorizacion y permisos de publicacion
-  para ARK, SPDR e iShares.
-- [x] Respaldo regulatorio ETF mediante SEC `N-PORT` para periodos publicados,
-  separado de las descargas diarias del emisor y limitado inicialmente a
-  posiciones en acciones.
-- [x] Recoleccion SEC `N-PORT` reciente por `CIK`/`seriesId`, con XML
-  validado archivado localmente y acceso identificado mediante `User-Agent`.
-- [x] Backfill historico de `N-PORT` mediante datasets trimestrales SEC
-  extraidos, con snapshots por periodo y revision obligatoria de enmiendas.
-- [x] Catalogo y descarga manual controlada de ZIP trimestrales `N-PORT`,
-  con extraccion segura y archivos conservados fuera de Git.
-- [x] Ejecucion programada que consulta nuevos trimestres `N-PORT`, descarga
-  solo releases nuevas y regenera la serie `XLF` cuando hay evidencia local.
-- [x] Vistas HTML públicas del catálogo y del estado incremental `N-PORT`,
-  expuestas como evidencia trimestral y no como actividad diaria.
+- [ ] Obtain an optional written permission or licensed contribution for
+  publishable historical analyst targets; first no-fee attempt is
+  `AnalystCentral`.
+- [ ] Obtain compatible publishable adjusted-price, corporate-action, and
+  historical-universe evidence for a first real scorecard.
+- [ ] Obtain written display/retention/derived-output authorization before a
+  real `xStocks / Backed`, Ondo, or secondary-venue RWA connector.
+- [ ] Implement archive, deduplication, and topic classification for eligible
+  official White House feeds before calculating market-reaction episodes.
+- [ ] Approve Cboe/ICE rights or an authorized route before publishing real
+  volatility episodes.
+- [ ] Implement market-regime, macro-calendar, insider, and CFTC positioning
+  connectors only after output policy and tests are approved.
+- [ ] Obtain external legal review before operating a public service with real
+  data, subscriptions, advertising, or third-party-facing signals.
 
-## Milestone 5: Operacion Publica (`v1.0`)
+## Release Decisions
 
-- [x] Open Edition ejecutable sin suscripciones de datos, con sandbox
-  redistribuible y monitores regulatorios públicos claramente separados.
-- [x] Catalogo `bring your own license` para que el usuario compare opciones
-  pagadas sin volverlas requisito ni confundirlas con permiso de publicacion.
-- [x] Clasificacion de APIs freemium de targets/consenso (Finnhub y FMP) como
-  opciones contractuales pendientes de derechos de output publico.
-- [x] Widget atribuido de TradingView para contexto visual de mercado, sin
-  usarlo como fuente de datos del scorecard.
-- [x] Mapa inicial `RWA Watch` de los 20 CEX lideres por Trust Score y
-  Pepperstone, separando emisores, venues y CFD.
-- [x] `RWA Watch Sandbox` ejecutable y visible en dashboard con observaciones
-  sinteticas, desviacion de precio y bloqueo explicito de datos live.
-- [ ] Adaptador real `RWA Watch` para `xStocks / Backed`, solo si se obtiene
-  autorizacion escrita de display, retencion y output derivado.
-- [x] Revision de venues RWA principales: Bybit y Kraken quedan como
-  referencias bloqueadas; Gate y Bitget permanecen pendientes de permisos de
-  output publico.
-- [ ] Aprobacion contractual de `Ondo Global Markets`, Gate o Bitget para
-  activar datos reales en una edicion opcional.
-- [ ] Licencia o aportación autorizada opcional para mostrar rankings reales
-  de analistas públicamente.
-- [ ] Actualizaciones programadas del scorecard real con fuentes opcionales
-  publicables.
-- [x] Monitoreo de calidad por corrida con bloqueo de entradas/linaje
-  incompletos, modo de publicación que exige acciones corporativas y universo
-  histórico, y revisión visible de exclusiones anormales.
-- [x] Versionado de datasets y metodologia por corrida, con huella estable de
-  entradas y comparacion visible en API/dashboard.
-- [x] Informes periodicos reproducibles mediante GitHub Actions, construidos
-  solo con fixtures redistribuibles y publicados como artefactos temporales.
-- [x] Informe operativo reproducible de calidad, disponible por CLI, dashboard
-  y monitor local recurrente del warehouse live.
-- [x] Release Center que combina derechos de fuentes, linaje de targets,
-  procedencia de activos y calidad pública en una decisión reproducible.
-- [x] Cola de aprobación de proveedores que documenta evidencia y criterio de
-  promoción de los candidatos críticos sin autoautorizar publicación.
-- [x] Flujo de decisión manual que genera registros promovidos o pendientes
-  con evidencia, sin editar la gobernanza base en silencio.
-- [x] Preparacion de colaboracion publica en GitHub con politica de seguridad
-  y plantillas que exigen derechos y procedencia para fuentes propuestas.
-- [x] Barrido internacional inicial de fuentes gratuitas o abiertas en Reino
-  Unido, Japon, Australia, Hong Kong, Singapur y China continental.
-- [x] Segunda ronda internacional en India, Mexico, Brasil, Argentina,
-  Alemania, Suiza, Paises Bajos e Italia, con clasificacion de derechos.
-- [x] Deep dive en Tokio, Toronto y Frankfurt para combinar `EDINET`/`JPX`,
-  bloquear automatizacion `SEDAR+` y validar cobertura `ESMA`/`BaFin`.
-- [x] Revision final de brechas en Corea, Golfo y Sudafrica, incorporando
-  `OpenDART`/`KRX` y dejando los mercados sin API confirmada en observacion.
-- [x] Revision de Rusia, documentando `Bank of Russia`/`MOEX ISS` como
-  `restricted_research_only` por la designacion OFAC de `MOEX`.
-- [x] Implementar un monitor regulatorio japones sobre el API oficial
-  `EDINET` para filings de oferta con clave gratuita.
-- [x] Integrar filings `EDINET` al historial diario sin promover documentos a
-  estados de listing.
-- [x] Implementar `CVM Equity Offering Watch` sobre el ZIP diario ODbL y
-  añadir ofertas de acciones brasileñas al diff sin promoverlas a listing B3.
-- [x] Implementar `ESMA Equity Prospectus Watch` para valores `SHRS` de
-  Alemania, Paises Bajos e Italia con atribucion y sin afirmar trading.
-- [x] Revisar `MAS OPERA` de Singapur y excluir ingesta automatica: la
-  busqueda Public Offers exige security code y sus terminos restringen
-  robots, caching y deep links; conservar `SGX IPO Prospectus` como ruta
-  automatizada.
-- [x] Implementar `Korea OpenDART Equity Offering Watch` para emisiones
-  `C001`/`C006` con clave gratuita, e integrar su diff sin afirmar listing.
-- [x] Revisar `KRX OPEN API` y excluir su output del dashboard público porque
-  sus términos prohíben entregar los datos provistos por KRX a terceros.
-- [x] Barrido final internacional de targets historicos: `AnalystCentral`
-  identificado como candidato gratuito sujeto a permiso escrito, y `QUICK`,
-  `FnGuide`, `Intrinio` y `Webull` clasificados sin activar datos reales.
-- [x] Portal multilingue de contribucion global en ingles, japones,
-  portugues de Brasil, chino tradicional y coreano para proponer fuentes con
-  evidencia de derechos antes de activar conectores.
-- [x] Primera renovacion premium del dashboard: terminal Open Edition con
-  navegacion operativa y `Market Pulse`, mas workspace `Market Context` con
-  widgets oficiales atribuidos de TradingView separados del scoring.
-- [x] Renovacion premium inicial de `IPO Watch`, `ETF Evidence` y `Global
-  Listings`, con visualizaciones propias de flujo, capas y cobertura que no
-  inventan datos de mercado.
-- [x] Revision de competencia y sostenibilidad frente a `OpenBB`, `Stocknear`,
-  `AnaChart` y herramientas SEC para definir un lanzamiento gratuito creible.
-- [x] `Evidence Passport Commons` v0.1 con pagina publica, API de origen y
-  derechos, e invitacion a contributors para ampliar cadencia y limites de
-  afirmacion de forma verificable.
-- [x] Workspace inicial `Market Intelligence` y API de modulos, ampliado a siete
-  capas priorizadas y fuentes oficiales registradas sin presentar nuevos
-  conectores como feeds live.
-- [x] `Volatility Intelligence Lab` inicial con vista VIX atribuida, API de
-  diseño de episodios, mapa `VIX`/`VXN`/`MOVE`/commodities y fuentes Cboe/ICE
-  registradas sin declarar series reales publicables.
-- [x] Sustituir el panel VIX vacio por un grafico externo FRED `VIXCLS`
-  atribuido y visible desde el inicio del segundo mandato (`2025-01-20`).
-- [x] `Policy Signal Impact Lab` inicial para el caso Donald Trump / Truth
-  Social, con API metodologica, precedentes competitivos y bloqueo explicito
-  de coleccion automatica por terminos oficiales.
-- [ ] Obtener permiso escrito o un feed autorizado de comunicaciones antes de
-  calcular episodios historicos o activar alertas en tiempo real.
-- [x] Confirmar `White House News RSS`, `Presidential Actions RSS` y
-  `White House Wire RSS`; clasificar los dos primeros como ingesta oficial
-  elegible y Wire como radar metadata-only por sus enlaces de terceros.
-- [ ] Implementar archivado, deduplicacion y clasificacion tematica de los
-  feeds oficiales de White House antes de medir reacciones de mercado.
-- [ ] Aprobar derechos o una ruta autorizada para historia Cboe/ICE antes de
-  calcular y publicar episodios reales de volatilidad.
-- [ ] Implementar `Market Regimes` con `BTC`/`ETH`, `WTI`/`Brent` y curva
-  Treasury despues de aprobar politica de output y pruebas de cada conector.
-- [ ] Implementar `Macro Calendar` Fed/BLS e `Insider Activity` SEC como
-  contexto verificable enlazado a companias vigiladas.
-- [ ] Implementar `CFTC Futures Positioning` y expandir ownership SEC
-  solamente despues de validar las primeras capas.
-- [x] Politica publica visible de no-recomendacion, capas de datos y fuentes
-  bloqueadas en `/dashboard/policy`, declarada como control interno.
-- [ ] Revision legal externa del producto y de sus disclaimers antes de
-  ofrecer datos reales o un servicio publico operado.
-- [ ] Mantener Rusia sin ingesta automatica salvo autorizacion legal
-  documentada sobre sanciones y licencia de datos.
-
-## Decisiones Pendientes
-
-1. Si se desea ampliar Open Edition, proveedor o aportación autorizada de
-   targets históricos para una primera muestra real.
-   El primer intento sin cuota pendiente es solicitar por escrito permiso
-   limitado a `AnalystCentral`.
-2. Para esa ampliación opcional, precios ajustados que permitan publicación.
-3. Nombre/dominio final y alcance: proyecto de investigacion o producto
-   publico con actualizaciones.
+1. The GitHub candidate brand remains `TargetAudit`; `MarketWitness` is only a
+   possible future rebrand requiring clearance and migration planning.
+2. The Open Edition launches around lawful public evidence and synthetic
+   methods, not an unlicensed real analyst ranking.
+3. Optional commercial integrations must be bring-your-own-license or carry
+   explicit public-output rights.

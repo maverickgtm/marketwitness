@@ -1,16 +1,15 @@
-## Cambio
+## Change
 
-Describe el problema resuelto y el resultado verificable.
+Describe the problem solved and the verifiable outcome.
 
-## Verificacion
+## Verification
 
-- [ ] Ejecute `make verify`.
-- [ ] Agregue o actualice pruebas cuando cambia comportamiento.
-- [ ] Verifique el dashboard si cambia una pagina visible.
+- [ ] I ran `make verify`.
+- [ ] I added or updated tests when behavior changed.
+- [ ] I reviewed the dashboard when a visible page changed.
 
-## Datos Y Permisos
+## Data And Permissions
 
-- [ ] No incluye claves, `.env`, `data/raw/`, `data/private/` ni datos reales sin permiso de redistribucion.
-- [ ] Toda fuente nueva esta registrada con URL oficial, referencia de terminos y estado de publicacion.
-- [ ] Los resultados publicos no presentan recomendaciones de inversion ni derechos de datos no confirmados.
-
+- [ ] This change does not include keys, `.env`, `data/raw/`, `data/private/`, or real data without redistribution permission.
+- [ ] Every new source is registered with an official URL, terms reference, and publication status.
+- [ ] Public output does not present investment recommendations or unconfirmed data rights.

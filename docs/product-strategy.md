@@ -1,166 +1,149 @@
-# Estrategia De Producto
+# Product Strategy
 
-## Nombre Publico
+## Public Name
 
 **TargetAudit**
 
-Tagline: **Auditable market intelligence: analyst targets and upcoming public
-listings.**
+Tagline: **Evidence-first market intelligence for auditable research.**
 
-El paquete tecnico conserva el nombre `targetaudit` para poder extenderse en
-el futuro a otros verticales sin romper integraciones.
+The technical package remains `targetaudit`, allowing the product to extend to
+other verticals without breaking integrations.
 
-La edición principal debe funcionar sin comprar datasets. Tiene modulos
-complementarios:
+### Future Branding Candidate
 
-- `Financials Scorecard`: sandbox auditable sobre financials con datos
-  redistribuibles; admite datos autorizados como extensión.
-- `IPO Watch`: monitoreo basado en fuentes públicas regulatorias de nuevas cotizaciones
-  tecnologicas/estrategicas.
-- `Global Listings Watch`: mapa y futuros conectores de listings fuera de
-  Estados Unidos, comenzando por Londres y Hong Kong.
-- `Evidence Passport Commons`: protocolo publico y API de fichas de fuente y
-  derechos, extensible por contributors antes de activar nuevos conectores.
-- `RWA Watch Sandbox`: pagina funcional con evidencia sintetica sobre acciones
-  y ETF tokenizados; los conectores reales de `xStocks / Backed`, `Ondo` y
-  venues quedan condicionados a derechos escritos de uso publico.
-- `Market Intelligence`: workspace de eventos, contexto y posicionamiento que
-  ordena la integracion futura de cripto seleccionada, energia, tasas,
-  catalizadores macro, insiders y CFTC sin emitir senales de operacion.
-- `Volatility Intelligence Lab`: investigacion de episodios `VIX`, tecnologia
-  (`VXN`), tasas (`MOVE`) y commodities, enlazada a filings/listings
-  verificados en lugar de duplicar un dashboard de volatilidad.
-- `Policy Signal Impact Lab`: caso inicial Donald Trump / Truth Social para
-  estudiar comunicaciones y reacciones de mercado con un bloqueo explicito
-  de ingesta automatica hasta obtener derechos.
+`MarketWitness` is retained only as a possible future rebranding candidate.
+The `v0.1.0-rc.1` public release remains `TargetAudit`. Any future brand
+change requires trademark, repository-handle, and domain clearance, followed
+by a planned migration of package-facing language.
 
-## Problema
+## Product Thesis
 
-Los inversores pueden encontrar targets actuales y rankings generales en
-productos establecidos, pero resulta dificil comprobar:
+Established market products provide current targets, ratings, calendars, and
+charts. It remains hard for a public researcher to verify:
 
-- si un target historico realmente llego a cumplirse;
-- si la firma mejoro a un benchmark del mismo sector;
-- si un especialista sectorial supero a una firma generalista;
-- si la conclusion depende de pocas observaciones o de datos no auditables.
+- whether a historical target was actually reached;
+- whether a firm added value against a same-sector benchmark;
+- whether a specialist performed differently from a generalist;
+- whether a conclusion relies on enough observations and publishable data;
+- which official evidence confirms a listing or market event;
+- how volatility or public communications relate to market reactions without
+  overstating causality.
 
-## Diferenciacion
+TargetAudit is an open, reproducible research system that treats evidence
+rights and claim boundaries as product features.
 
-Competidores observados al `2026-05-24`:
+## Open Edition Modules
 
-| Producto | Enfoque Visible | Oportunidad Para TargetAudit |
+| Module | Role | Public Boundary |
 |---|---|---|
-| TipRanks | Ratings, targets y metodologia de exito a un ano | Benchmark metodologico directo; ser reproducible sin incorporar datos sin derechos |
-| MarketBeat | Mas de un millon de recomendaciones y rankings por suscripcion; export reciente anunciado hasta seis meses | Piloto privado de cobertura, no fuente suficiente para score a un ano ni publicacion sin licencia |
-| WallStreetZen | Ranking propio sobre mas de 4,000 analistas | Benchmark metodologico privado, no feed historico confirmado |
-| Yahoo Finance / Investing.com | Consulta visual de ratings y targets | Referencia manual solamente; sus terminos no sustentan ingestion o redistribucion |
-| Finnhub / FMP | Endpoints programaticos de tendencia o consenso de target | Conectores futuros solo bajo licencia explicita de display/redistribucion |
-| TradingView | Widgets gratuitos con atribucion conservada | `Market Pulse` y `Market Context` implementados para benchmarks y `XLF`, separados del motor de targets |
-| FRED `VIXCLS` | Grafica externa atribuida con cita requerida | VIX visible en `Volatility Lab` y `Policy Signal Impact Lab`, separado de calculos |
-| Truth Social | Comunicaciones publicas relevantes para event studies | Caso Donald Trump documentado; coleccion automatica bloqueada por terminos hasta permiso escrito |
-| xStocks / Ondo / venues CEX | Emisores de activos tokenizados y mercados como Bybit, Kraken, Gate y Bitget | `RWA Watch Sandbox` ya demuestra el modelo; xStocks queda bloqueado por terminos y ningun venue suministra analyst targets |
-| Quiver Quantitative | Desempeno historico de analistas usando datos Benzinga | Examinar firmas especialistas contra generalistas dentro de financials |
-| AnaChart | Charts y hit ratios de price targets publicos | Comparar precision con benchmark sectorial y versionar reglas |
+| Financials Scorecard | Auditable analyst-target method for U.S. Financials | Ships with redistributable fixtures; real rankings require authorized data |
+| IPO Watch | Monitor strategic or high-interest listing candidates | Filings and review workflow do not imply a completed listing or trade idea |
+| Global Listings Watch | Extend listing evidence beyond the United States | Each jurisdiction keeps its own confirmation rule |
+| Evidence Passport Commons | Public protocol and API for source provenance and rights | A passport may be accepted before a connector is enabled |
+| ETF Evidence Center | Study holdings evidence and changes | Periodic regulatory reports are separated from daily-trade claims |
+| RWA Watch Sandbox | Model tokenized-asset observations | Live venue or issuer collection stays subject to documented rights |
+| Market Intelligence | Organize events, context, and future connectors | Does not issue trading signals |
+| Volatility Intelligence Lab | Examine volatility regimes across assets and events | Visible research workflow; proprietary series are not bundled |
+| Policy Signal Impact Lab | Link verifiable public communications to event windows | Truth Social automation is blocked without permission |
 
-La propuesta no es declarar que una plataforma existente esta equivocada. Es
-ofrecer una investigacion publica, replicable y verticalizada:
+## Differentiation
 
-La diferencia transversal nueva es `Evidence Passport Commons`: en vez de
-competir primero por mas senales, el proyecto publica fichas de procedencia y
-derechos, e invita a la comunidad global a enriquecer cadencia y limites de
-afirmacion. La version `0.1` no declara completo ese enriquecimiento; expone
-el registro de fuente y derechos ya controlado.
+Competitors and adjacent products observed as of `2026-05-24`:
 
-> Cuando una firma opina sobre bancos y financials de EE. UU., ?su target fue
-> preciso y aporto valor frente al sector?
+| Product | Visible Focus | TargetAudit Opportunity |
+|---|---|---|
+| TipRanks | Ratings, targets, and one-year success methodology | Provide reproducible method without incorporating unlicensed data |
+| MarketBeat | Large recommendation history and subscription rankings | Use only as a market reference unless output rights are obtained |
+| WallStreetZen | Proprietary analyst ranking | Demonstrate transparent sector-specific evaluation rules |
+| Yahoo Finance / Investing.com | Visual rating and target lookup | Treat as manual references, not assumed ingestion rights |
+| Finnhub / FMP | Programmatic trend or consensus endpoints | Enable future connectors only under explicit display/output terms |
+| TradingView | Attributed embed widgets | Provide context displays separate from scoring inputs |
+| FRED `VIXCLS` | Attributed volatility series | Make VIX context visible while keeping scoring evidence separate |
+| Truth Social | Potential policy-event communications | Publish methodology and rights block until an authorized path exists |
+| xStocks / Ondo / CEX venues | Tokenized instruments and trading venues | Demonstrate RWA model without claiming analyst-target supply |
+| Quiver Quantitative | Historical analyst performance using Benzinga data | Investigate specialist versus generalist financials hypotheses |
+| AnaChart | Price-target charts and hit ratios | Add benchmark comparison and versioned scoring rules |
 
-`IPO Watch` agrega una pregunta distinta y separada:
+The distinguishing public layer is **Evidence Passport Commons**: instead of
+competing only on the number of signals, TargetAudit publishes provenance and
+rights records, then invites global contributors to improve source cadence,
+confirmation logic, and claim boundaries.
 
-> ?Que companias de alto interes realmente avanzaron hacia una cotizacion y
-> que documentos/riesgos debe revisar un investigador antes de evaluarlas?
+## Initial Market
 
-`Market Intelligence` agrega contexto alrededor de esos eventos:
+### Universe
 
-> ?Que regimen de tasas, energia, activos digitales y posicionamiento
-> declarado rodeaba un evento verificado, con que fuente y frecuencia?
-
-`Volatility Intelligence Lab` refina esa pregunta frente a competidores que
-ya visualizan `VIX` y term structure:
-
-> ?Como se propagaron episodios de estres hacia activos e IPOs verificadas,
-> y que evidencia permite sostener esa lectura?
-
-`Policy Signal Impact Lab` plantea una hipotesis especialmente visible:
-
-> ?Que cambio en volatilidad y activos vinculados despues de una comunicacion
-> publica verificable, con que ventana y con que evidencia?
-
-Una expansión posterior de activos tokenizados preguntaria:
-
-> ?Que instrumentos ligados a acciones o ETF aparecen en mercados on-chain,
-> bajo que estructura, y cuanto se desvia su precio de la referencia?
-
-La revision de fuentes y venues para esa expansion se documenta en
-[RWA Watch: Exchanges Y Fuentes Base](rwa-watch-sources.md).
-
-## Mercado Inicial
-
-### Universo v1
-
-- Companias estadounidenses del sector financiero con targets verificables.
-- Primera cohorte deseada: financials pertenecientes historicamente al
-  `S&P 500` en cada fecha de observacion.
-- Analisis separado posterior para bancos regionales, una vez que exista
-  universo punto-en-el-tiempo fiable.
+- U.S. financial companies with verifiable targets.
+- Desired first real cohort: financial members of the `S&P 500` at each
+  observation date.
+- Regional-bank analysis only after a reliable point-in-time universe exists.
 
 ### Benchmarks
 
-- Benchmark sectorial inicial: `XLF`, ETF que sigue el Financial Select Sector
-  Index.
-- Benchmark amplio secundario futuro: `SPY`.
-- Benchmarks de subindustria se activaran solo cuando el universo y la fuente
-  de precios puedan auditarse consistentemente.
+- Initial sector benchmark: `XLF`.
+- Future broad benchmark: `SPY`.
+- Sub-industry benchmarks only when universe membership and prices are
+  consistently auditable.
 
-### Usuario Inicial
+### Initial Users
 
-- Inversores individuales que quieren comprobar titulares de analyst ratings.
-- Periodistas y creadores financieros que necesitan citar una metodologia.
-- Analistas cuantitativos interesados en reproducir o discutir el score.
+- Individual investors checking headlines about analyst ratings.
+- Financial journalists and creators who need a citable method.
+- Quantitative researchers who want to reproduce or challenge the score.
+- Contributors who understand an official listing source in their market.
 
-## Producto MVP Publicable
+## Publishable MVP Standard
 
-Un release publico serio debe incluir:
+A serious public release should include:
 
-1. Motor reproducible y tests, ya iniciado en `v0.1`.
-2. Un dataset demostrativo sintetico claramente etiquetado.
-3. Un importador para targets autorizados y precios con licencia compatible.
-4. Un informe real piloto de financials solo cuando cada fila tenga fuente y
-   permisos adecuados.
-5. Reportes que siempre expongan `N`, intervalo Wilson 95%, universo
-   historico, revisiones de targets, costos y regla de salida, segmentos de
-   sector/direccion, exclusiones, benchmark y metodologia.
+1. A reproducible engine and tests.
+2. A clearly labeled synthetic demonstration dataset.
+3. Import paths for authorized target files and compatible price evidence.
+4. A real Financials pilot only when each row has sufficient provenance and
+   publication rights.
+5. Reports disclosing `N`, Wilson 95% intervals, historical universe, target
+   revisions, costs, exit rule, sector/direction segments, exclusions,
+   benchmark, and method.
 
-## Hipotesis Medibles
+## Research Hypotheses
 
-- `H1`: firmas especializadas en financials obtienen menor error terminal que
-  firmas generalistas en el mismo universo y periodo.
-- `H2`: un alto `target hit rate` no necesariamente implica retorno excedente
-  positivo frente a `XLF`.
-- `H3`: el desempeno difiere entre targets alcistas y bajistas.
+- `H1`: financial-sector specialists achieve lower terminal error than
+  generalists over the same universe and period.
+- `H2`: a high `target hit rate` does not necessarily imply positive excess
+  return against `XLF`.
+- `H3`: results differ between bullish and bearish targets.
 
-Estas hipotesis son preguntas de investigacion, no conclusiones del producto.
+These are research questions, not product conclusions.
 
-## Riesgos De Negocio
+## Policy Signal Impact Trace
 
-- Los targets historicos detallados pueden exigir una licencia de datos paga;
-  por ello son una extensión opcional y no requisito de la edición GitHub.
-- Un reporte publico con muestra pequena puede inducir a error aun si el
-  calculo es correcto.
-- Las clasificaciones sectoriales y componentes historicos requieren datos
-  punto-en-el-tiempo para evitar sesgo retrospectivo.
-- No se debe presentar ningun score como recomendacion de inversion.
+The most distinctive proposed extension links verifiable public communications
+to market-reaction windows without claiming causality. The initial case is
+`Donald Trump / Truth Social` from `2025-01-20`.
 
-## Referencias De Mercado
+Prior art exists: JPMorgan created the `Volfefe Index` in 2019 for tweets and
+rates volatility, and services advertise monitoring of Truth Social. The
+TargetAudit approach is different: every episode requires a source,
+permission, timestamp, classification, window, asset set, exclusion rule, and
+connection to verified IPO or listing evidence.
+
+Truth Social is not bundled as a scraper. Its reviewed official terms restrict
+automated means, systematic retrieval, and data mining without permission. The
+dashboard and API publish the methodology and rights control now; live input
+may proceed only through authorization or a licensed source. Official White
+House RSS feeds provide the eligible free evidence path for official events.
+
+## Business Risks
+
+- Detailed historical targets may require paid data rights; they remain an
+  optional extension rather than a GitHub requirement.
+- A public report with a small sample can mislead even when computed
+  correctly.
+- Sector classification and historical constituents require point-in-time data
+  to prevent hindsight bias.
+- No score should be presented as investment advice.
+
+## Market References
 
 - TipRanks screener: <https://www.tipranks.com/screener/stock-ratings>
 - MarketBeat analyst rankings: <https://www.marketbeat.com/all-access/analyst-rankings/>
@@ -168,20 +151,3 @@ Estas hipotesis son preguntas de investigacion, no conclusiones del producto.
 - AnaChart: <https://anachart.com/>
 - State Street XLF: <https://www.ssga.com/us/en/intermediary/etfs/state-street-financial-select-sector-spdr-etf-xlf>
 - S&P sectors: <https://www.spglobal.com/spdji/en/index-family/equity/us-equity/sp-sectors/>
-## Policy Signal Impact Lab
-
-La propuesta mas distintiva agregada al producto es vincular comunicaciones
-publicas verificables con ventanas de reaccion de mercado sin fingir
-causalidad. El primer caso es `Donald Trump / Truth Social` desde
-`2025-01-20`, bajo el nombre metodologico `Policy Signal Impact Trace`.
-
-Existe prior art: JPMorgan creo el `Volfefe Index` en 2019 para tweets y
-volatilidad de tasas, y `Trump & Dump` anuncia monitoreo de Truth Social. La
-ventaja que TargetAudit puede construir es otra: cada episodio exige fuente,
-permiso, timestamp, clasificacion, ventana, activos, exclusiones y enlace con
-IPOs/listings verificadas.
-
-Truth Social no se incorpora como scraper: sus terminos oficiales revisados
-restringen medios automatizados, recuperacion sistematica y data mining sin
-permiso. La pagina y API se publican ahora como metodologia y control de
-derechos; un feed live solo procede con autorizacion o fuente licenciada.

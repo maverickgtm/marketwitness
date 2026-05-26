@@ -1,28 +1,28 @@
 # Changelog
 
-Todos los cambios relevantes de TargetAudit se documentaran en este archivo.
+All notable changes to TargetAudit will be documented in this file.
 
 ## Unreleased
 
-- Collector archivado y deduplicado para feeds oficiales de White House.
-- Conectores adicionales de Market Intelligence sujetos a derechos de output.
-- Datos reales opcionales de targets solamente con licencia o aportacion
-  autorizada para publicacion.
+- Archived and deduplicated collector for official White House feeds.
+- Additional Market Intelligence connectors, subject to public-output rights.
+- Optional real target-price data only with a license or publication-authorized
+  contribution.
 
-## 0.1.0-rc.1 - Candidato De GitHub
+## 0.1.0-rc.1 - GitHub Release Candidate
 
-- Open Edition reproducible sin suscripciones pagadas ni claves obligatorias.
-- Dashboard premium con centros de Financials, IPO, ETF, Global Listings,
-  Market Intelligence, Volatility y Policy Signals.
-- `Evidence Passport Commons` y controles de derechos para impedir que una
-  fuente pendiente se presente como publicable.
-- Monitores regulatorios y de listings para SEC, LSE/FCA, HKEX, ASX, TSX,
-  JPX, EDINET, CVM, ESMA, OpenDART y SGX.
-- Evidencia ETF regulatoria mediante SEC N-PORT, separada de demos de
-  actividad diaria.
-- API FastAPI de solo lectura y reportes reproducibles generados mediante CI.
-- Laboratorio de senales de politica con ruta oficial elegible mediante
-  White House RSS y bloqueo visible para Truth Social sin permiso.
+- Reproducible Open Edition with no paid subscriptions or mandatory keys.
+- Premium dashboard centers for Financials, IPOs, ETF evidence, Global
+  Listings, Market Intelligence, Volatility, and Policy Signals.
+- `Evidence Passport Commons` and data-rights controls that prevent pending
+  sources from appearing publishable.
+- Regulatory and listings monitors for SEC, LSE/FCA, HKEX, ASX, TSX, JPX,
+  EDINET, CVM, ESMA, OpenDART, and SGX.
+- Regulatory ETF evidence from SEC N-PORT, separated from daily-activity
+  demonstrations.
+- Read-only FastAPI API and reproducible reports generated through CI.
+- Policy-signal lab with an eligible official path through White House RSS and
+  a visible block on Truth Social collection without permission.
 
-Este candidato no incluye rankings reales publicos de analistas, senales de
-trading ni redistribucion de datasets comerciales.
+This candidate does not include public real-data analyst rankings, trading
+signals, or redistribution of commercial datasets.

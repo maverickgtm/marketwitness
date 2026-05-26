@@ -1,91 +1,67 @@
 # Evidence Passport Commons
 
-Revision: `2026-05-25`
+Review date: `2026-05-25`.
 
-## Propuesta Diferenciadora
+## Distinctive Proposal
 
-`Evidence Passport Commons` es una red abierta de fichas verificables para
-fuentes de inteligencia de mercado. En lugar de comenzar por una senal de
-compra, un score o una grafica, TargetAudit comienza por la pregunta que
-permite confiar en cualquier resultado:
+`Evidence Passport Commons` is an open network of verifiable records for
+market-intelligence sources. TargetAudit begins with the trust question behind
+any result:
 
-> De donde salio esta evidencia, que derecho permite mostrarla, con que
-> cadencia cambia y que afirmacion no puede sostener por si sola?
+> Where did this evidence originate, what right permits it to be displayed,
+> how often does it change, and what claim can it not support by itself?
 
-No afirmamos que ningun proyecto mundial tenga controles de procedencia.
-Nuestra decision de producto es convertir esos controles en una superficie
-publica, contribuible y consultable por API.
+The product decision is to make provenance and rights public, contributable,
+and queryable through an API.
 
-## Que Es Un Passport
+## What A Passport Contains
 
-Cada `Evidence Passport` conserva cuatro bloques minimos:
-
-| Bloque | Pregunta que responde | Ejemplo |
+| Block | Question Answered | Example |
 |---|---|---|
-| Identidad | Que fuente oficial y clase de evidencia es? | SEC N-PORT / ETF regulatory holdings |
-| Derechos | Se puede recolectar, conservar o publicar output derivado? | `source_link_and_derived_output` |
-| Cadencia | Es filing, snapshot periodico o feed continuo? | Trimestral regulatorio, no actividad diaria |
-| Limite de afirmacion | Que no demuestra esa fuente? | Un prospectus no confirma primera cotizacion |
+| Identity | What official source and evidence class is this? | SEC N-PORT / ETF regulatory holdings |
+| Rights | May it be collected, retained, or used for public derived output? | `source_link_and_derived_output` |
+| Cadence | Is it a filing, periodic snapshot, or continuous feed? | Quarterly regulatory, not daily activity |
+| Claim boundary | What does this source not prove? | A prospectus does not confirm first trading |
 
-La version `0.1` usa el registro de gobernanza ya auditado por TargetAudit y
-publica origen, derechos, estado y nota de revision. La incorporacion
-estructurada de cadencia y limites especificos es una mision abierta para
-contributors; no se declara completa para los registros heredados.
-La API de lectura expone el contrato:
+Version `0.1` publishes origin, rights, state, and review notes from the
+audited governance registry. Structured cadence and source-specific claim
+boundaries remain an open contribution mission for inherited records.
 
 ```text
 GET /api/v1/commons/passports
-```
-
-La interfaz publica se encuentra en:
-
-```text
 /dashboard/commons
 ```
 
-## Por Que Puede Interesar En GitHub
+## Why It Can Matter On GitHub
 
-Una persona no necesita comprar datos para contribuir. Puede aportar el
-passport de una fuente oficial de su mercado, documentar sus terminos y
-proponer la regla de confirmacion adecuada antes de escribir un conector.
+A contributor does not need to purchase data. Someone familiar with an
+official source in Japan, the United Kingdom, Brazil, Hong Kong, Singapore,
+South Korea, or a new market can document its terms and confirmation rule
+before writing a connector.
 
-Esto abre tareas concretas para contributors de Japon, Reino Unido, Brasil,
-Hong Kong, Singapur, Corea y nuevos mercados:
+The contribution path is:
 
-1. localizar la fuente oficial y su pagina de terminos;
-2. documentar campos, frecuencia y costo de acceso;
-3. declarar que output puede publicarse;
-4. definir el limite de afirmacion de la evidencia;
-5. implementar el conector solo despues de aprobar el passport.
+1. Locate the official source and terms page.
+2. Document fields, access cost, and update cadence.
+3. State which public output is permitted.
+4. Define the evidence claim boundary.
+5. Implement a connector only after passport approval.
 
-## Diferencia Frente A Productos De Mercado
+## Positioning And Sustainability
 
-`OpenBB` ofrece una plataforma financiera amplia; `Stocknear` ofrece una
-experiencia visual con muchas senales; `AnaChart` ofrece el historial y
-desempeno de targets de analistas. TargetAudit no debe fingir superar esas
-ofertas en amplitud o datasets licenciados.
+Platforms such as OpenBB, Stocknear, and AnaChart offer broad market tooling,
+visual workflows, or analyst-target history. TargetAudit does not claim to
+surpass their breadth or licensed datasets. The Commons provides a different
+public layer: verify whether data can be used and what it means before turning
+it into an alert, score, screen, or integration.
 
-El Commons ocupa otro lugar: una infraestructura abierta para verificar si un
-dato puede usarse y que significa antes de convertirlo en una pantalla,
-alerta, score o integracion de terceros.
+The registry and API should remain open. Possible future paid services can
+coexist with that commitment: hosted monitoring, private workspaces using a
+customer's own licensed data, institutional lineage support, or sponsored
+official connectors with transparent rules.
 
-## Modelo Gratuito Y Monetizacion
+## Trust Rule
 
-El registro y su API deben permanecer abiertos. Si el proyecto logra adopcion,
-los servicios que podrian cobrarse sin cerrar el Commons son:
-
-- monitoreo alojado y alertas continuas sobre passports aprobados;
-- workspace privado con fuentes que el cliente ya tenga licenciadas;
-- soporte para instituciones que deban documentar linaje y derechos;
-- implementacion patrocinada de conectores oficiales;
-- recompensas a contributors por passports o conectores prioritarios.
-
-Los contributors voluntarios no reciben automaticamente una participacion
-economica. Si aparecen ingresos, TargetAudit debera publicar reglas separadas
-para recompensas, contratos o patrocinio antes de comprometer pagos.
-
-## Regla De Confianza
-
-Un passport aprobado no convierte evidencia en recomendacion financiera.
-Autoriza una forma documentada de leer y, cuando los derechos lo permiten,
-mostrar hechos derivados de una fuente.
+An approved passport never converts evidence into financial advice. It enables
+a documented way to read and, when rights permit, display facts derived from a
+source.

@@ -1,625 +1,143 @@
 # Dashboard Product Outline
 
-TargetAudit tendra dos paginas principales. No comparten score: una evalua
-pronosticos ya medibles y la otra sigue eventos de companias que pueden llegar
-al mercado.
+The TargetAudit dashboard separates measured research, documentary monitoring,
+external market context, and publication controls. A screen can be useful
+without implying that the evidence supports a trade or a public real-data
+ranking.
 
-Con la expansion internacional y los controles de publicación, el producto
-tiene páginas operativas adicionales, incluida la página de actividad
-publicada de ETF:
+## Primary Navigation
 
-## Pagina: RWA Watch Sandbox
-
-Objetivo: demostrar gratis como se auditarian activos tokenizados sin
-recolectar ni republicar un feed cuya licencia no este aprobada.
-
-- La ruta `/dashboard/rwa-watch` presenta observaciones sinteticas creadas por
-  TargetAudit, comparando precio de referencia contra precio token/venue.
-- Muestra red, venue, modelo emisor, estado de respaldo y desviaciones que
-  ameritarian revision.
-- Explica que `xStocks / Backed` queda bloqueado para ingestion publica por
-  sus terminos revisados, pese a documentar endpoints sin autenticacion.
-- No emite posiciones recomendadas ni mezcla el modulo con analyst targets.
-
-## Portada: Open Edition
-
-Objetivo: mostrar desde el primer acceso que la versión GitHub funciona sin
-comprar datos comerciales.
-
-- La raíz `/` y `/dashboard/open` consumen `/api/v1/open-edition`.
-- Su diseno de terminal incorpora navegacion lateral, accesos directos a IPO,
-  ETF, Financials y Global Listings, y metricas visibles al primer vistazo.
-- Presenta una franja `Ticker Tape` y un panel `Market Overview` oficiales de
-  TradingView, marcados como contexto externo atribuido; ninguno alimenta el
-  motor auditable ni se conserva como evidencia.
-- Distingue un sandbox offline con fixtures redistribuibles, monitores
-  regulatorios públicos sin cuota de datos y extensiones autorizadas
-  opcionales.
-- Presenta SEC IPO Watch y SEC N-PORT como capacidades gratuitas con límites
-  visibles, incluida la identificación `User-Agent` exigida para solicitudes
-  SEC live.
-- Enlaza `/dashboard/reports` como indice de los reportes generados permitidos
-  y desde alli expone la cadena `/dashboard/sec-alerts`,
-  `/dashboard/ipo-reviews`, `/dashboard/ipo-watch`, junto con las vistas ETF
-  e internacionales; la API no expone archivos arbitrarios de la carpeta de
-  construccion.
-- El ranking real de analistas permanece como ampliación voluntaria y nunca
-  como condición para usar la edición pública.
-
-## Pagina: Report Center
-
-Objetivo: volver navegable el bundle semanal de Open Edition sin abrir acceso
-general al directorio de reportes construidos.
-
-- La ruta `/dashboard/reports` agrupa veintisiete paginas HTML ya permitidas:
-  IPO Watch, SEC IPO Discovery Queue, SEC IPO Alerts, IPO Review Outcomes, ETF Regulatory Holdings,
-  ARKK Holdings Sandbox, XLF Holdings Sandbox, IYF Holdings Sandbox, N-PORT Recent Filing, Public
-  Document Checks, RWA Watch Sandbox, Global Listings Watch, Global Listings
-  Alerts, Issuer Confirmations, N-PORT Dataset Catalog, N-PORT Sync Status,
-  cinco reportes de evidencia Financials y seis snapshots de gobernanza.
-- `SEC IPO Discovery Queue`, `SEC IPO Alerts` y `IPO Review Outcomes` completan
-  el recorrido auditable desde entrada universal hasta decisión manual;
-  ninguna alerta cambia el estado de una compañía sin una revisión documentada.
-- `Global Listings Alerts` permite consultar la cola comparada de diez
-  mercados internacionales sin confundir documentos de oferta con listings
-  confirmados; `Issuer Confirmations` conserva hitos oficiales ya revisados.
-- `Financials Audit Evidence` enlaza la importacion controlada, precios
-  ajustados, acciones corporativas, calidad operativa y decision de release
-  generadas por el demo; el reporte final permanece bloqueado para claims
-  publicos de datos reales.
-- `Financials Evidence Center` en `/dashboard/financials-evidence` ordena
-  esos cinco reportes junto con los controles interactivos, sin presentarlos
-  como historial real de analistas.
-- `Governance Snapshots` conserva las paginas generadas de Open Edition,
-  extensiones licenciadas opcionales, registro de fuentes, cola de permisos,
-  resultados de revision y readiness;
-  estas capturan el bundle construido, mientras `/dashboard/governance`,
-  `/dashboard/approvals` y `/dashboard/readiness` son controles interactivos.
-- `Open Edition Snapshot` enlaza cada capacidad declarada para recorrer el
-  bundle desde su manifiesto generado, no solo desde la portada interactiva.
-- Explica que el artefacto periodico generado en GitHub Actions usa fixtures
-  redistribuibles, no consultas live ni rankings reales.
-- Enlaza controles operativos de IPO Watch Center, ETF Evidence Center,
-  Financials Evidence Center, Global Contributors, politica, gobernanza y Release Center para
-  que los limites de cada reporte queden visibles durante su lectura.
-- No agrega un endpoint de archivos: cada enlace corresponde a una ruta fija
-  servida por la API.
-
-## Experiencia Premium De Modulos
-
-- `/dashboard/ipo` presenta una `Verification Ladder` que separa
-  descubrimiento, revision humana y confirmacion oficial antes de navegar a
-  estados o mercados.
-- `/dashboard/etf` presenta `Evidence Layers` para distinguir graficamente
-  fixtures, comparaciones regulatorias y controles N-PORT.
-- `/dashboard/global-listings` presenta un `Coverage Grid` generado desde el
-  registro de fuentes globales, distinguiendo rutas oficiales y restricciones.
-- Estas visualizaciones describen la cobertura y la metodologia del producto;
-  no representan precios, operaciones o resultados live.
-
-## Pagina: Market Context
-
-Objetivo: dar contexto visual del benchmark financiero sin crear una nueva
-fuente de datos del motor auditable.
-
-- La ruta `/dashboard/market-context` incrusta el widget oficial `Advanced
-  Chart` de TradingView para `AMEX:XLF`.
-- Tambien incorpora una franja `Ticker Tape` y un panel `Market Overview`
-  comparativo para Financials y benchmarks, siempre como display externo.
-- Mantiene visible la atribucion `by TradingView` y enlaza la pagina oficial
-  del simbolo.
-- Declara que el widget es display externo: TargetAudit no almacena, exporta
-  ni utiliza sus datos para puntuar targets.
-- La pagina requiere Internet para cargar el tercero, pero no exige clave ni
-  suscripcion de datos a los usuarios de TargetAudit.
-
-## Pagina: Market Intelligence
-
-Objetivo: convertir la expansion cross-asset en una capa verificable de
-contexto y posicionamiento, sin prometer feeds que aun no estan activos.
-
-- La ruta `/dashboard/intelligence` consume
-  `/api/v1/intelligence/modules` y muestra ocho capas: Pre-IPO Radar,
-  Volatility Intelligence Lab, Policy Signal Impact Lab, Market Regimes,
-  Macro Calendar, Insider Activity, Ownership Watch y Futures Positioning.
-- Reconoce como bases existentes el flujo IPO SEC y la evidencia ETF N-PORT;
-  los conectores de nuevos valores permanecen etiquetados como planificados.
-- Registra como siguientes fuentes `Kraken Spot` para `BTC`/`ETH`, `EIA` para
-  `WTI`/`Brent` y `U.S. Treasury` para la curva `2Y`/`10Y`; Kraken conserva
-  revisión de términos antes de output público.
-- Documenta `Federal Reserve` y `BLS` para catalizadores macro, `SEC Forms
-  3/4/5` para insiders y `CFTC COT` para posicionamiento futuro agregado.
-- Declara en interfaz y API que no hay nuevos valores live recolectados ni
-  recomendación de posiciones en esta etapa.
-
-## Pagina: Volatility Intelligence Lab
-
-Objetivo: investigar propagacion de estres sin convertirse en otro panel
-generico de VIX o en una fuente de senales.
-
-- La ruta `/dashboard/volatility` consume
-  `/api/v1/intelligence/volatility` y presenta el `Stress Map` de `VIX`,
-  curva corta, `VXN`, `MOVE`, `VVIX/SKEW`, `OVX/GVZ` y horizontes largos.
-- El grafico `VIXCLS` se carga como imagen externa atribuida de FRED y queda
-  expresamente fuera de la evidencia calculada; esto evita que el panel quede
-  vacio si un script de widget no carga.
-- Publica diseños de episodios para estudiar reaccion posterior cross-asset,
-  estres tecnologico alrededor de IPOs y estres de tasas previo al mercado de
-  equity.
-- Registra fuentes Cboe e ICE; ninguna serie real se ingiere ni se publica
-  como resultado derivado hasta aprobar derechos de output.
-- Su diferencia frente a dashboards de volatilidad existentes es conectar
-  episodios con IPO Watch, ETF/ownership y Evidence Passport Commons.
-
-## Pagina: Policy Signal Impact Lab
-
-Objetivo: estudiar comunicaciones públicas que pueden coincidir con
-reacciones de mercado, sin convertir correlacion en causalidad ni violar
-terminos de una plataforma social.
-
-- La ruta `/dashboard/policy-signals` consume
-  `/api/v1/intelligence/policy-signals` y presenta el caso inicial
-  `Donald Trump / Truth Social`, comenzando el `2025-01-20`.
-- Propone el `Policy Signal Impact Trace`: evidencia de la comunicacion,
-  clasificacion tematica, ventanas de reaccion y un pasaporte auditable por
-  episodio.
-- Muestra VIX diario mediante el grafico externo atribuido `VIXCLS` de FRED,
-  sin almacenar la serie ni utilizarla como resultado calculado.
-- Hace visible el antecedente `Volfefe Index` de JPMorgan y el sitio
-  `Trump & Dump`; el diferenciador es conectar cada evento a evidencia,
-  derechos, multiples activos e IPO/listing milestones.
-- Mantiene bloqueada la coleccion automatica de Truth Social porque sus
-  terminos oficiales restringen automatizacion, recuperacion sistematica y
-  data mining sin permiso escrito.
-- Expone un `Authorized Intake Map`: `White House News RSS` y `Presidential
-  Actions RSS` quedan elegibles para collector oficial; `White House Wire`
-  queda limitado a metadata de enlaces externos.
-
-La direccion visual, las decisiones sobre widgets y la siguiente fase de
-rediseño se documentan en
-[Direccion Visual Del Dashboard](dashboard-visual-direction.md).
-
-## Pagina: Public Use Policy
-
-Objetivo: presentar en el propio dashboard los limites de interpretacion y
-derechos de datos antes de que un usuario consulte reportes o active fuentes.
-
-- La ruta `/dashboard/policy` consume `/api/v1/policy/public-use`.
-- Declara que los rankings, monitores regulatorios y observaciones RWA son
-  investigacion auditable y no recomendaciones de inversion.
-- Diferencia fixtures redistribuibles, evidencia regulatoria y extensiones
-  aportadas por usuarios con derechos documentados.
-- Deriva del registro de fuentes los proveedores bloqueados o pendientes para
-  que decisiones como `MAS OPERA` permanezcan visibles en la interfaz.
-- Se presenta como control interno pendiente de revision legal externa, no
-  como dictamen profesional.
-
-## Pagina: Licensed Extensions
-
-Objetivo: permitir que el usuario decida si desea contratar datos reales, sin
-confundir un precio disponible con derechos de publicacion publica.
-
-- La ruta `/dashboard/extensions` consume `/api/v1/extensions/licensed`.
-- Muestra la expansion Massive / Benzinga con el precio publicado
-  `USD 99/month`, MarketBeat `USD 249/year` o `USD 29/month`,
-  WallStreetZen `USD 19.50/month` facturado anualmente y rutas sujetas a
-  cotizacion.
-- Identifica a MarketBeat como posible piloto privado de bajo costo, pero
-  muestra que sus exportaciones anunciadas de hasta seis meses no bastan para
-  evaluar targets vencidos a un ano.
-- Identifica a WallStreetZen como benchmark privado de rankings existentes,
-  no como feed historico confirmado para ingestion.
-- Registra Finnhub y Financial Modeling Prep como rutas programaticas futuras,
-  mostrando que los derechos de display o redistribucion requieren acuerdo.
-- Enlaza `Market Context`, donde TradingView ya se usa como widget atribuido
-  de display separado de la ingesta de targets y del ranking.
-- Mantiene `xStocks / Backed`, `Ondo` y sus venues fuera de esta pagina:
-  pertenecen a un eventual monitor `RWA Watch`, no a las fuentes de price
-  targets de analistas.
-- Expone enlaces oficiales a producto, precio y terminos.
-- Mantiene el contador de proveedores aprobados para output publico en cero
-  mientras no exista permiso escrito.
-- Permite planificar una importacion local autorizada, pero no recolecta datos
-  comprados ni habilita un leaderboard publico.
-
-## API De Aplicacion
-
-La capa inicial FastAPI consulta exclusivamente corridas guardadas en DuckDB.
-Expone salud metodologica, inventario/detalle de corridas, ranking de firmas,
-ficha de firma, ficha de ticker y auditoria de observaciones excluidas o
-pendientes. Las respuestas de evidencia incluyen hashes de artefactos, no
-rutas privadas del operador.
-
-Esta API puede alimentar el dashboard web con datos sinteticos o autorizados.
-Una base que contenga datos reales no debe exponerse publicamente hasta
-resolver los permisos de targets, precios y cualquier fuente redistribuida.
-
-`/api/v1/commons/passports` publica la version `0.1` de `Evidence Passport
-Commons`: fichas estructuradas de origen, derechos y estado de revision para
-las fuentes registradas. La ruta visual `/dashboard/commons` invita a
-contributors a completar la siguiente capa de cadencia y limites de
-afirmacion antes de activar nuevos conectores.
-
-`/api/v1/intelligence/modules` publica el plan de activacion de Market
-Intelligence con sus fuentes registradas, cadencias esperadas, rutas ya
-disponibles y limites de cada futura capa.
-
-`/api/v1/intelligence/volatility` publica el contrato inicial del laboratorio:
-familias de indicadores, prioridad por fase y diseños de episodios, manteniendo
-los resultados reales bloqueados hasta validar fuentes y derechos.
-
-## Aplicacion Financials Scorecard
-
-La ruta web inicial `/dashboard/financials` consume esta API y presenta:
-
-- Tarjetas de observaciones evaluadas, excluidas y pendientes.
-- Ranking de firmas con tasa de acierto, intervalo Wilson 95%, mediana de
-  dias al target y exceso neto.
-- Filtros por corrida, sector, direccion y muestra minima.
-- Panel de firma/ticker con enlace de evidencia.
-- Linea temporal visual de los hitos retenidos por observacion; no se presenta
-  como una serie diaria de precios.
-- Exportacion CSV de observaciones y del ranking filtrado.
-- Comparacion de corridas almacenadas con version metodologica, huella de
-  entradas y diferencias de conteos antes de interpretar resultados.
-- Tabla de exclusiones y pendientes por motivo.
-
-El demo genera `build/demo/targetaudit.duckdb` con corridas sinteticas del
-scorecard, revisiones y guardas de acciones corporativas para probar ranking y
-exclusiones sin publicar datos comerciales.
-
-La API expone `/api/v1/runs/compare?left_run_id=...&right_run_id=...`. Una
-comparacion solo se identifica como la misma evidencia y metodologia cuando
-coinciden ambos sellos; corridas heredadas sin sello permanecen visibles pero
-no se marcan como equivalentes.
-
-## Vista Transversal: Source Governance
-
-Objetivo: hacer visible qué datos pueden alimentar un producto público y qué
-fuentes aún requieren términos, licencia o exclusión expresa.
-
-- La ruta web `/dashboard/governance` consume el registro validado y la
-  auditoria de exclusiones almacenada por cada corrida.
-- Registro de fuentes oficiales, candidatas comerciales y datos sintéticos.
-- Estado de integración separado de estado de licencia/publicación.
-- Bloqueo visible para fuentes que no deben recolectarse automáticamente.
-- Enlace a la referencia oficial usada para cada decisión.
-- Filtros por clase de dato y estado operativo, junto a la vista por corrida
-  de observaciones excluidas y pendientes.
-
-Las nuevas corridas guardan `provider_id` junto al enlace de evidencia y la
-vista muestra el control de publicacion enlazado en cada exclusion o pendiente.
-Entradas historicas sin ese linaje permanecen visibles como `unlinked`, sin
-inferir una fuente por la URL.
-
-## Vista De Aprobacion: Provider Approvals
-
-Objetivo: convertir fuentes candidatas en una cola revisable de permisos antes
-de permitir datos reales en una salida pública.
-
-- La ruta web `/dashboard/approvals` consume
-  `/api/v1/governance/approvals`.
-- Muestra expedientes de Benzinga, Alpha Vantage, Nasdaq Daily List, NYSE y
-  S&P DJI con evidencia requerida y criterio de promoción.
-- Marca como críticos los candidatos necesarios para targets, precios,
-  acciones corporativas y membresía histórica del universo.
-- Un expediente `approved_public_output` solo es válido si el registro de
-  fuentes también declara una política compatible con salida pública.
-- La cola documenta trabajo pendiente; no aprueba ni conecta una fuente
-  automáticamente.
-- El comando `provider-approval-review` produce una auditoría HTML y copias
-  generadas del registro y la cola después de una decisión humana; estas
-  copias son las que deben evaluarse en Readiness.
-
-## Vista De Preparacion: Scorecard Readiness
-
-Objetivo: impedir que un dashboard tecnicamente funcional sea confundido con
-un producto listo para publicar resultados reales.
-
-- La ruta web `/dashboard/readiness` consume `/api/v1/readiness/scorecard`.
-- Evalua los requisitos productivos de `Analyst targets`, `Adjusted price
-  bars`, `Corporate actions` y `Historical universe membership` para el
-  enfoque `U.S. Financials`.
-- Excluye expresamente los fixtures del demo como fuentes productivas.
-- Distingue una integración `internal_only` de una fuente
-  `public_ready` con política de publicación aprobada.
-- Conserva el scorecard público deshabilitado mientras cualquiera de sus
-  controles obligatorios no tenga una fuente apta.
-
-## Vista Operativa: Operations Quality
-
-Objetivo: impedir que una tarea recurrente publique o destaque una corrida
-incompleta sin hacer visible el problema.
-
-- La ruta `/dashboard/operations` consume
-  `/api/v1/operations/quality?maximum_excluded_rate=...`.
-- Valida que cada corrida tenga version metodologica y huella del dataset.
-- Exige activos de entrada `targets` y `prices` antes de considerarla completa.
-- El control `Public release inputs` exige además activos
-  `corporate_actions` y `universe_membership` para una corrida candidata a
-  distribución.
-- Bloquea resultados con observaciones sin `provider_id` declarado.
-- Envia a revision corridas cuya tasa de exclusiones supera el umbral
-  operativo o cuya muestra evaluada no alcanza el minimo configurado.
-- Un estado `quality_pass` es solo un control tecnico; la autorizacion de
-  publicacion permanece bajo `Source Governance`.
-
-## Vista De Publicacion: Release Center
-
-Objetivo: resolver en una sola decisión si una corrida candidata puede
-alimentar un scorecard público.
-
-- La ruta `/dashboard/release` consume
-  `/api/v1/releases/scorecard?run_id=RUN-ID`.
-- Combina `Scorecard Readiness` con `Operations Quality` en alcance
-  `public_release`.
-- Bloquea una corrida si sus observaciones declaran un `provider_id` que no
-  corresponde a un proveedor de targets aprobado para salida pública.
-- Exige que activos de precios, acciones corporativas y universo histórico
-  declaren también el proveedor aprobado que los originó.
-- Mantiene separados los estados de derechos de fuente, linaje de targets,
-  procedencia de activos y calidad de evidencia.
-
-## Pagina 1: Financials Scorecard
-
-Objetivo: auditar `price targets` sobre financials de Estados Unidos.
-
-Componentes:
-
-- Ranking de firmas especialistas frente a generalistas.
-- Intervalo Wilson 95% junto a cada tasa de acierto para hacer visible la
-  incertidumbre de muestras pequenas.
-- Rankings separados por sector y por direccion, con umbral de muestra en
-  cada segmento.
-- Control de universo historico: identifica la composicion aplicada y excluye
-  targets que no pertenecian al universo en la fecha publicada.
-- Auditoria de revisiones: muestra targets reemplazados por otra nota de la
-  misma firma/accion y los retira del score.
-- Resultado de estrategia: salida por target o vencimiento, costos declarados
-  y retorno neto excedente frente a `XLF` sobre la misma fecha de salida.
-- Filtros por banco, subindustria, periodo y direccion del target.
-- Comparacion contra `XLF`.
-- Tabla de observaciones excluidas y motivo.
-- `Corporate Actions Audit`: cola de targets atravesados por splits o cambios
-  de ticker, antes de entrar al ranking.
-- `Adjusted Price Evidence`: importacion cache-first, formula de ajuste y
-  estado de licencia de la fuente de precios.
-- `Target Import Audit`: proveedor declarado, permiso de uso, filas aceptadas
-  y rechazos antes de que entren al ranking.
-- Ficha de cada pronostico con fuente, referencia, entrada y resultado.
-
-## Pagina 2: IPO Watch
-
-Objetivo: seguir eventos verificables de grandes IPOs tecnologicas y
-estrategicas, sin convertir rumores en operaciones.
-
-- Centro de lectura: `/dashboard/ipo` ordena el pipeline SEC y separa el
-  mapa internacional y sus confirmaciones de un simple filing descubierto.
-
-### Panel Superior
-
-Tarjetas:
-
-- `Filed publicly`: companias con prospecto publico verificable.
-- `Listed`: IPO ya completada y disponible para seguimiento post-debut.
-- `Candidates`: nombres importantes sin filing publico confirmado.
-- `Changed this week`: novedades verificadas desde la ultima ejecucion.
-
-### Tabla Principal
-
-Campos:
-
-| Campo | Uso |
-|---|---|
-| Compania | SpaceX, Cerebras, Anthropic, OpenAI, Canva, Kraken, Shein |
-| Tema | Space/AI, AI hardware, foundation models, software, crypto, retail |
-| Estado | `candidate_unverified`, `filed_public`, `listed`, `withdrawn` |
-| Fecha verificada | Ultimo evento confirmado |
-| Ticker/Exchange | Solo cuando este respaldado por fuente primaria |
-| Proximo evento | Que documento o anuncio se espera comprobar |
-| Riesgos | Riesgos del prospecto o pendientes de investigar |
-| Fuente | Enlace auditable |
-
-### Ficha De Compania
-
-- Linea temporal de eventos y documentos.
-- Acceso al filing o anuncio primario.
-- Resumen de factores de riesgo documentados.
-- Checklist de due diligence antes del debut.
-- Seguimiento post-IPO: precio de oferta, apertura, 30/90/365 dias, una vez
-  que haya datos permitidos.
-
-## Politica De Posiciones
-
-El dashboard no dira `comprar SpaceX` o `vender CBRS` por una noticia. Antes
-de evaluar una posible estrategia debe existir:
-
-1. Filing o cotizacion confirmada.
-2. Prospecto revisado: riesgos, gobernanza, uso de fondos y lock-ups.
-3. Precio de oferta o mercado observable.
-4. Benchmark definido para la categoria.
-5. Regla de entrada, salida, riesgo y tamano documentada.
-6. Aviso claro de que el resultado es investigacion, no asesoria.
-
-En lugar de posiciones, la pagina usa estados de investigacion:
-
-- `Monitor`: candidato sin filing publico.
-- `Review Filing`: prospecto publico; revisar antes de cualquier analisis.
-- `Observe Listing`: debut confirmado; recolectar historial inicial.
-- `Eligible for Study`: historial suficiente para un estudio definido.
-
-## Automatizacion Prevista
-
-- SEC EDGAR: detectar nuevos `S-1`, `S-1/A`, `424B4` y retiros para emisores
-  conocidos; requiere un `User-Agent` con contacto real.
-- Fuentes corporativas oficiales: comunicados de listing/closing.
-- Noticias: solo como alerta de busqueda; nunca elevan estado sin confirmacion
-  primaria.
-- Historial de cambios: guardar fecha, estado previo, fuente y version del
-  reporte.
-
-### Descubrimiento Universal
-
-La pagina no se limita a las siete companias semilla. Una cola interna
-`SEC Discovery Queue` examina diariamente formularios publicos potencialmente
-relacionados con IPO para cualquier emisor. Los casos nuevos aparecen en un
-panel de revision; solo los confirmados pasan al tablero publico.
-La ruta `/dashboard/sec-discovery` presenta esa entrada universal antes de que
-el triage la convierta en alertas visibles en `/dashboard/sec-alerts`.
-
-### Revision Manual De SEC
-
-`SEC IPO Alerts` puede alimentar una copia actualizada de `IPO Watch` solo
-despues de una decision documentada. La pantalla `IPO Watch Manual SEC
-Reviews` muestra decision, resultado, estado anterior/nuevo y evidencia. El
-flujo exige coincidencia exacta de URL de filing y `CIK`; descubrir un filing
-no cambia por si solo el estado.
-
-## Pagina 3: Global Listings Watch
-
-Objetivo: extender la inteligencia de nuevas cotizaciones fuera de Estados
-Unidos sin aplicar reglas SEC a jurisdicciones distintas.
-
-### Cobertura Inicial
-
-| Mercado | Fuente Oficial Identificada | Estado De Implementacion |
+| Route | Purpose | Evidence Boundary |
 |---|---|---|
-| London Stock Exchange | LSE `New issues` JSON y FCA National Storage Mechanism | Feed y clasificación FCA de prospectus/admission/intention implementados; admision requiere revision |
-| Hong Kong HKEX | HKEX/HKEXnews AP/PHIP JSON feeds | Feed oficial implementado |
-| Australian Securities Exchange | ASX `Upcoming floats and listings` | Feed HTML oficial implementado |
-| Toronto Stock Exchange | TSX `New Company Listings` | Feed HTML oficial implementado para listings completados; `SEDAR+` no automatizable sin permiso |
-| Singapore Exchange | SGX `IPO Prospectus`; MAS `OPERA` | SGX feed JSON implementado para prospectos publicados; OPERA revisado como referencia manual bloqueada |
-| Tokio / Japon | FSA `EDINET` Documents API y JPX `New Listings` | Monitores y diff diario implementados; EDINET permanece como filing y JPX como confirmacion |
-| Brasil | CVM `Ofertas Públicas de Distribuição` | Monitor ZIP diario ODbL implementado para ofertas de acciones; B3 debe confirmar listing |
-| Union Europea | ESMA `Prospectus III Securities` | Monitor oficial implementado para valores `SHRS` en Alemania, Paises Bajos e Italia |
-| Corea del Sur | FSS `OpenDART` Disclosure Search API | Monitor implementado para filings `C001`/`C006` con clave gratuita; KRX no se republica por restriccion de entrega a terceros |
-| Rusia | Bank of Russia `Register of Russian Securities` y MOEX `ISS` | Solo investigacion restringida; sin ingesta ni señales por sanciones vigentes |
+| `/` and `/dashboard/open` | Open Edition landing terminal | Widgets are external context; metrics describe bundled workflows |
+| `/dashboard/reports` | Fixed navigation for generated report pages | No arbitrary generated-file browsing |
+| `/dashboard/ipo` | IPO Watch Center | Discovery, review, and confirmation remain distinct |
+| `/dashboard/global-listings` | International listing coverage and monitors | Each jurisdiction retains its confirmation rule |
+| `/dashboard/etf` | ETF Evidence Center | Synthetic change examples are separated from SEC periodic evidence |
+| `/dashboard/financials-evidence` | Financials evidence and release-gate sequence | Demo scorecard is not real analyst performance |
+| `/dashboard/intelligence` | Cross-asset research workspace | Planned connectors are not live feeds |
+| `/dashboard/volatility` | Volatility Intelligence Lab | External VIX display; no unlicensed episode calculations |
+| `/dashboard/policy-signals` | Policy Signal Impact Lab | Truth Social collection blocked without permission |
+| `/dashboard/commons` | Evidence Passport Commons | Source rights and claim boundaries are visible |
+| `/dashboard/policy` | Public Use Policy | Product control, not legal advice |
+| `/dashboard/governance` | Source Governance | Technical integration does not imply publishability |
+| `/dashboard/release` | Release Center | Combines readiness, lineage, and quality before output |
 
-### Regla De Evidencia
+## Open Edition Home And Market Context
 
-Cada jurisdiccion conserva sus propias etapas:
+The home view communicates that the GitHub edition runs without purchased
+data. It provides direct navigation to IPO, ETF, Financials, Global Listings,
+and control views, along with official TradingView `Ticker Tape` and `Market
+Overview` widgets labeled as attributed external display.
 
-- Reino Unido: una aparicion en `New issues` indica una oferta esperada; la
-  confirmacion avanzada debe contrastarse con prospecto/admission evidence.
-- Hong Kong: un `Application Proof` inicia seguimiento; un `PHIP` indica
-  aprobacion en principio, no trading completado.
-- Australia: ASX informa que sus upcoming listings tienen solicitud formal
-  recibida, pero las fechas de primera cotizacion siguen siendo anticipadas.
-- Canada: el feed implementado documenta listings completados; `SEDAR+`
-  restringe scraping y almacenamiento en bases para el monitor público.
-- Singapur: el feed implementado documenta prospectos publicados; cada
-  documento debe revisarse antes de afirmar admision o inicio de negociacion.
-  `MAS OPERA Public Offers` no se automatiza: su busqueda exige security code
-  y sus terminos restringen robots, caching y deep links sin permiso.
-- Tokio: `EDINET` ya captura filings de oferta mediante API oficial con clave
-  gratuita, y `JPX New Listings` confirma hitos de aprobacion/listing mediante
-  pagina y CSV.
-- Brasil: `CVM Equity Offering Watch` ya incorpora ofertas de acciones al diff
-  diario; un registro inicia revision y no confirma listado o trading en B3.
-- Alemania, Paises Bajos e Italia: `ESMA Equity Prospectus Watch` ya filtra
-  `SHRS` y conserva oferta/admission metadata con atribucion; no confirma
-  primera negociacion. Para Frankfurt, `BaFin` sirve como corroboracion nacional.
-- Corea del Sur: `Korea OpenDART Equity Offering Watch` captura filings
-  `C001` y `C006` con clave gratuita; cada filing inicia revision y no
-  confirma IPO, listing ni trading. `KRX` no entra al output público bajo
-  sus términos revisados de entrega de datos a terceros.
-- Rusia: el registro del Banco de Rusia documenta securities y `MOEX ISS`
-  ofrece datos tecnicamente disponibles, pero `MOEX` fue designada por OFAC
-  el `2024-06-12`; se excluye automatizacion y orientacion de posiciones.
+`/dashboard/market-context` adds a TradingView `Advanced Chart` for
+`AMEX:XLF`, benchmark comparison, and visible attribution. TargetAudit does
+not read, store, export, or score widget values. The dashboard remains usable
+offline while third-party visual content may require Internet access.
 
-### Salidas Operativas
+## Research Workspaces
 
-- `SEC IPO Alerts`: bandeja de filings SEC nuevos, enlazados por `CIK` a
-  empresas ya seguidas en `IPO Watch` cuando existe coincidencia exacta, con
-  triage visible para señales SPAC/ETF, prospectos finales y retiros.
-- `HKEX Listing Monitor`: pagina y CSV generados desde los cinco feeds JSON
-  oficiales, util para detectar cambios de ciclo.
-- `LSE Upcoming Issues Monitor`: pagina generada desde el componente JSON
-  oficial; los registros se consideran proximos, no admitidos definitivamente.
-- `LSE / FCA NSM Corroboration Monitor`: pagina que busca documentos FCA por
-  cada emisor próximo y separa señales metadata de prospecto, documento de
-  admisión, intención de flotar u otra revisión.
-- `ASX Upcoming Floats And Listings Monitor`: pagina que muestra solicitudes
-  formales anticipadas y retiros visibles en ASX.
-- `TSX New Company Listings Monitor`: pagina de confirmaciones publicadas de
-  compañías ya listadas; no funciona como señal prospectiva.
-- `JPX New Listings Monitor`: pagina de aprobaciones y fechas de listing
-  publicadas para Tokio, con enlace al outline oficial.
-- `EDINET Offering Filing Watch`: pagina documental japonesa que filtra
-  securities registration statements, enmiendas y retiros; la demo es
-  sintética y el modo en vivo exige clave gratuita personal.
-- `SGX IPO Prospectus Monitor`: pagina de documentos publicados en el
-  catalogo oficial SGX; funciona como senal documental para revision. No
-  extrae `MAS OPERA`, conservado solo como referencia manual.
-- `CVM Equity Offering Watch`: pagina brasileña que filtra ofertas de
-  acciones del ZIP diario ODbL y exige confirmacion posterior en B3.
-- `ESMA Equity Prospectus Watch`: pagina europea que filtra valores `SHRS`
-  del registro oficial y muestra eventos de oferta/admisión para revision.
-- `Korea OpenDART Equity Offering Watch`: pagina coreana que filtra filings
-  oficiales `C001` y `C006`; el modo live usa una clave gratuita del operador.
-- `Issuer Listing Confirmations`: pagina de hitos posteriores documentados
-  por comunicados oficiales del emisor, con fecha de evento y de verificacion.
-- `ETF Holdings Activity`: pagina de diferencias entre snapshots de posiciones
-  con fixtures sinteticos e importadores locales; la automatizacion autorizada
-  de fuentes diarias aun esta pendiente.
-- `Global Listings Alerts`: bandeja diaria que compara snapshots de diez
-  feeds, incluidos documentos EDINET y OpenDART, ofertas CVM y prospectos ESMA, y marca registros nuevos, modificados
-  o ausentes para revisión sin convertir filings en listings.
-- La portada `/dashboard/global-listings` enlaza estas vistas mediante rutas
-  fijas para diez monitores internacionales; `/dashboard/global/{monitor}`
-  rechaza cualquier reporte fuera de la lista permitida.
-- Cada monitor, la cola de alertas y las confirmaciones de emisor enlazan de
-  regreso a `/dashboard/global-listings` para conservar la regla de evidencia
-  de la jurisdiccion mientras se recorre el módulo.
-- `Global Listings Watch` permite navegar entre
-  cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,
-  TSX, JPX, EDINET, CVM, ESMA, OpenDART, SGX, confirmaciones del emisor, actividad ETF y gobernanza de fuentes.
-- `/dashboard/contribute?lang=en` abre un portal de colaboradores localizado
-  en ingles, japones, portugues de Brasil, chino tradicional y coreano. No
-  traduce aun todos los reportes generados: orienta propuestas de conectores
-  y exige URL oficial, terminos, costo y derechos de output antes de activar
-  datos reales.
-- `/dashboard/commons` convierte la gobernanza de fuentes en `Evidence
-  Passport Commons`: un registro consultable por API para que contributors
-  propongan fuentes, terminos y limites de uso antes de escribir ingesta.
+### Financials Evidence Center
 
-## Pagina 4: ETF Holdings Activity
+This center orders the audit chain:
 
-Objetivo: mostrar cambios publicados en las posiciones de ETF observables,
-con la frecuencia real de cada fuente.
+1. authorized target-import audit;
+2. adjusted-price evidence;
+3. corporate-action guard;
+4. operations-quality snapshot;
+5. release-decision snapshot;
+6. synthetic scorecard exploration.
 
-- Implementado: comparador de snapshots normalizados, CSV de diferencias,
-  reporte Markdown y pagina HTML con fixture sintetico reproducible.
-- Centro de lectura: `/dashboard/etf` explica las dos frecuencias de
-  evidencia antes de abrir cualquier comparación de holdings.
-- Navegacion publica: `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo`
-  y `/dashboard/etf/iyf-demo` sirven exclusivamente comparaciones sinteticas;
-  `/dashboard/etf/nport-recent` y `/dashboard/etf-regulatory` muestran la
-  capa regulatoria SEC separada.
-- Navegacion operativa SEC: `/dashboard/etf/nport-catalog` muestra releases
-  trimestrales disponibles y `/dashboard/etf/nport-sync` conserva el estado
-  incremental; ninguna vista afirma actividad diaria del gestor.
-- Implementado: importador local de CSV ARK descargado por el operador y vista
-  `ARKK-DEMO` con dos fixtures comparables, conservando fecha efectiva y
-  frecuencia diaria declarada.
-- Implementado: importador local State Street SPDR/XLF y fixture
-  `XLF-DEMO`, alineado al benchmark Financials.
-- Implementado: importador manual iShares/IYF y fixture `IYF-DEMO`; los
-  terminos oficiales impiden convertirlo en colector automatico sin permiso.
-- Pendiente de conexion/publicacion: automatizacion autorizada y permisos de
-  salidas reales de ARK, State Street SPDR e iShares.
-- Implementado: importador XML `SEC NPORT-P` y salida regulatoria separada;
-  es auditable pero no equivale a datos intradia ni a un feed diario.
-- Implementado: colector EDGAR de filings recientes por `CIK`/`seriesId`,
-  con archivo local del XML validado y `User-Agent` obligatorio en vivo.
-- Implementado: backfill desde datasets trimestrales SEC N-PORT extraidos,
-  con snapshots historicos, manifiesto y bloqueo de periodos duplicados.
-- Implementado: catalogo y descarga local por trimestre de ZIP SEC N-PORT,
-  con extraccion limitada a tablas necesarias y defensa de rutas inseguras.
-- Implementado: sincronizacion incremental N-PORT con linea base persistente,
-  descarga exclusiva de releases nuevas y regeneracion opcional de una serie.
-- Presentacion: posiciones nuevas, aumentadas, reducidas, ausentes o con
-  cambio solo de peso, fecha efectiva, frecuencia y enlace de evidencia.
-- Regla de lenguaje: una diferencia de holdings se describe como cambio
-  observado, no como compra o venta confirmada del gestor sin evidencia
-  adicional.
+`/dashboard/financials` exposes evaluated/excluded/pending counts, firm
+ranking, Wilson intervals, target-direction filters, ticker/firm detail,
+timeline evidence, CSV output, run comparison, and exclusion reasons.
+
+### IPO Watch Center
+
+IPO Watch follows research states rather than position calls:
+
+| State | Meaning |
+|---|---|
+| `Monitor` | Candidate without confirmed public filing |
+| `Review Filing` | Public filing found; primary evidence requires review |
+| `Observe Listing` | Listing/debut confirmed; post-event history may be gathered |
+| `Eligible for Study` | Enough permitted history exists for a defined study |
+
+The workflow joins SEC universal discovery, triage alerts, documented manual
+review, the watchlist, global-monitor evidence, and issuer confirmations.
+Finding a filing never changes a company state without a documented decision.
+
+### Global Listings Watch
+
+| Market | Evidence Path | Implemented Treatment |
+|---|---|---|
+| United Kingdom | LSE new issues and FCA NSM | Upcoming issues and document classes remain review signals |
+| Hong Kong | HKEX/HKEXnews AP/PHIP feeds | Official lifecycle statuses retained |
+| Australia | ASX upcoming floats/listings | Anticipated or withdrawn evidence |
+| Canada | TSX new company listings | Completed listing confirmation; SEDAR+ automation blocked |
+| Singapore | SGX IPO Prospectus | Published prospectus review; MAS OPERA manual/blocked |
+| Japan | EDINET and JPX New Listings | Filing detection separated from JPX approval/listing |
+| Brazil | CVM open offering data | Equity offering review; B3 confirmation still needed |
+| Europe | ESMA Prospectus III `SHRS` | German, Dutch, and Italian review evidence |
+| South Korea | OpenDART `C001`/`C006` | Offering-filing review; KRX public output excluded |
+| Russia | Bank of Russia/MOEX references | `restricted_research_only`; no automated collection |
+
+`/dashboard/global-alerts` compares daily evidence snapshots; new, changed, or
+removed entries are review tasks rather than automatically confirmed listings.
+
+### ETF Evidence Center
+
+The ETF center makes frequency visible:
+
+- `/dashboard/etf/arkk-demo`, `/dashboard/etf/xlf-demo`, and
+  `/dashboard/etf/iyf-demo` use synthetic comparisons only.
+- `/dashboard/etf/nport-recent` and `/dashboard/etf-regulatory` show SEC
+  N-PORT periodic evidence.
+- `/dashboard/etf/nport-catalog` and `/dashboard/etf/nport-sync` show
+  controlled quarterly catalog/synchronization operation.
+
+A difference in reported holdings is described as an observed change, never a
+confirmed manager buy or sell without additional evidence.
+
+### RWA, Market Intelligence, Volatility, And Policy
+
+- `/dashboard/rwa-watch` demonstrates token/reference observations with
+  synthetic data; live xStocks, Ondo, and venue feeds remain rights-gated.
+- `/dashboard/intelligence` maps Pre-IPO, volatility, policy, regimes, macro,
+  insiders, ownership, and futures-positioning layers; planned sources are not
+  described as collected values.
+- `/dashboard/volatility` presents a FRED-attributed VIX display and planned
+  `VIX`/`VXN`/`MOVE`/commodity episode designs.
+- `/dashboard/policy-signals` presents a rights-aware communication/event
+  study design, official White House RSS intake path, and visible Truth Social
+  block.
+
+## Controls
+
+| View | Question Answered |
+|---|---|
+| Source Governance | Which sources are usable, pending, licensed, manual, or blocked? |
+| Provider Approvals | What written evidence is required before promoting a candidate source? |
+| Scorecard Readiness | Are targets, prices, corporate actions, and universe inputs public-output ready? |
+| Operations Quality | Does a run have complete versioned, traceable technical input? |
+| Release Center | May this particular run support public real-data output? |
+
+## API Surface
+
+The read-only FastAPI layer serves dashboard state from generated reports,
+registry files, and DuckDB runs. Key contracts include:
+
+- `/api/v1/open-edition`
+- `/api/v1/commons/passports`
+- `/api/v1/intelligence/modules`
+- `/api/v1/intelligence/volatility`
+- `/api/v1/intelligence/policy-signals`
+- `/api/v1/policy/public-use`
+- `/api/v1/extensions/licensed`
+- run, governance, readiness, operations-quality, and scorecard-release
+  endpoints used by the Financials/control screens.
+
+The localized contributor gateway at `/dashboard/contribute?lang=en` also
+supports Japanese, Brazilian Portuguese, Traditional Chinese, and Korean for
+global source proposals. Documentation and the default interface remain
+English.

@@ -1,131 +1,60 @@
-# Extensiones Licenciadas Opcionales
+# Optional Licensed Extensions
 
-Revision: `2026-05-24`.
+Review date: `2026-05-24`.
 
-TargetAudit Open Edition funciona sin comprar datos. Esta pagina registra
-alternativas para el usuario que decida financiar su propia investigacion con
-`price targets` historicos reales. No activa proveedores ni concede derechos
-de publicacion.
+TargetAudit Open Edition works without buying data. This page records routes
+for users who decide to fund private research with real historical price
+targets. It does not activate providers or grant publication rights.
 
-## Precio Publico Encontrado
+## Publicly Visible Pricing Reviewed
 
-| Opcion | Datos Relevantes | Precio Visible | Uso En TargetAudit |
+| Option | Relevant Data | Visible Price | TargetAudit Use |
 |---|---|---:|---|
-| Massive / Benzinga Analyst Ratings Expansion | Ratings y price targets de acciones USA; documentacion indica historial desde `2011-12-08` | `USD 99/month` para la expansion individual | Candidato `bring your own license` para investigacion privada autorizada |
-| MarketBeat All Access | Mas de un millon de recomendaciones; ratings y cambios de target; export CSV anunciado para hasta seis meses recientes | `USD 249/year` o `USD 29/month` | Buen piloto privado de bajo costo, insuficiente por si solo para targets con mas de un ano |
-| WallStreetZen Premium | Rendimiento seguido para mas de 4,000 analistas y recomendaciones de top analysts | `USD 19.50/month` facturado anualmente | Benchmark privado de ranking/metodologia; no se confirmo feed estructurado de targets |
-| Benzinga Analyst Ratings API directo | Acciones USA; historial anunciado desde 2013; firma, analista y targets anterior/actual | Cotizacion requerida | Ruta negociada si incluye derechos de output publico |
-| AnaChart Price Targets and Ratings Feed | Price targets, ratings, consenso y feeds de accuracy historicos | Cotizacion requerida | Alternativa futura sujeta a precio y derechos escritos |
-| GuruFocus Data License | La FAQ oficial identifica estimates provenientes de Refinitiv y Morningstar | Cotizacion requerida para redistribuir | Pendiente confirmar targets individuales historicos y permiso escrito |
-| Finnhub Enterprise Redistribution | `Recommendation Trends` y `Price Target` anunciados en cobertura Enterprise | Cotizacion requerida | Ruta programatica futura solo con derecho escrito de redistribucion/output |
-| Financial Modeling Prep Data Display License | APIs documentadas de `Price Target Summary` y `Price Target Consensus` | Cotizacion requerida para display/redistribucion | Posible validacion agregada; pendiente confirmar targets individuales historicos |
+| Massive / Benzinga Analyst Ratings Expansion | U.S. stock ratings and price targets; documented history from `2011-12-08` | `USD 99/month` for individual expansion | Bring-your-own-license candidate for authorized private research |
+| MarketBeat All Access | Ratings and target changes; CSV export advertised for up to six recent months | `USD 249/year` or `USD 29/month` | Lower-cost private importer pilot; insufficient alone for one-year matured targets |
+| WallStreetZen Premium | Performance tracking for 4,000+ analysts | `USD 19.50/month` billed annually | Private ranking/method reference; no confirmed structured historical-target feed |
+| Benzinga Analyst Ratings API | U.S. stocks, firm/analyst and previous/current targets | Quote required | Negotiated route if public-output rights are included |
+| AnaChart Data Feed | Targets, ratings, consensus, historical accuracy feeds | Quote required | Future option subject to written rights |
+| GuruFocus Data License | Estimates identified as sourced from Refinitiv and Morningstar | Quote required for redistribution | Pending confirmation of individual target rows and rights |
+| Finnhub Enterprise | `Recommendation Trends` and `Price Target` coverage | Quote required | Programmatic route only with written redistribution/output rights |
+| Financial Modeling Prep Display License | `Price Target Summary` and `Price Target Consensus` endpoints | Quote required for display/redistribution | Potential aggregate validation subject to licensing |
 
-La pagina de precios de Massive muestra el complemento Benzinga Analyst
-Ratings por `USD 99/month`. Antes de pagar, el usuario debe confirmar en la
-contratacion si el complemento exige ademas un plan base de Stocks y cuales
-son los derechos aplicables a su cuenta.
+Free API access or an individual subscription does not itself permit a public
+GitHub ranking. TargetAudit may process a user's authorized local export for
+private research, but may publish real results only when written terms cover
+the derived output and all readiness controls pass.
 
-MarketBeat es interesante para probar el importador con datos aportados por
-un usuario: tiene precio bastante menor y exportacion CSV. Sin embargo, su
-FAQ describe exportaciones de ratings recientes de hasta seis meses, mientras
-la metodologia central necesita observaciones con horizonte ya vencido de mas
-de un ano. Serviria para pruebas de cobertura o para preparar el pipeline,
-pero no para publicar el ranking completo prometido.
+## Visual References Not Currently Ingestible
 
-WallStreetZen ya calcula rankings de rendimiento de analistas y sus terminos
-permiten usar datos exportados en investigacion interna, sin redistribuirlos.
-Es una excelente referencia para comparar nuestro metodo; no se registra como
-feed confirmado de `price targets` historicos porque sus paginas oficiales
-revisadas no lo demuestran.
-
-GuruFocus merece quedar en observacion: su documentacion oficial confirma
-datos de estimates provenientes de Refinitiv y Morningstar, pero no confirma
-todavia el conjunto de filas historicas individuales que necesita TargetAudit.
-Ademas, exige licencia comercial para redistribucion.
-
-Finnhub es tecnicamente atractivo porque anuncia `Recommendation Trends` y
-`Price Target`, pero la pagina oficial de startups y enterprise asocia
-`Commercial use` y `Redistribution right` con la oferta Enterprise de precio
-negociado. El acceso gratuito a la API no prueba que un dashboard publico
-pueda republicar sus datos o sus derivados.
-
-Financial Modeling Prep documenta endpoints de resumen y consenso de price
-targets. Su pagina oficial de precios establece que mostrar o redistribuir
-datos exige un `Data Display and Licensing Agreement` especifico. Por tanto,
-el plan gratuito de pruebas no permite habilitar esta fuente en Open Edition.
-
-## Limite De La Licencia Individual
-
-Los terminos de mercado individual de Massive permiten un uso personal y no
-comercial del dato. No permiten convertir esa suscripcion en un dataset
-incluido en GitHub ni en un ranking publico distribuido a terceros sin
-consentimiento escrito adicional.
-
-Por lo tanto:
-
-- TargetAudit puede aceptar una exportacion local que el usuario este
-  autorizado a procesar para su propia investigacion.
-- El repositorio no incluye filas reales adquiridas, tokens ni claves.
-- Un ranking real publico de Roth MKM, KBW, UBS, Barclays o Citi continua
-  bloqueado hasta obtener derechos escritos para ese output.
-
-## Flujo Del Usuario Que Decide Pagar
-
-1. El usuario contrata directamente con el proveedor y revisa sus terminos.
-2. Conserva sus credenciales y exportaciones fuera de Git.
-3. Usa `targets-import` con un manifiesto local que identifica proveedor,
-   evidencia contractual y uso autorizado.
-4. Ejecuta el scorecard para investigacion interna.
-5. Solo publica resultados reales cuando una licencia o permiso escrito cubra
-   expresamente la salida derivada y los demas controles de Readiness.
-
-## Referencias Visuales No Integrables Actualmente
-
-| Fuente | Valor Para Investigar Manualmente | Motivo Para No Conectarla |
+| Source | Research Value | Reason Not To Connect |
 |---|---|---|
-| Yahoo Finance | Consulta visual de recomendaciones y price targets; Yahoo identifica datos de recomendaciones/targets provistos por S&P Global Market Intelligence y upgrades/downgrades por Benzinga | Yahoo indica que la informacion de Finance no debe redistribuirse; no usar librerias no oficiales ni scraping para el producto |
-| Investing.com | Consulta manual de ratings visibles en su interfaz | Sus terminos prohiben usar, almacenar, reproducir, mostrar, transmitir o distribuir los datos sin permiso escrito |
-| TipRanks | Excelente benchmark: su FAQ mide ratings `Buy` por un ano y expone consenso/targets en el producto | Usar para comparar metodologia visualmente; no colectar filas sin API/licencia institucional escrita |
-| Finviz | Ver cambios de rating y target en perfiles de acciones USA; Elite anuncia export/API access | El precio de Elite no demuestra derechos de publicar historicos; dejar como verificacion manual hasta revisar permiso especifico |
-| StockAnalysis.com | Vista de analysts y datos derivados de varias fuentes | Sus terminos permiten snippets atribuidos, no republicar el contenido completo; no usar como dataset |
-| Koyfin | Graficos de investigacion y charts que pueden citarse con enlace | Su FAQ dice que no permite obtener datos via API y que Estimates no se pueden descargar por restricciones del proveedor |
-| WSJ / CNBC | Contexto editorial y vistas de consenso visibles al lector | No son feeds licenciados para ingestión o redistribucion de TargetAudit |
+| Yahoo Finance | Visual recommendations and targets | Provider/redistribution terms do not support scraping or public reuse |
+| Investing.com | Manual ratings inspection | Terms restrict automated storage, display, transmission, and distribution without permission |
+| TipRanks | Strong methodology and consensus reference | No row collection without written API/institutional license |
+| Finviz | Visible U.S. rating/target changes | Elite pricing does not establish public historical-output rights |
+| StockAnalysis.com | Analyst view derived from multiple sources | Snippet attribution is not complete-dataset republication permission |
+| Koyfin | Research charts | FAQ states no API access and restricted estimates downloads |
+| WSJ / CNBC | Editorial and consensus context | Not licensed TargetAudit ingestion feeds |
 
-## Integracion Visual Sin Ingesta
+TradingView widgets can provide attributed external charts at
+`/dashboard/market-context`; widget data is not stored or used as target
+history.
 
-TradingView ofrece widgets de graficos para incrustar gratuitamente en un
-sitio web. Sus terminos exigen conservar la atribucion tal como fue disenada.
-La pagina `/dashboard/market-context` ya usa ese camino para visualizar `XLF`,
-pero el widget no entrega la historia de targets necesaria para evaluar
-analistas ni debe convertirse en almacenamiento de datos.
+The versioned catalog is `data/samples/licensed_extensions.csv`, displayed at
+`/dashboard/extensions` and `/api/v1/extensions/licensed`.
 
+## Official Sources Reviewed
 
-El catalogo versionado vive en `data/samples/licensed_extensions.csv` y se
-muestra mediante `/dashboard/extensions` y `/api/v1/extensions/licensed`.
-
-## Fuentes Oficiales Revisadas
-
-- Massive Benzinga Analyst Ratings: <https://massive.com/docs/rest/stocks/benzinga/analyst-ratings>
-- Massive pricing: <https://massive.com/pricing>
-- Massive individual market-data terms: <https://massive.com/legal/market_data_terms_individual>
-- Benzinga Analyst Ratings API: <https://www.benzinga.com/apis/analyst-ratings-api/>
-- AnaChart datasets and data feeds: <https://anachart.com/datasets-data-feeds>
-- MarketBeat All Access pricing: <https://www.marketbeat.com/subscribe/all-access/>
-- MarketBeat FAQ: <https://www.marketbeat.com/faq/>
-- MarketBeat terms: <https://www.marketbeat.com/terms/>
-- WallStreetZen plans: <https://www.wallstreetzen.com/plans>
-- WallStreetZen terms: <https://www.wallstreetzen.com/terms-of-service>
+- Massive Benzinga Analyst Ratings and pricing: <https://massive.com/docs/rest/stocks/benzinga/analyst-ratings> and <https://massive.com/pricing>
+- Benzinga API: <https://www.benzinga.com/apis/analyst-ratings-api/>
+- AnaChart data feeds: <https://anachart.com/datasets-data-feeds>
+- MarketBeat pricing and terms: <https://www.marketbeat.com/subscribe/all-access/> and <https://www.marketbeat.com/terms/>
+- WallStreetZen plans and terms: <https://www.wallstreetzen.com/plans> and <https://www.wallstreetzen.com/terms-of-service>
 - GuruFocus FAQ: <https://www.gurufocus.com/faq>
-- GuruFocus term of use: <https://www.gurufocus.com/term-of-use>
-- Finnhub estimates and enterprise licensing: <https://finnhub.io/pricing-startups-and-enterprise>
-- Financial Modeling Prep analyst estimates: <https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/?direct=true>
-- Financial Modeling Prep pricing and display licensing: <https://intelligence.financialmodelingprep.com/pricing-plans?direct=true>
+- Finnhub enterprise licensing: <https://finnhub.io/pricing-startups-and-enterprise>
+- Financial Modeling Prep pricing: <https://intelligence.financialmodelingprep.com/pricing-plans?direct=true>
 - TipRanks FAQ: <https://www.tipranks.com/faq>
-- Finviz FAQ and pricing: <https://finviz.com/help/faq>
-- StockAnalysis.com terms: <https://stockanalysis.com/terms-of-use/>
-- Koyfin API FAQ: <https://www.koyfin.com/help/faq/can-i-get-the-data-via-api/>
-- Koyfin download restrictions: <https://www.koyfin.com/help/faq/can-i-download-data/>
+- Finviz FAQ: <https://finviz.com/help/faq>
 - TradingView widgets: <https://www.tradingview.com/widget-docs/widgets/charts/>
-- TradingView terms: <https://www.tradingview.com/policies/>
 - Yahoo Finance providers: <https://help.yahoo.com/kb/SLN2310.html>
 - Investing.com terms: <https://www.investing.com/about-us/terms-and-conditions>

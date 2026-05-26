@@ -1,37 +1,36 @@
 # Market Gap Review: Singapore MAS OPERA
 
-Revision: `2026-05-25`.
+Review date: `2026-05-25`.
 
 ## Decision
 
-TargetAudit no implementara un collector automatico sobre `MAS OPERA` en la
-edicion publica gratuita. `SGX IPO Prospectus` permanece como la ruta
-automatizada de Singapur; `MAS OPERA` queda registrado como referencia manual
-oficial y bloqueado para recoleccion.
+TargetAudit will not implement an automatic collector for `MAS OPERA` in the
+free public edition. `SGX IPO Prospectus` remains Singapore's automated path;
+`MAS OPERA` is recorded as an official manual reference blocked from
+collection.
 
-## Evidencia Revisada
+## Reviewed Evidence
 
-- `OPERA` es el repositorio oficial de prospectos y documentos de oferta de
-  Monetary Authority of Singapore.
-- La consulta publica `Public Offers` solicita un `Security Code`, por lo que
-  no expone una ruta estable de ingestion automatica verificada.
-- Los terminos `OPERA`, actualizados el `2026-04-18`, restringen robots u
-  otras aplicaciones de retrieval sin permiso escrito, asi como caching y
-  almacenamiento de contenido; tambien limitan enlaces directos a contenido.
-- La Singapore Open Data Licence solo resuelve reutilizacion para datasets
-  efectivamente cubiertos. No se identifico un dataset/API de prospectos
-  `OPERA` publicado bajo esa licencia.
+- `OPERA` is the Monetary Authority of Singapore's official repository for
+  prospectuses and offering documents.
+- Its public `Public Offers` query requests a `Security Code`, so it does not
+  expose a verified stable automation route.
+- `OPERA` terms updated on `2026-04-18` restrict robots or other retrieval
+  applications without written permission, as well as caching, storage, and
+  direct links to content.
+- The Singapore Open Data Licence governs datasets actually released under it;
+  no `OPERA` prospectus dataset/API covered by that licence was identified.
 
-## Tratamiento En Producto
+## Product Treatment
 
-- No hacer scraping de `Public Offers`, no intentar sortear el codigo de
-  seguridad y no archivar documentos `OPERA` en el dashboard publico.
-- Mostrar `MAS OPERA Public Offers` en `Source Registry` como
-  `restricted_no_collection` y `source_link_only`.
-- Continuar el monitor `SGX IPO Prospectus` como senal documental:
-  un prospecto publicado requiere revision y no confirma admission o trading.
+- Do not scrape `Public Offers`, attempt to bypass the security code, or
+  archive `OPERA` documents in the public dashboard.
+- Show `MAS OPERA Public Offers` in `Source Registry` as
+  `restricted_no_collection` and `source_link_only`.
+- Continue `SGX IPO Prospectus` as documentary signal: a published prospectus
+  requires review and does not confirm admission or trading.
 
-## Fuentes Oficiales
+## Official Sources
 
 - MAS OPERA: <https://eservices.mas.gov.sg/opera/Public/WelcomePage.aspx>
 - MAS OPERA Public Offers: <https://eservices.mas.gov.sg/opera/PublicOffers.aspx>

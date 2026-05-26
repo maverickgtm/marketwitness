@@ -1,45 +1,41 @@
-# Market Gap Review: Rusia
+# Market Gap Review: Russia
 
-Revision: `2026-05-25`.
+Review date: `2026-05-25`.
 
-## Decision Ejecutiva
+## Executive Decision
 
-Rusia es un mercado relevante para el mapa global, pero no debe activarse como
-collector de `Open Edition` en este momento. TargetAudit lo registra como
-`restricted_research_only`: fuente oficial identificada y riesgo explicado,
-sin ingesta automatica, alertas de IPO ni sugerencias de posiciones.
+Russia is relevant to a global coverage map, but must not be activated as an
+Open Edition collector at this time. TargetAudit records it as
+`restricted_research_only`: an identified official-source path with explained
+risk, without automated ingestion, IPO alerts, or position suggestions.
 
-## Fuentes Oficiales Identificadas
+## Identified Official Sources
 
-| Fuente | Valor Potencial | Restriccion Para TargetAudit |
+| Source | Potential Value | TargetAudit Restriction |
 |---|---|---|
-| Bank of Russia `Register of Russian Securities` | El Banco de Rusia anuncio el `2025-09-03` un registro con acciones y bonos, `ISIN`, numero estatal de registro, moneda e informacion del emisor | Sirve para documentar la existencia de datos regulatorios; no se implementa acceso automatizado sin revision legal |
-| Moscow Exchange `ISS` API | MOEX declara acceso a descripciones de securities, operaciones, cotizaciones y resultados historicos; datos demorados gratuitos y tiempo real por suscripcion | La contraparte MOEX esta designada por OFAC; no se activa collector ni redistribucion |
+| Bank of Russia `Register of Russian Securities` | The Bank announced on `2025-09-03` a register containing shares and bonds, `ISIN`, state registration number, currency, and issuer information | Useful for documenting regulatory data existence; no automated access without legal review |
+| Moscow Exchange `ISS` API | MOEX describes security metadata, transactions, quotations, and historical results; delayed data is advertised as free and real-time as subscribed | MOEX is OFAC-designated; no collector or redistribution is enabled |
 
-## Control De Sanciones
+## Sanctions Control
 
-El Departamento del Tesoro de Estados Unidos informo el `2024-06-12` que
-`Moscow Exchange (MOEX)`, `National Clearing Center (NCC)` y `National
-Settlement Depository (NSD)` fueron designadas conforme a `E.O. 14024` por
-operar en el sector de servicios financieros de la economia rusa.
+The U.S. Treasury stated on `2024-06-12` that `Moscow Exchange (MOEX)`,
+`National Clearing Center (NCC)`, and `National Settlement Depository (NSD)`
+were designated under `E.O. 14024` for operating in Russia's financial
+services sector. Finding a free API therefore does not make integration,
+publication, or investment-oriented use appropriate.
 
-La pagina vigente de OFAC para sanciones relacionadas con Rusia continua
-publicando licencias y acciones recientes, incluidas acciones en abril y mayo
-de `2026`. Por tanto, encontrar una API gratuita no equivale a que su
-integracion, publicacion o uso para orientar inversiones sea apropiado.
+## Product Policy
 
-## Politica Del Producto
+- Show Russia in the coverage map as `restricted_research_only`.
+- Do not automatically consume `MOEX ISS` or generate public snapshots.
+- Do not offer buy, sell, or positioning recommendations for Russian
+  securities.
+- Do not promote this source to an operating feed without documented legal
+  review of sanctions, data license, redistribution, and intended users.
 
-- Mostrar Rusia en el mapa de cobertura como `restricted_research_only`.
-- No consumir automaticamente `MOEX ISS` ni generar snapshots publicos.
-- No ofrecer recomendaciones de compra, venta o posicionamiento sobre
-  securities rusos.
-- No promover esta fuente a feed operativo sin revision legal documentada de
-  sanciones, licencia de datos, redistribucion y usuarios objetivo.
+## Official Sources
 
-## Fuentes Oficiales Revisadas
-
-- Bank of Russia, registro de valores rusos: <https://www.cbr.ru/eng/press/event/?id=26912>
-- Moscow Exchange, `ISS` API: <https://www.moex.com/a2920>
-- U.S. Treasury, designacion de infraestructura financiera rusa, `2024-06-12`: <https://home.treasury.gov/news/press-releases/jy2404>
-- OFAC, programa de sanciones relacionadas con Rusia: <https://ofac.treasury.gov/sanctions-programs-and-country-information/russian-harmful-foreign-activities-sanctions>
+- Bank of Russia register announcement: <https://www.cbr.ru/eng/press/event/?id=26912>
+- Moscow Exchange `ISS` API: <https://www.moex.com/a2920>
+- U.S. Treasury designation, `2024-06-12`: <https://home.treasury.gov/news/press-releases/jy2404>
+- OFAC Russia-related sanctions: <https://ofac.treasury.gov/sanctions-programs-and-country-information/russian-harmful-foreign-activities-sanctions>
