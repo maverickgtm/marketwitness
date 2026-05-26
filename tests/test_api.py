@@ -604,16 +604,31 @@ class ApiTests(unittest.TestCase):
             "/api/v1/listings/radar?stream=global_changes&market=HKEX&start=2026-05-25&end=2026-05-25"
         )
         searched = self.client.get("/api/v1/listings/radar?query=SpaceX")
+        exported = self.client.get(
+            "/api/v1/listings/radar/export.csv?stream=global_changes&market=HKEX"
+        )
 
         self.assertEqual(page.status_code, 200)
         self.assertIn("Listings Radar", page.text)
         self.assertIn("My Watchlist", page.text)
+        self.assertIn("Monitor Status", page.text)
+        self.assertIn("Export filtered CSV", page.text)
+        self.assertIn("Re-read evidence", page.text)
         self.assertIn("Apply filters", page.text)
         self.assertIn("localStorage", page.text)
         self.assertEqual(all_records.status_code, 200)
         self.assertEqual(all_records.json()["record_count"], 4)
         self.assertEqual(all_records.json()["ipo_watch_count"], 2)
         self.assertEqual(all_records.json()["global_change_count"], 2)
+        self.assertEqual(
+            all_records.json()["operations"]["collection_status"],
+            "Scheduled artifact / not live collection",
+        )
+        self.assertEqual(all_records.json()["operations"]["market_count"], 4)
+        self.assertEqual(
+            all_records.json()["operations"]["automatic_refresh"],
+            "Mondays at 12:17 UTC via GitHub Actions",
+        )
         self.assertEqual(filtered.json()["record_count"], 1)
         self.assertEqual(
             filtered.json()["records"][0]["company_name"],
@@ -621,6 +636,11 @@ class ApiTests(unittest.TestCase):
         )
         self.assertEqual(searched.json()["record_count"], 1)
         self.assertEqual(searched.json()["records"][0]["status"], "filed_public")
+        self.assertEqual(exported.status_code, 200)
+        self.assertIn("text/csv", exported.headers["content-type"])
+        self.assertIn("marketwitness-listings-radar.csv", exported.headers["content-disposition"])
+        self.assertIn("EnjoyGo Technology Limited", exported.text)
+        self.assertNotIn("Boresight Ltd", exported.text)
 
     def test_serves_etf_evidence_center_with_separated_frequency_layers(self) -> None:
         page = self.client.get("/dashboard/etf")

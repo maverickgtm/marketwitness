@@ -23,7 +23,7 @@ stored, exported, or used as scoring evidence.
 | Capability | Included Workflow | Critical Boundary |
 |---|---|---|
 | Financials Scorecard Sandbox | Synthetic target evaluation, exclusions, benchmarks, quality, and release gating | No real-firm performance claim |
-| Listings Radar / U.S. IPO Filing Watch | Search, filters, browser-local follow-up list, SEC-shaped discovery, triage and reviewed watchlist workflow | Live SEC calls require identified `User-Agent`; a filing is not an investment signal |
+| Listings Radar / U.S. IPO Filing Watch | Search, filters, filtered CSV export, visible monitor cadence, browser-local follow-up list, SEC-shaped discovery, triage and reviewed watchlist workflow | Live SEC calls require identified `User-Agent`; a filing is not an investment signal |
 | Global Listings Watch | Official-source monitor design, dated evidence-change queue and interactive radar feed for multiple jurisdictions | Jurisdiction-specific confirmation rules remain separate |
 | ETF Regulatory Holdings | Synthetic holding differences plus SEC N-PORT periodic workflow | Not daily or real-time manager trading |
 | Public Document Checks | FCA NSM corroboration flow | Documentation does not automatically prove admission/trading |
@@ -69,6 +69,11 @@ output under `build/demo/` and the installable wheel under `build/dist/`.
 The workflow requires no secrets or paid subscriptions because it processes
 redistributable repository fixtures only. It does not query live filings,
 include real issuer holdings, or publish a real analyst ranking.
+
+The Listings Radar exposes that same boundary in-product through `Monitor
+Status`: its automatic refresh refers to this artifact schedule, not an
+always-on market data service. Users can re-read a locally rebuilt bundle and
+export the filtered evidence queue as CSV.
 
 ## Optional Extensions
 

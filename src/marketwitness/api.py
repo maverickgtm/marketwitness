@@ -501,29 +501,12 @@ def create_app(
         if start and end and start > end:
             raise HTTPException(status_code=422, detail="Start date must be on or before end date.")
         all_rows = _read_listing_radar_rows(reports)
-        normalized_query = query.strip().casefold()
-        selected = []
-        for row in all_rows:
-            row_date = date.fromisoformat(str(row["event_date"]))
-            if normalized_query and normalized_query not in " ".join(
-                str(row[key]).casefold()
-                for key in ("company_name", "market", "status", "detail", "next_action")
-            ):
-                continue
-            if stream and row["stream"] != stream:
-                continue
-            if market and row["market"].casefold() != market.casefold():
-                continue
-            if status and row["status"] != status:
-                continue
-            if start and row_date < start:
-                continue
-            if end and row_date > end:
-                continue
-            selected.append(row)
-        selected.sort(key=lambda item: (str(item["event_date"]), str(item["company_name"])), reverse=True)
+        selected = _filter_listing_radar_rows(
+            all_rows, query, stream, market, status, start, end
+        )
+        latest_evidence = max((str(item["event_date"]) for item in all_rows), default=None)
         return {
-            "as_of": max((str(item["event_date"]) for item in all_rows), default=None),
+            "as_of": latest_evidence,
             "record_count": len(selected),
             "total_record_count": len(all_rows),
             "ipo_watch_count": sum(item["stream"] == "ipo_watch" for item in selected),
@@ -539,8 +522,67 @@ def create_app(
                 "Records are evidence-review tasks and verified milestones, not investment "
                 "recommendations or confirmation of trading unless the cited evidence states it."
             ),
+            "operations": {
+                "data_mode": "Reproducible fixture bundle",
+                "collection_status": "Scheduled artifact / not live collection",
+                "latest_evidence_date": latest_evidence,
+                "automatic_refresh": "Mondays at 12:17 UTC via GitHub Actions",
+                "manual_refresh": "Run make verify to rebuild the local evidence bundle",
+                "market_count": len({str(item["market"]) for item in all_rows}),
+                "streams": [
+                    {
+                        "name": "U.S. IPO Watch",
+                        "record_count": sum(
+                            item["stream"] == "ipo_watch" for item in all_rows
+                        ),
+                    },
+                    {
+                        "name": "Global changes",
+                        "record_count": sum(
+                            item["stream"] == "global_changes" for item in all_rows
+                        ),
+                    },
+                ],
+            },
             "records": selected,
         }
+
+    @application.get("/api/v1/listings/radar/export.csv")
+    def listings_radar_export(
+        query: str = "",
+        stream: str = Query(default="", pattern="^(|ipo_watch|global_changes)$"),
+        market: str = "",
+        status: str = "",
+        start: Optional[date] = None,
+        end: Optional[date] = None,
+    ) -> Response:
+        if start and end and start > end:
+            raise HTTPException(status_code=422, detail="Start date must be on or before end date.")
+        selected = _filter_listing_radar_rows(
+            _read_listing_radar_rows(reports), query, stream, market, status, start, end
+        )
+        output = io.StringIO()
+        fieldnames = [
+            "event_date",
+            "stream",
+            "market",
+            "company_name",
+            "status",
+            "detail",
+            "next_action",
+            "evidence_level",
+            "source_url",
+        ]
+        writer = csv.DictWriter(output, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(selected)
+        return Response(
+            output.getvalue(),
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": 'attachment; filename="marketwitness-listings-radar.csv"'
+            },
+        )
 
     @application.get("/api/v1/intelligence/modules")
     def market_intelligence_snapshot() -> dict[str, object]:
@@ -892,6 +934,42 @@ def _read_listing_radar_rows(directory: Path) -> list[dict[str, object]]:
     except (OSError, KeyError, ValueError) as exc:
         raise HTTPException(status_code=503, detail=f"Listings Radar data is invalid: {exc}") from exc
     return rows
+
+
+def _filter_listing_radar_rows(
+    rows: list[dict[str, object]],
+    query: str,
+    stream: str,
+    market: str,
+    status: str,
+    start: Optional[date],
+    end: Optional[date],
+) -> list[dict[str, object]]:
+    normalized_query = query.strip().casefold()
+    selected = []
+    for row in rows:
+        row_date = date.fromisoformat(str(row["event_date"]))
+        if normalized_query and normalized_query not in " ".join(
+            str(row[key]).casefold()
+            for key in ("company_name", "market", "status", "detail", "next_action")
+        ):
+            continue
+        if stream and row["stream"] != stream:
+            continue
+        if market and row["market"].casefold() != market.casefold():
+            continue
+        if status and row["status"] != status:
+            continue
+        if start and row_date < start:
+            continue
+        if end and row_date > end:
+            continue
+        selected.append(row)
+    selected.sort(
+        key=lambda item: (str(item["event_date"]), str(item["company_name"])),
+        reverse=True,
+    )
+    return selected
 
 
 def _generated_html(directory: Path, filename: str) -> str:

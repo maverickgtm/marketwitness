@@ -614,7 +614,7 @@ def listings_radar_html() -> str:
     h1 span { color:var(--mint); }
     .lead { max-width:730px; color:var(--muted); font-size:17px; }
     .boundary { max-width:470px; background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:14px; padding:15px 17px; color:var(--muted); }
-    .controls,.card,.results,.watch-panel { background:var(--panel); border:1px solid var(--line); border-radius:16px; }
+    .controls,.card,.results,.watch-panel,.monitor-panel { background:var(--panel); border:1px solid var(--line); border-radius:16px; }
     .controls { display:grid; grid-template-columns:minmax(210px,1.55fr) repeat(3,minmax(145px,.82fr)) repeat(2,minmax(145px,.84fr)) auto; gap:11px; padding:16px; }
     .control input,.control select { display:block; width:100%; height:43px; margin-top:6px; border:1px solid var(--line);
       border-radius:9px; background:var(--panel2); color:var(--text); padding:0 11px; font:inherit; color-scheme:dark; }
@@ -635,13 +635,19 @@ def listings_radar_html() -> str:
     .status { color:var(--mint); font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
     .evidence a { display:inline-block; margin-bottom:9px; } .star { height:34px; width:100%; font-size:13px; }
     .star.saved { border-color:var(--mint); color:var(--mint); }
-    .watch-panel { padding:18px; position:sticky; top:18px; } .watch-panel h2 { font-size:20px; margin:0 0 4px; }
-    .watch-panel .empty { color:var(--muted); font-size:13px; }
+    .right-rail { display:grid; gap:14px; position:sticky; top:18px; }
+    .monitor-panel,.watch-panel { padding:18px; } .watch-panel h2,.monitor-panel h2 { font-size:20px; margin:0 0 4px; }
+    .monitor-state { display:inline-block; color:var(--gold); background:rgba(243,191,102,.13); border-radius:999px; padding:5px 9px; margin:12px 0; font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
+    .pulse { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin:11px 0 15px; }
+    .pulse div { background:var(--panel2); border-radius:10px; padding:10px; } .pulse small { display:block; color:var(--muted); } .pulse strong { display:block; margin-top:4px; }
+    .cycle { border-top:1px solid var(--line); margin-top:12px; padding-top:12px; color:var(--muted); font-size:13px; }
+    .cycle strong { display:block; color:var(--text); margin-bottom:4px; }
+    .watch-panel .empty,.monitor-panel .empty { color:var(--muted); font-size:13px; }
     .saved-item { border-top:1px solid var(--line); padding:13px 0; } .saved-item strong { display:block; margin-bottom:3px; } .saved-item p { color:var(--muted); font-size:12px; margin:0 0 7px; }
     .saved-item button { height:30px; font-size:12px; padding:0 10px; }
-    .tools { display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; } .tools a { padding:9px 12px; border:1px solid var(--line); border-radius:9px; font-weight:600; }
+    .tools { display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; } .tools a,.tools button { padding:9px 12px; border:1px solid var(--line); border-radius:9px; font-weight:600; height:auto; color:var(--mint); }
     #error { display:none; border-left:3px solid var(--rose); margin-top:14px; color:var(--rose); padding:12px; background:var(--panel); }
-    @media(max-width:1130px) { .controls { grid-template-columns:repeat(3,1fr); } .workspace { grid-template-columns:1fr; } .watch-panel { position:static; } }
+    @media(max-width:1130px) { .controls { grid-template-columns:repeat(3,1fr); } .workspace { grid-template-columns:1fr; } .right-rail { position:static; } }
     @media(max-width:760px) { header,main { padding:18px 14px; } .top,.hero { display:block; } .back { display:inline-block; margin-top:14px; } .controls,.cards { grid-template-columns:1fr; }
       .record { display:block; } .record > * { margin-bottom:11px; } }
   </style>
@@ -682,13 +688,25 @@ def listings_radar_html() -> str:
         <div class="section-head"><h2>Evidence Queue</h2><span id="result-meta">Loading records...</span></div>
         <div id="records"></div>
       </article>
-      <aside class="watch-panel">
-        <p class="eyebrow">Saved in this browser</p>
-        <h2>My Watchlist</h2>
-        <p class="empty">Mark records that deserve follow-up. This personal list never changes an evidence status.</p>
-        <div id="saved"></div>
-        <div class="tools"><a href="/dashboard/global-alerts">Change report</a><a href="/dashboard/sec-alerts">SEC queue</a></div>
-      </aside>
+      <div class="right-rail">
+        <aside class="monitor-panel" aria-label="Monitor status">
+          <p class="eyebrow">Update transparency</p>
+          <h2>Monitor Status</h2>
+          <span class="monitor-state" id="collection-status">Loading status...</span>
+          <div class="pulse"><div><small>Last evidence</small><strong id="latest-evidence">-</strong></div><div><small>Markets covered</small><strong id="market-count">-</strong></div></div>
+          <p class="empty" id="data-mode">Loading data mode...</p>
+          <div class="cycle"><strong>Automatic artifact refresh</strong><span id="automatic-refresh">-</span></div>
+          <div class="cycle"><strong>Refresh locally</strong><span id="manual-refresh">-</span></div>
+          <div class="tools"><button type="button" id="reload">Re-read evidence</button><a id="export" href="/api/v1/listings/radar/export.csv" download>Export filtered CSV</a></div>
+        </aside>
+        <aside class="watch-panel">
+          <p class="eyebrow">Saved in this browser</p>
+          <h2>My Watchlist</h2>
+          <p class="empty">Mark records that deserve follow-up. This personal list never changes an evidence status.</p>
+          <div id="saved"></div>
+          <div class="tools"><a href="/dashboard/global-alerts">Change report</a><a href="/dashboard/sec-alerts">SEC queue</a></div>
+        </aside>
+      </div>
     </section>
   </main>
   <script>
@@ -708,9 +726,13 @@ def listings_radar_html() -> str:
       $("records").innerHTML = records.length ? records.map((item) => `<section class="record"><div><span class="badge ${text(item.stream)}">${item.stream === "ipo_watch" ? "U.S. IPO" : "Global change"}</span><p>${text(item.event_date)}</p><span class="status">${text(item.status.replaceAll("_", " "))}</span></div><div><h3>${text(item.company_name)}</h3><p>${text(item.market)} / ${text(item.evidence_level)}</p><p>${text(item.detail)}</p></div><div><p><strong>Next verification step</strong></p><p>${text(item.next_action)}</p></div><div class="evidence"><a href="${text(item.source_url)}" target="_blank" rel="noopener">Open evidence</a><button class="star ${saved[item.record_id] ? "saved" : ""}" type="button" data-save="${text(item.record_id)}">${saved[item.record_id] ? "Saved" : "Watch"}</button></div></section>`).join("") : `<section class="record"><p>No evidence records match these filters.</p></section>`;
       document.querySelectorAll("[data-save]").forEach((button) => button.addEventListener("click", () => toggleSave(button.dataset.save)));
     }
-    async function loadRadar() {
+    function activeParameters() {
       const parameters = new URLSearchParams();
       ["query", "stream", "market", "status", "start", "end"].forEach((key) => { if ($(key).value) parameters.set(key, $(key).value); });
+      return parameters;
+    }
+    async function loadRadar() {
+      const parameters = activeParameters();
       try {
         const response = await fetch(`/api/v1/listings/radar?${parameters}`);
         const data = await response.json();
@@ -724,12 +746,20 @@ def listings_radar_html() -> str:
         $("review-count").textContent = data.review_required_count;
         $("result-meta").textContent = `${data.record_count} of ${data.total_record_count} records / last evidence ${data.as_of}`;
         $("boundary").textContent = data.publication_boundary;
+        $("collection-status").textContent = data.operations.collection_status;
+        $("latest-evidence").textContent = data.operations.latest_evidence_date;
+        $("market-count").textContent = data.operations.market_count;
+        $("data-mode").textContent = data.operations.data_mode;
+        $("automatic-refresh").textContent = data.operations.automatic_refresh;
+        $("manual-refresh").textContent = data.operations.manual_refresh;
+        $("export").href = `/api/v1/listings/radar/export.csv?${parameters}`;
         $("error").style.display = "none";
         renderRecords();
         renderSaved();
       } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
     }
     $("apply").addEventListener("click", loadRadar);
+    $("reload").addEventListener("click", loadRadar);
     $("query").addEventListener("keydown", (event) => { if (event.key === "Enter") loadRadar(); });
     document.querySelectorAll("[data-quick]").forEach((button) => button.addEventListener("click", () => { document.querySelectorAll("[data-quick]").forEach((item) => item.classList.remove("active")); button.classList.add("active"); $("stream").value = button.dataset.quick; loadRadar(); }));
     $("reset").addEventListener("click", () => { ["query", "stream", "market", "status", "start", "end"].forEach((key) => { $(key).value = ""; }); document.querySelectorAll("[data-quick]").forEach((item) => item.classList.remove("active")); document.querySelector("[data-quick='']").classList.add("active"); loadRadar(); });

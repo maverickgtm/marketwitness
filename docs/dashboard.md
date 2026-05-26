@@ -88,7 +88,9 @@ Finding a filing never changes a company state without a documented decision.
 users can search issuers or details, filter by U.S. IPO versus global-change
 stream, market, state and observed date, open cited evidence, and save a
 personal browser-local follow-up list. The list does not alter project data or
-promote an evidence signal to a confirmed listing.
+promote an evidence signal to a confirmed listing. `Monitor Status` makes the
+bundle date and collection mode explicit, and filtered CSV export turns a
+research view into a portable review queue.
 
 ### Global Listings Watch
 

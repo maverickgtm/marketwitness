@@ -43,6 +43,8 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
 - [x] Interactive Listings Radar combining the reviewed U.S. IPO registry with
   dated global listing-evidence changes, filters, source links and a
   browser-local research watchlist.
+- [x] Listings Radar operations layer with visible bundle cadence, explicit
+  not-live status, local re-read control and filtered CSV review export.
 
 ## Pending Product Expansion
 

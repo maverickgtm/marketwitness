@@ -148,6 +148,11 @@ uses fixtures only, requires no secrets, and retains output temporarily. A
 future live service requires separate deployment, source-rights validation,
 security review, and legal review.
 
+`/dashboard/listings-radar` reports this cadence as `Monitor Status`, exposes
+the latest evidence date in the generated bundle, and exports a filtered CSV
+review queue. Re-reading the radar refreshes generated evidence already
+available to the application; it does not initiate live source collection.
+
 ## Operational Limits
 
 - Never commit API keys, provider downloads, personal request headers, or
