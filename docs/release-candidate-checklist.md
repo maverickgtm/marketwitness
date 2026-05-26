@@ -26,8 +26,10 @@ promise real analyst rankings or investment recommendations.
 
 ## Before Publishing The Repository
 
-- [ ] Run `make verify` from a clean clone and retain a green CI result on the
-  candidate commit.
+- [x] Run `make verify` and `make release-hygiene` from a local clean clone of
+  the candidate branch.
+- [ ] Retain a green GitHub Actions result on the candidate commit after
+  pushing the public repository.
 - [x] Publish three selected screenshots in `docs/assets/` and use them in
   `README.md`: IPO Watch, Global Listings, and Presidential Impact Lab.
 - [ ] Create the GitHub repository with description, topics, and the correct
