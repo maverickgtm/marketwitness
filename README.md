@@ -253,6 +253,7 @@ the final publication steps.
 - [Methodology](docs/methodology.md)
 - [Operations](docs/operations.md)
 - [Release notes for v0.1.0-rc.1](docs/github-release-notes-v0.1.0-rc.1.md)
+- [Public link audit for v0.1.0-rc.1](docs/public-link-audit-2026-05-26.md)
 - [Roadmap](docs/roadmap.md)
 - [VIX Reaction Explorer](docs/volatility-intelligence-lab.md)
 - [Presidential Impact Lab](docs/policy-signal-impact-lab.md)

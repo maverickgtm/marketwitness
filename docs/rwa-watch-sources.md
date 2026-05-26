@@ -1,6 +1,6 @@
 # RWA Watch: Exchanges And Base Sources
 
-Review date: `2026-05-24`.
+Review date: `2026-05-26`.
 
 `RWA Watch` is a MarketWitness sandbox demonstrating how tokenized instruments
 linked to stocks or ETFs could be observed. It uses redistributable synthetic
@@ -68,6 +68,6 @@ base xStocks/Ondo-style source:
 - Kraken xStocks: <https://www.kraken.com/xstocks>
 - Gate xStocks: <https://www.gate.com/xstocks>
 - Bitget Ondo announcement: <https://www.bitget.com/support/articles/12560603838361>
-- LBank announcement: <https://www.lbank.com/support/articles/21431592927001>
-- Pepperstone shares: <https://pepperstone.com/en/markets/shares/>
-- Pepperstone Trading API: <https://pepperstone.com/en/platforms/integrations/trading-api/>
+- LBank announcement: <https://www.lbank.com/support/articles/1956350560365969408>
+- Pepperstone share CFDs: <https://pepperstone.com/en/markets/share-cfds/>
+- Pepperstone Trading API: <https://pepperstone.com/en/platforms/integrations/api-trading/>

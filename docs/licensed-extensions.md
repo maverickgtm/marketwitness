@@ -1,6 +1,6 @@
 # Optional Licensed Extensions
 
-Review date: `2026-05-24`.
+Review date: `2026-05-26`.
 
 MarketWitness Open Edition works without buying data. This page records routes
 for users who decide to fund private research with real historical price
@@ -45,9 +45,9 @@ The versioned catalog is `data/samples/licensed_extensions.csv`, displayed at
 
 ## Official Sources Reviewed
 
-- Massive Benzinga Analyst Ratings and pricing: <https://massive.com/docs/rest/stocks/benzinga/analyst-ratings> and <https://massive.com/pricing>
+- Massive Benzinga Analyst Ratings and pricing: <https://massive.com/docs/rest/partners/overview> and <https://massive.com/pricing>
 - Benzinga API: <https://www.benzinga.com/apis/analyst-ratings-api/>
-- AnaChart data feeds: <https://anachart.com/datasets-data-feeds>
+- AnaChart product and corporate access: <https://anachart.com/> and <https://anachart.com/corporate-access/>
 - MarketBeat pricing and terms: <https://www.marketbeat.com/subscribe/all-access/> and <https://www.marketbeat.com/terms/>
 - WallStreetZen plans and terms: <https://www.wallstreetzen.com/plans> and <https://www.wallstreetzen.com/terms-of-service>
 - GuruFocus FAQ: <https://www.gurufocus.com/faq>

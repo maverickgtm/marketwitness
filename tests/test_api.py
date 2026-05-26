@@ -3,8 +3,10 @@ from __future__ import annotations
 import importlib.util
 import tempfile
 import unittest
+from collections import deque
 from datetime import date
 from decimal import Decimal
+from html.parser import HTMLParser
 from pathlib import Path
 
 _API_AVAILABLE = bool(
@@ -12,6 +14,18 @@ _API_AVAILABLE = bool(
     and importlib.util.find_spec("fastapi")
     and importlib.util.find_spec("httpx")
 )
+
+
+class _DashboardLinks(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.hrefs: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs) -> None:
+        if tag == "a":
+            href = dict(attrs).get("href")
+            if href:
+                self.hrefs.append(href)
 
 
 @unittest.skipUnless(_API_AVAILABLE, "optional application dependencies not installed")
@@ -459,6 +473,31 @@ class ApiTests(unittest.TestCase):
                 self.assertIn('class="mw-global-navigation"', response.text)
                 self.assertIn('href="/dashboard/open"', response.text)
                 self.assertIn('href="/dashboard/reports"', response.text)
+
+    def test_every_dashboard_link_reachable_from_home_renders_html(self) -> None:
+        pending = deque(["/dashboard/open"])
+        visited: set[str] = set()
+
+        while pending:
+            route = pending.popleft().split("#", 1)[0]
+            if route in visited:
+                continue
+            visited.add(route)
+            response = self.client.get(route)
+            self.assertEqual(response.status_code, 200, route)
+            self.assertIn("text/html", response.headers.get("content-type", ""), route)
+
+            parser = _DashboardLinks()
+            parser.feed(response.text)
+            for href in parser.hrefs:
+                linked_route = href.split("#", 1)[0]
+                if linked_route.startswith("/dashboard/") and linked_route not in visited:
+                    pending.append(linked_route)
+
+        self.assertIn("/dashboard/commons", visited)
+        self.assertIn("/dashboard/volatility", visited)
+        self.assertIn("/dashboard/presidential-impact", visited)
+        self.assertGreaterEqual(len(visited), 60)
 
     def test_serves_market_intelligence_blueprint_without_live_data_claims(self) -> None:
         page = self.client.get("/dashboard/intelligence")
@@ -1198,6 +1237,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Developer access", page.text)
         self.assertIn("This is raw data, not a visual dashboard page.", page.text)
         self.assertIn('download="marketwitness-evidence-passports.json"', page.text)
+        self.assertIn("Official RSS feed (machine-readable)", page.text)
+        self.assertIn("Official API endpoint (JSON)", page.text)
         self.assertNotIn("Developer API (JSON)", page.text)
         self.assertIn("/dashboard/contribute?lang=en", page.text)
         self.assertEqual(passports.status_code, 200)

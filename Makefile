@@ -1,7 +1,7 @@
 PYTHONPATH := $(if $(PYTHONPATH),$(PYTHONPATH):)src
 PYTHON := python3
 
-.PHONY: test demo package verify release-hygiene clean
+.PHONY: test demo package verify release-hygiene public-link-audit clean
 
 test:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m unittest discover -s tests -v
@@ -436,6 +436,9 @@ verify: test demo package
 
 release-hygiene:
 	sh scripts/release_hygiene_check.sh
+
+public-link-audit:
+	$(PYTHON) scripts/audit_public_links.py
 
 clean:
 	rm -rf build

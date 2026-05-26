@@ -87,7 +87,11 @@ def parse_ipo_candidate_filings(index_text: str) -> list[SecIpoFiling]:
                 form=form,
                 filed_date=filed_date,
                 archive_path=archive_path,
-                source_url=f"https://www.sec.gov/Archives/{archive_path}",
+                source_url=(
+                    archive_path
+                    if archive_path.startswith("https://")
+                    else f"https://www.sec.gov/Archives/{archive_path}"
+                ),
                 review_state=DISCOVERY_FORMS[form],
             )
         )
@@ -131,6 +135,18 @@ def write_discovered_filings(path: str | Path, filings: list[SecIpoFiling]) -> N
             )
 
 
+def _filing_reference_markdown(filing: SecIpoFiling) -> str:
+    if filing.source_url.startswith("https://example.invalid/"):
+        return "Synthetic fixture (no external filing)"
+    return f"[Open SEC filing]({filing.source_url})"
+
+
+def _filing_reference_html(filing: SecIpoFiling) -> str:
+    if filing.source_url.startswith("https://example.invalid/"):
+        return "Synthetic fixture (no external filing)"
+    return f'<a href="{escape(filing.source_url)}">SEC filing</a>'
+
+
 def render_discovery_report(
     filings: list[SecIpoFiling], filing_date: date, source_url: str
 ) -> str:
@@ -154,7 +170,7 @@ def render_discovery_report(
         lines.append(
             f"| {filing.company_name} | `{filing.form}` | "
             f"{filing.filed_date.isoformat()} | `{filing.review_state}` | "
-            f"[Open SEC filing]({filing.source_url}) |"
+            f"{_filing_reference_markdown(filing)} |"
         )
     if not filings:
         lines.append("| - | - | - | No monitored forms in this index | - |")
@@ -196,7 +212,7 @@ def render_discovery_html(
         f"<td><strong>{escape(filing.company_name)}</strong><small>CIK {escape(filing.cik)}</small></td>"
         f"<td>{escape(filing.form)}</td>"
         f'<td><span class="pill {escape(filing.review_state)}">{escape(filing.review_state)}</span></td>'
-        f'<td><a href="{escape(filing.source_url)}">SEC filing</a></td>'
+        f"<td>{_filing_reference_html(filing)}</td>"
         "</tr>"
         for filing in filings
     )

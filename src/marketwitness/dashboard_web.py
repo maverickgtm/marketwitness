@@ -1132,9 +1132,16 @@ def evidence_commons_html() -> str:
       if (state === "blocked") return "blocked";
       return "review";
     }
+    function officialLinkLabel(value) {
+      const url = String(value || "").toLowerCase();
+      if (url.includes("/feed/") || url.endsWith(".rss")) return "Official RSS feed (machine-readable)";
+      if (url.includes(".json") || url.includes("/resource/")) return "Official API endpoint (JSON)";
+      if (url.endsWith(".xml")) return "Official data feed (XML)";
+      return "Official website";
+    }
     function render(filter) {
       const visible = filter === "all" ? passports : passports.filter((passport) => passport.rights.deployment_state === filter);
-      $("passports").innerHTML = visible.map((passport) => `<article class="passport"><div class="passport-head"><div><strong>${text(passport.source.name)}</strong><small>${text(passport.evidence.data_class)}</small></div><span class="pill ${stateClass(passport.rights.deployment_state)}">${text(passport.rights.deployment_state)}</span></div><div class="facts"><span>Access: <b>${text(passport.evidence.access_model)}</b></span><span>Output: <b>${text(passport.rights.publication_policy)}</b></span><span>Reviewed: <b>${text(passport.review.reviewed_on)}</b></span></div><a href="${text(passport.source.official_url)}" rel="noopener" target="_blank">Official source</a></article>`).join("");
+      $("passports").innerHTML = visible.map((passport) => `<article class="passport"><div class="passport-head"><div><strong>${text(passport.source.name)}</strong><small>${text(passport.evidence.data_class)}</small></div><span class="pill ${stateClass(passport.rights.deployment_state)}">${text(passport.rights.deployment_state)}</span></div><div class="facts"><span>Access: <b>${text(passport.evidence.access_model)}</b></span><span>Output: <b>${text(passport.rights.publication_policy)}</b></span><span>Reviewed: <b>${text(passport.review.reviewed_on)}</b></span></div><a href="${text(passport.source.official_url)}" rel="noopener" target="_blank">${officialLinkLabel(passport.source.official_url)}</a></article>`).join("");
     }
     async function initialize() {
       try {
@@ -3361,6 +3368,13 @@ def source_governance_html() -> str:
         return parsed.protocol === "https:" || parsed.protocol === "http:" ? text(value) : "#";
       } catch (_) { return "#"; }
     }
+    function officialLinkLabel(value) {
+      const url = String(value || "").toLowerCase();
+      if (url.includes("/feed/") || url.endsWith(".rss")) return "Official RSS feed (machine-readable)";
+      if (url.includes(".json") || url.includes("/resource/")) return "Official API endpoint (JSON)";
+      if (url.endsWith(".xml")) return "Official data feed (XML)";
+      return "Official website";
+    }
     async function json(url) {
       const response = await fetch(url);
       if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
@@ -3414,7 +3428,7 @@ def source_governance_html() -> str:
       $("source-detail").innerHTML = '<h3>Source Detail</h3><p>Select a provider to inspect its review note and evidence references.</p>';
     }
     function showSource(source) {
-      $("source-detail").innerHTML = `<h3>${text(source.provider_name)}</h3><span class="pill ${text(source.deployment_state)}">${text(source.deployment_state)}</span><div class="fact"><small>License status</small><strong>${text(source.license_status)}</strong></div><div class="fact"><small>Publication policy</small><strong>${text(source.publication_policy)}</strong></div><div class="fact"><small>Reviewed</small><strong>${text(source.reviewed_on)}</strong></div><p>${text(source.review_note)}</p><p><a href="${href(source.official_url)}" target="_blank" rel="noopener">Official source</a><br><a href="${href(source.reference_url)}" target="_blank" rel="noopener">Terms / reference</a></p>`;
+      $("source-detail").innerHTML = `<h3>${text(source.provider_name)}</h3><span class="pill ${text(source.deployment_state)}">${text(source.deployment_state)}</span><div class="fact"><small>License status</small><strong>${text(source.license_status)}</strong></div><div class="fact"><small>Publication policy</small><strong>${text(source.publication_policy)}</strong></div><div class="fact"><small>Reviewed</small><strong>${text(source.reviewed_on)}</strong></div><p>${text(source.review_note)}</p><p><a href="${href(source.official_url)}" target="_blank" rel="noopener">${officialLinkLabel(source.official_url)}</a><br><a href="${href(source.reference_url)}" target="_blank" rel="noopener">Terms / reference</a></p>`;
     }
     async function loadExclusions() {
       if (!$("run").value) {

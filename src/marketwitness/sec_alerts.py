@@ -249,7 +249,7 @@ def render_sec_alerts_report(
             f"| `{item.review_priority}` | `{item.triage_category}` | "
             f"{item.company_name} | `{item.form}` | "
             f"{item.filed_date.isoformat()} | {watched} | "
-            f"[SEC filing]({item.source_url}) |"
+            f"{_alert_reference_markdown(item.source_url)} |"
         )
     return "\n".join(lines) + "\n"
 
@@ -268,6 +268,18 @@ def write_sec_alerts_report(
     )
 
 
+def _alert_reference_markdown(source_url: str) -> str:
+    if source_url.startswith("https://example.invalid/"):
+        return "Synthetic fixture (no external filing)"
+    return f"[SEC filing]({source_url})"
+
+
+def _alert_reference_html(source_url: str) -> str:
+    if source_url.startswith("https://example.invalid/"):
+        return "Synthetic fixture (no external filing)"
+    return f'<a href="{escape(source_url)}">SEC</a>'
+
+
 def render_sec_alerts_html(
     alerts: list[SecFilingAlert],
     filings: list[SecIpoFiling],
@@ -284,7 +296,7 @@ def render_sec_alerts_html(
         f'<td data-label="Issuer"><div class="value"><strong>{escape(item.company_name)}</strong><small>CIK {escape(item.cik)}</small></div></td>'
         f'<td data-label="Form"><div class="value">{escape(item.form)}</div></td><td data-label="Filed"><div class="value">{escape(item.filed_date.isoformat())}</div></td>'
         f'<td data-label="Monitored item"><div class="value">{escape(item.watch_company or "-")}<small>{escape(item.watch_status)}</small></div></td>'
-        f'<td data-label="Evidence"><div class="value"><a href="{escape(item.source_url)}">SEC</a></div></td>'
+        f'<td data-label="Evidence"><div class="value">{_alert_reference_html(item.source_url)}</div></td>'
         "</tr>"
         for item in alerts
     )

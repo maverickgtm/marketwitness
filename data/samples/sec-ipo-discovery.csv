@@ -1,5 +1,5 @@
 cik,company_name,form,filed_date,archive_path,source_url,review_state
-0009999999,EXAMPLE INTERNATIONAL LTD.,F-1,2026-05-20,edgar/data/9999999/000000000026000001/example-f1.htm,https://www.sec.gov/Archives/edgar/data/9999999/000000000026000001/example-f1.htm,initial_registration_review
-0007777777,EXAMPLE SOFTWARE CORP.,424B4,2026-05-20,edgar/data/7777777/000000000026000002/example-424b4.htm,https://www.sec.gov/Archives/edgar/data/7777777/000000000026000002/example-424b4.htm,final_prospectus_review
-0006666666,EXAMPLE ACQUISITION CORP.,S-1,2026-05-20,edgar/data/6666666/000000000026000003/example-spac-s1.htm,https://www.sec.gov/Archives/edgar/data/6666666/000000000026000003/example-spac-s1.htm,initial_registration_review
+0009999999,EXAMPLE INTERNATIONAL LTD.,F-1,2026-05-20,https://example.invalid/sec/example-f1.htm,https://example.invalid/sec/example-f1.htm,initial_registration_review
+0007777777,EXAMPLE SOFTWARE CORP.,424B4,2026-05-20,https://example.invalid/sec/example-424b4.htm,https://example.invalid/sec/example-424b4.htm,final_prospectus_review
+0006666666,EXAMPLE ACQUISITION CORP.,S-1,2026-05-20,https://example.invalid/sec/example-spac-s1.htm,https://example.invalid/sec/example-spac-s1.htm,initial_registration_review
 0001181412,SPACE EXPLORATION TECHNOLOGIES CORP.,S-1,2026-05-20,edgar/data/1181412/000162828026036936/spaceexplorationtechnologi.htm,https://www.sec.gov/Archives/edgar/data/1181412/000162828026036936/spaceexplorationtechnologi.htm,initial_registration_review

@@ -42,6 +42,9 @@ promise real analyst rankings or investment recommendations.
   `data/private/`, `data/raw/`, and `build/` are not versioned.
 - [x] Confirm the publishable `main` branch history contains only GitHub
   noreply author identities and no private permission draft.
+- [x] Audit versioned public references on `2026-05-26`: `223` unique URLs,
+  with no confirmed `404` or `410` remaining after corrections. See
+  `docs/public-link-audit-2026-05-26.md`.
 - [ ] Push only the sanitized `main` branch. Do not use `git push --all` or
   publish local stash/backup refs, which may still retain pre-rewrite local
   history containing personal author identities.
@@ -57,6 +60,14 @@ make release-hygiene
 It intentionally fails when tracked sensitive/generated files are present,
 when non-placeholder email addresses appear in tracked files, or when commit
 history still exposes non-`users.noreply.github.com` author emails.
+
+The online reference audit can be repeated before a tag is published. It
+requires a privately configured identified request header for SEC/BLS URLs:
+
+```bash
+export MARKETWITNESS_SEC_USER_AGENT="MarketWitness Research your-email@example.com"
+make public-link-audit
+```
 
 ## Not Blocking The Open Edition
 

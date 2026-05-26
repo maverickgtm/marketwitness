@@ -212,7 +212,10 @@ def create_app(
     application = FastAPI(
         title="MarketWitness API",
         version=__version__,
-        description="Read-only API for auditable analyst target research runs.",
+        description=(
+            "Read-only API for evidence-first market intelligence workflows "
+            "and auditable research artifacts."
+        ),
     )
 
     @application.get("/", response_class=HTMLResponse, include_in_schema=False)

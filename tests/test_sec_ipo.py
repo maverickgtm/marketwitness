@@ -37,6 +37,8 @@ class SecIpoDiscoveryTests(unittest.TestCase):
         self.assertIn("not a confirmed IPO calendar", page)
         self.assertIn("SPACE EXPLORATION TECHNOLOGIES CORP.", page)
         self.assertIn("Bundled SEC-shaped index fixture", page)
+        self.assertIn("Synthetic fixture (no external filing)", page)
+        self.assertNotIn('href="https://example.invalid/sec/example-f1.htm"', page)
         self.assertIn('href="/dashboard/ipo">IPO Watch Center</a>', page)
         self.assertNotIn("file:", page)
 

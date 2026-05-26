@@ -27,8 +27,8 @@ class IpoReviewTests(unittest.TestCase):
             _csv(
                 "source_url,cik,decision,display_name,theme,reviewed_on,evidence_level,"
                 "source_title,next_event,risk_flags,review_note\n"
-                "https://www.sec.gov/Archives/edgar/data/6666666/000000000026000003/"
-                "example-spac-s1.htm,0006666666,confirm_filed_public,Example Acquisition,"
+                "https://example.invalid/sec/example-spac-s1.htm,0006666666,"
+                "confirm_filed_public,Example Acquisition,"
                 "SPAC candidate,2026-05-20,Reviewed SEC filing,Reviewed S-1,"
                 "Review amendments,Blank-check structure requires study,"
                 "Document manually reviewed as a public registration.\n"
@@ -56,8 +56,8 @@ class IpoReviewTests(unittest.TestCase):
             _csv(
                 "source_url,cik,decision,display_name,theme,reviewed_on,evidence_level,"
                 "source_title,next_event,risk_flags,review_note\n"
-                "https://www.sec.gov/Archives/edgar/data/6666666/000000000026000003/"
-                "example-spac-s1.htm,0006666666,retain_for_review,Example Acquisition,"
+                "https://example.invalid/sec/example-spac-s1.htm,0006666666,"
+                "retain_for_review,Example Acquisition,"
                 "SPAC candidate,2026-05-20,,,,,Name signal alone is insufficient.\n"
             )
         )
@@ -86,8 +86,8 @@ class IpoReviewTests(unittest.TestCase):
             _csv(
                 "source_url,cik,decision,display_name,theme,reviewed_on,evidence_level,"
                 "source_title,next_event,risk_flags,review_note\n"
-                "https://www.sec.gov/Archives/edgar/data/6666666/000000000026000003/"
-                "example-spac-s1.htm,0006666666,retain_for_review,Example Acquisition,"
+                "https://example.invalid/sec/example-spac-s1.htm,0006666666,"
+                "retain_for_review,Example Acquisition,"
                 "SPAC candidate,2026-05-19,,,,,Impossible review date.\n"
             )
         )
