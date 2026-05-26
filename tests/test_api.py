@@ -294,6 +294,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("embed-widget-market-overview.js", page.text)
         self.assertIn("does not store widget data", page.text)
         self.assertIn("Loads with Internet access", page.text)
+        self.assertIn("overflow-y:auto", page.text)
+        self.assertIn("overscroll-behavior:contain", page.text)
 
     def test_serves_market_intelligence_blueprint_without_live_data_claims(self) -> None:
         page = self.client.get("/dashboard/intelligence")

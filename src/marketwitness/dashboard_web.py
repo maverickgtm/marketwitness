@@ -22,7 +22,11 @@ def open_edition_html() -> str:
     a { color:inherit; text-decoration:none; }
     .shell { display:grid; grid-template-columns:248px minmax(0,1fr); min-height:100vh; }
     .sidebar { position:sticky; top:0; height:100vh; padding:26px 18px; border-right:1px solid var(--line);
-      background:rgba(7,13,21,.8); display:flex; flex-direction:column; gap:26px; }
+      background:rgba(7,13,21,.8); display:flex; flex-direction:column; gap:26px;
+      overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:var(--line-bright) transparent; }
+    .sidebar::-webkit-scrollbar { width:7px; }
+    .sidebar::-webkit-scrollbar-thumb { background:var(--line-bright); border-radius:999px; }
+    .sidebar::-webkit-scrollbar-track { background:transparent; }
     .brand { display:flex; align-items:center; gap:12px; padding:0 9px; font-weight:700; letter-spacing:.01em; font-size:18px; }
     .brand-mark { display:grid; place-items:center; width:36px; height:36px; border-radius:11px;
       color:#051016; background:linear-gradient(145deg,var(--mint),#25a9db); font-size:18px; }
