@@ -62,7 +62,7 @@ MODULES = (
         "provider_ids": ("kraken-spot-public", "eia-open-data", "treasury-yield-curve"),
         "coverage": "BTC, ETH, WTI, Brent and U.S. Treasury 2Y/10Y context.",
         "cadence": "Mixed: public market endpoint plus official daily series",
-        "route": "",
+        "route": "/dashboard/market-context",
         "next_delivery": "Build normalized observations only after each output policy is accepted.",
         "claim_limit": "Regime context is not a buy, sell or position-sizing signal.",
     },

@@ -45,6 +45,8 @@ class OpenEditionTests(unittest.TestCase):
         )
         self.assertEqual(context["route"], "/dashboard/market-context")
         self.assertEqual(context["status"], "attributed_external_widget")
+        self.assertEqual(context["title"], "Cross-Asset Markets")
+        self.assertIn("crypto", context["output"])
         self.assertIn("not stored", context["limitation"])
         self.assertIn("Available without paid data subscriptions: `6`", report)
 

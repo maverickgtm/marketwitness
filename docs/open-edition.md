@@ -28,7 +28,7 @@ stored, exported, or used as scoring evidence.
 | ETF Regulatory Holdings | Synthetic holding differences plus SEC N-PORT periodic workflow | Not daily or real-time manager trading |
 | Public Document Checks | FCA NSM corroboration flow | Documentation does not automatically prove admission/trading |
 | RWA Watch Sandbox | Synthetic token/reference observations | No real xStocks, Ondo, or venue collection |
-| Market Context | TradingView attributed display | External visual context only |
+| Cross-Asset Markets | TradingView views for BTC, ETH, metals, energy, FX and benchmarks | External visual context only; no stored or scored widget values |
 | Market Intelligence | Planned cross-asset sources and operating boundaries | No new live values or position recommendation |
 | Volatility Intelligence Lab | VIX display and episode-design API | Cboe/ICE derived output pending rights |
 | Policy Signal Impact Lab | Policy-event methodology and official RSS intake path | Truth Social automation blocked without permission |

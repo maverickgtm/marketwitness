@@ -16,7 +16,7 @@ market context.
 | Purpose and KPIs visible on arrival | The home view opens with the Open Edition promise, status metrics, and primary modules. |
 | Stable navigation hierarchy | A sidebar separates workspace, evidence, and control areas. |
 | Market context without report clutter | `Market Pulse` and the ticker strip are labeled external visual context. |
-| Dedicated deep charting view | `/dashboard/market-context` contains the advanced `XLF` chart and comparison lens. |
+| Dedicated cross-asset charting view | `/dashboard/market-context` contains a BTC-first interactive chart and crypto, commodity, FX, and benchmark lenses. |
 | Clear data origin | TradingView panels state that they do not feed scoring. |
 | Graceful offline state | External areas display a loading/information state when widgets are unavailable. |
 
@@ -28,9 +28,9 @@ Only official embedded widgets with visible attribution are used:
 |---|---|---|
 | `/dashboard/open` | `Ticker Tape` | Compact benchmark, Financials, and major-stock context |
 | `/dashboard/open` | `Market Overview` | Initial macro view in `Benchmarks` and `AI Leaders` tabs |
-| `/dashboard/market-context` | `Ticker Tape` | Quick orientation before sector chart review |
-| `/dashboard/market-context` | `Advanced Chart` | Interactive inspection of `AMEX:XLF` |
-| `/dashboard/market-context` | `Market Overview` | Visual Financials and benchmark comparison |
+| `/dashboard/market-context` | `Ticker Tape` | Quick orientation across crypto, metals, energy and USD |
+| `/dashboard/market-context` | `Advanced Chart` | Interactive inspection starting with `BINANCE:BTCUSDT` |
+| `/dashboard/market-context` | `Market Overview` | Visual crypto, commodity, FX and index comparison |
 
 MarketWitness does not read widget values, store them in DuckDB, export them, or
 treat them as evidence for targets, IPOs, or holdings changes.

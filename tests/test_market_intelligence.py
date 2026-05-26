@@ -25,6 +25,7 @@ class MarketIntelligenceTests(unittest.TestCase):
         )
         self.assertIn("does not recommend positions", snapshot["publication_boundary"])
         self.assertIn("not a buy", regimes["claim_limit"])
+        self.assertEqual(regimes["route"], "/dashboard/market-context")
         volatility = next(
             item for item in snapshot["modules"] if item["key"] == "volatility_lab"
         )

@@ -140,7 +140,7 @@ def open_edition_html() -> str:
         <a class="nav-link" href="/dashboard/intelligence"><span class="dot"></span>Market Intelligence</a>
         <a class="nav-link" href="/dashboard/volatility"><span class="dot"></span>Volatility / VIX Lab</a>
         <a class="nav-link" href="/dashboard/policy-signals"><span class="dot"></span>Policy Signals</a>
-        <a class="nav-link" href="/dashboard/market-context"><span class="dot"></span>Market Context</a>
+        <a class="nav-link" href="/dashboard/market-context"><span class="dot"></span>Cross-Asset Markets</a>
         <a class="nav-link" href="/dashboard/reports"><span class="dot"></span>Report Center</a>
       </div>
       <div class="nav-group">
@@ -1255,7 +1255,7 @@ def market_intelligence_html() -> str:
         <h1>Events. Context.<br><span>Positioning.</span></h1>
         <p class="lead">A planned intelligence layer connecting IPO and listing evidence to macro catalysts, selected market regimes and declared positioning. It begins with provenance, not promises.</p>
         <p class="meta" id="reviewed">Loading reviewed sources...</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/policy-signals">Open Policy Signal Lab</a><a href="/dashboard/volatility">Volatility Lab</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/policy-signals">Open Policy Signal Lab</a><a href="/dashboard/volatility">Volatility Lab</a><a href="/dashboard/market-context">Cross-asset markets</a><a href="/dashboard/ipo">IPO evidence</a><a href="/dashboard/etf">ETF evidence</a><a href="/dashboard/commons">Source passports</a></div>
       </article>
       <article class="sequence"><p class="eyebrow">Delivery sequence</p><ol id="sequence"></ol></article>
     </section>
@@ -1285,7 +1285,7 @@ def market_intelligence_html() -> str:
         $("sequence").innerHTML = data.implementation_sequence.map((step, index) => `<li><b>${index + 1}</b><span><strong>Phase ${index + 1}</strong>${text(step)}</span></li>`).join("");
         $("layers").innerHTML = data.modules.map((item) => {
           const sourceLinks = item.sources.map((source) => `<a href="${text(source.official_url)}" target="_blank" rel="noopener">${text(source.provider_name)}</a>`).join("");
-          const route = item.route ? `<a href="${text(item.route)}">Open existing foundation</a>` : "";
+          const route = item.route ? `<a href="${text(item.route)}">Open workspace</a>` : "";
           return `<article class="module"><div class="module-head"><div><span class="theme">${text(item.theme)}</span><h3>${text(item.title)}</h3></div><span class="pill ${text(item.stage)}">${text(item.stage)}</span></div><p>${text(item.coverage)}</p><small><strong>Cadence:</strong> ${text(item.cadence)}</small><small><strong>Boundary:</strong> ${text(item.claim_limit)}</small><div class="sources">${sourceLinks}</div><p class="next">${text(item.next_delivery)} ${route}</p></article>`;
         }).join("");
       } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
@@ -1528,7 +1528,7 @@ def market_context_html() -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MarketWitness | Market Context</title>
+  <title>MarketWitness | Cross-Asset Markets</title>
   <style>
     :root {
       --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246;
@@ -1586,7 +1586,7 @@ def market_context_html() -> str:
 <body>
   <header>
     <div class="top">
-      <nav><a href="/dashboard/open">Open Edition</a> / Market Context / <a href="/dashboard/policy">Public Use Policy</a> / <a href="/dashboard/financials">Financials Sandbox</a></nav>
+      <nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / Cross-Asset Markets / <a href="/dashboard/volatility">VIX Lab</a></nav>
       <a class="back" href="/dashboard/open">Back to terminal</a>
     </div>
     <section class="market-strip" aria-label="External TradingView ticker display">
@@ -1595,52 +1595,52 @@ def market_context_html() -> str:
         <div class="tradingview-widget-container">
           <div class="tradingview-widget-container__widget"><div class="ticker-fallback">Loads with Internet access</div></div>
           <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-          {"symbols":[{"proName":"AMEX:SPY","title":"S&P 500"},{"proName":"NASDAQ:QQQ","title":"Nasdaq 100"},{"proName":"AMEX:XLF","title":"Financials"},{"proName":"AMEX:KRE","title":"Regional Banks"},{"proName":"NYSE:JPM","title":"JPMorgan"},{"proName":"NYSE:GS","title":"Goldman Sachs"}],"showSymbolLogo":true,"isTransparent":true,"displayMode":"adaptive","colorTheme":"dark","locale":"en"}
+          {"symbols":[{"proName":"BINANCE:BTCUSDT","title":"Bitcoin"},{"proName":"BINANCE:ETHUSDT","title":"Ethereum"},{"proName":"TVC:GOLD","title":"Gold"},{"proName":"TVC:SILVER","title":"Silver"},{"proName":"TVC:USOIL","title":"WTI Oil"},{"proName":"TVC:UKOIL","title":"Brent"},{"proName":"TVC:DXY","title":"U.S. Dollar"}],"showSymbolLogo":true,"isTransparent":true,"displayMode":"adaptive","colorTheme":"dark","locale":"en"}
           </script>
         </div>
       </div>
     </section>
     <section class="intro">
       <div>
-        <p class="eyebrow">External visual workspace</p>
-        <h1>Sector context.<br><span>Separate from scoring.</span></h1>
-        <p class="lead">A visual workspace for the Financials benchmark and surrounding market context, embedded from TradingView with attribution intact. MarketWitness does not collect, normalize or export widget data.</p>
-        <p class="meta">External attributed display / default symbol: AMEX:XLF</p>
+        <p class="eyebrow">Cross-asset visual terminal</p>
+        <h1>Crypto. Energy. Metals.<br><span>One market lens.</span></h1>
+        <p class="lead">Explore Bitcoin, Ethereum, oil, gold, silver, currencies and equity benchmarks with attributed TradingView displays. Use it beside VIX and policy research to inspect context, never as an automatic trading signal.</p>
+        <p class="meta">External attributed display / default symbol: BINANCE:BTCUSDT</p>
       </div>
       <section class="cards">
-        <article class="card"><p>Role</p><strong>Context only</strong></article>
-        <article class="card"><p>Data collection</p><strong>None</strong></article>
-        <article class="card"><p>Scorecard input</p><strong>Never</strong></article>
+        <article class="card"><p>Asset lenses</p><strong>Crypto + Macro</strong></article>
+        <article class="card"><p>Coverage</p><strong>BTC to Brent</strong></article>
+        <article class="card"><p>Scoring input</p><strong>Never</strong></article>
         <article class="card"><p>Attribution</p><strong>TradingView visible</strong></article>
       </section>
     </section>
   </header>
   <main>
-    <p class="notice">This third-party chart is for visual context only. It is not investment advice, a MarketWitness data source, a verified real-time record or evidence for analyst ranking results.</p>
+    <p class="notice">These third-party charts are external visual context only. They are not investment advice, MarketWitness-collected data, a verified real-time record or evidence used in audit scores.</p>
     <section class="terminal" aria-label="Market visual context">
       <article class="chart-shell">
-        <div class="panel-head"><h2>XLF Visual Context</h2><span class="external">TradingView display</span></div>
+        <div class="panel-head"><h2>Interactive Asset Chart</h2><span class="external">TradingView display</span></div>
         <div class="chart-body">
           <!-- TradingView Widget BEGIN -->
           <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"><div class="market-fallback">Loading XLF chart from TradingView...</div></div>
-            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/AMEX-XLF/" rel="noopener nofollow" target="_blank"><span class="blue-text">XLF chart</span></a><span class="trademark"> by TradingView</span></div>
+            <div class="tradingview-widget-container__widget"><div class="market-fallback">Loading BTC chart from TradingView...</div></div>
+            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/BTCUSDT/" rel="noopener nofollow" target="_blank"><span class="blue-text">BTCUSDT chart</span></a><span class="trademark"> by TradingView</span></div>
             <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-            {"autosize":true,"symbol":"AMEX:XLF","interval":"D","timezone":"Etc/UTC","theme":"dark","style":"1","locale":"en","allow_symbol_change":true,"calendar":false,"support_host":"https://www.tradingview.com"}
+            {"autosize":true,"symbol":"BINANCE:BTCUSDT","interval":"D","timezone":"Etc/UTC","theme":"dark","style":"1","locale":"en","allow_symbol_change":true,"calendar":false,"support_host":"https://www.tradingview.com"}
             </script>
           </div>
           <!-- TradingView Widget END -->
         </div>
       </article>
       <article class="overview-shell">
-        <div class="panel-head"><h2>Cross-Market Lens</h2><span class="external">External only</span></div>
+        <div class="panel-head"><h2>Asset Watchlists</h2><span class="external">External only</span></div>
         <div class="overview-body">
           <!-- TradingView Widget BEGIN -->
           <div class="tradingview-widget-container">
             <div class="tradingview-widget-container__widget"><div class="market-fallback">Loading comparative market context...</div></div>
             <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/" rel="noopener nofollow" target="_blank"><span class="blue-text">Markets</span></a> by TradingView</div>
             <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
-            {"colorTheme":"dark","dateRange":"12M","showChart":true,"locale":"en","width":"100%","height":"100%","isTransparent":true,"showSymbolLogo":true,"tabs":[{"title":"Financials","symbols":[{"s":"AMEX:XLF","d":"Financial Select Sector"},{"s":"AMEX:KRE","d":"Regional Banks"},{"s":"NYSE:JPM","d":"JPMorgan"},{"s":"NYSE:GS","d":"Goldman Sachs"}]},{"title":"Benchmarks","symbols":[{"s":"AMEX:SPY","d":"S&P 500"},{"s":"NASDAQ:QQQ","d":"Nasdaq 100"},{"s":"AMEX:IWM","d":"Russell 2000"}]}]}
+            {"colorTheme":"dark","dateRange":"12M","showChart":true,"locale":"en","width":"100%","height":"100%","isTransparent":true,"showSymbolLogo":true,"tabs":[{"title":"Crypto","symbols":[{"s":"BINANCE:BTCUSDT","d":"Bitcoin"},{"s":"BINANCE:ETHUSDT","d":"Ethereum"}]},{"title":"Energy / Metals","symbols":[{"s":"TVC:USOIL","d":"WTI Crude"},{"s":"TVC:UKOIL","d":"Brent Crude"},{"s":"TVC:GOLD","d":"Gold"},{"s":"TVC:SILVER","d":"Silver"}]},{"title":"FX / Indices","symbols":[{"s":"TVC:DXY","d":"U.S. Dollar Index"},{"s":"FX:EURUSD","d":"EUR / USD"},{"s":"FX:USDJPY","d":"USD / JPY"},{"s":"AMEX:SPY","d":"S&P 500"},{"s":"NASDAQ:QQQ","d":"Nasdaq 100"}]}]}
             </script>
           </div>
           <!-- TradingView Widget END -->

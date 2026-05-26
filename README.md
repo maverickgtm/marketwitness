@@ -40,6 +40,7 @@ rights are visible product outcomes, not hidden limitations.
 | ETF Evidence Center | Separate reported holdings evidence from daily-activity claims | Synthetic snapshots and SEC N-PORT workflow |
 | Financials Evidence Center | Audit a price-target scoring pipeline and its release gates | Redistributable fixtures; real rankings blocked |
 | Market Intelligence | Organize market context and future connectors | Source-first workspace with documented constraints |
+| Cross-Asset Markets | View Bitcoin, Ethereum, energy, metals, FX and benchmarks | Attributed TradingView displays; no widget data is stored or scored |
 | Volatility Intelligence Lab | Study volatility episodes and cross-asset reactions | Research interface with clear data boundaries |
 | Policy Signal Impact Lab | Study official communications and market-reaction windows | Official White House RSS path; Truth Social blocked without permission |
 
@@ -93,6 +94,7 @@ Open <http://127.0.0.1:8000/>. High-signal views include:
 | `/dashboard/etf` | ETF Evidence Center |
 | `/dashboard/financials-evidence` | Analyst scorecard evidence gates |
 | `/dashboard/intelligence` | Market Intelligence workspace |
+| `/dashboard/market-context` | Cross-Asset Markets: BTC, ETH, energy, metals and FX |
 | `/dashboard/volatility` | Volatility Intelligence Lab |
 | `/dashboard/policy-signals` | Policy Signal Impact Lab |
 | `/dashboard/commons` | Evidence Passport Commons |

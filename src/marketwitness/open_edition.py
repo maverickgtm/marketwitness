@@ -62,11 +62,11 @@ CAPABILITIES = (
     },
     {
         "key": "market_context_widget",
-        "title": "Market Context",
+        "title": "Cross-Asset Markets",
         "status": "attributed_external_widget",
         "cost": "No data fee",
         "provider_ids": (),
-        "output": "Attributed TradingView chart for visual XLF market context",
+        "output": "Attributed TradingView views for crypto, commodities, FX and benchmark context",
         "route": "/dashboard/market-context",
         "limitation": "Display only: widget data is not stored, exported or used to score analyst targets.",
     },

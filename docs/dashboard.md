@@ -15,7 +15,8 @@ ranking.
 | `/dashboard/global-listings` | International listing coverage and monitors | Each jurisdiction retains its confirmation rule |
 | `/dashboard/etf` | ETF Evidence Center | Synthetic change examples are separated from SEC periodic evidence |
 | `/dashboard/financials-evidence` | Financials evidence and release-gate sequence | Demo scorecard is not real analyst performance |
-| `/dashboard/intelligence` | Cross-asset research workspace | Planned connectors are not live feeds |
+| `/dashboard/intelligence` | Cross-asset research workspace | Planned stored connectors are not live feeds |
+| `/dashboard/market-context` | Cross-Asset Markets terminal | TradingView displays context only; values are not stored or scored |
 | `/dashboard/volatility` | Volatility Intelligence Lab | External VIX display; no unlicensed episode calculations |
 | `/dashboard/policy-signals` | Policy Signal Impact Lab | Truth Social collection blocked without permission |
 | `/dashboard/commons` | Evidence Passport Commons | Source rights and claim boundaries are visible |
@@ -23,7 +24,7 @@ ranking.
 | `/dashboard/governance` | Source Governance | Technical integration does not imply publishability |
 | `/dashboard/release` | Release Center | Combines readiness, lineage, and quality before output |
 
-## Open Edition Home And Market Context
+## Open Edition Home And Cross-Asset Markets
 
 The home view communicates that the GitHub edition runs without purchased
 data. It provides direct navigation to IPO, ETF, Financials, Global Listings,
@@ -37,10 +38,11 @@ entry to IPO, ETF, Financials, Market Intelligence, Data Rights, and generated
 report workflows so visitors do not have to discover the system through
 documentation first.
 
-`/dashboard/market-context` adds a TradingView `Advanced Chart` for
-`AMEX:XLF`, benchmark comparison, and visible attribution. MarketWitness does
-not read, store, export, or score widget values. The dashboard remains usable
-offline while third-party visual content may require Internet access.
+`/dashboard/market-context` adds a TradingView `Advanced Chart` defaulting to
+`BINANCE:BTCUSDT` plus watchlists for `BTC`, `ETH`, `WTI`, `Brent`, gold,
+silver, foreign exchange and equity benchmarks. MarketWitness does not read,
+store, export, or score widget values. The dashboard remains usable offline
+while third-party visual content may require Internet access.
 
 ## Research Workspaces
 
