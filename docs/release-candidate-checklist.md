@@ -32,8 +32,10 @@ promise real analyst rankings or investment recommendations.
   pushing the public repository.
 - [x] Publish three selected screenshots in `docs/assets/` and use them in
   `README.md`: IPO Watch, Global Listings, and Presidential Impact Lab.
-- [ ] Create the GitHub repository with description, topics, and the correct
-  link before adding permanent badges.
+- [x] Create the public GitHub repository with description and the correct
+  link: `https://github.com/maverickgtm/marketwitness`.
+- [x] Enable GitHub Discussions with a pinned welcome announcement and open
+  initial roadmap issues for connectors, VIX inputs, and hosted deployment.
 - [ ] Configure `MARKETWITNESS_SEC_USER_AGENT` and
   `MARKETWITNESS_MACRO_USER_AGENT` as repository secrets before enabling the
   official policy-monitor workflow.
@@ -45,7 +47,7 @@ promise real analyst rankings or investment recommendations.
 - [x] Audit versioned public references on `2026-05-26`: `223` unique URLs,
   with no confirmed `404` or `410` remaining after corrections. See
   `docs/public-link-audit-2026-05-26.md`.
-- [ ] Push only the sanitized `main` branch. Do not use `git push --all` or
+- [x] Push only the sanitized `main` branch. Do not use `git push --all` or
   publish local stash/backup refs, which may still retain pre-rewrite local
   history containing personal author identities.
 - [ ] Create the `v0.1.0-rc.1` tag and release notes only after Actions passes
