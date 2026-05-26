@@ -13,6 +13,10 @@ statements as investment recommendations.
 
 ## Local Build And Dashboard
 
+This procedure starts a local development/review instance. The public hosted
+Open Edition is available at
+<https://marketwitness-43-157-95-145.nip.io/dashboard/open>.
+
 ```bash
 python3 -m pip install -e ".[application]"
 make verify
@@ -25,8 +29,9 @@ export MARKETWITNESS_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
 python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 ```
 
-Review the dashboard at <http://127.0.0.1:8000/> and the publication controls
-at `/dashboard/policy`, `/dashboard/governance`, `/dashboard/readiness`, and
+Review the locally running dashboard at <http://127.0.0.1:8000/> from the
+same computer that launched it, and review publication controls at
+`/dashboard/policy`, `/dashboard/governance`, `/dashboard/readiness`, and
 `/dashboard/release`.
 
 ## SEC Identification

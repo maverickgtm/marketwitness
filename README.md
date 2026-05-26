@@ -110,7 +110,11 @@ Explore the public, read-only Open Edition at
 It demonstrates the dashboard, evidence passports, research workflows and API
 without publishing investment recommendations or restricted datasets.
 
-## Quick Start
+## Local Installation
+
+The commands below are for contributors running their own copy after cloning
+the repository. Visitors who only want to explore MarketWitness should use the
+[public live demo](https://marketwitness-43-157-95-145.nip.io/dashboard/open).
 
 Requirements: Python `3.9+`.
 
@@ -140,7 +144,10 @@ export MARKETWITNESS_POLICY_MONITOR_REPORTS="build/policy-monitor"
 python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 ```
 
-Open <http://127.0.0.1:8000/>. High-signal views include:
+After launching locally, open <http://127.0.0.1:8000/> on the same computer
+where the command is running. For the hosted public version, open the
+[Live Demo](https://marketwitness-43-157-95-145.nip.io/dashboard/open).
+High-signal views include:
 
 | Route | View |
 |---|---|

@@ -37,7 +37,11 @@ stored, exported, or used as scoring evidence.
 | Presidential Impact Lab | Official White House archive, Treasury 2Y/10Y session context and themed calculation sandbox | Treasury changes are observational only; synthetic paths, Truth Social and broader reactions retain visible gates |
 | Evidence Passport Commons | Public source/rights registry and contribution path | A passport is not investment advice |
 
-## Run Without Data Fees
+## Run Locally Without Data Fees
+
+To explore the hosted product without installing anything, open the
+[public MarketWitness demo](https://marketwitness-43-157-95-145.nip.io/dashboard/open).
+The commands below are only for a local clone of the repository.
 
 ```bash
 python3 -m pip install -e ".[application]"
@@ -51,7 +55,8 @@ export MARKETWITNESS_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
 python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 ```
 
-Open <http://127.0.0.1:8000/>. Key routes are documented in
+After launching the app, open <http://127.0.0.1:8000/> on the same machine
+running the command. Key routes are documented in
 [README.md](../README.md) and [Dashboard Product Outline](dashboard.md).
 
 For permitted live SEC access, provide an identifying contact outside Git:
