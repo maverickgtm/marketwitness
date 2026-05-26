@@ -171,7 +171,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
         f'<td><span class="badge {escape(market.connector_status)}">{escape(market.connector_status)}</span></td>'
         f"<td>{escape(market.signal_type)}</td>"
         f"<td>{escape(market.confirmation_rule)}</td>"
-        f'<td><a href="{escape(market.official_source_url)}">Official source</a></td>'
+        f'<td><a href="{escape(market.official_source_url)}" target="_blank" rel="noopener">Official source</a></td>'
         "</tr>"
         for market in markets
     )

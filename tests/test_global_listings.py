@@ -20,6 +20,8 @@ class GlobalListingsTests(unittest.TestCase):
 
         self.assertEqual(len(sources), 10)
         self.assertIn("London Stock Exchange", report)
+        self.assertIn("https://www.londonstockexchange.com/live-markets/new-issues", page)
+        self.assertNotIn("https://api.londonstockexchange.com", page)
         self.assertIn("Hong Kong Exchanges and Clearing", report)
         self.assertIn("Tokyo Stock Exchange / Japan EDINET", report)
         self.assertIn("JPX New Listings plus FSA EDINET Documents API", report)
@@ -55,6 +57,7 @@ class GlobalListingsTests(unittest.TestCase):
         self.assertIn('href="/dashboard/issuer-confirmations"', page)
         self.assertIn('href="/dashboard/etf-regulatory"', page)
         self.assertIn('href="/dashboard/governance"', page)
+        self.assertIn('target="_blank" rel="noopener">Official source</a>', page)
 
     def test_rejects_unknown_connector_status(self) -> None:
         path = _csv(
