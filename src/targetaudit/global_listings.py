@@ -241,6 +241,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
   <main>
     <p class="notice">HKEX, LSE, ASX, TSX, JPX, SGX, CVM, ESMA and OpenDART have official ingestion paths. CVM, ESMA and OpenDART evidence open regulatory review; they are not proof of trading. A separate issuer-release registry preserves confirmed milestones without turning them into investment conclusions.</p>
     <section class="monitor-links" aria-label="Monitoring pages">
+      <a href="/dashboard/contribute?lang=en">Contribute an official source</a>
       <a href="/dashboard/global-alerts">Open daily change review</a>
       <a href="/dashboard/global/hkex">Open HKEX live monitor</a>
       <a href="/dashboard/global/lse-upcoming">Open LSE live monitor</a>

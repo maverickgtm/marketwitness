@@ -306,6 +306,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/global-listings", page.text)
         self.assertIn("/dashboard/global-alerts", page.text)
         self.assertIn("/dashboard/issuer-confirmations", page.text)
+        self.assertIn("/dashboard/contribute?lang=en", page.text)
+        self.assertIn("Global Contributors", page.text)
         self.assertIn("/dashboard/audit/target-import", page.text)
         self.assertIn("/dashboard/audit/adjusted-prices", page.text)
         self.assertIn("/dashboard/audit/corporate-actions", page.text)
@@ -342,6 +344,27 @@ class ApiTests(unittest.TestCase):
             self.assertIn(route, page.text)
         self.assertIn("does not publish real analyst track records", page.text)
         self.assertIn("Public real-data scorecard", page.text)
+
+    def test_serves_localized_global_contributor_gateway_with_rights_boundary(self) -> None:
+        localized_markers = {
+            "en": "Bring your market.",
+            "ja": "市場の知識を。",
+            "pt-BR": "Traga seu mercado.",
+            "zh-Hant": "帶來你的市場",
+            "ko": "시장을 제안하고",
+        }
+
+        for language, marker in localized_markers.items():
+            with self.subTest(language=language):
+                page = self.client.get(f"/dashboard/contribute?lang={language}")
+                self.assertEqual(page.status_code, 200)
+                self.assertIn(marker, page.text)
+                self.assertIn("/dashboard/global-listings", page.text)
+                self.assertIn("Data Source Proposal", page.text)
+
+        fallback = self.client.get("/dashboard/contribute?lang=xx")
+        self.assertIn("Bring your market.", fallback.text)
+        self.assertIn("not publication permission", fallback.text)
 
     def test_serves_ipo_watch_center_without_promoting_discovered_evidence(self) -> None:
         page = self.client.get("/dashboard/ipo")

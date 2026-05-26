@@ -131,7 +131,9 @@ Desde ella se abre `/dashboard/reports`, un indice de
 `/dashboard/etf/nport-catalog`, `/dashboard/etf/nport-sync`,
 `/dashboard/document-checks`, `/dashboard/rwa-watch`,
 `/dashboard/global-listings`, `/dashboard/global-alerts` y
-`/dashboard/issuer-confirmations`, ademas del paquete fijo
+`/dashboard/issuer-confirmations`; `/dashboard/contribute?lang=en` ofrece una
+entrada multilingue para proponer fuentes internacionales verificables,
+ademas del paquete fijo
 `/dashboard/financials-evidence` y `/dashboard/audit/{report}` para evidencia
 Financials del demo; estas rutas
 solo sirven artefactos HTML conocidos producidos por `make demo`. El paquete

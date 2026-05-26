@@ -173,6 +173,12 @@ verificables de cotizaciones tecnologicas/estrategicas.
   `C001`/`C006` con clave gratuita, e integrar su diff sin afirmar listing.
 - [x] Revisar `KRX OPEN API` y excluir su output del dashboard público porque
   sus términos prohíben entregar los datos provistos por KRX a terceros.
+- [x] Barrido final internacional de targets historicos: `AnalystCentral`
+  identificado como candidato gratuito sujeto a permiso escrito, y `QUICK`,
+  `FnGuide`, `Intrinio` y `Webull` clasificados sin activar datos reales.
+- [x] Portal multilingue de contribucion global en ingles, japones,
+  portugues de Brasil, chino tradicional y coreano para proponer fuentes con
+  evidencia de derechos antes de activar conectores.
 - [x] Politica publica visible de no-recomendacion, capas de datos y fuentes
   bloqueadas en `/dashboard/policy`, declarada como control interno.
 - [ ] Revision legal externa del producto y de sus disclaimers antes de
@@ -184,6 +190,8 @@ verificables de cotizaciones tecnologicas/estrategicas.
 
 1. Si se desea ampliar Open Edition, proveedor o aportación autorizada de
    targets históricos para una primera muestra real.
+   El primer intento sin cuota pendiente es solicitar por escrito permiso
+   limitado a `AnalystCentral`.
 2. Para esa ampliación opcional, precios ajustados que permitan publicación.
 3. Nombre/dominio final y alcance: proyecto de investigacion o producto
    publico con actualizaciones.

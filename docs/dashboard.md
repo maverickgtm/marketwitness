@@ -75,7 +75,7 @@ general al directorio de reportes construidos.
 - Explica que el artefacto periodico generado en GitHub Actions usa fixtures
   redistribuibles, no consultas live ni rankings reales.
 - Enlaza controles operativos de IPO Watch Center, ETF Evidence Center,
-  Financials Evidence Center, politica, gobernanza y Release Center para
+  Financials Evidence Center, Global Contributors, politica, gobernanza y Release Center para
   que los limites de cada reporte queden visibles durante su lectura.
 - No agrega un endpoint de archivos: cada enlace corresponde a una ruta fija
   servida por la API.
@@ -475,6 +475,11 @@ Cada jurisdiccion conserva sus propias etapas:
 - `Global Listings Watch` permite navegar entre
   cobertura global, cambios diarios, feed HKEX, feed LSE, contraste FCA, ASX,
   TSX, JPX, EDINET, CVM, ESMA, OpenDART, SGX, confirmaciones del emisor, actividad ETF y gobernanza de fuentes.
+- `/dashboard/contribute?lang=en` abre un portal de colaboradores localizado
+  en ingles, japones, portugues de Brasil, chino tradicional y coreano. No
+  traduce aun todos los reportes generados: orienta propuestas de conectores
+  y exige URL oficial, terminos, costo y derechos de output antes de activar
+  datos reales.
 
 ## Pagina 4: ETF Holdings Activity
 

@@ -82,6 +82,15 @@ fixture incluido es sintetico y no representa una licencia comercial real.
 Las alternativas pagadas y sus limites se documentan en
 `docs/licensed-extensions.md`.
 
+El ultimo barrido del `2026-05-25` confirmo un candidato gratuito para
+solicitar permiso, pero no para activar automaticamente: `AnalystCentral`
+anuncia un CSV historico de targets, mientras sus terminos actuales prohiben
+data mining, republicacion y outputs derivados sin consentimiento escrito.
+La decision y los candidatos japoneses, coreanos y estadounidenses revisados
+se conservan en [Ultimo Barrido Gratuito De Targets Historicos](final-free-target-data-scan.md);
+el primer contacto posible esta preparado en
+[Solicitud De Permiso: AnalystCentral](analystcentral-permission-request.md).
+
 TradingView queda fuera de la tabla de targets porque su oportunidad es
 distinta: su widget atribuido ya se integra en `/dashboard/market-context`
 como contexto visual de `XLF`. Es adecuado para display externo, no para

@@ -192,6 +192,7 @@ def report_center_html() -> str:
       <article class="control"><h3>IPO Watch Center</h3><p>Follow discovery, reviewed status and international listing evidence without blending milestones.</p><a href="/dashboard/ipo">Open IPO workflow</a></article>
       <article class="control"><h3>ETF Evidence Center</h3><p>Separate synthetic comparisons from periodic SEC N-PORT evidence before reading changes.</p><a href="/dashboard/etf">Open ETF evidence</a></article>
       <article class="control"><h3>Financials Evidence Center</h3><p>Trace controlled inputs, scoring guards and release blockers before opening a ranking.</p><a href="/dashboard/financials-evidence">Open financials evidence</a></article>
+      <article class="control"><h3>Global Contributors</h3><p>Propose official market connectors or lawful target-data access in five languages.</p><a href="/dashboard/contribute?lang=en">Open contributor gateway</a></article>
       <article class="control"><h3>Public Use Policy</h3><p>See data boundaries, blocked sources and no-recommendation rules.</p><a href="/dashboard/policy">Open policy</a></article>
       <article class="control"><h3>Source Governance</h3><p>Inspect provider states, rights review and excluded observations.</p><a href="/dashboard/governance">Open governance</a></article>
       <article class="control"><h3>Release Center</h3><p>Review why demo evidence cannot become a public real-data scorecard.</p><a href="/dashboard/release">Open release controls</a></article>
@@ -404,6 +405,228 @@ def etf_evidence_center_html() -> str:
       <article class="view"><span class="pill regulatory">official catalog</span><h3>N-PORT Dataset Catalog</h3><p>Inspect published SEC ZIP releases available for historical backfill.</p><small>Official public source; quarterly cadence.</small><a href="/dashboard/etf/nport-catalog">Open view</a></article>
       <article class="view"><span class="pill regulatory">sync control</span><h3>N-PORT Sync Status</h3><p>Track newly observed SEC quarters and controlled local downloads.</p><small>Operational state, not a signal.</small><a href="/dashboard/etf/nport-sync">Open view</a></article>
     </section>
+  </main>
+</body>
+</html>"""
+
+
+_GLOBAL_CONTRIBUTOR_COPY = {
+    "en": {
+        "page_title": "Global Contributor Gateway",
+        "language_label": "Languages",
+        "languages_card": "Languages",
+        "monitors_card": "Global monitors mapped",
+        "paid_card": "Required paid data",
+        "real_card": "Real target sources activated",
+        "none": "None",
+        "evidence_rule": "Evidence rule",
+        "heading": "Bring your market.<br>Bring the evidence.",
+        "lead": "Help TargetAudit cover official listings evidence or find lawful historical analyst-target data without asking open-source users to buy a dataset.",
+        "boundary": "A public page, API endpoint or GitHub repository is not publication permission. A proposal must identify the official source, access terms and the output we may legally display.",
+        "reports": "Current analytical reports remain in English so generated artifacts and tests stay reproducible. This is the first localized contributor surface.",
+        "paths": "Contribution paths",
+        "connector": "Official listings connector",
+        "connector_body": "Propose an exchange or regulator feed for filings, approvals, listings or withdrawals.",
+        "targets": "Historical target source",
+        "targets_body": "Find dated target prices with firm attribution and explicit public-output rights.",
+        "permission": "Permission evidence",
+        "permission_body": "Provide a written license or terms page allowing collection, retention and derived public display.",
+        "required": "Required evidence",
+        "items": [
+            "Official product or regulator URL",
+            "Terms, license or open-data notice URL",
+            "Fields, history and update frequency",
+            "Cost and key or registration requirements",
+            "Rule for storage, redistribution and derived output",
+        ],
+        "not_accept": "Not accepted as activation evidence",
+        "not_accept_body": "Screenshots, scraped pages, unofficial wrappers and free sign-up access alone cannot unlock a real public ranking.",
+        "github": "Use the GitHub Data Source Proposal issue template after launch. TargetAudit will review the source before any connector is enabled.",
+    },
+    "ja": {
+        "page_title": "グローバル貢献者ゲートウェイ",
+        "language_label": "言語",
+        "languages_card": "対応言語",
+        "monitors_card": "対象市場モニター",
+        "paid_card": "必要な有料データ",
+        "real_card": "有効化済み実データ",
+        "none": "なし",
+        "evidence_rule": "証拠のルール",
+        "heading": "市場の知識を。<br>根拠とともに。",
+        "lead": "オープンソース利用者に有料データ購入を求めず、公式の上場証拠や合法的に利用できる過去の目標株価データを探す活動に参加できます。",
+        "boundary": "公開ページ、API、GitHub リポジトリが存在するだけでは公開許可になりません。公式ソース、利用規約、公開可能な出力を明示してください。",
+        "reports": "生成レポートとテストの再現性を保つため、現在の分析レポートは英語のままです。このページが最初の多言語コントリビューター画面です。",
+        "paths": "貢献できる内容",
+        "connector": "公式上場コネクター",
+        "connector_body": "届出、承認、新規上場、取消しを示す取引所または規制当局のフィードを提案してください。",
+        "targets": "過去の目標株価ソース",
+        "targets_body": "日付と証券会社名があり、公開出力の権利が明示された目標株価データを探します。",
+        "permission": "許諾の証拠",
+        "permission_body": "収集、保存、派生結果の公開表示を認める規約または書面許可を提示してください。",
+        "required": "必要な証拠",
+        "items": ["公式製品または規制当局の URL", "利用規約、ライセンス、オープンデータ通知の URL", "項目、履歴期間、更新頻度", "費用とキーまたは登録要件", "保存、再配布、派生出力のルール"],
+        "not_accept": "有効化の根拠にならないもの",
+        "not_accept_body": "スクリーンショット、スクレイピング、非公式ラッパー、無料登録だけでは公開ランキングを有効化できません。",
+        "github": "公開後は GitHub の Data Source Proposal テンプレートを使用してください。コネクターを有効化する前にソースを審査します。",
+    },
+    "pt-BR": {
+        "page_title": "Portal Global de Colaboradores",
+        "language_label": "Idiomas",
+        "languages_card": "Idiomas",
+        "monitors_card": "Monitores globais mapeados",
+        "paid_card": "Dados pagos obrigatórios",
+        "real_card": "Fontes reais ativadas",
+        "none": "Nenhum",
+        "evidence_rule": "Regra de evidência",
+        "heading": "Traga seu mercado.<br>Traga a evidência.",
+        "lead": "Ajude o TargetAudit a cobrir listagens oficiais ou encontrar histórico legal de preços-alvo sem obrigar usuários open source a comprar dados.",
+        "boundary": "Uma página pública, API ou repositório GitHub não representa permissão de publicação. A proposta deve indicar fonte oficial, termos de acesso e o output que podemos exibir legalmente.",
+        "reports": "Os relatórios analíticos atuais permanecem em inglês para manter artefatos e testes reproduzíveis. Esta é a primeira superfície localizada para colaboradores.",
+        "paths": "Formas de colaborar",
+        "connector": "Conector oficial de listagens",
+        "connector_body": "Proponha um feed de bolsa ou regulador para ofertas, aprovações, listagens ou cancelamentos.",
+        "targets": "Fonte histórica de preço-alvo",
+        "targets_body": "Encontre preços-alvo datados, com instituição atribuída e direitos expressos para output público.",
+        "permission": "Evidência de permissão",
+        "permission_body": "Forneça licença ou termos escritos que permitam coleta, retenção e exibição pública derivada.",
+        "required": "Evidência obrigatória",
+        "items": ["URL oficial do produto ou regulador", "URL de termos, licença ou aviso de dados abertos", "Campos, histórico e frequência de atualização", "Custo e exigência de chave ou cadastro", "Regra para armazenamento, redistribuição e output derivado"],
+        "not_accept": "Não basta para ativar",
+        "not_accept_body": "Capturas de tela, scraping, wrappers não oficiais e apenas acesso gratuito não liberam um ranking público real.",
+        "github": "Depois do lançamento, use o template GitHub Data Source Proposal. O TargetAudit revisará a fonte antes de ativar qualquer conector.",
+    },
+    "zh-Hant": {
+        "page_title": "全球貢獻者入口",
+        "language_label": "語言",
+        "languages_card": "支援語言",
+        "monitors_card": "已盤點全球監測器",
+        "paid_card": "必要付費資料",
+        "real_card": "已啟用真實目標價來源",
+        "none": "無",
+        "evidence_rule": "證據規則",
+        "heading": "帶來你的市場，<br>也帶來證據。",
+        "lead": "協助 TargetAudit 納入官方上市證據，或尋找可合法使用的歷史分析師目標價資料，而不要求開源使用者購買資料。",
+        "boundary": "公開網頁、API 或 GitHub 儲存庫的存在，不等同公開發布許可。提案必須說明官方來源、使用條款及可合法展示的輸出。",
+        "reports": "為維持產出檔案與測試的可重現性，目前分析報告保留英文。這是第一個多語言貢獻者介面。",
+        "paths": "貢獻途徑",
+        "connector": "官方上市連接器",
+        "connector_body": "提出交易所或監管機構針對申請、核准、上市或撤回的資料來源。",
+        "targets": "歷史目標價來源",
+        "targets_body": "尋找含日期、機構歸屬及明確公共輸出權利的目標價資料。",
+        "permission": "授權證據",
+        "permission_body": "提供允許收集、保存及公開展示衍生結果的書面授權或條款頁面。",
+        "required": "必要證據",
+        "items": ["官方產品或監管機構網址", "條款、授權或開放資料聲明網址", "欄位、歷史範圍及更新頻率", "費用與金鑰或註冊要求", "儲存、再發布及衍生輸出的規則"],
+        "not_accept": "不能作為啟用依據",
+        "not_accept_body": "截圖、爬取頁面、非官方包裝器或僅有免費註冊，都不足以啟用真實公開排名。",
+        "github": "發布後請使用 GitHub Data Source Proposal issue 範本。TargetAudit 會在啟用任何連接器前審查來源。",
+    },
+    "ko": {
+        "page_title": "글로벌 기여자 게이트웨이",
+        "language_label": "언어",
+        "languages_card": "지원 언어",
+        "monitors_card": "검토한 글로벌 모니터",
+        "paid_card": "필수 유료 데이터",
+        "real_card": "활성화된 실제 목표주가 출처",
+        "none": "없음",
+        "evidence_rule": "근거 규칙",
+        "heading": "시장을 제안하고,<br>근거를 함께 제출하세요.",
+        "lead": "오픈 소스 사용자가 유료 데이터를 구매하지 않아도 공식 상장 근거 또는 합법적으로 사용할 수 있는 과거 애널리스트 목표주가 자료를 찾는 데 참여할 수 있습니다.",
+        "boundary": "공개 웹페이지, API 또는 GitHub 저장소가 있다는 사실만으로 공개 게시 권한이 생기지 않습니다. 공식 출처, 이용 조건, 합법적으로 표시할 수 있는 결과를 제시해야 합니다.",
+        "reports": "생성 산출물과 테스트의 재현성을 유지하기 위해 현재 분석 보고서는 영어로 유지됩니다. 이 페이지가 첫 다국어 기여자 화면입니다.",
+        "paths": "기여 방법",
+        "connector": "공식 상장 커넥터",
+        "connector_body": "공시, 승인, 신규 상장 또는 철회를 보여 주는 거래소나 규제기관 피드를 제안하세요.",
+        "targets": "과거 목표주가 출처",
+        "targets_body": "날짜와 증권사 귀속 정보가 있으며 공개 결과 권한이 명시된 목표주가 자료를 찾습니다.",
+        "permission": "허가 근거",
+        "permission_body": "수집, 보관, 파생 결과의 공개 표시를 허용하는 서면 허가나 약관을 제출하세요.",
+        "required": "필수 근거",
+        "items": ["공식 제품 또는 규제기관 URL", "약관, 라이선스 또는 공개데이터 고지 URL", "필드, 과거 범위 및 갱신 주기", "비용과 키 또는 등록 요건", "저장, 재배포 및 파생 출력 규칙"],
+        "not_accept": "활성화 근거로 인정되지 않는 것",
+        "not_accept_body": "스크린샷, 스크래핑 페이지, 비공식 래퍼, 무료 가입만으로는 실제 공개 순위를 활성화할 수 없습니다.",
+        "github": "출시 후 GitHub Data Source Proposal 이슈 템플릿을 사용하세요. TargetAudit은 커넥터를 활성화하기 전에 출처를 검토합니다.",
+    },
+}
+
+
+def global_contributors_html(locale: str = "en") -> str:
+    language = locale if locale in _GLOBAL_CONTRIBUTOR_COPY else "en"
+    copy = _GLOBAL_CONTRIBUTOR_COPY[language]
+    language_links = " / ".join(
+        f'<a href="/dashboard/contribute?lang={code}">{label}</a>'
+        for code, label in (
+            ("en", "English"),
+            ("ja", "日本語"),
+            ("pt-BR", "Português (Brasil)"),
+            ("zh-Hant", "繁體中文"),
+            ("ko", "한국어"),
+        )
+    )
+    evidence_items = "".join(f"<li>{item}</li>" for item in copy["items"])
+    return f"""<!doctype html>
+<html lang="{language}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TargetAudit | {copy["page_title"]}</title>
+  <style>
+    :root {{
+      --bg:#071016; --panel:#0f1c24; --line:#20343d; --text:#edf1ef;
+      --muted:#98abb0; --mint:#56daac; --gold:#f0bc62; --blue:#62a6ff;
+    }}
+    * {{ box-sizing:border-box; }}
+    body {{ margin:0; background:var(--bg); color:var(--text); font:15px/1.6 Inter,Arial,sans-serif; }}
+    header,main {{ max-width:1160px; margin:auto; padding:30px 28px; }}
+    nav,.meta {{ color:var(--muted); font-size:13px; }}
+    nav:first-of-type {{ text-transform:uppercase; letter-spacing:.08em; }}
+    a {{ color:var(--mint); text-decoration:none; }}
+    h1 {{ font-size:clamp(38px,5vw,60px); line-height:1.08; margin:38px 0 14px; }}
+    h2 {{ margin:42px 0 16px; font-size:22px; }}
+    h3 {{ margin:10px 0 8px; }}
+    .lead {{ color:var(--muted); font-size:18px; max-width:930px; }}
+    .languages {{ margin-top:18px; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:10px 17px; display:inline-block; }}
+    .cards {{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:34px 0; }}
+    .card,.path,.notice,.checklist {{ background:var(--panel); border:1px solid var(--line); border-radius:14px; }}
+    .card {{ padding:18px 20px; }} .card p,.path p {{ color:var(--muted); margin:0; }}
+    .card strong {{ display:block; color:var(--mint); font-size:29px; margin-top:5px; }}
+    .notice {{ border-left:3px solid var(--gold); padding:15px 18px; color:var(--muted); margin:16px 0; }}
+    .paths {{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }}
+    .path {{ padding:18px; }} .pill {{ display:inline-block; color:var(--blue); background:rgba(98,166,255,.12); border-radius:999px; padding:4px 9px; font-size:12px; }}
+    .two-col {{ display:grid; grid-template-columns:1.15fr .85fr; gap:16px; }}
+    .checklist {{ padding:18px 22px; }} .checklist ul {{ margin:10px 0 0; padding-left:21px; color:var(--muted); }}
+    .github {{ margin-top:28px; color:var(--mint); font-weight:600; }}
+    @media(max-width:900px) {{ .cards,.paths,.two-col {{ grid-template-columns:1fr; }} .languages {{ border-radius:14px; }} }}
+  </style>
+</head>
+<body>
+  <header>
+    <nav><a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/reports">Report Center</a> / <a href="/dashboard/global-listings">Global Listings Watch</a> / {copy["page_title"]}</nav>
+    <div class="languages" aria-label="{copy["language_label"]}">{language_links}</div>
+    <h1>{copy["heading"]}</h1>
+    <p class="lead">{copy["lead"]}</p>
+    <section class="cards">
+      <article class="card"><p>{copy["languages_card"]}</p><strong>5</strong></article>
+      <article class="card"><p>{copy["monitors_card"]}</p><strong>10</strong></article>
+      <article class="card"><p>{copy["paid_card"]}</p><strong>{copy["none"]}</strong></article>
+      <article class="card"><p>{copy["real_card"]}</p><strong>0</strong></article>
+    </section>
+  </header>
+  <main>
+    <p class="notice"><strong>{copy["evidence_rule"]}:</strong> {copy["boundary"]}</p>
+    <p class="notice">{copy["reports"]}</p>
+    <h2>{copy["paths"]}</h2>
+    <section class="paths">
+      <article class="path"><span class="pill">LISTINGS</span><h3>{copy["connector"]}</h3><p>{copy["connector_body"]}</p></article>
+      <article class="path"><span class="pill">TARGETS</span><h3>{copy["targets"]}</h3><p>{copy["targets_body"]}</p></article>
+      <article class="path"><span class="pill">RIGHTS</span><h3>{copy["permission"]}</h3><p>{copy["permission_body"]}</p></article>
+    </section>
+    <h2>{copy["required"]}</h2>
+    <section class="two-col">
+      <article class="checklist"><ul>{evidence_items}</ul></article>
+      <article class="checklist"><h3>{copy["not_accept"]}</h3><p>{copy["not_accept_body"]}</p></article>
+    </section>
+    <p class="github">{copy["github"]}</p>
   </main>
 </body>
 </html>"""

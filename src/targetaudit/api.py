@@ -19,6 +19,7 @@ from .dashboard_web import (
     etf_evidence_center_html,
     financials_evidence_center_html,
     financials_scorecard_html,
+    global_contributors_html,
     ipo_watch_center_html,
     licensed_extensions_html,
     market_context_html,
@@ -241,6 +242,12 @@ def create_app(
     )
     def global_listings_report() -> str:
         return _generated_html(reports, "global-listings.html")
+
+    @application.get(
+        "/dashboard/contribute", response_class=HTMLResponse, include_in_schema=False
+    )
+    def global_contributors(lang: str = Query(default="en", max_length=10)) -> str:
+        return global_contributors_html(lang)
 
     @application.get(
         "/dashboard/global/{monitor}", response_class=HTMLResponse, include_in_schema=False

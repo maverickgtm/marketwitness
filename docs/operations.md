@@ -732,6 +732,9 @@ automáticamente a retirada, admisión o cotización completada.
 La portada `/dashboard/global-listings` es el índice operativo de estas
 salidas; cada HTML generado enlaza de regreso a ella para consultar la regla
 de confirmación aplicable a su mercado.
+Tambien enlaza `/dashboard/contribute?lang=en`, una entrada localizada para
+proponer nuevas fuentes o permisos de targets. Una propuesta no habilita
+ingesta hasta registrar terminos y derechos de output verificables.
 
 ## Confirmacion JPX De Tokio
 

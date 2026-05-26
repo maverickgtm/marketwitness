@@ -59,6 +59,14 @@ y FMP exige un acuerdo especifico de display/licencia. TradingView ya se
 integra mediante su widget gratuito atribuido en `Market Context` para
 visualizar `XLF`, no como fuente de historial de analistas.
 
+Un ultimo barrido realizado el `2026-05-25` encontro una puerta gratuita que
+vale intentar formalmente: `AnalystCentral` anuncia un CSV historico gratuito
+de ratings y price targets, pero sus terminos prohiben data mining,
+republicacion y resultados derivados sin consentimiento escrito. TargetAudit
+no lo integra en silencio: conserva un
+[expediente del barrido final](docs/final-free-target-data-scan.md) y una
+[solicitud de permiso lista para enviar](docs/analystcentral-permission-request.md).
+
 Tambien se realizo un barrido internacional en Reino Unido, Japon, Australia,
 Hong Kong, Singapur y China continental. No aparecio un historial gratuito
 publicable de targets individuales de firmas estadounidenses; si surgieron
@@ -588,6 +596,10 @@ remoción no confirma retiro, admisión ni inicio de negociación.
 La ruta `/dashboard/global-listings` funciona como indice internacional: las
 vistas de cada mercado, la cola global y las confirmaciones oficiales enlazan
 de regreso a ese mapa de cobertura y reglas de confirmacion.
+La ruta `/dashboard/contribute?lang=en` agrega una entrada para colaboradores
+internacionales en ingles, japones, portugues de Brasil, chino tradicional y
+coreano. Solicita fuente oficial, terminos y derechos de output antes de
+aceptar un nuevo conector o un dataset de targets.
 
 ## ETF Holdings Activity
 
@@ -977,6 +989,7 @@ Endpoints iniciales:
 | `/dashboard/etf/nport-sync` | Estado incremental de releases N-PORT observados y descargas locales controladas |
 | `/dashboard/document-checks` | Verificaciones documentales regulatorias generadas |
 | `/dashboard/global-listings` | Mapa navegable de cobertura y monitores oficiales internacionales |
+| `/dashboard/contribute?lang=en` | Portal multilingue para proponer fuentes globales y permisos de targets con evidencia verificable |
 | `/dashboard/global-alerts` | Cola comparada de cambios en señales de listings y documentos internacionales |
 | `/dashboard/issuer-confirmations` | Hitos de cotización verificados desde comunicados oficiales revisados |
 | `/dashboard/global/{monitor}` | Monitor permitido: `hkex`, `lse-upcoming`, `asx`, `tsx`, `jpx`, `edinet`, `cvm`, `esma`, `opendart` o `sgx` |
