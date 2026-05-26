@@ -35,8 +35,8 @@ rights are visible product outcomes, not hidden limitations.
 | Center | Purpose | Open Edition Evidence |
 |---|---|---|
 | Evidence Passport Commons | Register source provenance, cost, cadence, rights, and claim boundaries | Public source registry and contribution protocol |
-| IPO Watch | Track listing candidates and regulatory milestones | SEC-shaped fixtures and official-source monitor design |
-| Global Listings Watch | Map listing evidence beyond the United States | Official market-source registry across multiple jurisdictions |
+| Listings Radar / IPO Watch | Search, filter and locally follow U.S. IPO records and global listing-evidence changes | Reviewed demo registry plus dated official-source change workflow |
+| Global Listings Watch | Map official listing evidence beyond the United States and open the interactive radar | Official market-source registry across multiple jurisdictions |
 | ETF Evidence Center | Separate reported holdings evidence from daily-activity claims | Synthetic snapshots and SEC N-PORT workflow |
 | Financials Evidence Center | Audit a price-target scoring pipeline and its release gates | Redistributable fixtures; real rankings blocked |
 | Market Intelligence | Organize market context and future connectors | Source-first workspace with documented constraints |
@@ -103,6 +103,7 @@ Open <http://127.0.0.1:8000/>. High-signal views include:
 |---|---|
 | `/dashboard/open` | Open Edition home |
 | `/dashboard/ipo` | IPO Watch Center |
+| `/dashboard/listings-radar` | Interactive U.S. IPO and global listing-evidence radar |
 | `/dashboard/global-listings` | Global Listings Watch |
 | `/dashboard/etf` | ETF Evidence Center |
 | `/dashboard/financials-evidence` | Analyst scorecard evidence gates |

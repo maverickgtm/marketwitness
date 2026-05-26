@@ -266,7 +266,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
         <h1>Beyond Wall Street.<br><span>Listings worldwide.</span></h1>
         <p class="lead">Map official signals for IPOs and new listings across London, Hong Kong and additional exchanges without blending incompatible regulatory evidence.</p>
         <p class="meta">Sources reviewed as of {escape(as_of.isoformat())}</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/global-alerts">Open change review</a><a href="/dashboard/contribute?lang=en">Contribute source</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/listings-radar">Open Listings Radar</a><a href="/dashboard/global-alerts">Change report</a><a href="/dashboard/contribute?lang=en">Contribute source</a></div>
       </article>
       <article class="coverage-panel">
         <div class="coverage-head"><strong>Coverage Grid</strong><span>Official paths</span></div>
@@ -278,6 +278,7 @@ def render_global_listings_html(markets: list[GlobalMarketSource], as_of: date) 
   <main>
     <p class="notice">HKEX, LSE, ASX, TSX, JPX, SGX, CVM, ESMA and OpenDART have official ingestion paths. CVM, ESMA and OpenDART evidence open regulatory review; they are not proof of trading. A separate issuer-release registry preserves confirmed milestones without turning them into investment conclusions.</p>
     <section class="monitor-links" aria-label="Monitoring pages">
+      <a href="/dashboard/listings-radar">Open interactive Listings Radar</a>
       <a href="/dashboard/contribute?lang=en">Contribute an official source</a>
       <a href="/dashboard/global-alerts">Open daily change review</a>
       <a href="/dashboard/global/hkex">Open HKEX live monitor</a>

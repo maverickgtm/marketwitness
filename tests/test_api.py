@@ -108,6 +108,12 @@ class ApiTests(unittest.TestCase):
         (self.reports / "ipo-watch.html").write_text(
             "<html><h1>IPO Watch generated page</h1></html>", encoding="utf-8"
         )
+        (self.reports / "ipo-watch-reviewed.csv").write_text(
+            "company_name,cik,theme,status,status_date,ticker,exchange,filing_type,evidence_level,source_title,source_url,next_event,risk_flags\n"
+            "SpaceX,0001181412,Space infrastructure,filed_public,2026-05-20,,,S-1,Reviewed SEC filing,SEC filing,https://example.invalid/spacex,Review pricing and listing confirmation,review\n"
+            "Cerebras,,AI hardware,listed,2026-05-14,CBRS,Nasdaq,IPO,Issuer confirmation,Issuer release,https://example.invalid/cerebras,Track post-IPO filings,new public issuer\n",
+            encoding="utf-8",
+        )
         (self.reports / "sec-ipo-discovery.html").write_text(
             "<html><h1>SEC IPO Discovery Queue generated page</h1></html>",
             encoding="utf-8",
@@ -144,6 +150,12 @@ class ApiTests(unittest.TestCase):
         )
         (self.reports / "global-alerts.html").write_text(
             "<html><h1>Global Listings Alerts generated page</h1></html>",
+            encoding="utf-8",
+        )
+        (self.reports / "global-alerts.csv").write_text(
+            "observed_on,market,change_type,company_name,previous_status,current_status,previous_detail,current_detail,review_action,source_url\n"
+            "2026-05-25,HKEX,new,EnjoyGo Technology Limited,,active,,PHIP false,Review new evidence,https://example.invalid/hkex\n"
+            "2026-05-25,ASX,changed,Boresight Ltd,anticipated,anticipated,June 12,June 10,Review changed evidence,https://example.invalid/asx\n",
             encoding="utf-8",
         )
         (self.reports / "issuer-confirmations.html").write_text(
@@ -309,6 +321,7 @@ class ApiTests(unittest.TestCase):
             "/dashboard/reports",
             "/dashboard/extensions",
             "/dashboard/ipo",
+            "/dashboard/listings-radar",
             "/dashboard/ipo-watch",
             "/dashboard/sec-discovery",
             "/dashboard/sec-alerts",
@@ -581,7 +594,33 @@ class ApiTests(unittest.TestCase):
         self.assertIn("does not confirm an IPO", page.text)
         self.assertIn("Required paid data", page.text)
         self.assertIn("Verification Ladder", page.text)
-        self.assertIn("Open status board", page.text)
+        self.assertIn("Open Listings Radar", page.text)
+        self.assertIn("/dashboard/listings-radar", page.text)
+
+    def test_serves_filterable_listings_radar_with_evidence_queue(self) -> None:
+        page = self.client.get("/dashboard/listings-radar")
+        all_records = self.client.get("/api/v1/listings/radar")
+        filtered = self.client.get(
+            "/api/v1/listings/radar?stream=global_changes&market=HKEX&start=2026-05-25&end=2026-05-25"
+        )
+        searched = self.client.get("/api/v1/listings/radar?query=SpaceX")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Listings Radar", page.text)
+        self.assertIn("My Watchlist", page.text)
+        self.assertIn("Apply filters", page.text)
+        self.assertIn("localStorage", page.text)
+        self.assertEqual(all_records.status_code, 200)
+        self.assertEqual(all_records.json()["record_count"], 4)
+        self.assertEqual(all_records.json()["ipo_watch_count"], 2)
+        self.assertEqual(all_records.json()["global_change_count"], 2)
+        self.assertEqual(filtered.json()["record_count"], 1)
+        self.assertEqual(
+            filtered.json()["records"][0]["company_name"],
+            "EnjoyGo Technology Limited",
+        )
+        self.assertEqual(searched.json()["record_count"], 1)
+        self.assertEqual(searched.json()["records"][0]["status"], "filed_public")
 
     def test_serves_etf_evidence_center_with_separated_frequency_layers(self) -> None:
         page = self.client.get("/dashboard/etf")

@@ -1922,7 +1922,7 @@ def main() -> int:
             alerts = compare_signals(current, previous)
             if args.history_dir:
                 archive_snapshot(args.history_dir, paths, as_of)
-            write_alerts_csv(args.output, alerts)
+            write_alerts_csv(args.output, alerts, as_of)
             write_alerts_report(args.report, alerts, current, as_of, baseline_label)
             if args.html:
                 write_alerts_html(args.html, alerts, current, as_of, baseline_label)

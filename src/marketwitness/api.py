@@ -23,6 +23,7 @@ from .dashboard_web import (
     global_contributors_html,
     ipo_watch_center_html,
     licensed_extensions_html,
+    listings_radar_html,
     market_intelligence_html,
     market_context_html,
     open_edition_html,
@@ -196,6 +197,12 @@ def create_app(
     )
     def ipo_watch_center() -> str:
         return _dashboard_html(ipo_watch_center_html())
+
+    @application.get(
+        "/dashboard/listings-radar", response_class=HTMLResponse, include_in_schema=False
+    )
+    def listings_radar_page() -> str:
+        return _dashboard_html(listings_radar_html())
 
     @application.get(
         "/dashboard/ipo-watch", response_class=HTMLResponse, include_in_schema=False
@@ -481,6 +488,59 @@ def create_app(
             return build_open_edition_snapshot(providers, as_of)
         except SourceRegistryDataError as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @application.get("/api/v1/listings/radar")
+    def listings_radar_snapshot(
+        query: str = "",
+        stream: str = Query(default="", pattern="^(|ipo_watch|global_changes)$"),
+        market: str = "",
+        status: str = "",
+        start: Optional[date] = None,
+        end: Optional[date] = None,
+    ) -> dict[str, object]:
+        if start and end and start > end:
+            raise HTTPException(status_code=422, detail="Start date must be on or before end date.")
+        all_rows = _read_listing_radar_rows(reports)
+        normalized_query = query.strip().casefold()
+        selected = []
+        for row in all_rows:
+            row_date = date.fromisoformat(str(row["event_date"]))
+            if normalized_query and normalized_query not in " ".join(
+                str(row[key]).casefold()
+                for key in ("company_name", "market", "status", "detail", "next_action")
+            ):
+                continue
+            if stream and row["stream"] != stream:
+                continue
+            if market and row["market"].casefold() != market.casefold():
+                continue
+            if status and row["status"] != status:
+                continue
+            if start and row_date < start:
+                continue
+            if end and row_date > end:
+                continue
+            selected.append(row)
+        selected.sort(key=lambda item: (str(item["event_date"]), str(item["company_name"])), reverse=True)
+        return {
+            "as_of": max((str(item["event_date"]) for item in all_rows), default=None),
+            "record_count": len(selected),
+            "total_record_count": len(all_rows),
+            "ipo_watch_count": sum(item["stream"] == "ipo_watch" for item in selected),
+            "global_change_count": sum(item["stream"] == "global_changes" for item in selected),
+            "review_required_count": sum(
+                item["stream"] == "global_changes"
+                or item["status"] in {"candidate_unverified", "filed_public"}
+                for item in selected
+            ),
+            "markets": sorted({str(item["market"]) for item in all_rows}),
+            "statuses": sorted({str(item["status"]) for item in all_rows}),
+            "publication_boundary": (
+                "Records are evidence-review tasks and verified milestones, not investment "
+                "recommendations or confirmation of trading unless the cited evidence states it."
+            ),
+            "records": selected,
+        }
 
     @application.get("/api/v1/intelligence/modules")
     def market_intelligence_snapshot() -> dict[str, object]:
@@ -772,6 +832,66 @@ def _read_sources(registry: Path) -> list[SourceProvider]:
         return load_source_registry(registry)
     except (OSError, SourceRegistryDataError) as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+
+def _read_listing_radar_rows(directory: Path) -> list[dict[str, object]]:
+    ipo_path = directory / "ipo-watch-reviewed.csv"
+    alert_path = directory / "global-alerts.csv"
+    if not ipo_path.is_file() or not alert_path.is_file():
+        raise HTTPException(
+            status_code=404,
+            detail="Listings Radar data is not available. Run the demo pipeline first.",
+        )
+    rows: list[dict[str, object]] = []
+    try:
+        with ipo_path.open(newline="", encoding="utf-8") as source:
+            for index, item in enumerate(csv.DictReader(source), start=1):
+                rows.append(
+                    {
+                        "record_id": f"ipo-{index}-{_safe_filename(item['company_name'])}",
+                        "stream": "ipo_watch",
+                        "market": item["exchange"].strip() or "US",
+                        "company_name": item["company_name"].strip(),
+                        "status": item["status"].strip(),
+                        "event_date": item["status_date"].strip(),
+                        "detail": " / ".join(
+                            value
+                            for value in (
+                                item["theme"].strip(),
+                                item["filing_type"].strip(),
+                                item["ticker"].strip(),
+                            )
+                            if value
+                        ),
+                        "next_action": item["next_event"].strip(),
+                        "source_url": item["source_url"].strip(),
+                        "evidence_level": item["evidence_level"].strip(),
+                    }
+                )
+        with alert_path.open(newline="", encoding="utf-8") as source:
+            for index, item in enumerate(csv.DictReader(source), start=1):
+                observed_on = item.get("observed_on", "").strip()
+                if not observed_on:
+                    raise ValueError("global alert rows require observed_on")
+                rows.append(
+                    {
+                        "record_id": f"global-{index}-{_safe_filename(item['company_name'])}",
+                        "stream": "global_changes",
+                        "market": item["market"].strip(),
+                        "company_name": item["company_name"].strip(),
+                        "status": item["change_type"].strip(),
+                        "event_date": observed_on,
+                        "detail": item["current_detail"].strip() or item["previous_detail"].strip(),
+                        "next_action": item["review_action"].strip(),
+                        "source_url": item["source_url"].strip(),
+                        "evidence_level": "Normalized official-source change",
+                    }
+                )
+        for row in rows:
+            date.fromisoformat(str(row["event_date"]))
+    except (OSError, KeyError, ValueError) as exc:
+        raise HTTPException(status_code=503, detail=f"Listings Radar data is invalid: {exc}") from exc
+    return rows
 
 
 def _generated_html(directory: Path, filename: str) -> str:

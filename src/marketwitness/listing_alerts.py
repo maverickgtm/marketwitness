@@ -153,14 +153,19 @@ def compare_signals(
     )
 
 
-def write_alerts_csv(path: str | Path, alerts: list[ListingAlert]) -> None:
+def write_alerts_csv(
+    path: str | Path, alerts: list[ListingAlert], observed_on: date | None = None
+) -> None:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("w", newline="", encoding="utf-8") as target:
-        writer = csv.DictWriter(target, fieldnames=list(ListingAlert.__annotations__))
+        fieldnames = ["observed_on"] + list(ListingAlert.__annotations__)
+        writer = csv.DictWriter(target, fieldnames=fieldnames)
         writer.writeheader()
         for alert in alerts:
-            writer.writerow(alert.__dict__)
+            writer.writerow(
+                {"observed_on": observed_on.isoformat() if observed_on else "", **alert.__dict__}
+            )
 
 
 def render_alerts_report(

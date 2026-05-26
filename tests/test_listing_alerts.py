@@ -12,6 +12,7 @@ from marketwitness.listing_alerts import (
     load_snapshot_directory,
     render_alerts_html,
     render_alerts_report,
+    write_alerts_csv,
 )
 
 
@@ -46,6 +47,20 @@ class ListingAlertsTests(unittest.TestCase):
 
         self.assertEqual(len(signals), 17)
         self.assertEqual({signal.market for signal in signals}, {"HKEX", "LSE", "ASX", "TSX", "JPX", "SGX"})
+
+    def test_writes_observation_date_for_interactive_radar_filtering(self) -> None:
+        alerts = compare_signals(
+            [_signal("SGX", "new", "New Issuer", "prospectus_published", "May")],
+            [],
+        )
+
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "alerts.csv"
+            write_alerts_csv(output, alerts, date(2026, 5, 25))
+            content = output.read_text(encoding="utf-8")
+
+        self.assertIn("observed_on,market,change_type", content)
+        self.assertIn("2026-05-25,SGX,new,New Issuer", content)
 
     def test_hkex_allows_same_issuer_at_distinct_lifecycle_events(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

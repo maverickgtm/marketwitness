@@ -549,7 +549,7 @@ def ipo_watch_center_html() -> str:
         <p class="eyebrow">Listing intelligence</p>
         <h1>IPO evidence.<br><span>Confirm before status.</span></h1>
         <p class="lead">Navigate potential offerings, reviewed filing evidence and confirmed listing milestones without turning rumors or documents into trading instructions.</p>
-        <div class="hero-links"><a class="primary" href="/dashboard/ipo-watch">Open status board</a><a href="/dashboard/global-listings">Global markets</a></div>
+        <div class="hero-links"><a class="primary" href="/dashboard/listings-radar">Open Listings Radar</a><a href="/dashboard/ipo-watch">Status report</a><a href="/dashboard/global-listings">Global markets</a></div>
       </article>
       <article class="pipeline">
         <div class="pipeline-head"><strong>Verification Ladder</strong><span>Evidence only</span></div>
@@ -569,6 +569,10 @@ def ipo_watch_center_html() -> str:
   </header>
   <main>
     <p class="notice"><strong>Evidence rule:</strong> a discovered filing begins review; it does not confirm an IPO, listing, first trade or position to take. Verified issuer and exchange evidence remains separate from candidate monitoring.</p>
+    <h2>Operational Workspace</h2>
+    <section class="coverage">
+      <article class="stage"><span class="pill verified">interactive radar</span><h3>Listings Radar</h3><p>Search U.S. IPO records and global evidence changes, filter dates and keep a browser watchlist.</p><a href="/dashboard/listings-radar">Open radar</a></article>
+    </section>
     <h2>U.S. SEC Review Workflow</h2>
     <section class="workflow">
       <article class="stage"><span class="pill intake">1 / intake</span><h3>SEC Discovery Queue</h3><p>Potential registration, prospectus and withdrawal forms from a daily index.</p><small>Not a confirmed IPO calendar.</small><a href="/dashboard/sec-discovery">Open view</a></article>
@@ -583,6 +587,154 @@ def ipo_watch_center_html() -> str:
       <article class="stage"><span class="pill verified">primary evidence</span><h3>Issuer Confirmations</h3><p>Reviewed official issuer milestones such as trading start or offering close.</p><a href="/dashboard/issuer-confirmations">Open view</a></article>
     </section>
   </main>
+</body>
+</html>"""
+
+
+def listings_radar_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MarketWitness | Listings Radar</title>
+  <style>
+    :root { --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246; --text:#f2f6f7;
+      --muted:#96aab8; --mint:#38dfad; --gold:#f3bf66; --blue:#62a6ff; --rose:#ff817a; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--text); font:15px/1.48 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 82% 0%,rgba(56,223,173,.11),transparent 30%),var(--bg); }
+    a { color:var(--mint); text-decoration:none; }
+    header,main { max-width:1400px; margin:auto; padding:23px 28px; }
+    nav,.eyebrow,.meta,label { color:var(--muted); text-transform:uppercase; letter-spacing:.11em; font-size:11px; }
+    .top { display:flex; justify-content:space-between; gap:16px; align-items:center; margin-bottom:28px; }
+    .back { border:1px solid var(--line); border-radius:10px; padding:9px 14px; color:var(--text); font-weight:600; }
+    .hero { display:flex; justify-content:space-between; align-items:end; gap:25px; margin-bottom:23px; }
+    h1 { margin:12px 0 10px; font-size:clamp(39px,5vw,62px); line-height:1.03; letter-spacing:-.045em; }
+    h1 span { color:var(--mint); }
+    .lead { max-width:730px; color:var(--muted); font-size:17px; }
+    .boundary { max-width:470px; background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:14px; padding:15px 17px; color:var(--muted); }
+    .controls,.card,.results,.watch-panel { background:var(--panel); border:1px solid var(--line); border-radius:16px; }
+    .controls { display:grid; grid-template-columns:minmax(210px,1.55fr) repeat(3,minmax(145px,.82fr)) repeat(2,minmax(145px,.84fr)) auto; gap:11px; padding:16px; }
+    .control input,.control select { display:block; width:100%; height:43px; margin-top:6px; border:1px solid var(--line);
+      border-radius:9px; background:var(--panel2); color:var(--text); padding:0 11px; font:inherit; color-scheme:dark; }
+    button { height:43px; border:1px solid var(--line); border-radius:9px; background:var(--panel2); color:var(--text); padding:0 15px; font:inherit; font-weight:600; cursor:pointer; }
+    #apply { align-self:end; background:var(--mint); color:#061016; border-color:var(--mint); }
+    .quick { display:flex; gap:8px; flex-wrap:wrap; margin:13px 0 20px; }
+    .quick button.active { background:rgba(98,166,255,.16); border-color:var(--blue); color:var(--text); }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:18px 0; }
+    .card { padding:15px 17px; } .card p { color:var(--muted); margin:0; font-size:12px; }
+    .card strong { color:var(--mint); display:block; font-size:31px; letter-spacing:-.04em; margin-top:5px; }
+    .workspace { display:grid; grid-template-columns:minmax(600px,1.55fr) minmax(300px,.7fr); gap:14px; align-items:start; }
+    .results { overflow:hidden; } .section-head { display:flex; justify-content:space-between; gap:15px; align-items:center; padding:18px; border-bottom:1px solid var(--line); }
+    .section-head h2 { font-size:20px; margin:0; } .section-head span { color:var(--muted); font-size:13px; }
+    .record { display:grid; grid-template-columns:125px minmax(200px,1.2fr) minmax(215px,1fr) 130px; gap:14px; padding:15px 18px; border-bottom:1px solid var(--line); align-items:start; }
+    .record:last-child { border:0; } .record h3 { font-size:16px; margin:4px 0 4px; } .record p { color:var(--muted); font-size:13px; margin:3px 0; }
+    .badge { display:inline-block; padding:4px 8px; border-radius:999px; font-size:11px; }
+    .ipo_watch { color:var(--blue); background:rgba(98,166,255,.13); } .global_changes { color:var(--gold); background:rgba(243,191,102,.13); }
+    .status { color:var(--mint); font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+    .evidence a { display:inline-block; margin-bottom:9px; } .star { height:34px; width:100%; font-size:13px; }
+    .star.saved { border-color:var(--mint); color:var(--mint); }
+    .watch-panel { padding:18px; position:sticky; top:18px; } .watch-panel h2 { font-size:20px; margin:0 0 4px; }
+    .watch-panel .empty { color:var(--muted); font-size:13px; }
+    .saved-item { border-top:1px solid var(--line); padding:13px 0; } .saved-item strong { display:block; margin-bottom:3px; } .saved-item p { color:var(--muted); font-size:12px; margin:0 0 7px; }
+    .saved-item button { height:30px; font-size:12px; padding:0 10px; }
+    .tools { display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; } .tools a { padding:9px 12px; border:1px solid var(--line); border-radius:9px; font-weight:600; }
+    #error { display:none; border-left:3px solid var(--rose); margin-top:14px; color:var(--rose); padding:12px; background:var(--panel); }
+    @media(max-width:1130px) { .controls { grid-template-columns:repeat(3,1fr); } .workspace { grid-template-columns:1fr; } .watch-panel { position:static; } }
+    @media(max-width:760px) { header,main { padding:18px 14px; } .top,.hero { display:block; } .back { display:inline-block; margin-top:14px; } .controls,.cards { grid-template-columns:1fr; }
+      .record { display:block; } .record > * { margin-bottom:11px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top"><nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/ipo">IPO Watch</a> / Listings Radar</nav><a class="back" href="/dashboard/ipo">Back to IPO center</a></div>
+    <section class="hero">
+      <div><p class="eyebrow">Operational research workspace</p><h1>Find evidence.<br><span>Track changes.</span></h1><p class="lead">Search monitored U.S. IPO candidates and international listing evidence changes in one workspace. Keep items for follow-up without interpreting a filing as a trade.</p></div>
+      <p class="boundary" id="boundary">Loading evidence boundary...</p>
+    </section>
+    <section class="controls" aria-label="Listings radar filters">
+      <label class="control">Search issuer or detail<input id="query" type="search" placeholder="SpaceX, AI, prospectus..."></label>
+      <label class="control">Stream<select id="stream"><option value="">All streams</option><option value="ipo_watch">U.S. IPO Watch</option><option value="global_changes">Global changes</option></select></label>
+      <label class="control">Market<select id="market"><option value="">All markets</option></select></label>
+      <label class="control">Status / change<select id="status"><option value="">All statuses</option></select></label>
+      <label class="control">From<input id="start" type="date"></label>
+      <label class="control">To<input id="end" type="date"></label>
+      <button id="apply" type="button">Apply filters</button>
+    </section>
+    <div class="quick" aria-label="Quick filters">
+      <button type="button" class="active" data-quick="">Everything</button>
+      <button type="button" data-quick="ipo_watch">U.S. IPO pipeline</button>
+      <button type="button" data-quick="global_changes">New global changes</button>
+      <button type="button" id="reset">Reset</button>
+    </div>
+    <section class="cards">
+      <article class="card"><p>Visible records</p><strong id="visible">-</strong></article>
+      <article class="card"><p>U.S. IPO items</p><strong id="ipo-count">-</strong></article>
+      <article class="card"><p>Global changes</p><strong id="global-count">-</strong></article>
+      <article class="card"><p>Needs review</p><strong id="review-count">-</strong></article>
+    </section>
+    <p id="error"></p>
+  </header>
+  <main>
+    <section class="workspace">
+      <article class="results">
+        <div class="section-head"><h2>Evidence Queue</h2><span id="result-meta">Loading records...</span></div>
+        <div id="records"></div>
+      </article>
+      <aside class="watch-panel">
+        <p class="eyebrow">Saved in this browser</p>
+        <h2>My Watchlist</h2>
+        <p class="empty">Mark records that deserve follow-up. This personal list never changes an evidence status.</p>
+        <div id="saved"></div>
+        <div class="tools"><a href="/dashboard/global-alerts">Change report</a><a href="/dashboard/sec-alerts">SEC queue</a></div>
+      </aside>
+    </section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const storageKey = "marketwitness-listings-watchlist";
+    let records = [];
+    let saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    function text(value) { return String(value == null ? "" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;"); }
+    function optionValues(id, values) { const current = $(id).value; $(id).innerHTML = `<option value="">All ${id === "market" ? "markets" : "statuses"}</option>` + values.map((value) => `<option value="${text(value)}">${text(value.replaceAll("_", " "))}</option>`).join(""); $(id).value = current; }
+    function renderSaved() {
+      const items = Object.values(saved);
+      $("saved").innerHTML = items.length ? items.map((item) => `<article class="saved-item"><strong>${text(item.company_name)}</strong><p>${text(item.market)} / ${text(item.status.replaceAll("_", " "))} / ${text(item.event_date)}</p><button type="button" data-remove="${text(item.record_id)}">Remove</button></article>`).join("") : `<p class="empty">No saved records yet.</p>`;
+      document.querySelectorAll("[data-remove]").forEach((button) => button.addEventListener("click", () => { delete saved[button.dataset.remove]; localStorage.setItem(storageKey, JSON.stringify(saved)); renderSaved(); renderRecords(); }));
+    }
+    function toggleSave(id) { const item = records.find((record) => record.record_id === id); if (!item) return; if (saved[id]) delete saved[id]; else saved[id] = item; localStorage.setItem(storageKey, JSON.stringify(saved)); renderSaved(); renderRecords(); }
+    function renderRecords() {
+      $("records").innerHTML = records.length ? records.map((item) => `<section class="record"><div><span class="badge ${text(item.stream)}">${item.stream === "ipo_watch" ? "U.S. IPO" : "Global change"}</span><p>${text(item.event_date)}</p><span class="status">${text(item.status.replaceAll("_", " "))}</span></div><div><h3>${text(item.company_name)}</h3><p>${text(item.market)} / ${text(item.evidence_level)}</p><p>${text(item.detail)}</p></div><div><p><strong>Next verification step</strong></p><p>${text(item.next_action)}</p></div><div class="evidence"><a href="${text(item.source_url)}" target="_blank" rel="noopener">Open evidence</a><button class="star ${saved[item.record_id] ? "saved" : ""}" type="button" data-save="${text(item.record_id)}">${saved[item.record_id] ? "Saved" : "Watch"}</button></div></section>`).join("") : `<section class="record"><p>No evidence records match these filters.</p></section>`;
+      document.querySelectorAll("[data-save]").forEach((button) => button.addEventListener("click", () => toggleSave(button.dataset.save)));
+    }
+    async function loadRadar() {
+      const parameters = new URLSearchParams();
+      ["query", "stream", "market", "status", "start", "end"].forEach((key) => { if ($(key).value) parameters.set(key, $(key).value); });
+      try {
+        const response = await fetch(`/api/v1/listings/radar?${parameters}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Unable to load Listings Radar.");
+        records = data.records;
+        optionValues("market", data.markets);
+        optionValues("status", data.statuses);
+        $("visible").textContent = data.record_count;
+        $("ipo-count").textContent = data.ipo_watch_count;
+        $("global-count").textContent = data.global_change_count;
+        $("review-count").textContent = data.review_required_count;
+        $("result-meta").textContent = `${data.record_count} of ${data.total_record_count} records / last evidence ${data.as_of}`;
+        $("boundary").textContent = data.publication_boundary;
+        $("error").style.display = "none";
+        renderRecords();
+        renderSaved();
+      } catch (error) { $("error").style.display = "block"; $("error").textContent = error.message; }
+    }
+    $("apply").addEventListener("click", loadRadar);
+    $("query").addEventListener("keydown", (event) => { if (event.key === "Enter") loadRadar(); });
+    document.querySelectorAll("[data-quick]").forEach((button) => button.addEventListener("click", () => { document.querySelectorAll("[data-quick]").forEach((item) => item.classList.remove("active")); button.classList.add("active"); $("stream").value = button.dataset.quick; loadRadar(); }));
+    $("reset").addEventListener("click", () => { ["query", "stream", "market", "status", "start", "end"].forEach((key) => { $(key).value = ""; }); document.querySelectorAll("[data-quick]").forEach((item) => item.classList.remove("active")); document.querySelector("[data-quick='']").classList.add("active"); loadRadar(); });
+    loadRadar();
+  </script>
 </body>
 </html>"""
 

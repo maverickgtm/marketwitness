@@ -23,8 +23,8 @@ stored, exported, or used as scoring evidence.
 | Capability | Included Workflow | Critical Boundary |
 |---|---|---|
 | Financials Scorecard Sandbox | Synthetic target evaluation, exclusions, benchmarks, quality, and release gating | No real-firm performance claim |
-| U.S. IPO Filing Watch | SEC-shaped discovery, triage, review, and watchlist workflow | Live SEC calls require identified `User-Agent`; a filing is not an investment signal |
-| Global Listings Watch | Official-source monitor design and implemented evidence paths for multiple jurisdictions | Jurisdiction-specific confirmation rules remain separate |
+| Listings Radar / U.S. IPO Filing Watch | Search, filters, browser-local follow-up list, SEC-shaped discovery, triage and reviewed watchlist workflow | Live SEC calls require identified `User-Agent`; a filing is not an investment signal |
+| Global Listings Watch | Official-source monitor design, dated evidence-change queue and interactive radar feed for multiple jurisdictions | Jurisdiction-specific confirmation rules remain separate |
 | ETF Regulatory Holdings | Synthetic holding differences plus SEC N-PORT periodic workflow | Not daily or real-time manager trading |
 | Public Document Checks | FCA NSM corroboration flow | Documentation does not automatically prove admission/trading |
 | RWA Watch Sandbox | Synthetic token/reference observations | No real xStocks, Ondo, or venue collection |

@@ -16,6 +16,7 @@ workspace or the report directory without relying on browser history.
 | `/` and `/dashboard/open` | Open Edition landing terminal | Widgets are external context; metrics describe bundled workflows |
 | `/dashboard/reports` | Fixed navigation for generated report pages | No arbitrary generated-file browsing |
 | `/dashboard/ipo` | IPO Watch Center | Discovery, review, and confirmation remain distinct |
+| `/dashboard/listings-radar` | Interactive IPO and global-change evidence queue | Watchlist is local research follow-up, never status confirmation |
 | `/dashboard/global-listings` | International listing coverage and monitors | Each jurisdiction retains its confirmation rule |
 | `/dashboard/etf` | ETF Evidence Center | Synthetic change examples are separated from SEC periodic evidence |
 | `/dashboard/financials-evidence` | Financials evidence and release-gate sequence | Demo scorecard is not real analyst performance |
@@ -83,6 +84,12 @@ The workflow joins SEC universal discovery, triage alerts, documented manual
 review, the watchlist, global-monitor evidence, and issuer confirmations.
 Finding a filing never changes a company state without a documented decision.
 
+`/dashboard/listings-radar` turns that evidence into an operational workspace:
+users can search issuers or details, filter by U.S. IPO versus global-change
+stream, market, state and observed date, open cited evidence, and save a
+personal browser-local follow-up list. The list does not alter project data or
+promote an evidence signal to a confirmed listing.
+
 ### Global Listings Watch
 
 | Market | Evidence Path | Implemented Treatment |
@@ -100,6 +107,8 @@ Finding a filing never changes a company state without a documented decision.
 
 `/dashboard/global-alerts` compares daily evidence snapshots; new, changed, or
 removed entries are review tasks rather than automatically confirmed listings.
+Those dated alert rows feed `/dashboard/listings-radar`, where international
+review tasks can be filtered beside the monitored U.S. IPO registry.
 
 ### ETF Evidence Center
 
@@ -146,6 +155,7 @@ The read-only FastAPI layer serves dashboard state from generated reports,
 registry files, and DuckDB runs. Key contracts include:
 
 - `/api/v1/open-edition`
+- `/api/v1/listings/radar`
 - `/api/v1/commons/passports`
 - `/api/v1/intelligence/modules`
 - `/api/v1/intelligence/volatility`

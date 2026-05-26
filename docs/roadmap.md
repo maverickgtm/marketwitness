@@ -40,6 +40,9 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   dashboard screenshots, and English public documentation migration.
 - [x] Official White House RSS paths classified as eligible policy-event
   sources; Truth Social collection remains blocked without permission.
+- [x] Interactive Listings Radar combining the reviewed U.S. IPO registry with
+  dated global listing-evidence changes, filters, source links and a
+  browser-local research watchlist.
 
 ## Pending Product Expansion
 
