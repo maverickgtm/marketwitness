@@ -4,14 +4,14 @@ Review date: `2026-05-25`.
 
 ## Objective
 
-TargetAudit should feel like a useful research terminal, not a collection of
+MarketWitness should feel like a useful research terminal, not a collection of
 unrelated reports. The visual experience must make key modules and controls
 immediately visible while separating auditable evidence from third-party
 market context.
 
 ## Applied Principles
 
-| Principle | TargetAudit Decision |
+| Principle | MarketWitness Decision |
 |---|---|
 | Purpose and KPIs visible on arrival | The home view opens with the Open Edition promise, status metrics, and primary modules. |
 | Stable navigation hierarchy | A sidebar separates workspace, evidence, and control areas. |
@@ -32,13 +32,13 @@ Only official embedded widgets with visible attribution are used:
 | `/dashboard/market-context` | `Advanced Chart` | Interactive inspection of `AMEX:XLF` |
 | `/dashboard/market-context` | `Market Overview` | Visual Financials and benchmark comparison |
 
-TargetAudit does not read widget values, store them in DuckDB, export them, or
+MarketWitness does not read widget values, store them in DuckDB, export them, or
 treat them as evidence for targets, IPOs, or holdings changes.
 
 ## Next Visual Phase
 
 1. Extend the premium visual language across secondary reports.
-2. Build first-party charts only for data TargetAudit can publish, such as
+2. Build first-party charts only for data MarketWitness can publish, such as
    document counts by market or approval states.
 3. Produce launch captures and complete responsive review before publishing.
 

@@ -2,7 +2,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.licensed_extensions import (
+from marketwitness.licensed_extensions import (
     LicensedExtensionDataError,
     build_licensed_extensions_snapshot,
     load_licensed_extensions,

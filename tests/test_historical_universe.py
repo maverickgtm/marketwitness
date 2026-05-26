@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from targetaudit.historical_universe import (
+from marketwitness.historical_universe import (
     HistoricalUniverseDataError,
     load_historical_universe,
 )

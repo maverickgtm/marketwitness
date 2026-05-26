@@ -2,7 +2,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.provider_approvals import (
+from marketwitness.provider_approvals import (
     ProviderApprovalDataError,
     ProviderApprovalRecord,
     build_approval_queue,
@@ -10,7 +10,7 @@ from targetaudit.provider_approvals import (
     render_approval_html,
     render_approval_report,
 )
-from targetaudit.source_registry import SourceProvider, load_source_registry
+from marketwitness.source_registry import SourceProvider, load_source_registry
 
 
 class ProviderApprovalTests(unittest.TestCase):

@@ -3,13 +3,13 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.providers.sec_nport_catalog import (
+from marketwitness.providers.sec_nport_catalog import (
     SecNportDatasetRelease,
     SecNportDownloadedDataset,
 )
-from targetaudit.providers.sec_nport import SecNportDataError
-from targetaudit.providers.sec_nport_dataset import REQUIRED_TABLES
-from targetaudit.providers.sec_nport_sync import (
+from marketwitness.providers.sec_nport import SecNportDataError
+from marketwitness.providers.sec_nport_dataset import REQUIRED_TABLES
+from marketwitness.providers.sec_nport_sync import (
     render_sync_html,
     render_sync_report,
     sync_dataset_releases,

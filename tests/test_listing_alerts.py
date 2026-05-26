@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.listing_alerts import (
+from marketwitness.listing_alerts import (
     ListingSignal,
     archive_snapshot,
     compare_signals,

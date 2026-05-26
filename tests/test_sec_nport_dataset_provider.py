@@ -3,9 +3,9 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.etf_holdings import compare_holdings, load_holdings_snapshot
-from targetaudit.providers.sec_nport import SecNportDataError
-from targetaudit.providers.sec_nport_dataset import (
+from marketwitness.etf_holdings import compare_holdings, load_holdings_snapshot
+from marketwitness.providers.sec_nport import SecNportDataError
+from marketwitness.providers.sec_nport_dataset import (
     load_nport_dataset_backfill,
     render_backfill_report,
     write_backfill_manifest,

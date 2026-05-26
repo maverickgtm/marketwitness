@@ -2,7 +2,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.providers.hkex import (
+from marketwitness.providers.hkex import (
     HkexDataError,
     load_hkex_snapshot,
     parse_hkex_payload,

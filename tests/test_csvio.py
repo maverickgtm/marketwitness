@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from targetaudit.csvio import DataFormatError, load_prices, load_targets
+from marketwitness.csvio import DataFormatError, load_prices, load_targets
 
 
 class CsvIoTests(unittest.TestCase):

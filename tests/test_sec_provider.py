@@ -3,7 +3,7 @@ import os
 from unittest.mock import patch
 from urllib.error import URLError
 
-from targetaudit.providers.sec import (
+from marketwitness.providers.sec import (
     SecDataError,
     configured_user_agent,
     fetch_company_ticker_map,
@@ -30,12 +30,12 @@ class SecProviderTests(unittest.TestCase):
 
     def test_requires_contact_email_in_user_agent(self) -> None:
         with self.assertRaisesRegex(SecDataError, "contact email"):
-            fetch_company_ticker_map("TargetAudit")
+            fetch_company_ticker_map("MarketWitness")
 
     @patch.dict(
-        os.environ, {"TARGETAUDIT_SEC_USER_AGENT": "TargetAudit owner@example.com"}
+        os.environ, {"MARKETWITNESS_SEC_USER_AGENT": "MarketWitness owner@example.com"}
     )
-    @patch("targetaudit.providers.sec.urlopen")
+    @patch("marketwitness.providers.sec.urlopen")
     def test_reads_user_agent_from_environment(self, request_mock) -> None:
         request_mock.return_value.__enter__.return_value = _JsonResponse(
             {"fields": ["cik", "name", "ticker", "exchange"], "data": []}
@@ -45,7 +45,7 @@ class SecProviderTests(unittest.TestCase):
 
         self.assertEqual(result, [])
         request = request_mock.call_args.args[0]
-        self.assertEqual(request.headers["User-agent"], "TargetAudit owner@example.com")
+        self.assertEqual(request.headers["User-agent"], "MarketWitness owner@example.com")
 
     @patch.dict(os.environ, {}, clear=True)
     def test_reads_user_agent_from_local_private_file(self) -> None:
@@ -54,16 +54,16 @@ class SecProviderTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "sec_user_agent.txt"
-            path.write_text("TargetAudit local@example.com\n", encoding="utf-8")
-            with patch("targetaudit.providers.sec.LOCAL_USER_AGENT_PATH", path):
+            path.write_text("MarketWitness local@example.com\n", encoding="utf-8")
+            with patch("marketwitness.providers.sec.LOCAL_USER_AGENT_PATH", path):
                 self.assertEqual(
-                    configured_user_agent(), "TargetAudit local@example.com"
+                    configured_user_agent(), "MarketWitness local@example.com"
                 )
 
-    @patch("targetaudit.providers.sec.urlopen", side_effect=URLError("offline"))
+    @patch("marketwitness.providers.sec.urlopen", side_effect=URLError("offline"))
     def test_network_error_becomes_provider_error(self, unused_request) -> None:
         with self.assertRaisesRegex(SecDataError, "Unable to retrieve"):
-            fetch_company_ticker_map("TargetAudit contact@example.com")
+            fetch_company_ticker_map("MarketWitness contact@example.com")
 
 
 if __name__ == "__main__":

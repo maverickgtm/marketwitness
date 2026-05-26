@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        TargetAudit does not activate a real-data source until its Evidence Passport documents provenance, cost, cadence, claim boundary, and public-output rights.
+        MarketWitness does not activate a real-data source until its Evidence Passport documents provenance, cost, cadence, claim boundary, and public-output rights.
   - type: input
     id: provider
     attributes:

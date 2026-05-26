@@ -9,7 +9,7 @@ claim must not be framed as a multisector ranking.
 
 ## Research Questions
 
-TargetAudit separates three questions:
+MarketWitness separates three questions:
 
 1. **Target Hit Rate:** was the target reached during its horizon?
 2. **Forecast Accuracy:** how close was the target to the terminal price?
@@ -112,7 +112,7 @@ Per firm and eligible sector/direction segment:
 - average excess return and average simulated net/excess return;
 - count of exits that could be aligned to a benchmark bar.
 
-For `x` hits in `n` evaluated rows, TargetAudit reports a Wilson 95% interval
+For `x` hits in `n` evaluated rows, MarketWitness reports a Wilson 95% interval
 using `z = 1.959963984540054`:
 
 ```text

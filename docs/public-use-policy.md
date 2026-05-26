@@ -4,7 +4,7 @@ Policy version: `2026-05-25`.
 
 ## Scope
 
-TargetAudit is an auditable research tool. Its demonstration rankings, filing
+MarketWitness is an auditable research tool. Its demonstration rankings, filing
 monitors, holdings differences, and tokenized-asset observations are not a
 recommendation to buy, sell, or hold any security.
 
@@ -23,7 +23,7 @@ statuses are derived from `data/samples/source_registry.csv`.
 | Project-created sandbox | Fixtures and reproducible demonstration results | They are not real market findings or real-firm performance |
 | Public regulatory monitors | Filings, prospectuses, documentary confirmations, and reported holdings under the registered policy | A filing is not a recommendation, completed listing, or real-time signal |
 | Authorized extensions | Local analysis of files supplied by a user with documented rights | They do not enable public real-data rankings without public-output permission for every input |
-| Attributed external display | TradingView `XLF` widget for visual context | TargetAudit does not store, export, or score widget content |
+| Attributed external display | TradingView `XLF` widget for visual context | MarketWitness does not store, export, or score widget content |
 
 ## Publication Rules
 

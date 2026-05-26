@@ -2,7 +2,7 @@
 
 ## Candidate Objective
 
-Publish `TargetAudit Open Edition v0.1.0-rc.1` as an open, reproducible,
+Publish `MarketWitness Open Edition v0.1.0-rc.1` as an open, reproducible,
 useful project without mandatory payments. This candidate demonstrates
 evidence auditing, regulatory monitors, and a navigable dashboard; it does not
 promise real analyst rankings or investment recommendations.
@@ -64,12 +64,12 @@ make verify
 To review the built dashboard:
 
 ```bash
-export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
-export TARGETAUDIT_SOURCE_REGISTRY="data/samples/source_registry.csv"
-export TARGETAUDIT_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
-export TARGETAUDIT_GENERATED_REPORTS="build/demo"
-export TARGETAUDIT_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
-python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
+export MARKETWITNESS_DATABASE="build/demo/marketwitness.duckdb"
+export MARKETWITNESS_SOURCE_REGISTRY="data/samples/source_registry.csv"
+export MARKETWITNESS_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
+export MARKETWITNESS_GENERATED_REPORTS="build/demo"
+export MARKETWITNESS_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
+python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 ```
 
 Open `http://127.0.0.1:8000/` and review `/dashboard/ipo`,

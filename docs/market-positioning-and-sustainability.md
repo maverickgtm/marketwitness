@@ -4,11 +4,11 @@ Review date: `2026-05-25`.
 
 ## Honest Position
 
-TargetAudit can be interesting as a public project, but it should not be sold
+MarketWitness can be interesting as a public project, but it should not be sold
 as another general-purpose market terminal or as a replacement for products
 with licensed datasets. Its credible position is narrower:
 
-> TargetAudit is an open platform for auditing market evidence with visible
+> MarketWitness is an open platform for auditing market evidence with visible
 > source provenance, publication rights, and verification rules, beginning
 > with global IPO/listing workflows and regulatory ETF evidence.
 
@@ -21,10 +21,10 @@ approach exists.
 
 ## Adjacent Products
 
-| Product | What It Already Solves | TargetAudit Implication |
+| Product | What It Already Solves | MarketWitness Implication |
 |---|---|---|
 | `OpenBB` | Broad financial platform for analysts, quants, and agents; official repository showed about `68.1k` stars when reviewed on `2026-05-25` | Do not compete as a general data platform; focus on evidence auditability and publication rules |
-| `Stocknear` | Open-source visual product for stocks, ETFs, IPOs, and Wall Street data; published free and paid plans | It is a close interface/product reference; TargetAudit needs methodological identity, not only visual polish |
+| `Stocknear` | Open-source visual product for stocks, ETFs, IPOs, and Wall Street data; published free and paid plans | It is a close interface/product reference; MarketWitness needs methodological identity, not only visual polish |
 | `AnaChart` | Analyst-accuracy product advertising `964K` targets/ratings, `5,617` stocks, and `4,074` analysts; advanced paid access | Confirms demand for the original idea and that historical data is the main barrier |
 | Open EDGAR tooling | SEC filing download and processing libraries | Complementary to a decision workflow and dashboard, rather than the complete product |
 

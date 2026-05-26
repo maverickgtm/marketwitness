@@ -2,7 +2,7 @@
 
 ## Open Edition Operating Principle
 
-TargetAudit is built to run with redistributable fixtures and eligible public
+MarketWitness is built to run with redistributable fixtures and eligible public
 evidence paths without a paid data subscription. Live collectors must follow
 the source registry, public-use policy, and any required identification,
 registration, cadence, and output-right rules.
@@ -17,12 +17,12 @@ statements as investment recommendations.
 python3 -m pip install -e ".[application]"
 make verify
 make demo
-export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
-export TARGETAUDIT_SOURCE_REGISTRY="data/samples/source_registry.csv"
-export TARGETAUDIT_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
-export TARGETAUDIT_GENERATED_REPORTS="build/demo"
-export TARGETAUDIT_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
-python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
+export MARKETWITNESS_DATABASE="build/demo/marketwitness.duckdb"
+export MARKETWITNESS_SOURCE_REGISTRY="data/samples/source_registry.csv"
+export MARKETWITNESS_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
+export MARKETWITNESS_GENERATED_REPORTS="build/demo"
+export MARKETWITNESS_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
+python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 ```
 
 Review the dashboard at <http://127.0.0.1:8000/> and the publication controls
@@ -35,7 +35,7 @@ SEC live access requires an identifying `User-Agent` containing a monitored
 contact address. Do not commit that address to public repository files:
 
 ```bash
-export TARGETAUDIT_SEC_USER_AGENT="TargetAudit contact@example.com"
+export MARKETWITNESS_SEC_USER_AGENT="MarketWitness contact@example.com"
 ```
 
 Use a real monitored address in your local runtime environment when making

@@ -4,10 +4,10 @@ import unittest
 from datetime import date
 from decimal import Decimal
 
-from targetaudit.corporate_actions import CorporateAction
-from targetaudit.evaluator import evaluate_all
-from targetaudit.historical_universe import UniverseMembership
-from targetaudit.models import PriceBar, TargetObservation
+from marketwitness.corporate_actions import CorporateAction
+from marketwitness.evaluator import evaluate_all
+from marketwitness.historical_universe import UniverseMembership
+from marketwitness.models import PriceBar, TargetObservation
 
 
 class EvaluatorTests(unittest.TestCase):

@@ -24,7 +24,7 @@ jobs:
       - name: Describe publication scope
         run: |
           {
-            echo "## TargetAudit Open Edition report"
+            echo "## MarketWitness Open Edition report"
             echo ""
             echo "- Generated from redistributable repository fixtures."
             echo "- Includes the tested dashboard reports and installable wheel."
@@ -34,7 +34,7 @@ jobs:
       - name: Upload reproducible report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: targetaudit-open-edition-${{ github.run_number }}
+          name: marketwitness-open-edition-${{ github.run_number }}
           path: |
             build/demo/
             build/dist/

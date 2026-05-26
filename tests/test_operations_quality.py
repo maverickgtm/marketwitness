@@ -10,14 +10,14 @@ from decimal import Decimal
 from pathlib import Path
 from unittest.mock import patch
 
-from targetaudit.cli import main
-from targetaudit.models import Evaluation
-from targetaudit.operations_quality import (
+from marketwitness.cli import main
+from marketwitness.models import Evaluation
+from marketwitness.operations_quality import (
     build_quality_snapshot,
     render_quality_html,
     render_quality_report,
 )
-from targetaudit.storage import EvaluationRun, store_evaluation_run
+from marketwitness.storage import EvaluationRun, store_evaluation_run
 
 
 @unittest.skipUnless(importlib.util.find_spec("duckdb"), "optional DuckDB dependency not installed")
@@ -25,7 +25,7 @@ class OperationsQualityTests(unittest.TestCase):
     def test_flags_high_exclusion_rate_without_blocking_complete_lineage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            database = root / "targetaudit.duckdb"
+            database = root / "marketwitness.duckdb"
             assets = _assets(root)
             store_evaluation_run(
                 database,
@@ -84,7 +84,7 @@ class OperationsQualityTests(unittest.TestCase):
     def test_cli_release_gate_writes_report_and_fails_reviewed_run(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            database = root / "targetaudit.duckdb"
+            database = root / "marketwitness.duckdb"
             report = root / "quality.md"
             store_evaluation_run(
                 database,
@@ -100,7 +100,7 @@ class OperationsQualityTests(unittest.TestCase):
                 [_evaluation("scored", "evaluated", "synthetic-demo")],
             )
             argv = [
-                "targetaudit",
+                "marketwitness",
                 "operations-quality",
                 "--database",
                 str(database),
@@ -143,7 +143,7 @@ class OperationsQualityTests(unittest.TestCase):
     def test_blocks_missing_required_inputs_and_provider_lineage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            database = root / "targetaudit.duckdb"
+            database = root / "marketwitness.duckdb"
             targets = root / "targets.csv"
             targets.write_text("targets\n", encoding="utf-8")
             store_evaluation_run(
@@ -173,7 +173,7 @@ class OperationsQualityTests(unittest.TestCase):
     def test_renders_reproducible_quality_report_and_html(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            database = root / "targetaudit.duckdb"
+            database = root / "marketwitness.duckdb"
             store_evaluation_run(
                 database,
                 EvaluationRun(

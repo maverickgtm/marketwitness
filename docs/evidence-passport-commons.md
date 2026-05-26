@@ -5,7 +5,7 @@ Review date: `2026-05-25`.
 ## Distinctive Proposal
 
 `Evidence Passport Commons` is an open network of verifiable records for
-market-intelligence sources. TargetAudit begins with the trust question behind
+market-intelligence sources. MarketWitness begins with the trust question behind
 any result:
 
 > Where did this evidence originate, what right permits it to be displayed,
@@ -50,7 +50,7 @@ The contribution path is:
 ## Positioning And Sustainability
 
 Platforms such as OpenBB, Stocknear, and AnaChart offer broad market tooling,
-visual workflows, or analyst-target history. TargetAudit does not claim to
+visual workflows, or analyst-target history. MarketWitness does not claim to
 surpass their breadth or licensed datasets. The Commons provides a different
 public layer: verify whether data can be used and what it means before turning
 it into an alert, score, screen, or integration.

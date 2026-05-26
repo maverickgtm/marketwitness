@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.rwa_watch import (
+from marketwitness.rwa_watch import (
     RwaWatchDataError,
     build_rwa_snapshot,
     load_rwa_observations,

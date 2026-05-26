@@ -2,7 +2,7 @@
 
 Review date: `2026-05-24`.
 
-`RWA Watch` is a TargetAudit sandbox demonstrating how tokenized instruments
+`RWA Watch` is a MarketWitness sandbox demonstrating how tokenized instruments
 linked to stocks or ETFs could be observed. It uses redistributable synthetic
 observations only. A tradeable token or CFD does not supply analyst price
 target history and is not part of the Financials Scorecard.

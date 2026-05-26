@@ -2,8 +2,8 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.market_intelligence import build_market_intelligence_snapshot
-from targetaudit.source_registry import SourceRegistryDataError, load_source_registry
+from marketwitness.market_intelligence import build_market_intelligence_snapshot
+from marketwitness.source_registry import SourceRegistryDataError, load_source_registry
 
 
 class MarketIntelligenceTests(unittest.TestCase):

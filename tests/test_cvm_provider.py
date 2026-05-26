@@ -2,7 +2,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.providers.cvm import (
+from marketwitness.providers.cvm import (
     CvmDataError,
     load_cvm_snapshot,
     parse_cvm_csv,

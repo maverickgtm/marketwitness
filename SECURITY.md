@@ -2,7 +2,7 @@
 
 ## Scope
 
-TargetAudit processes evidence files, makes optional requests to public
+MarketWitness processes evidence files, makes optional requests to public
 sources, and exposes a local read-only API/dashboard. Please privately report
 issues that could allow:
 

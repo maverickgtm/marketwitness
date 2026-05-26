@@ -4,8 +4,8 @@ from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
-from targetaudit.etf_holdings import load_holdings_snapshot
-from targetaudit.providers.spdr import (
+from marketwitness.etf_holdings import load_holdings_snapshot
+from marketwitness.providers.spdr import (
     SpdrHoldingsDataError,
     load_spdr_holdings_snapshot,
     render_import_report,
@@ -28,7 +28,7 @@ class SpdrHoldingsProviderTests(unittest.TestCase):
         self.assertEqual(len(imported.holdings), 4)
         self.assertEqual(imported.holdings[0].weight_pct, Decimal("4.60"))
         self.assertEqual(imported.source_frequency, "synthetic_demo")
-        self.assertEqual(imported.holdings[0].issuer, "TargetAudit Synthetic SPDR-format Fixture")
+        self.assertEqual(imported.holdings[0].issuer, "MarketWitness Synthetic SPDR-format Fixture")
         self.assertIn("synthetic only", report)
 
     def test_writes_snapshot_accepted_by_etf_activity_engine(self) -> None:

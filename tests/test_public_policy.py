@@ -2,8 +2,8 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.public_policy import build_public_use_policy
-from targetaudit.source_registry import SourceRegistryDataError, load_source_registry
+from marketwitness.public_policy import build_public_use_policy
+from marketwitness.source_registry import SourceRegistryDataError, load_source_registry
 
 
 class PublicUsePolicyTests(unittest.TestCase):

@@ -3,7 +3,7 @@ import tempfile
 from datetime import date
 from pathlib import Path
 
-from targetaudit.lse_upcoming import (
+from marketwitness.lse_upcoming import (
     LseDataError,
     load_lse_page_payload,
     load_lse_upcoming,
@@ -49,7 +49,7 @@ class LseUpcomingTests(unittest.TestCase):
 
     def test_rejects_page_payload_without_upcoming_component(self) -> None:
         with self.assertRaisesRegex(LseDataError, "missing upcoming-issues"):
-            from targetaudit.lse_upcoming import parse_lse_page_payload
+            from marketwitness.lse_upcoming import parse_lse_page_payload
 
             parse_lse_page_payload({"components": []}, date(2026, 5, 24))
 

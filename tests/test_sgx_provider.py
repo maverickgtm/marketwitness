@@ -3,7 +3,7 @@ from datetime import date
 from pathlib import Path
 from unittest.mock import patch
 
-from targetaudit.providers.sgx import (
+from marketwitness.providers.sgx import (
     SgxDataError,
     fetch_sgx_prospectuses,
     load_sgx_snapshot,
@@ -48,8 +48,8 @@ class SgxProviderTests(unittest.TestCase):
         with self.assertRaisesRegex(SgxDataError, "future observation"):
             render_sgx_report(prospectuses, date(2026, 5, 23))
 
-    @patch("targetaudit.providers.sgx.date")
-    @patch("targetaudit.providers.sgx._fetch_json")
+    @patch("marketwitness.providers.sgx.date")
+    @patch("marketwitness.providers.sgx._fetch_json")
     def test_fetch_uses_sgx_page_numbers(self, fetch_json, provider_date) -> None:
         provider_date.today.return_value = date(2026, 5, 24)
         record = {

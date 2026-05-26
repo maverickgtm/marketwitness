@@ -8,8 +8,8 @@ test:
 
 demo:
 	mkdir -p build/demo
-	rm -f build/demo/targetaudit.duckdb
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit targets-import \
+	rm -f build/demo/marketwitness.duckdb
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness targets-import \
 		--export data/samples/authorized-target-export.csv \
 		--manifest data/samples/authorized-target-export-manifest.json \
 		--output build/demo/authorized-targets.csv \
@@ -17,7 +17,7 @@ demo:
 		--report build/demo/authorized-targets-import.md \
 		--html build/demo/authorized-targets-import.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit evaluate \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness evaluate \
 		--targets build/demo/authorized-targets.csv \
 		--prices data/samples/prices.csv \
 		--universe-membership data/samples/historical_universe.csv \
@@ -25,13 +25,13 @@ demo:
 		--universe-provider-id synthetic-demo \
 		--output build/demo/evaluations.csv \
 		--report build/demo/report.md \
-		--database build/demo/targetaudit.duckdb \
+		--database build/demo/marketwitness.duckdb \
 		--run-id demo-financials-2025-01-01 \
 		--dataset-label "Authorized target export + synthetic Financials prices" \
 		--minimum-sample 1 \
 		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit evaluate \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness evaluate \
 		--targets data/samples/targets_revisions.csv \
 		--prices data/samples/prices_revisions.csv \
 		--universe-membership data/samples/historical_universe.csv \
@@ -39,19 +39,19 @@ demo:
 		--universe-provider-id synthetic-demo \
 		--output build/demo/evaluations-target-revisions.csv \
 		--report build/demo/report-target-revisions.md \
-		--database build/demo/targetaudit.duckdb \
+		--database build/demo/marketwitness.duckdb \
 		--run-id demo-target-revisions-2025-01-01 \
 		--dataset-label "Synthetic target revision audit" \
 		--minimum-sample 1 \
 		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-ipo-discover \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness sec-ipo-discover \
 		--date 2026-05-20 \
 		--index-file data/samples/sec-master-sample.idx \
 		--output build/demo/sec-ipo-discovery.csv \
 		--report build/demo/sec-ipo-discovery.md \
 		--html build/demo/sec-ipo-discovery.html
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-ipo-alerts \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness sec-ipo-alerts \
 		--discovery build/demo/sec-ipo-discovery.csv \
 		--watchlist data/samples/ipo_watch.csv \
 		--previous-history-dir data/samples/sec-alerts-history \
@@ -60,7 +60,7 @@ demo:
 		--report build/demo/sec-alerts.md \
 		--html build/demo/sec-alerts.html \
 		--as-of 2026-05-20
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ipo-watch-review \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness ipo-watch-review \
 		--alerts build/demo/sec-alerts.csv \
 		--registry data/samples/ipo_watch.csv \
 		--decisions data/samples/sec-review-decisions.csv \
@@ -69,22 +69,22 @@ demo:
 		--report build/demo/sec-review-outcomes.md \
 		--html build/demo/sec-review-outcomes.html \
 		--as-of 2026-05-20
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ipo-watch \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness ipo-watch \
 		--registry build/demo/ipo-watch-reviewed.csv \
 		--report build/demo/ipo-watch.md \
 		--html build/demo/ipo-watch.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit global-listings \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness global-listings \
 		--sources data/samples/global_market_sources.csv \
 		--report build/demo/global-listings.md \
 		--html build/demo/global-listings.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit issuer-confirmations \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness issuer-confirmations \
 		--registry data/samples/issuer_listing_confirmations.csv \
 		--report build/demo/issuer-confirmations.md \
 		--html build/demo/issuer-confirmations.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit provider-approval-review \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness provider-approval-review \
 		--registry data/samples/source_registry.csv \
 		--approvals data/samples/provider_approval_queue.csv \
 		--decisions data/samples/provider_approval_decisions.csv \
@@ -94,43 +94,43 @@ demo:
 		--report build/demo/provider-approval-review-outcomes.md \
 		--html build/demo/provider-approval-review-outcomes.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit source-registry \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness source-registry \
 		--registry build/demo/provider-reviewed-source-registry.csv \
 		--report build/demo/source-registry.md \
 		--html build/demo/source-registry.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit open-edition \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness open-edition \
 		--registry build/demo/provider-reviewed-source-registry.csv \
 		--report build/demo/open-edition.md \
 		--html build/demo/open-edition.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit rwa-watch \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness rwa-watch \
 		--snapshot data/samples/rwa-watch-synthetic.csv \
 		--report build/demo/rwa-watch.md \
 		--html build/demo/rwa-watch.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit licensed-extensions \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness licensed-extensions \
 		--catalog data/samples/licensed_extensions.csv \
 		--report build/demo/licensed-extensions.md \
 		--html build/demo/licensed-extensions.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit provider-approvals \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness provider-approvals \
 		--registry build/demo/provider-reviewed-source-registry.csv \
 		--approvals build/demo/provider-reviewed-approval-queue.csv \
 		--report build/demo/provider-approvals.md \
 		--html build/demo/provider-approvals.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit scorecard-readiness \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness scorecard-readiness \
 		--registry build/demo/provider-reviewed-source-registry.csv \
 		--report build/demo/scorecard-readiness.md \
 		--html build/demo/scorecard-readiness.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-datasets \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness sec-nport-datasets \
 		--catalog-file data/samples/sec-nport-catalog.html \
 		--output build/demo/nport-dataset-catalog.csv \
 		--report build/demo/nport-dataset-catalog.md \
 		--html build/demo/nport-dataset-catalog.html
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-sync \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness sec-nport-sync \
 		--catalog-file data/samples/sec-nport-catalog.html \
 		--state build/demo/nport-sync-state.csv \
 		--storage-dir build/demo/nport-sync-storage \
@@ -144,7 +144,7 @@ demo:
 		--manifest build/demo/nport-sync-backfill-manifest.csv \
 		--backfill-report build/demo/nport-sync-backfill.md \
 		--synthetic-fixture
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ark-holdings-import \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness ark-holdings-import \
 		--snapshot data/samples/ark-holdings-previous.csv \
 		--fund-symbol ARKK-DEMO \
 		--fund-name "Synthetic ARK-format ETF" \
@@ -153,7 +153,7 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/ark-holdings-previous.csv \
 		--report build/demo/ark-holdings-previous-import.md
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ark-holdings-import \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness ark-holdings-import \
 		--snapshot data/samples/ark-holdings-current.csv \
 		--fund-symbol ARKK-DEMO \
 		--fund-name "Synthetic ARK-format ETF" \
@@ -162,14 +162,14 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/ark-holdings-current.csv \
 		--report build/demo/ark-holdings-current-import.md
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness etf-holdings-activity \
 		--previous build/demo/ark-holdings-previous.csv \
 		--current build/demo/ark-holdings-current.csv \
 		--output build/demo/etf-holdings-ark-activity.csv \
 		--report build/demo/etf-holdings-ark-activity.md \
 		--html build/demo/etf-holdings-ark-activity.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit spdr-holdings-import \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness spdr-holdings-import \
 		--snapshot data/samples/spdr-xlf-holdings-previous.csv \
 		--fund-symbol XLF-DEMO \
 		--fund-name "Synthetic Financials ETF" \
@@ -178,7 +178,7 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/spdr-xlf-holdings-previous.csv \
 		--report build/demo/spdr-xlf-holdings-previous-import.md
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit spdr-holdings-import \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness spdr-holdings-import \
 		--snapshot data/samples/spdr-xlf-holdings-current.csv \
 		--fund-symbol XLF-DEMO \
 		--fund-name "Synthetic Financials ETF" \
@@ -187,14 +187,14 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/spdr-xlf-holdings-current.csv \
 		--report build/demo/spdr-xlf-holdings-current-import.md
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness etf-holdings-activity \
 		--previous build/demo/spdr-xlf-holdings-previous.csv \
 		--current build/demo/spdr-xlf-holdings-current.csv \
 		--output build/demo/etf-holdings-activity.csv \
 		--report build/demo/etf-holdings-activity.md \
 		--html build/demo/etf-holdings-activity.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ishares-holdings-import \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness ishares-holdings-import \
 		--snapshot data/samples/ishares-iyf-holdings-previous.csv \
 		--fund-symbol IYF-DEMO \
 		--fund-name "Synthetic iShares Financials ETF" \
@@ -203,7 +203,7 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/ishares-iyf-holdings-previous.csv \
 		--report build/demo/ishares-iyf-holdings-previous-import.md
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit ishares-holdings-import \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness ishares-holdings-import \
 		--snapshot data/samples/ishares-iyf-holdings-current.csv \
 		--fund-symbol IYF-DEMO \
 		--fund-name "Synthetic iShares Financials ETF" \
@@ -212,14 +212,14 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/ishares-iyf-holdings-current.csv \
 		--report build/demo/ishares-iyf-holdings-current-import.md
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness etf-holdings-activity \
 		--previous build/demo/ishares-iyf-holdings-previous.csv \
 		--current build/demo/ishares-iyf-holdings-current.csv \
 		--output build/demo/etf-holdings-iyf-activity.csv \
 		--report build/demo/etf-holdings-iyf-activity.md \
 		--html build/demo/etf-holdings-iyf-activity.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-import \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness sec-nport-import \
 		--snapshot data/samples/nport-xlf-previous.xml \
 		--fund-symbol XLF-REG-DEMO \
 		--captured-on 2026-05-24 \
@@ -227,7 +227,7 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/nport-xlf-previous.csv \
 		--report build/demo/nport-xlf-previous-import.md
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-collect \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness sec-nport-collect \
 		--cik 0000000001 \
 		--series-id S000DEMO01 \
 		--fund-symbol XLF-REG-DEMO \
@@ -238,14 +238,14 @@ demo:
 		--synthetic-fixture \
 		--output build/demo/nport-xlf-current.csv \
 		--report build/demo/nport-xlf-current-import.md
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness etf-holdings-activity \
 		--previous build/demo/nport-xlf-previous.csv \
 		--current build/demo/nport-xlf-current.csv \
 		--output build/demo/etf-holdings-regulatory-activity.csv \
 		--report build/demo/etf-holdings-regulatory-activity.md \
 		--html build/demo/etf-holdings-regulatory-activity.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sec-nport-backfill \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness sec-nport-backfill \
 		--dataset-dir data/samples/nport-dataset/2025q4 \
 		--dataset-dir data/samples/nport-dataset/2026q1 \
 		--series-id S000DEMO01 \
@@ -257,28 +257,28 @@ demo:
 		--output-dir build/demo/nport-backfill \
 		--manifest build/demo/nport-backfill-manifest.csv \
 		--report build/demo/nport-backfill.md
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit etf-holdings-activity \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness etf-holdings-activity \
 		--previous build/demo/nport-backfill/xlf-reg-demo-2025-12-31.csv \
 		--current build/demo/nport-backfill/xlf-reg-demo-2026-03-31.csv \
 		--output build/demo/etf-holdings-regulatory-history.csv \
 		--report build/demo/etf-holdings-regulatory-history.md \
 		--html build/demo/etf-holdings-regulatory-history.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit alpha-vantage-prices \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness alpha-vantage-prices \
 		--ticker ACBK \
 		--snapshot data/samples/alpha-vantage-daily-adjusted.json \
 		--output build/demo/alpha-vantage-prices.csv \
 		--report build/demo/alpha-vantage-prices.md \
 		--html build/demo/alpha-vantage-prices.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit corporate-actions-check \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness corporate-actions-check \
 		--targets data/samples/targets.csv \
 		--actions data/samples/corporate_actions.csv \
 		--output build/demo/corporate-actions.csv \
 		--report build/demo/corporate-actions.md \
 		--html build/demo/corporate-actions.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit evaluate \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness evaluate \
 		--targets data/samples/targets.csv \
 		--prices data/samples/prices.csv \
 		--corporate-actions data/samples/corporate_actions.csv \
@@ -288,97 +288,97 @@ demo:
 		--universe-provider-id synthetic-demo \
 		--output build/demo/evaluations-actions-guarded.csv \
 		--report build/demo/report-actions-guarded.md \
-		--database build/demo/targetaudit.duckdb \
+		--database build/demo/marketwitness.duckdb \
 		--run-id demo-actions-guarded-2025-01-01 \
 		--dataset-label "Synthetic corporate-action guarded evaluation" \
 		--minimum-sample 1 \
 		--transaction-cost-bps 10 \
 		--as-of 2025-01-01
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit operations-quality \
-		--database build/demo/targetaudit.duckdb \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness operations-quality \
+		--database build/demo/marketwitness.duckdb \
 		--report build/demo/operations-quality.md \
 		--html build/demo/operations-quality.html \
 		--maximum-excluded-rate 0.50 \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit scorecard-release \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness scorecard-release \
 		--registry build/demo/provider-reviewed-source-registry.csv \
-		--database build/demo/targetaudit.duckdb \
+		--database build/demo/marketwitness.duckdb \
 		--run-id demo-actions-guarded-2025-01-01 \
 		--report build/demo/scorecard-release.md \
 		--html build/demo/scorecard-release.html \
 		--maximum-excluded-rate 0.80 \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-upcoming \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness lse-upcoming \
 		--page-file data/samples/lse-new-issues-page.json \
 		--output build/demo/lse-upcoming.csv \
 		--report build/demo/lse-upcoming.md \
 		--html build/demo/lse-upcoming.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit lse-fca-check \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness lse-fca-check \
 		--lse-page-file data/samples/lse-new-issues-page.json \
 		--nsm-fixture data/samples/fca-nsm-results.json \
 		--output build/demo/lse-fca-check.csv \
 		--report build/demo/lse-fca-check.md \
 		--html build/demo/lse-fca-check.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit hkex-monitor \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness hkex-monitor \
 		--snapshot-dir data/samples/hkex \
 		--output build/demo/hkex-monitor.csv \
 		--report build/demo/hkex-monitor.md \
 		--html build/demo/hkex-monitor.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit asx-monitor \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness asx-monitor \
 		--snapshot data/samples/asx-upcoming.html \
 		--output build/demo/asx-monitor.csv \
 		--report build/demo/asx-monitor.md \
 		--html build/demo/asx-monitor.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit tsx-monitor \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness tsx-monitor \
 		--snapshot data/samples/tsx-new-listings.html \
 		--output build/demo/tsx-monitor.csv \
 		--report build/demo/tsx-monitor.md \
 		--html build/demo/tsx-monitor.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit jpx-monitor \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness jpx-monitor \
 		--snapshot data/samples/jpx-new-listings.html \
 		--output build/demo/jpx-monitor.csv \
 		--report build/demo/jpx-monitor.md \
 		--html build/demo/jpx-monitor.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit edinet-monitor \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness edinet-monitor \
 		--snapshot data/samples/edinet-offering-filings-synthetic.json \
 		--output build/demo/edinet-monitor.csv \
 		--report build/demo/edinet-monitor.md \
 		--html build/demo/edinet-monitor.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit cvm-monitor \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness cvm-monitor \
 		--snapshot data/samples/cvm-equity-offerings-synthetic.csv \
 		--since 2026-05-01 \
 		--output build/demo/cvm-monitor.csv \
 		--report build/demo/cvm-monitor.md \
 		--html build/demo/cvm-monitor.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit esma-monitor \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness esma-monitor \
 		--snapshot data/samples/esma-equity-prospectuses-synthetic.json \
 		--since 2026-05-01 \
 		--output build/demo/esma-monitor.csv \
 		--report build/demo/esma-monitor.md \
 		--html build/demo/esma-monitor.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit opendart-monitor \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness opendart-monitor \
 		--snapshot data/samples/opendart-equity-filings-synthetic.json \
 		--since 2026-05-01 \
 		--output build/demo/opendart-monitor.csv \
 		--report build/demo/opendart-monitor.md \
 		--html build/demo/opendart-monitor.html \
 		--as-of 2026-05-25
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit sgx-monitor \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness sgx-monitor \
 		--snapshot data/samples/sgx-ipo-prospectus.json \
 		--output build/demo/sgx-monitor.csv \
 		--report build/demo/sgx-monitor.md \
 		--html build/demo/sgx-monitor.html \
 		--as-of 2026-05-24
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m targetaudit global-alerts \
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m marketwitness global-alerts \
 		--hkex build/demo/hkex-monitor.csv \
 		--lse build/demo/lse-upcoming.csv \
 		--asx build/demo/asx-monitor.csv \

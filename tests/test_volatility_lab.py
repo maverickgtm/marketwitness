@@ -2,8 +2,8 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.source_registry import SourceRegistryDataError, load_source_registry
-from targetaudit.volatility_lab import build_volatility_lab_snapshot
+from marketwitness.source_registry import SourceRegistryDataError, load_source_registry
+from marketwitness.volatility_lab import build_volatility_lab_snapshot
 
 
 class VolatilityLabTests(unittest.TestCase):

@@ -5,8 +5,8 @@ from datetime import date
 from pathlib import Path
 from unittest.mock import patch
 
-from targetaudit.csvio import load_prices
-from targetaudit.providers.alpha_vantage import (
+from marketwitness.csvio import load_prices
+from marketwitness.providers.alpha_vantage import (
     AlphaVantageDataError,
     fetch_adjusted_daily,
     load_alpha_vantage_snapshot,
@@ -55,7 +55,7 @@ class AlphaVantageProviderTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             cached = Path(directory) / "ACBK-daily-adjusted.json"
             cached.write_text(json.dumps(payload), encoding="utf-8")
-            with patch("targetaudit.providers.alpha_vantage.urlopen") as request:
+            with patch("marketwitness.providers.alpha_vantage.urlopen") as request:
                 imported = fetch_adjusted_daily("ACBK", cache_dir=directory)
 
         request.assert_not_called()
@@ -64,7 +64,7 @@ class AlphaVantageProviderTests(unittest.TestCase):
     def test_live_request_requires_private_key(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             with patch.dict("os.environ", {}, clear=True), patch(
-                "targetaudit.providers.alpha_vantage.LOCAL_API_KEY_PATH",
+                "marketwitness.providers.alpha_vantage.LOCAL_API_KEY_PATH",
                 Path(directory) / "missing.txt",
             ):
                 with self.assertRaisesRegex(AlphaVantageDataError, "require"):

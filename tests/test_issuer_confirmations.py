@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.issuer_confirmations import (
+from marketwitness.issuer_confirmations import (
     IssuerConfirmationDataError,
     load_issuer_confirmations,
     render_issuer_confirmations_html,

@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.ipo_watch import (
+from marketwitness.ipo_watch import (
     IpoWatchDataError,
     load_ipo_watch,
     render_ipo_watch_html,

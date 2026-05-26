@@ -2,12 +2,12 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.scorecard_readiness import (
+from marketwitness.scorecard_readiness import (
     build_scorecard_readiness,
     render_readiness_html,
     render_readiness_report,
 )
-from targetaudit.source_registry import SourceProvider, load_source_registry
+from marketwitness.source_registry import SourceProvider, load_source_registry
 
 
 class ScorecardReadinessTests(unittest.TestCase):

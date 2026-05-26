@@ -4,7 +4,7 @@
 
 `AnalystCentral` is the only no-cost candidate located in the final scan that
 advertises U.S. historical ratings and price targets at approximately the
-depth TargetAudit needs. Its current terms do not permit integration or public
+depth MarketWitness needs. Its current terms do not permit integration or public
 derived rankings without written consent.
 
 This draft requests narrow permission without assuming it will be granted.
@@ -15,7 +15,7 @@ Subject: Permission request for attributed, derived research using AnalystCentra
 
 Hello AnalystCentral team,
 
-I am building TargetAudit, an open-source research project that tests whether
+I am building MarketWitness, an open-source research project that tests whether
 historical analyst price targets were reached under a documented one-year
 methodology. The public project is intentionally designed not to scrape or
 republish third-party data without permission.
@@ -25,7 +25,7 @@ covering Wall Street securities. I read your Terms of Service and understand
 that personal access does not authorize data mining, republication, or derived
 public outputs without prior written consent.
 
-Would you consider granting limited permission for TargetAudit to:
+Would you consider granting limited permission for MarketWitness to:
 
 1. receive or download an agreed historical sample containing dated analyst
    ratings and price targets;
@@ -46,7 +46,7 @@ requirements, coverage limits, prohibited outputs, or commercial terms.
 Thank you,
 
 Mario Antillon<br>
-TargetAudit project<br>
+MarketWitness project<br>
 [monitored project email, complete only when sending]
 
 The versioned draft deliberately omits a real email address. Add contact
@@ -64,5 +64,5 @@ information outside the repository when sending the request.
 ## Activation Rule
 
 No real AnalystCentral row may enter the public dashboard until written
-authorization is reviewed and registered in TargetAudit's provider-approval
+authorization is reviewed and registered in MarketWitness's provider-approval
 queue.

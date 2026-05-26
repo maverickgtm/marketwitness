@@ -3,8 +3,8 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.etf_holdings import compare_holdings, load_holdings_snapshot, render_holdings_html
-from targetaudit.providers.ark import (
+from marketwitness.etf_holdings import compare_holdings, load_holdings_snapshot, render_holdings_html
+from marketwitness.providers.ark import (
     ArkHoldingsDataError,
     load_ark_holdings_snapshot,
     render_import_report,
@@ -27,7 +27,7 @@ class ArkHoldingsProviderTests(unittest.TestCase):
         self.assertEqual(len(imported.holdings), 4)
         self.assertEqual(imported.holdings[0].shares, 1200)
         self.assertEqual(imported.source_frequency, "synthetic_demo")
-        self.assertEqual(imported.holdings[0].issuer, "TargetAudit Synthetic ARK-format Fixture")
+        self.assertEqual(imported.holdings[0].issuer, "MarketWitness Synthetic ARK-format Fixture")
         self.assertIn("synthetic only", report)
 
     def test_writes_snapshot_accepted_by_etf_activity_engine(self) -> None:

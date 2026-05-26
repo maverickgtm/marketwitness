@@ -10,14 +10,14 @@ designed case is `Donald Trump / Truth Social`, beginning at the second-term
 start date of `2025-01-20`.
 
 The working measurement name is **Policy Signal Impact Trace**. It is not
-published as a quantitative index because TargetAudit does not possess an
+published as a quantitative index because MarketWitness does not possess an
 authorized ingested history of the communications.
 
 ## Differentiation
 
 The idea has prior art:
 
-| Precedent | Existing Work | TargetAudit Difference |
+| Precedent | Existing Work | MarketWitness Difference |
 |---|---|---|
 | JPMorgan `Volfefe Index` (2019) | Analyzed Donald Trump tweets and rates volatility, especially 2Y/5Y Treasuries | Event-level public traceability, disclosed windows, multiple assets, and links to IPO/listing evidence |
 | `Trump & Dump` (reviewed `2026-05-25`) | Advertises Truth Social monitoring and market correlation with a manipulation score | No manipulation or causality claim without reproducible evidence; visible rights controls |
@@ -48,14 +48,14 @@ Truth Social is relevant but is not enabled as a feed. Its official terms
 reviewed on `2026-05-25` restrict automated access, systematic content
 retrieval, scraping or data mining, and commercial use without permission.
 
-TargetAudit therefore registers `truth-social-public-content` as
+MarketWitness therefore registers `truth-social-public-content` as
 `restricted_no_collection`: it does not download history, reproduce post
 texts, or offer real-time monitoring without written permission or an
 authorized provider with sufficient rights.
 
 ## Eligible No-Cost Route: White House RSS
 
-| Feed | Verification | TargetAudit Use |
+| Feed | Verification | MarketWitness Use |
 |---|---|---|
 | `https://www.whitehouse.gov/news/feed/` | Active official RSS; hourly-update declaration and White House-signed entries | Candidate primary source for statements, fact sheets, and official news |
 | `https://www.whitehouse.gov/presidential-actions/feed/` | Active official RSS; includes executive orders, memoranda, and proclamations | Candidate primary source for formal decisions |

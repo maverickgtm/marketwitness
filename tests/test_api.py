@@ -19,9 +19,9 @@ class ApiTests(unittest.TestCase):
     def setUp(self) -> None:
         from fastapi.testclient import TestClient
 
-        from targetaudit.api import create_app
-        from targetaudit.models import Evaluation
-        from targetaudit.storage import EvaluationRun, store_evaluation_run
+        from marketwitness.api import create_app
+        from marketwitness.models import Evaluation
+        from marketwitness.storage import EvaluationRun, store_evaluation_run
 
         self.directory = tempfile.TemporaryDirectory()
         root = Path(self.directory.name)
@@ -29,7 +29,7 @@ class ApiTests(unittest.TestCase):
         asset.write_text("auditable input\n", encoding="utf-8")
         prices = root / "prices.csv"
         prices.write_text("auditable prices\n", encoding="utf-8")
-        self.database = root / "targetaudit.duckdb"
+        self.database = root / "marketwitness.duckdb"
         evaluations = [
             Evaluation(
                 observation_id="hit",
@@ -282,7 +282,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/commons", page.text)
         self.assertIn("/dashboard/volatility", page.text)
         self.assertIn("/dashboard/policy-signals", page.text)
-        self.assertIn("What Makes TargetAudit Different", page.text)
+        self.assertIn("What Makes MarketWitness Different", page.text)
         self.assertIn("VIX Stress Lab", page.text)
         self.assertIn("Policy Signal Impact", page.text)
         self.assertIn("Global IPO Radar", page.text)
@@ -826,7 +826,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(observations.status_code, 200)
         self.assertIn("text/csv", observations.headers["content-type"])
         self.assertIn(
-            'filename="targetaudit-api-demo-evaluations.csv"',
+            'filename="marketwitness-api-demo-evaluations.csv"',
             observations.headers["content-disposition"],
         )
         self.assertIn("observation_id", observations.text)

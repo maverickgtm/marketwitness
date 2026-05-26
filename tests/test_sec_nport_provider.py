@@ -5,8 +5,8 @@ from datetime import date
 from pathlib import Path
 from unittest.mock import patch
 
-from targetaudit.etf_holdings import compare_holdings, load_holdings_snapshot
-from targetaudit.providers.sec_nport import (
+from marketwitness.etf_holdings import compare_holdings, load_holdings_snapshot
+from marketwitness.providers.sec_nport import (
     SecNportDataError,
     collect_latest_nport_snapshot,
     fetch_recent_nport_filings,
@@ -38,16 +38,16 @@ class SecNportProviderTests(unittest.TestCase):
             "000000000126000002/nport-xlf-current.xml",
         )
 
-    @patch("targetaudit.providers.sec_nport.urlopen")
+    @patch("marketwitness.providers.sec_nport.urlopen")
     def test_fetch_uses_declared_sec_user_agent(self, request_mock) -> None:
         content = Path("data/samples/sec-nport-submissions.json").read_bytes()
         request_mock.return_value.__enter__.return_value = _Response(content)
 
-        filings = fetch_recent_nport_filings("1", "TargetAudit owner@example.com")
+        filings = fetch_recent_nport_filings("1", "MarketWitness owner@example.com")
 
         self.assertEqual(len(filings), 2)
         request = request_mock.call_args.args[0]
-        self.assertEqual(request.headers["User-agent"], "TargetAudit owner@example.com")
+        self.assertEqual(request.headers["User-agent"], "MarketWitness owner@example.com")
 
     def test_normalizes_sec_xsl_display_path_to_raw_xml_document(self) -> None:
         payload = json.loads(
@@ -151,7 +151,7 @@ class SecNportProviderTests(unittest.TestCase):
 
         self.assertEqual(len(imported.holdings), 3)
         self.assertEqual(imported.omitted_non_share_positions, 1)
-        self.assertEqual(imported.holdings[0].issuer, "TargetAudit Synthetic N-PORT Fixture")
+        self.assertEqual(imported.holdings[0].issuer, "MarketWitness Synthetic N-PORT Fixture")
         self.assertEqual(imported.holdings[0].source_frequency, "regulatory_periodic")
         self.assertIn("does not treat periodic N-PORT evidence as", report)
 

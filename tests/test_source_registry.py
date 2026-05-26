@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.source_registry import (
+from marketwitness.source_registry import (
     SourceRegistryDataError,
     load_source_registry,
     render_source_registry_html,

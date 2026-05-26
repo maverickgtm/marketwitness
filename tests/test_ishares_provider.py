@@ -4,8 +4,8 @@ from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
-from targetaudit.etf_holdings import compare_holdings, load_holdings_snapshot
-from targetaudit.providers.ishares import (
+from marketwitness.etf_holdings import compare_holdings, load_holdings_snapshot
+from marketwitness.providers.ishares import (
     IsharesHoldingsDataError,
     load_ishares_holdings_snapshot,
     render_import_report,

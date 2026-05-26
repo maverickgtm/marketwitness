@@ -3,8 +3,8 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.lse_upcoming import load_lse_page_payload
-from targetaudit.providers.fca_nsm import (
+from marketwitness.lse_upcoming import load_lse_page_payload
+from marketwitness.providers.fca_nsm import (
     FcaNsmDataError,
     check_lse_issues,
     load_nsm_fixture,

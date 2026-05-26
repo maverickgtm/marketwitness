@@ -10,15 +10,15 @@ from decimal import Decimal
 from pathlib import Path
 from unittest.mock import patch
 
-from targetaudit.cli import main
-from targetaudit.models import Evaluation
-from targetaudit.release_center import (
+from marketwitness.cli import main
+from marketwitness.models import Evaluation
+from marketwitness.release_center import (
     build_release_decision,
     render_release_html,
     render_release_report,
 )
-from targetaudit.source_registry import SourceProvider, load_source_registry
-from targetaudit.storage import EvaluationRun, store_evaluation_run
+from marketwitness.source_registry import SourceProvider, load_source_registry
+from marketwitness.storage import EvaluationRun, store_evaluation_run
 
 
 @unittest.skipUnless(importlib.util.find_spec("duckdb"), "optional DuckDB dependency not installed")
@@ -62,7 +62,7 @@ class ReleaseCenterTests(unittest.TestCase):
             database = _stored_run(root, "synthetic-demo")
             report = root / "release.md"
             argv = [
-                "targetaudit",
+                "marketwitness",
                 "scorecard-release",
                 "--registry",
                 "data/samples/source_registry.csv",
@@ -86,7 +86,7 @@ class ReleaseCenterTests(unittest.TestCase):
 
 
 def _stored_run(root: Path, provider_id: str) -> Path:
-    database = root / "targetaudit.duckdb"
+    database = root / "marketwitness.duckdb"
     assets = {}
     for role in ("targets", "prices", "corporate_actions", "universe_membership"):
         path = root / f"{role}.csv"

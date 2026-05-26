@@ -1,6 +1,6 @@
 # Dashboard Product Outline
 
-The TargetAudit dashboard separates measured research, documentary monitoring,
+The MarketWitness dashboard separates measured research, documentary monitoring,
 external market context, and publication controls. A screen can be useful
 without implying that the evidence supports a trade or a public real-data
 ranking.
@@ -38,7 +38,7 @@ report workflows so visitors do not have to discover the system through
 documentation first.
 
 `/dashboard/market-context` adds a TradingView `Advanced Chart` for
-`AMEX:XLF`, benchmark comparison, and visible attribution. TargetAudit does
+`AMEX:XLF`, benchmark comparison, and visible attribution. MarketWitness does
 not read, store, export, or score widget values. The dashboard remains usable
 offline while third-party visual content may require Internet access.
 

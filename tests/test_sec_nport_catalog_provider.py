@@ -6,8 +6,8 @@ from pathlib import Path
 from typing import Optional
 from unittest.mock import patch
 
-from targetaudit.providers.sec_nport import SecNportDataError
-from targetaudit.providers.sec_nport_catalog import (
+from marketwitness.providers.sec_nport import SecNportDataError
+from marketwitness.providers.sec_nport_catalog import (
     SecNportDatasetRelease,
     download_dataset_release,
     fetch_dataset_catalog,
@@ -41,18 +41,18 @@ class SecNportCatalogProviderTests(unittest.TestCase):
         with self.assertRaisesRegex(SecNportDataError, "does not publish"):
             select_dataset_release(releases, "2024q1")
 
-    @patch("targetaudit.providers.sec_nport_catalog.urlopen")
+    @patch("marketwitness.providers.sec_nport_catalog.urlopen")
     def test_fetch_catalog_uses_declared_sec_user_agent(self, request_mock) -> None:
         page = Path("data/samples/sec-nport-catalog.html").read_bytes()
         request_mock.return_value.__enter__.return_value = _BytesResponse(page)
 
-        releases = fetch_dataset_catalog("TargetAudit owner@example.com")
+        releases = fetch_dataset_catalog("MarketWitness owner@example.com")
 
         self.assertEqual(len(releases), 3)
         request = request_mock.call_args.args[0]
-        self.assertEqual(request.headers["User-agent"], "TargetAudit owner@example.com")
+        self.assertEqual(request.headers["User-agent"], "MarketWitness owner@example.com")
 
-    @patch("targetaudit.providers.sec_nport_catalog.urlopen")
+    @patch("marketwitness.providers.sec_nport_catalog.urlopen")
     def test_downloads_and_extracts_selected_dataset_locally(self, request_mock) -> None:
         request_mock.return_value.__enter__.return_value = _BytesResponse(_zip_bytes())
         release = SecNportDatasetRelease(
@@ -61,7 +61,7 @@ class SecNportCatalogProviderTests(unittest.TestCase):
         )
         with tempfile.TemporaryDirectory() as temporary:
             downloaded = download_dataset_release(
-                release, temporary, "TargetAudit owner@example.com"
+                release, temporary, "MarketWitness owner@example.com"
             )
             extracted = {path.name for path in downloaded.extracted_dir.iterdir()}
             report = render_catalog_report([release], downloaded)
@@ -71,9 +71,9 @@ class SecNportCatalogProviderTests(unittest.TestCase):
         self.assertNotIn("UNUSED_TABLE.tsv", extracted)
         self.assertIn("Downloaded Locally", report)
         request = request_mock.call_args.args[0]
-        self.assertEqual(request.headers["User-agent"], "TargetAudit owner@example.com")
+        self.assertEqual(request.headers["User-agent"], "MarketWitness owner@example.com")
 
-    @patch("targetaudit.providers.sec_nport_catalog.urlopen")
+    @patch("marketwitness.providers.sec_nport_catalog.urlopen")
     def test_rejects_zip_with_unsafe_path(self, request_mock) -> None:
         request_mock.return_value.__enter__.return_value = _BytesResponse(
             _zip_bytes(extra_name="../escape.tsv")
@@ -85,7 +85,7 @@ class SecNportCatalogProviderTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             with self.assertRaisesRegex(SecNportDataError, "unsafe path"):
                 download_dataset_release(
-                    release, temporary, "TargetAudit owner@example.com"
+                    release, temporary, "MarketWitness owner@example.com"
                 )
             archives = list(Path(temporary).rglob("*.zip"))
 

@@ -2,7 +2,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.providers.tsx import (
+from marketwitness.providers.tsx import (
     TsxDataError,
     load_tsx_snapshot,
     parse_tsx_html,

@@ -2,7 +2,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.providers.asx import (
+from marketwitness.providers.asx import (
     AsxDataError,
     load_asx_snapshot,
     parse_asx_html,

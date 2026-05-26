@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.global_listings import (
+from marketwitness.global_listings import (
     GlobalListingsDataError,
     load_global_market_sources,
     render_global_listings_html,

@@ -4,7 +4,7 @@ from datetime import date
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from targetaudit.providers.opendart import (
+from marketwitness.providers.opendart import (
     OpenDartDataError,
     fetch_opendart_equity_filings,
     load_opendart_snapshot,
@@ -59,7 +59,7 @@ class OpenDartProviderTests(unittest.TestCase):
 
         self.assertEqual(filings, [])
 
-    @patch("targetaudit.providers.opendart.urlopen")
+    @patch("marketwitness.providers.opendart.urlopen")
     def test_live_fetch_queries_both_equity_types_and_paginates(self, urlopen) -> None:
         urlopen.side_effect = [
             _response(_payload([_row("20260521000001", "20260521")], total_page=2)),

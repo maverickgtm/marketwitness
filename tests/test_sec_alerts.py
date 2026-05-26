@@ -3,8 +3,8 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.ipo_watch import load_ipo_watch
-from targetaudit.sec_alerts import (
+from marketwitness.ipo_watch import load_ipo_watch
+from marketwitness.sec_alerts import (
     archive_discovery,
     build_filing_alerts,
     known_source_urls,

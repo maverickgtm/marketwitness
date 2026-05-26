@@ -2,8 +2,8 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.policy_signal_lab import build_policy_signal_lab_snapshot
-from targetaudit.source_registry import SourceRegistryDataError, load_source_registry
+from marketwitness.policy_signal_lab import build_policy_signal_lab_snapshot
+from marketwitness.source_registry import SourceRegistryDataError, load_source_registry
 
 
 class PolicySignalLabTests(unittest.TestCase):

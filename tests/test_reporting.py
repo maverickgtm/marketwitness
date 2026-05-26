@@ -2,8 +2,8 @@ import unittest
 from datetime import date
 from decimal import Decimal
 
-from targetaudit.models import Evaluation
-from targetaudit.reporting import render_markdown_report, wilson_interval
+from marketwitness.models import Evaluation
+from marketwitness.reporting import render_markdown_report, wilson_interval
 
 
 class ReportingTests(unittest.TestCase):
@@ -79,7 +79,7 @@ class ReportingTests(unittest.TestCase):
         result = render_markdown_report([evaluation], date(2025, 1, 1), 1)
 
         self.assertIn("`superseded_by_later_target`", result)
-        self.assertIn("### Superseded Target Audit", result)
+        self.assertIn("### Superseded Forecast Audit", result)
         self.assertIn("| original | Example Firm | AAA | revision | 2023-06-01 |", result)
 
     def test_wilson_interval_exposes_small_sample_uncertainty(self) -> None:

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to TargetAudit will be documented in this file.
+All notable changes to MarketWitness will be documented in this file.
 
 ## Unreleased
 

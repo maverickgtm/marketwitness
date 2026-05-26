@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.corporate_actions import (
+from marketwitness.corporate_actions import (
     CorporateActionDataError,
     find_affected_observations,
     load_corporate_actions,
@@ -11,7 +11,7 @@ from targetaudit.corporate_actions import (
     render_corporate_actions_report,
     write_affected_observations_csv,
 )
-from targetaudit.csvio import load_targets
+from marketwitness.csvio import load_targets
 
 
 class CorporateActionsTests(unittest.TestCase):

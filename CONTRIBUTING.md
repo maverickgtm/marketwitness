@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for helping make TargetAudit verifiable and useful.
+Thank you for helping make MarketWitness verifiable and useful.
 
 ## Ground Rules
 
@@ -31,7 +31,7 @@ optional extension, never as a requirement for basic use.
 
 ## Evidence Passport Commons
 
-TargetAudit welcomes global contributors who can expand its network of
+MarketWitness welcomes global contributors who can expand its network of
 official evidence sources. Before proposing code for a new source, prepare an
 `Evidence Passport` through the `Data source proposal` template. It must
 identify:

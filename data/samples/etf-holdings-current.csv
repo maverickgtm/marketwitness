@@ -1,5 +1,5 @@
 issuer,fund_symbol,fund_name,effective_date,captured_on,position_ticker,position_name,shares,weight_pct,source_frequency,source_url
-TargetAudit Synthetic ETF Lab,XLF-DEMO,Synthetic Financials ETF,2026-05-23,2026-05-23,ACBK,Atlantic Community Bank,1200,4.60,synthetic_demo,https://example.invalid/etf-holdings/xlf-demo/2026-05-23
-TargetAudit Synthetic ETF Lab,XLF-DEMO,Synthetic Financials ETF,2026-05-23,2026-05-23,NVBK,Nova Banking Group,650,2.50,synthetic_demo,https://example.invalid/etf-holdings/xlf-demo/2026-05-23
-TargetAudit Synthetic ETF Lab,XLF-DEMO,Synthetic Financials ETF,2026-05-23,2026-05-23,BRIN,Bridge Insurance,500,1.90,synthetic_demo,https://example.invalid/etf-holdings/xlf-demo/2026-05-23
-TargetAudit Synthetic ETF Lab,XLF-DEMO,Synthetic Financials ETF,2026-05-23,2026-05-23,NEWF,New Finance Network,300,1.10,synthetic_demo,https://example.invalid/etf-holdings/xlf-demo/2026-05-23
+MarketWitness Synthetic ETF Lab,XLF-DEMO,Synthetic Financials ETF,2026-05-23,2026-05-23,ACBK,Atlantic Community Bank,1200,4.60,synthetic_demo,https://example.invalid/etf-holdings/xlf-demo/2026-05-23
+MarketWitness Synthetic ETF Lab,XLF-DEMO,Synthetic Financials ETF,2026-05-23,2026-05-23,NVBK,Nova Banking Group,650,2.50,synthetic_demo,https://example.invalid/etf-holdings/xlf-demo/2026-05-23
+MarketWitness Synthetic ETF Lab,XLF-DEMO,Synthetic Financials ETF,2026-05-23,2026-05-23,BRIN,Bridge Insurance,500,1.90,synthetic_demo,https://example.invalid/etf-holdings/xlf-demo/2026-05-23
+MarketWitness Synthetic ETF Lab,XLF-DEMO,Synthetic Financials ETF,2026-05-23,2026-05-23,NEWF,New Finance Network,300,1.10,synthetic_demo,https://example.invalid/etf-holdings/xlf-demo/2026-05-23

@@ -8,7 +8,7 @@ official path is stronger.
 
 ## Executive Decision
 
-| Market | Official Finding | TargetAudit Decision |
+| Market | Official Finding | MarketWitness Decision |
 |---|---|---|
 | Tokyo | `JPX New Listings` publishes listing date, approval date, issuer, code, segment, and offering data; `EDINET` provides earlier regulatory documents | JPX and EDINET monitors with daily diff are implemented |
 | Toronto | `TSX New Company Listings` confirms new listings; `SEDAR+` restricts scraping, automation, and database building without permission | Keep TSX completed-listing feed and block automated SEDAR+ prospective expansion |
@@ -43,7 +43,7 @@ public records and building a database without permission.
 
 BaFin describes approved prospectus requirements and exposes a national
 database. Since `ESMA Prospectus III` already supports attributed regional
-ingestion for Germany, the Netherlands, and Italy, TargetAudit avoids a
+ingestion for Germany, the Netherlands, and Italy, MarketWitness avoids a
 duplicative Frankfurt collector. ESMA metadata opens review; later
 exchange/market evidence must separately confirm admission or first trading.
 

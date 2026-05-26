@@ -2,7 +2,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.providers.jpx import (
+from marketwitness.providers.jpx import (
     JpxDataError,
     load_jpx_snapshot,
     parse_jpx_html,

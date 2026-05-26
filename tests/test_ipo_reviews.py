@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.ipo_reviews import (
+from marketwitness.ipo_reviews import (
     IpoReviewDataError,
     apply_review_decisions,
     load_alert_evidence,
@@ -11,8 +11,8 @@ from targetaudit.ipo_reviews import (
     render_review_html,
     render_review_report,
 )
-from targetaudit.ipo_watch import load_ipo_watch
-from targetaudit.sec_alerts import (
+from marketwitness.ipo_watch import load_ipo_watch
+from marketwitness.sec_alerts import (
     build_filing_alerts,
     known_source_urls,
     load_discovered_filings,

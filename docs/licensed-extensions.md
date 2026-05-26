@@ -2,13 +2,13 @@
 
 Review date: `2026-05-24`.
 
-TargetAudit Open Edition works without buying data. This page records routes
+MarketWitness Open Edition works without buying data. This page records routes
 for users who decide to fund private research with real historical price
 targets. It does not activate providers or grant publication rights.
 
 ## Publicly Visible Pricing Reviewed
 
-| Option | Relevant Data | Visible Price | TargetAudit Use |
+| Option | Relevant Data | Visible Price | MarketWitness Use |
 |---|---|---:|---|
 | Massive / Benzinga Analyst Ratings Expansion | U.S. stock ratings and price targets; documented history from `2011-12-08` | `USD 99/month` for individual expansion | Bring-your-own-license candidate for authorized private research |
 | MarketBeat All Access | Ratings and target changes; CSV export advertised for up to six recent months | `USD 249/year` or `USD 29/month` | Lower-cost private importer pilot; insufficient alone for one-year matured targets |
@@ -20,7 +20,7 @@ targets. It does not activate providers or grant publication rights.
 | Financial Modeling Prep Display License | `Price Target Summary` and `Price Target Consensus` endpoints | Quote required for display/redistribution | Potential aggregate validation subject to licensing |
 
 Free API access or an individual subscription does not itself permit a public
-GitHub ranking. TargetAudit may process a user's authorized local export for
+GitHub ranking. MarketWitness may process a user's authorized local export for
 private research, but may publish real results only when written terms cover
 the derived output and all readiness controls pass.
 
@@ -34,7 +34,7 @@ the derived output and all readiness controls pass.
 | Finviz | Visible U.S. rating/target changes | Elite pricing does not establish public historical-output rights |
 | StockAnalysis.com | Analyst view derived from multiple sources | Snippet attribution is not complete-dataset republication permission |
 | Koyfin | Research charts | FAQ states no API access and restricted estimates downloads |
-| WSJ / CNBC | Editorial and consensus context | Not licensed TargetAudit ingestion feeds |
+| WSJ / CNBC | Editorial and consensus context | Not licensed MarketWitness ingestion feeds |
 
 TradingView widgets can provide attributed external charts at
 `/dashboard/market-context`; widget data is not stored or used as target

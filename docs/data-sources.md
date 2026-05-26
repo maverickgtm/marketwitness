@@ -4,7 +4,7 @@ Review baseline: `2026-05-25`.
 
 ## Data Policy
 
-TargetAudit distinguishes between technically reachable information and data
+MarketWitness distinguishes between technically reachable information and data
 that may support public output. A visible page or free API does not by itself
 authorize collection, retention, republication, or derived rankings.
 
@@ -68,7 +68,7 @@ successful calculation.
   candidates requiring rights confirmation.
 - TradingView widgets are attributed external display only.
 - FRED VIX context is displayed with required citation and is not treated as
-  a calculated TargetAudit series in this candidate.
+  a calculated MarketWitness series in this candidate.
 - Cboe/ICE volatility history remains pending rights review for real derived
   episode output.
 

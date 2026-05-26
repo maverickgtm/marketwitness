@@ -4,7 +4,7 @@ Review date: `2026-05-25`.
 
 ## Objective And Result
 
-Before public launch, TargetAudit performed a final international search for a
+Before public launch, MarketWitness performed a final international search for a
 no-cost source of historical price targets, individualized by analyst or firm,
 with rights sufficient to publish derived rankings.
 
@@ -18,7 +18,7 @@ rankings for Roth MKM, KBW, UBS, Citi, Barclays, or other firms.
 
 ## Candidates Reviewed
 
-| Source | Relevant Coverage | Visible Cost | TargetAudit Decision |
+| Source | Relevant Coverage | Visible Cost | MarketWitness Decision |
 |---|---|---:|---|
 | AnalystCentral | Advertised CSV of Wall Street ratings and targets, 10 years, 8,500+ stocks and indices | Free for members | `permission_candidate`: request written permission; do not download or publish under current terms |
 | Intrinio / Zacks Target Prices | U.S. target consensus, 20+ years, API/CSV/S3/Snowflake | Quote; history involves payment | Licensed extension, not Open Edition; individual-firm rows not confirmed |
@@ -37,7 +37,7 @@ receipt of dated target rows, local reproducible processing, attributed
 aggregate public output, any shareable illustrative fixture, and either
 GitHub Actions execution or a private-only real-data workflow.
 
-Until such authorization exists, TargetAudit keeps the importer and release
+Until such authorization exists, MarketWitness keeps the importer and release
 gate ready but does not activate the source.
 
 ## Launch Consequence
@@ -47,7 +47,7 @@ dashboard exposes what is missing for real data, IPO and global regulatory
 monitors use public evidence, and the multilingual contributor gateway helps
 discover lawful official connectors.
 
-The public promise remains: **TargetAudit audits evidence and exposes when a
+The public promise remains: **MarketWitness audits evidence and exposes when a
 conclusion cannot yet be published.**
 
 ## Sources Reviewed

@@ -7,8 +7,8 @@ from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
-from targetaudit.models import Evaluation
-from targetaudit.storage import (
+from marketwitness.models import Evaluation
+from marketwitness.storage import (
     EvaluationRun,
     WarehouseError,
     read_evaluations,
@@ -25,7 +25,7 @@ class StorageTests(unittest.TestCase):
             root = Path(directory)
             target_file = root / "targets.csv"
             target_file.write_text("example targets\n", encoding="utf-8")
-            database = root / "targetaudit.duckdb"
+            database = root / "marketwitness.duckdb"
             evaluations = [
                 Evaluation(
                     observation_id="one",
@@ -101,7 +101,7 @@ class StorageTests(unittest.TestCase):
 
     def test_refuses_to_overwrite_existing_run_id(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            database = Path(directory) / "targetaudit.duckdb"
+            database = Path(directory) / "marketwitness.duckdb"
             run = EvaluationRun(
                 run_id="stable-run",
                 as_of=date(2025, 1, 1),
@@ -138,7 +138,7 @@ class StorageTests(unittest.TestCase):
             targets.write_text("same input\n", encoding="utf-8")
             first_output.write_text("result one\n", encoding="utf-8")
             second_output.write_text("result two\n", encoding="utf-8")
-            database = root / "targetaudit.duckdb"
+            database = root / "marketwitness.duckdb"
             evaluation = Evaluation(
                 observation_id="one",
                 ticker="AAA",
@@ -174,7 +174,7 @@ class StorageTests(unittest.TestCase):
             root = Path(directory)
             targets = root / "targets.csv"
             targets.write_text("same input\n", encoding="utf-8")
-            database = root / "targetaudit.duckdb"
+            database = root / "marketwitness.duckdb"
             evaluation = Evaluation(
                 observation_id="one",
                 ticker="AAA",
@@ -208,7 +208,7 @@ class StorageTests(unittest.TestCase):
 
     def test_reads_existing_database_created_before_provider_lineage_column(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            database = Path(directory) / "targetaudit.duckdb"
+            database = Path(directory) / "marketwitness.duckdb"
             run = EvaluationRun(
                 run_id="old-schema",
                 as_of=date(2025, 1, 1),
@@ -257,7 +257,7 @@ class StorageTests(unittest.TestCase):
             root = Path(directory)
             targets = root / "targets.csv"
             targets.write_text("targets\n", encoding="utf-8")
-            database = root / "targetaudit.duckdb"
+            database = root / "marketwitness.duckdb"
             store_evaluation_run(
                 database,
                 EvaluationRun(

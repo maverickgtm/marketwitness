@@ -1,4 +1,4 @@
-# TargetAudit Open Edition
+# MarketWitness Open Edition
 
 The GitHub edition must run without purchasing data or subscribing to
 commercial APIs.
@@ -9,7 +9,7 @@ commercial APIs.
 |---|---|---:|---|
 | Offline showcase | Project-created fixtures | None | Exercise Financials, RWA, audits, reports, API, and dashboard |
 | Public monitors | Public regulatory/source workflows under recorded rules | None | Follow listing and periodic holdings evidence |
-| Authorized extension | Files supplied by a user with documented rights | Not required by TargetAudit | Run private analysis without redistributing restricted data |
+| Authorized extension | Files supplied by a user with documented rights | Not required by MarketWitness | Run private analysis without redistributing restricted data |
 
 The repository does not promise a real analyst ranking built from commercial
 data. Optional routes are disclosed at `/dashboard/extensions`, while
@@ -40,12 +40,12 @@ stored, exported, or used as scoring evidence.
 python3 -m pip install -e ".[application]"
 make verify
 make demo
-export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
-export TARGETAUDIT_SOURCE_REGISTRY="data/samples/source_registry.csv"
-export TARGETAUDIT_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
-export TARGETAUDIT_GENERATED_REPORTS="build/demo"
-export TARGETAUDIT_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
-python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
+export MARKETWITNESS_DATABASE="build/demo/marketwitness.duckdb"
+export MARKETWITNESS_SOURCE_REGISTRY="data/samples/source_registry.csv"
+export MARKETWITNESS_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
+export MARKETWITNESS_GENERATED_REPORTS="build/demo"
+export MARKETWITNESS_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
+python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 ```
 
 Open <http://127.0.0.1:8000/>. Key routes are documented in
@@ -54,7 +54,7 @@ Open <http://127.0.0.1:8000/>. Key routes are documented in
 For permitted live SEC access, provide an identifying contact outside Git:
 
 ```bash
-export TARGETAUDIT_SEC_USER_AGENT="TargetAudit contact@example.com"
+export MARKETWITNESS_SEC_USER_AGENT="MarketWitness contact@example.com"
 ```
 
 No paid API key is required for SEC connector workflows.

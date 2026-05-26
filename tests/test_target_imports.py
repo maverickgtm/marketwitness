@@ -4,8 +4,8 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.csvio import load_targets
-from targetaudit.target_imports import (
+from marketwitness.csvio import load_targets
+from marketwitness.target_imports import (
     TargetImportDataError,
     import_authorized_targets,
     load_target_import_manifest,

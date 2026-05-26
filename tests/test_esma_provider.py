@@ -4,7 +4,7 @@ from datetime import date
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from targetaudit.providers.esma import (
+from marketwitness.providers.esma import (
     EsmaDataError,
     fetch_esma_equity_prospectuses,
     load_esma_snapshot,
@@ -67,7 +67,7 @@ class EsmaProviderTests(unittest.TestCase):
         with self.assertRaisesRegex(EsmaDataError, "duplicates document/instrument pair"):
             parse_esma_payload(payload, date(2026, 5, 25), date(2026, 5, 1))
 
-    @patch("targetaudit.providers.esma.urlopen")
+    @patch("marketwitness.providers.esma.urlopen")
     def test_live_fetch_paginates_without_dropping_share_records(self, urlopen) -> None:
         first = _response({"response": {"numFound": 2, "docs": [_share_row("DOC-1", "DE000ONE", "DE")]}})
         second = _response({"response": {"numFound": 2, "docs": [_share_row("DOC-2", "IT000TWO", "IT")]}})

@@ -3,7 +3,7 @@ from datetime import date
 from pathlib import Path
 from unittest.mock import patch
 
-from targetaudit.providers.edinet import (
+from marketwitness.providers.edinet import (
     EdinetDataError,
     fetch_edinet_offering_filings,
     load_edinet_snapshot,

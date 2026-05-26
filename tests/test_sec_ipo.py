@@ -2,7 +2,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.providers.sec_ipo import (
+from marketwitness.providers.sec_ipo import (
     daily_master_index_url,
     load_master_index,
     parse_ipo_candidate_filings,

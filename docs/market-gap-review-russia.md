@@ -5,13 +5,13 @@ Review date: `2026-05-25`.
 ## Executive Decision
 
 Russia is relevant to a global coverage map, but must not be activated as an
-Open Edition collector at this time. TargetAudit records it as
+Open Edition collector at this time. MarketWitness records it as
 `restricted_research_only`: an identified official-source path with explained
 risk, without automated ingestion, IPO alerts, or position suggestions.
 
 ## Identified Official Sources
 
-| Source | Potential Value | TargetAudit Restriction |
+| Source | Potential Value | MarketWitness Restriction |
 |---|---|---|
 | Bank of Russia `Register of Russian Securities` | The Bank announced on `2025-09-03` a register containing shares and bonds, `ISIN`, state registration number, currency, and issuer information | Useful for documenting regulatory data existence; no automated access without legal review |
 | Moscow Exchange `ISS` API | MOEX describes security metadata, transactions, quotations, and historical results; delayed data is advertised as free and real-time as subscribed | MOEX is OFAC-designated; no collector or redistribution is enabled |

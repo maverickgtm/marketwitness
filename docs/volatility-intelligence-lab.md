@@ -44,14 +44,14 @@ instructions.
 ## Difference From Volatility Dashboards
 
 Products such as `TheVIXtrader` and `Volatilitaets-Zentrale` already show VIX
-regimes, term structure, and cross-asset measures. TargetAudit differentiates
+regimes, term structure, and cross-asset measures. MarketWitness differentiates
 itself by connecting volatility episodes to verified `IPO Watch` evidence,
 technology listings, rates-financing context, ETF evidence when permitted, and
 explicit Evidence Passports and claim boundaries.
 
 ## Sources And Limits
 
-| Source | Evidence Available | TargetAudit State |
+| Source | Evidence Available | MarketWitness State |
 |---|---|---|
 | Cboe Historical Data | Official daily history links for `VIX`, `VVIX`, `VIX9D`, `OVX`, `GVZ`, and others | Registered for research; public derived-output and storage rights pending review |
 | Cboe Index Data Access | Index family and data-feed offering | Official scope reference; no integrated feed |

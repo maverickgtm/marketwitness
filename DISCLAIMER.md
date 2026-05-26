@@ -1,6 +1,6 @@
 # Legal And Research Disclaimer
 
-TargetAudit is open-source software for market-evidence research and auditing.
+MarketWitness is open-source software for market-evidence research and auditing.
 It is not an investment adviser, broker, signal provider, or recommendation to
 buy, sell, or hold any asset.
 
@@ -19,7 +19,7 @@ demonstrate the method; they are not real market results.
 
 ## Data, Licenses, And Third Parties
 
-The MIT license covers TargetAudit's original code. It grants no rights over
+The MIT license covers MarketWitness's original code. It grants no rights over
 third-party data, brands, charts, or content. Each user must comply with the
 terms of any source they connect or contribute.
 

@@ -1,7 +1,7 @@
 # Data Schema v0.1
 
 This document describes the canonical files and generated records used by
-TargetAudit. Real provider exports belong outside Git unless redistribution
+MarketWitness. Real provider exports belong outside Git unless redistribution
 rights are documented.
 
 ## Scorecard Inputs

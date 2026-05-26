@@ -1,11 +1,11 @@
-# TargetAudit
+# MarketWitness
 
 **Evidence-first market intelligence for public listings, analyst research,
 volatility, ETF evidence, and policy signals.**
 
 `v0.1.0-rc.1` | Open Edition | MIT licensed | No paid data required
 
-TargetAudit is an open-source research system built around a simple rule:
+MarketWitness is an open-source research system built around a simple rule:
 market claims should be traceable to evidence, permissions, and explicit
 claim boundaries. It ships a navigable dashboard, read-only API, reproducible
 reports, public-regulatory workflows, and synthetic demonstrations that run
@@ -15,9 +15,9 @@ It is not a trading-signal product and does not currently publish real analyst
 rankings. A real scorecard is deliberately held behind documented data rights,
 per-observation provenance, and release controls.
 
-## Why TargetAudit
+## Why MarketWitness
 
-Most market dashboards optimize for faster signals. TargetAudit is designed
+Most market dashboards optimize for faster signals. MarketWitness is designed
 for the questions that come just before trust:
 
 - What official document or permitted source supports this event?
@@ -47,15 +47,15 @@ rights are visible product outcomes, not hidden limitations.
 
 ### IPO Watch Center
 
-![TargetAudit IPO Watch Center](docs/assets/ipo-watch-center.png)
+![MarketWitness IPO Watch Center](docs/assets/ipo-watch-center.png)
 
 ### Global Listings Watch
 
-![TargetAudit Global Listings Watch](docs/assets/global-listings-watch.png)
+![MarketWitness Global Listings Watch](docs/assets/global-listings-watch.png)
 
 ### Policy Signal Impact Lab
 
-![TargetAudit Policy Signal Impact Lab](docs/assets/policy-signal-impact-lab.png)
+![MarketWitness Policy Signal Impact Lab](docs/assets/policy-signal-impact-lab.png)
 
 ## Quick Start
 
@@ -75,12 +75,12 @@ make demo
 Launch the local dashboard and API:
 
 ```bash
-export TARGETAUDIT_DATABASE="build/demo/targetaudit.duckdb"
-export TARGETAUDIT_SOURCE_REGISTRY="data/samples/source_registry.csv"
-export TARGETAUDIT_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
-export TARGETAUDIT_GENERATED_REPORTS="build/demo"
-export TARGETAUDIT_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
-python3 -m uvicorn targetaudit.api:app --host 127.0.0.1 --port 8000
+export MARKETWITNESS_DATABASE="build/demo/marketwitness.duckdb"
+export MARKETWITNESS_SOURCE_REGISTRY="data/samples/source_registry.csv"
+export MARKETWITNESS_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
+export MARKETWITNESS_GENERATED_REPORTS="build/demo"
+export MARKETWITNESS_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
+python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 ```
 
 Open <http://127.0.0.1:8000/>. High-signal views include:
@@ -98,11 +98,11 @@ Open <http://127.0.0.1:8000/>. High-signal views include:
 | `/dashboard/commons` | Evidence Passport Commons |
 | `/dashboard/policy` | Public-use and data-rights policy |
 
-The stable technical package and command name are `targetaudit`.
+The stable technical package and command name are `marketwitness`.
 
 ## Public Data Boundaries
 
-TargetAudit can be useful before commercial data is available because it makes
+MarketWitness can be useful before commercial data is available because it makes
 the boundary auditable:
 
 - Synthetic fixture scores validate the method; they are not real analyst
@@ -112,7 +112,7 @@ the boundary auditable:
 - SEC N-PORT data is periodic regulatory evidence; it is not a real-time ETF
   trade feed.
 - TradingView displays are attributed external context, not stored or scored
-  TargetAudit data.
+  MarketWitness data.
 - Real price-target rankings require an authorized data contribution or a
   license that permits the intended public output.
 - Truth Social collection remains blocked unless permission or an authorized
@@ -163,7 +163,7 @@ The project includes CLI workflows for:
 
 ## Contributing
 
-TargetAudit is designed for contributors who know a market, regulator, public
+MarketWitness is designed for contributors who know a market, regulator, public
 data source, or reproducible research method. Contributions are especially
 valuable for official listing-evidence connectors outside the United States.
 
@@ -204,6 +204,6 @@ the final publication steps.
 
 ## License
 
-The original TargetAudit code is released under the [MIT License](LICENSE).
+The original MarketWitness code is released under the [MIT License](LICENSE).
 Third-party data and content remain subject to their own terms. See
 [DISCLAIMER.md](DISCLAIMER.md).

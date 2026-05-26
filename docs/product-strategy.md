@@ -2,11 +2,11 @@
 
 ## Public Name
 
-**TargetAudit**
+**MarketWitness**
 
 Tagline: **Evidence-first market intelligence for auditable research.**
 
-The technical package remains `targetaudit`, allowing the product to extend to
+The technical package remains `marketwitness`, allowing the product to extend to
 other verticals without breaking integrations.
 
 ## Product Thesis
@@ -22,7 +22,7 @@ charts. It remains hard for a public researcher to verify:
 - how volatility or public communications relate to market reactions without
   overstating causality.
 
-TargetAudit is an open, reproducible research system that treats evidence
+MarketWitness is an open, reproducible research system that treats evidence
 rights and claim boundaries as product features.
 
 ## Open Edition Modules
@@ -43,7 +43,7 @@ rights and claim boundaries as product features.
 
 Competitors and adjacent products observed as of `2026-05-24`:
 
-| Product | Visible Focus | TargetAudit Opportunity |
+| Product | Visible Focus | MarketWitness Opportunity |
 |---|---|---|
 | TipRanks | Ratings, targets, and one-year success methodology | Provide reproducible method without incorporating unlicensed data |
 | MarketBeat | Large recommendation history and subscription rankings | Use only as a market reference unless output rights are obtained |
@@ -58,7 +58,7 @@ Competitors and adjacent products observed as of `2026-05-24`:
 | AnaChart | Price-target charts and hit ratios | Add benchmark comparison and versioned scoring rules |
 
 The distinguishing public layer is **Evidence Passport Commons**: instead of
-competing only on the number of signals, TargetAudit publishes provenance and
+competing only on the number of signals, MarketWitness publishes provenance and
 rights records, then invites global contributors to improve source cadence,
 confirmation logic, and claim boundaries.
 
@@ -116,7 +116,7 @@ to market-reaction windows without claiming causality. The initial case is
 
 Prior art exists: JPMorgan created the `Volfefe Index` in 2019 for tweets and
 rates volatility, and services advertise monitoring of Truth Social. The
-TargetAudit approach is different: every episode requires a source,
+MarketWitness approach is different: every episode requires a source,
 permission, timestamp, classification, window, asset set, exclusion rule, and
 connection to verified IPO or listing evidence.
 

@@ -1,6 +1,6 @@
 # Roadmap
 
-TargetAudit begins with a `Financials Scorecard` for U.S. financial-company
+MarketWitness begins with a `Financials Scorecard` for U.S. financial-company
 targets and an independent `IPO Watch` for verifiable listing milestones.
 
 ## Completed Foundation

@@ -4,7 +4,7 @@ Review date: `2026-05-25`.
 
 ## Decision
 
-TargetAudit will not implement an automatic collector for `MAS OPERA` in the
+MarketWitness will not implement an automatic collector for `MAS OPERA` in the
 free public edition. `SGX IPO Prospectus` remains Singapore's automated path;
 `MAS OPERA` is recorded as an official manual reference blocked from
 collection.

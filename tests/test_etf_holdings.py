@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from targetaudit.etf_holdings import (
+from marketwitness.etf_holdings import (
     EtfHoldingsDataError,
     compare_holdings,
     load_holdings_snapshot,

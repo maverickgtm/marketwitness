@@ -45,7 +45,7 @@ attributed aggregate output without raw-row redistribution.
   not rebuild the historical `U.S. Financials` universe for free.
 - Australian and Hong Kong ETF materials require rights review before
   automated republication. SEC N-PORT remains the defendable no-cost
-  regulatory ETF path currently used by TargetAudit.
+  regulatory ETF path currently used by MarketWitness.
 
 ## Implementation Priorities
 
