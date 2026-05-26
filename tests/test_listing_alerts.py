@@ -109,12 +109,23 @@ class ListingAlertsTests(unittest.TestCase):
                 PUBLIC_MONITOR_MARKETS,
                 "Public Listings Change Log",
             )
+            page = render_alerts_html(
+                alerts,
+                second,
+                date(2026, 5, 26),
+                "2026-05-25",
+                PUBLIC_MONITOR_MARKETS,
+                "Public Listings Change Log",
+            )
 
         self.assertEqual(len(first), 2)
         self.assertEqual([alert.market for alert in alerts], ["CVM"])
         self.assertIn("# Public Listings Change Log", report)
         self.assertIn("CVM: `1` / ESMA: `1`", report)
         self.assertNotIn("HKEX:", report)
+        self.assertIn('href="/dashboard/listings-radar">Listings Radar</a>', page)
+        self.assertIn("permitted official CVM offering and ESMA prospectus", page)
+        self.assertNotIn("EDINET and OpenDART", page)
 
     def test_hkex_allows_same_issuer_at_distinct_lifecycle_events(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

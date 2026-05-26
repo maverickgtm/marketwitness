@@ -207,6 +207,20 @@ def render_alerts_report(
 ) -> str:
     counts = Counter(alert.change_type for alert in alerts)
     market_counts = Counter(signal.market for signal in current)
+    if markets == PUBLIC_MONITOR_MARKETS:
+        boundary_lines = [
+            "This change log compares permitted official CVM offering and ESMA",
+            "prospectus evidence snapshots. A changed or missing record requires",
+            "review; it does not confirm listing, admission, withdrawal, trading",
+            "or an investment position.",
+        ]
+    else:
+        boundary_lines = [
+            "This change log compares normalized evidence snapshots. A record disappearing",
+            "from an upcoming or documentary feed is not automatically a withdrawal,",
+            "listing completion or investment signal; it requires source review. Demo",
+            "fixtures explicitly labelled synthetic are not public filing evidence.",
+        ]
     lines = [
         f"# {title}",
         "",
@@ -216,10 +230,7 @@ def render_alerts_report(
         f"- Changed records: `{counts['changed']}`",
         f"- Records no longer in current feed, requiring review: `{counts['removed_from_feed_review']}`",
         "",
-        "This change log compares normalized evidence snapshots. A record disappearing",
-        "from an upcoming or documentary feed is not automatically a withdrawal,",
-        "listing completion or investment signal; it requires source review. Demo",
-        "fixtures explicitly labelled synthetic are not public filing evidence.",
+        *boundary_lines,
         "",
         "## Current Coverage",
         "",
@@ -274,6 +285,32 @@ def render_alerts_html(
 ) -> str:
     counts = Counter(alert.change_type for alert in alerts)
     market_counts = Counter(signal.market for signal in current)
+    official_public_log = markets == PUBLIC_MONITOR_MARKETS
+    if official_public_log:
+        navigation = '<a href="/dashboard/listings-radar">Listings Radar</a> / Official Change Log'
+        lead = (
+            "Weekday differences in permitted official CVM offering and ESMA prospectus "
+            "evidence, preserved as an auditable review queue."
+        )
+        notice = (
+            "CVM offering and ESMA prospectus changes require review. They do not confirm "
+            "exchange listing, admission, withdrawal, trading or an investment position."
+        )
+    else:
+        navigation = (
+            '<a href="/dashboard/ipo">IPO Watch Center</a> / '
+            '<a href="/dashboard/global-listings">Global Listings Watch</a> / Alerts'
+        )
+        lead = (
+            "Daily differences across listing and regulatory-document evidence feeds, "
+            "preserved as an auditable research queue."
+        )
+        notice = (
+            "Disappearance from a feed does not prove withdrawal, admission or trading. "
+            "EDINET and OpenDART filings, CVM offerings and ESMA prospectuses open review; "
+            "only corresponding exchange evidence confirms listing milestones. Synthetic "
+            "demo evidence is not a public filing."
+        )
     cards = "".join(
         f'<article class="card"><p>{label}</p><strong>{counts[key]}</strong></article>'
         for label, key in (
@@ -310,11 +347,11 @@ nav,.meta{{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font
 .coverage{{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}}.market{{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 13px;color:var(--muted)}}.market strong{{color:var(--text);margin-right:7px}}
 .notice{{border-left:3px solid var(--gold);color:var(--muted);padding:15px 18px}}h2{{margin-top:42px}}.table-wrap{{overflow:hidden;margin-top:16px}}table{{width:100%;border-collapse:collapse}}th,td{{padding:15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}th{{text-transform:uppercase;font-size:12px;color:var(--muted);font-weight:500}}td small{{display:block;color:var(--muted)}}a{{color:var(--mint);text-decoration:none}}.badge{{border-radius:999px;padding:5px 9px;font-size:12px;white-space:nowrap}}.new{{color:var(--mint);background:rgba(86,218,172,.12)}}.changed{{color:var(--gold);background:rgba(240,188,98,.12)}}.removed_from_feed_review{{color:var(--rose);background:rgba(244,134,135,.12)}}
 @media(max-width:800px){{.cards{{display:block}}.card{{margin-bottom:12px}}.table-wrap{{overflow:visible;background:transparent;border:0}}table,tbody,tr,td{{display:block;width:100%}}thead{{display:none}}tr{{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:12px 0;padding:8px 14px}}td{{border:0;padding:7px 0;overflow-wrap:anywhere}}td::before{{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}}td:nth-child(1)::before{{content:"Market"}}td:nth-child(2)::before{{content:"Change"}}td:nth-child(3)::before{{content:"Issuer"}}td:nth-child(4)::before{{content:"Previous"}}td:nth-child(5)::before{{content:"Current"}}td:nth-child(6)::before{{content:"Next step"}}td:nth-child(7)::before{{content:"Evidence"}}.badge{{display:inline-block;white-space:normal}}}}
-</style></head><body><header><nav><a href="/dashboard/ipo">IPO Watch Center</a> / <a href="/dashboard/global-listings">Global Listings Watch</a> / Alerts</nav>
-<h1>What changed.<br>What needs review.</h1><p class="lead">Daily differences across listing and regulatory-document evidence feeds, preserved as an auditable research queue.</p>
+</style></head><body><header><nav>{navigation}</nav>
+<h1>What changed.<br>What needs review.</h1><p class="lead">{escape(lead)}</p>
 <p class="meta">Observed {escape(as_of.isoformat())} / baseline {escape(baseline_label)}</p><section class="cards">{cards}</section>
 <section class="coverage">{coverage}</section></header>
-<main><p class="notice">Disappearance from a feed does not prove withdrawal, admission or trading. EDINET and OpenDART filings, CVM offerings and ESMA prospectuses open review; only corresponding exchange evidence confirms listing milestones. Synthetic demo evidence is not a public filing.</p>
+<main><p class="notice">{escape(notice)}</p>
 <h2>Review queue</h2><div class="table-wrap"><table><thead><tr><th>Market</th><th>Change</th><th>Issuer</th><th>Previous</th><th>Current</th><th>Next step</th><th>Evidence</th></tr></thead><tbody>{rows}</tbody></table></div></main></body></html>"""
 
 

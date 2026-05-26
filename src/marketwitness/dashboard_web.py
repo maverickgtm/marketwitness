@@ -351,7 +351,7 @@ def report_center_html() -> str:
     <p class="lead">A reading room for the report pages included in the tested Open Edition bundle. It exposes approved dashboard routes, never arbitrary files from the generated-report directory.</p>
     <p class="meta">Open Edition bundle / Weekly GitHub Actions build / 30-day artifact retention</p>
     <section class="cards">
-      <article class="card"><p>Generated report routes</p><strong>27 allowlisted pages</strong></article>
+      <article class="card"><p>Generated report routes</p><strong>28 allowlisted pages</strong></article>
       <article class="card"><p>Bundle schedule</p><strong>Weekly + manual</strong></article>
       <article class="card"><p>Required paid data</p><strong>None</strong></article>
     </section>
@@ -375,6 +375,7 @@ def report_center_html() -> str:
       <article class="report"><span class="pill fixture">synthetic sandbox</span><h3>RWA Watch Sandbox</h3><p>Auditable tokenized-asset observation format using synthetic rows only.</p><small>No live xStocks, venue or issuer feed is collected.</small><a href="/dashboard/rwa-watch">Open report</a></article>
       <article class="report"><span class="pill regulatory">international coverage</span><h3>Global Listings Watch</h3><p>Official signal map and navigation for international listing and filing monitors.</p><small>Jurisdictions retain separate confirmation rules and blocked paths.</small><a href="/dashboard/global-listings">Open report</a></article>
       <article class="report"><span class="pill regulatory">global review queue</span><h3>Global Listings Alerts</h3><p>Differences across listing and regulatory-document monitors in ten international markets.</p><small>Filings open review; exchange evidence is required to confirm listing milestones.</small><a href="/dashboard/global-alerts">Open report</a></article>
+      <article class="report"><span class="pill regulatory">official weekday log</span><h3>Official Change Log</h3><p>Retained CVM and ESMA changes from the approved no-cost monitoring artifact.</p><small>Available when an official monitoring artifact is loaded into the runtime.</small><a href="/dashboard/official-change-log">Open workspace</a></article>
       <article class="report"><span class="pill regulatory">primary evidence</span><h3>Issuer Confirmations</h3><p>Official issuer-release milestones reviewed separately from listing-candidate feeds.</p><small>Verified events remain research evidence, not trading instructions.</small><a href="/dashboard/issuer-confirmations">Open report</a></article>
     </section>
     <h2>Financials Audit Evidence</h2>
@@ -572,6 +573,7 @@ def ipo_watch_center_html() -> str:
     <h2>Operational Workspace</h2>
     <section class="coverage">
       <article class="stage"><span class="pill verified">interactive radar</span><h3>Listings Radar</h3><p>Search U.S. IPO records and global evidence changes, filter dates and keep a browser watchlist.</p><a href="/dashboard/listings-radar">Open radar</a></article>
+      <article class="stage"><span class="pill verified">official monitor</span><h3>Official Change Log</h3><p>Inspect retained CVM and ESMA weekday changes when an official artifact is loaded.</p><a href="/dashboard/official-change-log">Open official log</a></article>
     </section>
     <h2>U.S. SEC Review Workflow</h2>
     <section class="workflow">
@@ -715,7 +717,7 @@ def listings_radar_html() -> str:
           <h2>My Watchlist</h2>
           <p class="empty">Mark records that deserve follow-up. This personal list never changes an evidence status.</p>
           <div id="saved"></div>
-          <div class="tools"><a href="/dashboard/global-alerts">Change report</a><a href="/dashboard/sec-alerts">SEC queue</a></div>
+          <div class="tools"><a href="/dashboard/official-change-log">Official log</a><a href="/dashboard/global-alerts">Demo change report</a><a href="/dashboard/sec-alerts">SEC queue</a></div>
         </aside>
       </div>
     </section>
@@ -781,6 +783,114 @@ def listings_radar_html() -> str:
     document.querySelectorAll("[data-quick]").forEach((button) => button.addEventListener("click", () => { document.querySelectorAll("[data-quick]").forEach((item) => item.classList.remove("active")); button.classList.add("active"); $("stream").value = button.dataset.quick; loadRadar(); }));
     $("reset").addEventListener("click", () => { ["query", "stream", "market", "status", "start", "end"].forEach((key) => { $(key).value = ""; }); document.querySelectorAll("[data-quick]").forEach((item) => item.classList.remove("active")); document.querySelector("[data-quick='']").classList.add("active"); loadRadar(); });
     loadRadar();
+  </script>
+</body>
+</html>"""
+
+
+def official_change_log_html() -> str:
+    return """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MarketWitness | Official Change Log</title>
+  <style>
+    :root { --bg:#060b13; --panel:#101a27; --panel2:#142131; --line:#223246;
+      --text:#f2f6f7; --muted:#96aab8; --mint:#38dfad; --gold:#f3bf66;
+      --blue:#62a6ff; --rose:#ff817a; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--text); font:15px/1.48 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(circle at 88% 0%,rgba(56,223,173,.12),transparent 30%),var(--bg); }
+    a { color:var(--mint); text-decoration:none; }
+    header,main { max-width:1260px; margin:auto; padding:24px 28px; }
+    nav,.eyebrow { color:var(--muted); text-transform:uppercase; letter-spacing:.11em; font-size:11px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom:32px; }
+    .back { color:var(--text); border:1px solid var(--line); padding:9px 14px; border-radius:10px; font-weight:600; }
+    h1 { font-size:clamp(40px,6vw,66px); line-height:1.02; letter-spacing:-.05em; margin:15px 0 12px; }
+    h1 span { color:var(--mint); }
+    .lead { color:var(--muted); font-size:18px; max-width:790px; }
+    .state,.boundary,.empty,.card,.queue { background:var(--panel); border:1px solid var(--line); border-radius:16px; }
+    .state { display:flex; justify-content:space-between; align-items:center; gap:18px; padding:17px 19px; margin:30px 0 16px; }
+    .state p { margin:0; color:var(--muted); } .state strong { display:block; color:var(--text); margin-bottom:4px; }
+    .pill { border-radius:999px; padding:6px 10px; text-transform:uppercase; letter-spacing:.08em; font-size:11px; color:var(--gold); background:rgba(243,191,102,.13); }
+    .pill.live { color:var(--mint); background:rgba(56,223,173,.13); }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:18px 0; }
+    .card { padding:16px 18px; } .card p { margin:0; color:var(--muted); font-size:12px; } .card strong { display:block; font-size:32px; margin-top:5px; color:var(--mint); }
+    .boundary { border-left:3px solid var(--gold); color:var(--muted); padding:14px 17px; margin:16px 0 22px; }
+    .toolbar { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; } .toolbar a { border:1px solid var(--line); border-radius:9px; padding:10px 13px; font-weight:600; }
+    .toolbar .primary { background:var(--mint); border-color:var(--mint); color:#071016; }
+    .queue { overflow:hidden; } .queue-head { padding:18px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; }
+    .queue-head h2 { margin:0; font-size:20px; } .queue-head span { color:var(--muted); }
+    .record { display:grid; grid-template-columns:125px minmax(190px,1fr) minmax(220px,1.25fr) 110px; gap:15px; padding:16px 18px; border-bottom:1px solid var(--line); }
+    .record:last-child { border-bottom:0; } .record h3 { margin:0 0 5px; font-size:16px; } .record p { margin:4px 0; color:var(--muted); font-size:13px; }
+    .market { color:var(--blue); } .change { display:inline-block; margin-top:8px; border-radius:999px; padding:4px 8px; font-size:11px; text-transform:uppercase; }
+    .new { color:var(--mint); background:rgba(56,223,173,.13); } .changed { color:var(--gold); background:rgba(243,191,102,.13); }
+    .removed_from_feed_review { color:var(--rose); background:rgba(255,129,122,.13); }
+    .empty { padding:28px; margin-top:18px; } .empty h2 { margin:0 0 7px; } .empty p { color:var(--muted); max-width:690px; }
+    #loaded,#unavailable { display:none; }
+    @media(max-width:830px) { header,main { padding:18px 14px; } .top,.state { display:block; } .back { display:inline-block; margin-top:14px; } .cards { grid-template-columns:1fr 1fr; } .record { display:block; } .record > * { margin-bottom:12px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top"><nav>MarketWitness / <a href="/dashboard/open">Open Edition</a> / <a href="/dashboard/listings-radar">Listings Radar</a> / Official Change Log</nav><a class="back" href="/dashboard/listings-radar">Back to radar</a></div>
+    <p class="eyebrow">Permitted official-source workflow</p>
+    <h1>What changed in<br><span>official evidence.</span></h1>
+    <p class="lead">A weekday evidence-review queue for Brazil CVM offerings and European ESMA prospectus records. It records changes that deserve investigation, not trading instructions.</p>
+    <section class="state">
+      <div><strong id="collection-scope">CVM and ESMA only</strong><p id="schedule">Loading schedule...</p></div>
+      <span class="pill" id="availability">Checking artifact</span>
+    </section>
+  </header>
+  <main>
+    <section id="unavailable" class="empty">
+      <h2>No official artifact loaded here yet</h2>
+      <p id="missing-message"></p>
+      <div class="toolbar"><a href="/dashboard/listings-radar">Return to Listings Radar</a></div>
+    </section>
+    <section id="loaded">
+      <section class="cards">
+        <article class="card"><p>Observation date</p><strong id="observed">-</strong></article>
+        <article class="card"><p>New evidence</p><strong id="new-count">-</strong></article>
+        <article class="card"><p>Changed</p><strong id="changed-count">-</strong></article>
+        <article class="card"><p>Removal reviews</p><strong id="removed-count">-</strong></article>
+      </section>
+      <p class="boundary" id="boundary"></p>
+      <div class="toolbar"><a class="primary" href="/api/v1/listings/public-change-log/export.csv" download>Export official CSV</a><a href="/dashboard/official-change-log/report">Open generated report</a><a href="/dashboard/listings-radar">Open Listings Radar</a></div>
+      <article class="queue">
+        <div class="queue-head"><h2>Official Review Queue</h2><span id="record-meta"></span></div>
+        <div id="records"></div>
+      </article>
+    </section>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    function text(value) { return String(value == null ? "" : value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;"); }
+    function href(value) { try { const url = new URL(String(value)); return url.protocol === "https:" ? text(value) : "#"; } catch (error) { return "#"; } }
+    async function loadChangeLog() {
+      const response = await fetch("/api/v1/listings/public-change-log");
+      const data = await response.json();
+      $("collection-scope").textContent = data.collection_scope;
+      $("schedule").textContent = data.schedule;
+      if (!data.available) {
+        $("unavailable").style.display = "block";
+        $("availability").textContent = "Artifact not loaded";
+        $("missing-message").textContent = data.message;
+        return;
+      }
+      $("loaded").style.display = "block";
+      $("availability").classList.add("live");
+      $("availability").textContent = "Official artifact available";
+      $("observed").textContent = data.observation_date || "-";
+      $("new-count").textContent = data.new_count;
+      $("changed-count").textContent = data.changed_count;
+      $("removed-count").textContent = data.review_removal_count;
+      $("boundary").textContent = data.publication_boundary;
+      $("record-meta").textContent = `${data.record_count} changes / ${data.markets.join(" + ")}`;
+      $("records").innerHTML = data.records.length ? data.records.map((item) => `<section class="record"><div><strong class="market">${text(item.market)}</strong><p>${text(item.observed_on)}</p><span class="change ${text(item.change_type)}">${text(item.change_type.replaceAll("_", " "))}</span></div><div><h3>${text(item.company_name)}</h3><p>Previous: ${text(item.previous_status || "-")}</p><p>Current: ${text(item.current_status || "-")}</p></div><div><p><strong>Evidence detail</strong></p><p>${text(item.current_detail || item.previous_detail)}</p><p>${text(item.review_action)}</p></div><div><a href="${href(item.source_url)}" target="_blank" rel="noopener">Source</a></div></section>`).join("") : `<section class="record"><p>No comparable changes were detected in this observation.</p></section>`;
+    }
+    loadChangeLog();
   </script>
 </body>
 </html>"""

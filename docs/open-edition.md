@@ -83,6 +83,11 @@ claim or a position recommendation. After the first observation, it also
 includes a `Public Listings Change Log` comparing the newest capture against
 the latest earlier retained CVM/ESMA snapshot.
 
+When that artifact is downloaded into `build/public-monitor/` or configured
+through `MARKETWITNESS_PUBLIC_MONITOR_REPORTS`, the local app exposes it at
+`/dashboard/official-change-log`. Without an artifact the page remains
+available but explicitly reports that no official run is loaded.
+
 ## Optional Extensions
 
 Commercial or user-licensed evidence is architecture-ready but is not required

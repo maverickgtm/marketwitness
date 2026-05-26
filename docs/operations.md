@@ -165,6 +165,16 @@ The workflow caches dated CVM/ESMA snapshots between successful runs and calls
 `new`, `changed` and `removed_from_feed_review` are research triage states;
 none confirms exchange listing, withdrawal or a trade.
 
+To inspect a downloaded artifact in the application, extract its contents to a
+local directory and start the API with:
+
+```bash
+export MARKETWITNESS_PUBLIC_MONITOR_REPORTS="build/public-monitor"
+```
+
+`/dashboard/official-change-log` and
+`/api/v1/listings/public-change-log` read only that optional official artifact.
+
 ## Operational Limits
 
 - Never commit API keys, provider downloads, personal request headers, or

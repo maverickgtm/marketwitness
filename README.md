@@ -94,6 +94,8 @@ export MARKETWITNESS_SOURCE_REGISTRY="data/samples/source_registry.csv"
 export MARKETWITNESS_PROVIDER_APPROVALS="data/samples/provider_approval_queue.csv"
 export MARKETWITNESS_GENERATED_REPORTS="build/demo"
 export MARKETWITNESS_LICENSED_EXTENSIONS="data/samples/licensed_extensions.csv"
+# Optional: directory extracted from the Public Listings Monitor artifact.
+export MARKETWITNESS_PUBLIC_MONITOR_REPORTS="build/public-monitor"
 python3 -m uvicorn marketwitness.api:app --host 127.0.0.1 --port 8000
 ```
 
@@ -104,6 +106,7 @@ Open <http://127.0.0.1:8000/>. High-signal views include:
 | `/dashboard/open` | Open Edition home |
 | `/dashboard/ipo` | IPO Watch Center |
 | `/dashboard/listings-radar` | Interactive U.S. IPO and global listing-evidence radar |
+| `/dashboard/official-change-log` | Loaded CVM/ESMA official weekday change-log artifact |
 | `/dashboard/global-listings` | Global Listings Watch |
 | `/dashboard/etf` | ETF Evidence Center |
 | `/dashboard/financials-evidence` | Analyst scorecard evidence gates |

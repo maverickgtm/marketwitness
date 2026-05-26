@@ -17,6 +17,7 @@ workspace or the report directory without relying on browser history.
 | `/dashboard/reports` | Fixed navigation for generated report pages | No arbitrary generated-file browsing |
 | `/dashboard/ipo` | IPO Watch Center | Discovery, review, and confirmation remain distinct |
 | `/dashboard/listings-radar` | Interactive IPO and global-change evidence queue | Watchlist is local research follow-up, never status confirmation |
+| `/dashboard/official-change-log` | Official CVM/ESMA weekday artifact viewer | Empty until an official monitor artifact is loaded; changes remain review evidence |
 | `/dashboard/global-listings` | International listing coverage and monitors | Each jurisdiction retains its confirmation rule |
 | `/dashboard/etf` | ETF Evidence Center | Synthetic change examples are separated from SEC periodic evidence |
 | `/dashboard/financials-evidence` | Financials evidence and release-gate sequence | Demo scorecard is not real analyst performance |
@@ -95,6 +96,12 @@ matrix separates the no-cost weekday CVM/ESMA artifact workflow from SEC
 operator configuration, rights reviews and restricted markets. The weekday
 artifact persists an earlier CVM/ESMA snapshot and reports new, changed or
 removed-from-feed evidence requiring review.
+
+The change log is available at `/dashboard/official-change-log` when the optional
+`MARKETWITNESS_PUBLIC_MONITOR_REPORTS` directory contains a downloaded
+monitoring artifact. Until then, the view explicitly reports that no official
+run is loaded. Its API surface at `/api/v1/listings/public-change-log` exposes
+counts and source-linked review rows without upgrading evidence to a listing.
 
 ### Global Listings Watch
 

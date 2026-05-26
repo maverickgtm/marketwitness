@@ -28,6 +28,7 @@ from .dashboard_web import (
     market_context_html,
     open_edition_html,
     operations_quality_html,
+    official_change_log_html,
     policy_signal_lab_html,
     provider_approvals_html,
     public_use_policy_html,
@@ -70,6 +71,7 @@ DEFAULT_DATABASE_PATH = "build/live/marketwitness.duckdb"
 DEFAULT_SOURCE_REGISTRY_PATH = "data/samples/source_registry.csv"
 DEFAULT_PROVIDER_APPROVALS_PATH = "data/samples/provider_approval_queue.csv"
 DEFAULT_GENERATED_REPORTS_PATH = "build/demo"
+DEFAULT_PUBLIC_MONITOR_REPORTS_PATH = "build/public-monitor"
 DEFAULT_LICENSED_EXTENSIONS_PATH = "data/samples/licensed_extensions.csv"
 GLOBAL_MONITOR_REPORTS = {
     "hkex": "hkex-monitor.html",
@@ -156,6 +158,7 @@ def create_app(
     provider_approvals_path: str | Path | None = None,
     generated_reports_path: str | Path | None = None,
     licensed_extensions_path: str | Path | None = None,
+    public_monitor_reports_path: str | Path | None = None,
 ) -> FastAPI:
     database = Path(
         database_path or os.environ.get("MARKETWITNESS_DATABASE", DEFAULT_DATABASE_PATH)
@@ -175,6 +178,12 @@ def create_app(
     licensed_extensions = Path(
         licensed_extensions_path
         or os.environ.get("MARKETWITNESS_LICENSED_EXTENSIONS", DEFAULT_LICENSED_EXTENSIONS_PATH)
+    )
+    public_monitor_reports = Path(
+        public_monitor_reports_path
+        or os.environ.get(
+            "MARKETWITNESS_PUBLIC_MONITOR_REPORTS", DEFAULT_PUBLIC_MONITOR_REPORTS_PATH
+        )
     )
     application = FastAPI(
         title="MarketWitness API",
@@ -215,6 +224,12 @@ def create_app(
     )
     def listings_radar_page() -> str:
         return _dashboard_html(listings_radar_html())
+
+    @application.get(
+        "/dashboard/official-change-log", response_class=HTMLResponse, include_in_schema=False
+    )
+    def official_change_log_page() -> str:
+        return _dashboard_html(official_change_log_html())
 
     @application.get(
         "/dashboard/ipo-watch", response_class=HTMLResponse, include_in_schema=False
@@ -429,6 +444,7 @@ def create_app(
             "provider_approvals_available": approval_queue.is_file(),
             "generated_reports_available": reports.is_dir(),
             "licensed_extensions_available": licensed_extensions.is_file(),
+            "public_monitor_reports_available": public_monitor_reports.is_dir(),
         }
 
     @application.get("/api/v1/governance/sources")
@@ -604,6 +620,68 @@ def create_app(
                 "Content-Disposition": 'attachment; filename="marketwitness-listings-radar.csv"'
             },
         )
+
+    @application.get("/api/v1/listings/public-change-log")
+    def public_listings_change_log() -> dict[str, object]:
+        csv_path = public_monitor_reports / "public-listings-alerts.csv"
+        if not csv_path.is_file():
+            return {
+                "available": False,
+                "data_mode": "Official weekday artifact",
+                "collection_scope": "CVM and ESMA only",
+                "schedule": "Weekdays at 11:23 UTC via GitHub Actions",
+                "message": (
+                    "No official monitoring artifact is loaded in this runtime. "
+                    "Download an artifact from GitHub Actions or run the permitted "
+                    "CVM/ESMA monitoring workflow locally."
+                ),
+                "records": [],
+            }
+        rows = _read_public_change_log_rows(csv_path)
+        observation_date = max(
+            (str(item["observed_on"]) for item in rows), default=None
+        )
+        counts = Counter(str(item["change_type"]) for item in rows)
+        return {
+            "available": True,
+            "data_mode": "Official weekday artifact",
+            "collection_scope": "CVM and ESMA only",
+            "schedule": "Weekdays at 11:23 UTC via GitHub Actions",
+            "observation_date": observation_date,
+            "record_count": len(rows),
+            "new_count": counts["new"],
+            "changed_count": counts["changed"],
+            "review_removal_count": counts["removed_from_feed_review"],
+            "markets": sorted({str(item["market"]) for item in rows}),
+            "publication_boundary": (
+                "Changes are review tasks from official offering or prospectus evidence; "
+                "they do not confirm listing, trading or an investment position."
+            ),
+            "records": rows,
+        }
+
+    @application.get("/api/v1/listings/public-change-log/export.csv")
+    def public_listings_change_log_export() -> Response:
+        path = public_monitor_reports / "public-listings-alerts.csv"
+        if not path.is_file():
+            raise HTTPException(status_code=404, detail="Official change log artifact is not loaded.")
+        return Response(
+            path.read_text(encoding="utf-8"),
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": (
+                    'attachment; filename="marketwitness-public-listings-alerts.csv"'
+                )
+            },
+        )
+
+    @application.get(
+        "/dashboard/official-change-log/report",
+        response_class=HTMLResponse,
+        include_in_schema=False,
+    )
+    def public_listings_change_log_report() -> str:
+        return _generated_html(public_monitor_reports, "public-listings-alerts.html")
 
     @application.get("/api/v1/intelligence/modules")
     def market_intelligence_snapshot() -> dict[str, object]:
@@ -1034,6 +1112,48 @@ def _listing_automation_controls(providers: list[SourceProvider]) -> list[dict[s
         }
     )
     return controls
+
+
+def _read_public_change_log_rows(path: Path) -> list[dict[str, str]]:
+    try:
+        required = {
+            "observed_on",
+            "market",
+            "change_type",
+            "company_name",
+            "previous_status",
+            "current_status",
+            "previous_detail",
+            "current_detail",
+            "review_action",
+            "source_url",
+        }
+        with path.open(newline="", encoding="utf-8") as source:
+            reader = csv.DictReader(source)
+            missing = required - set(reader.fieldnames or [])
+            if missing:
+                raise ValueError(f"missing columns: {', '.join(sorted(missing))}")
+            rows = list(reader)
+        for row in rows:
+            date.fromisoformat(row["observed_on"].strip())
+            if row["market"].strip() not in {"CVM", "ESMA"}:
+                raise ValueError("official public change log contains an unapproved market")
+            if row["change_type"].strip() not in {
+                "new",
+                "changed",
+                "removed_from_feed_review",
+            }:
+                raise ValueError("official public change log contains an unknown change type")
+            if not row["source_url"].strip().startswith("https://"):
+                raise ValueError("official public change log source URLs must use HTTPS")
+        return [
+            {key: value.strip() for key, value in row.items()}
+            for row in rows
+        ]
+    except (OSError, ValueError) as exc:
+        raise HTTPException(
+            status_code=503, detail=f"Official change log data is invalid: {exc}"
+        ) from exc
 
 
 def _generated_html(directory: Path, filename: str) -> str:

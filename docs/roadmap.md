@@ -49,6 +49,8 @@ targets and an independent `IPO Watch` for verifiable listing milestones.
   per-market automation controls in Listings Radar.
 - [x] Retained CVM/ESMA observation history and automatic public listing change
   log across weekday monitoring runs.
+- [x] Optional Official Change Log dashboard and API for a loaded CVM/ESMA
+  monitoring artifact, with explicit unavailable state when none is present.
 
 ## Pending Product Expansion
 

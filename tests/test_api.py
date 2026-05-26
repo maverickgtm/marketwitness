@@ -105,6 +105,18 @@ class ApiTests(unittest.TestCase):
         alternate_asset.write_text("alternate auditable input\n", encoding="utf-8")
         self.reports = root / "reports"
         self.reports.mkdir()
+        self.public_monitor_reports = root / "public-monitor"
+        self.public_monitor_reports.mkdir()
+        (self.public_monitor_reports / "public-listings-alerts.csv").write_text(
+            "observed_on,market,change_type,company_name,previous_status,current_status,previous_detail,current_detail,review_action,source_url\n"
+            "2026-05-26,CVM,new,Brasil Systems S.A.,,offering_recorded,,2026-05-25 / Acoes / Primaria,Review new evidence,https://example.invalid/cvm\n"
+            "2026-05-26,ESMA,changed,Europe Systems SE,equity_prospectus_review,secondary_issuance_review,Initial offer,Secondary issue,Review changed evidence,https://example.invalid/esma\n",
+            encoding="utf-8",
+        )
+        (self.public_monitor_reports / "public-listings-alerts.html").write_text(
+            "<html><h1>Public Listings Change Log generated page</h1></html>",
+            encoding="utf-8",
+        )
         (self.reports / "ipo-watch.html").write_text(
             "<html><h1>IPO Watch generated page</h1></html>", encoding="utf-8"
         )
@@ -218,6 +230,7 @@ class ApiTests(unittest.TestCase):
                 Path("data/samples/source_registry.csv"),
                 Path("data/samples/provider_approval_queue.csv"),
                 self.reports,
+                public_monitor_reports_path=self.public_monitor_reports,
             )
         )
 
@@ -234,6 +247,7 @@ class ApiTests(unittest.TestCase):
         self.assertTrue(health.json()["provider_approvals_available"])
         self.assertTrue(health.json()["generated_reports_available"])
         self.assertTrue(health.json()["licensed_extensions_available"])
+        self.assertTrue(health.json()["public_monitor_reports_available"])
         self.assertEqual(run.status_code, 200)
         self.assertEqual(run.json()["evaluated_count"], 2)
         self.assertEqual(run.json()["methodology_version"], "0.3.3")
@@ -322,6 +336,7 @@ class ApiTests(unittest.TestCase):
             "/dashboard/extensions",
             "/dashboard/ipo",
             "/dashboard/listings-radar",
+            "/dashboard/official-change-log",
             "/dashboard/ipo-watch",
             "/dashboard/sec-discovery",
             "/dashboard/sec-alerts",
@@ -495,7 +510,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertIn("Reproducible reports.", page.text)
         self.assertIn("Known routes only.", page.text)
-        self.assertIn("27 allowlisted pages", page.text)
+        self.assertIn("28 allowlisted pages", page.text)
         self.assertIn("/dashboard/ipo-watch", page.text)
         self.assertIn("/dashboard/sec-discovery", page.text)
         self.assertIn("/dashboard/sec-alerts", page.text)
@@ -515,6 +530,7 @@ class ApiTests(unittest.TestCase):
         self.assertIn("/dashboard/rwa-watch", page.text)
         self.assertIn("/dashboard/global-listings", page.text)
         self.assertIn("/dashboard/global-alerts", page.text)
+        self.assertIn("/dashboard/official-change-log", page.text)
         self.assertIn("/dashboard/issuer-confirmations", page.text)
         self.assertIn("/dashboard/contribute?lang=en", page.text)
         self.assertIn("Global Contributors", page.text)
@@ -596,6 +612,8 @@ class ApiTests(unittest.TestCase):
         self.assertIn("Verification Ladder", page.text)
         self.assertIn("Open Listings Radar", page.text)
         self.assertIn("/dashboard/listings-radar", page.text)
+        self.assertIn("Official Change Log", page.text)
+        self.assertIn("/dashboard/official-change-log", page.text)
 
     def test_serves_filterable_listings_radar_with_evidence_queue(self) -> None:
         page = self.client.get("/dashboard/listings-radar")
@@ -657,6 +675,51 @@ class ApiTests(unittest.TestCase):
         self.assertIn("marketwitness-listings-radar.csv", exported.headers["content-disposition"])
         self.assertIn("EnjoyGo Technology Limited", exported.text)
         self.assertNotIn("Boresight Ltd", exported.text)
+
+    def test_serves_official_public_change_log_artifact_without_trade_claims(self) -> None:
+        page = self.client.get("/dashboard/official-change-log")
+        snapshot = self.client.get("/api/v1/listings/public-change-log")
+        exported = self.client.get("/api/v1/listings/public-change-log/export.csv")
+        report = self.client.get("/dashboard/official-change-log/report")
+
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Official Change Log", page.text)
+        self.assertIn("No official artifact loaded here yet", page.text)
+        self.assertIn("/api/v1/listings/public-change-log", page.text)
+        self.assertTrue(snapshot.json()["available"])
+        self.assertEqual(snapshot.json()["collection_scope"], "CVM and ESMA only")
+        self.assertEqual(snapshot.json()["observation_date"], "2026-05-26")
+        self.assertEqual(snapshot.json()["new_count"], 1)
+        self.assertEqual(snapshot.json()["changed_count"], 1)
+        self.assertIn("do not confirm listing", snapshot.json()["publication_boundary"])
+        self.assertEqual(exported.status_code, 200)
+        self.assertIn("Brasil Systems S.A.", exported.text)
+        self.assertEqual(report.status_code, 200)
+        self.assertIn("Public Listings Change Log generated page", report.text)
+
+    def test_reports_when_no_official_public_change_log_artifact_is_loaded(self) -> None:
+        from fastapi.testclient import TestClient
+
+        from marketwitness.api import create_app
+
+        missing_public_monitor_reports = Path(self.directory.name) / "missing-public-monitor"
+        client = TestClient(
+            create_app(
+                self.database,
+                Path("data/samples/source_registry.csv"),
+                Path("data/samples/provider_approval_queue.csv"),
+                self.reports,
+                public_monitor_reports_path=missing_public_monitor_reports,
+            )
+        )
+
+        snapshot = client.get("/api/v1/listings/public-change-log")
+        exported = client.get("/api/v1/listings/public-change-log/export.csv")
+
+        self.assertEqual(snapshot.status_code, 200)
+        self.assertFalse(snapshot.json()["available"])
+        self.assertIn("No official monitoring artifact", snapshot.json()["message"])
+        self.assertEqual(exported.status_code, 404)
 
     def test_serves_etf_evidence_center_with_separated_frequency_layers(self) -> None:
         page = self.client.get("/dashboard/etf")
