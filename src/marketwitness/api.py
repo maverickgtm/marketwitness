@@ -434,6 +434,9 @@ def create_app(
     @application.get(
         "/dashboard/volatility", response_class=HTMLResponse, include_in_schema=False
     )
+    @application.get(
+        "/dashboard/vix-lab", response_class=HTMLResponse, include_in_schema=False
+    )
     def volatility_lab_page() -> str:
         return _dashboard_html(volatility_lab_html())
 
@@ -761,7 +764,8 @@ def create_app(
             as_of = max((item.reviewed_on for item in providers), default=date.today())
             return build_volatility_lab_snapshot(providers, as_of, period_start, period_end)
         except SourceRegistryDataError as exc:
-            raise HTTPException(status_code=503, detail=str(exc)) from exc
+            status_code = 422 if "period" in str(exc).lower() else 503
+            raise HTTPException(status_code=status_code, detail=str(exc)) from exc
 
     @application.get("/api/v1/intelligence/treasury-regimes")
     def treasury_regime_snapshot(sessions: int = Query(default=1)) -> dict[str, object]:

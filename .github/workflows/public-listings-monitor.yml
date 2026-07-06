@@ -35,12 +35,21 @@ jobs:
             public-listings-history-${{ github.ref_name }}-
       - name: Collect Brazil CVM offering evidence
         run: |
-          python -m marketwitness cvm-monitor \
-            --since "$SINCE" \
-            --as-of "$AS_OF" \
-            --output build/public-monitor/cvm-monitor.csv \
-            --report build/public-monitor/cvm-monitor.md \
-            --html build/public-monitor/cvm-monitor.html
+          for attempt in 1 2 3; do
+            if python -m marketwitness cvm-monitor \
+              --since "$SINCE" \
+              --as-of "$AS_OF" \
+              --output build/public-monitor/cvm-monitor.csv \
+              --report build/public-monitor/cvm-monitor.md \
+              --html build/public-monitor/cvm-monitor.html; then
+              break
+            fi
+            if [ "$attempt" = "3" ]; then
+              exit 1
+            fi
+            echo "CVM monitor attempt ${attempt} failed; retrying after a short pause."
+            sleep 20
+          done
       - name: Collect European ESMA prospectus evidence
         run: |
           python -m marketwitness esma-monitor \

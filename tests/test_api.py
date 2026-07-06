@@ -581,10 +581,13 @@ class ApiTests(unittest.TestCase):
 
     def test_serves_volatility_research_lab_without_implying_a_trading_signal(self) -> None:
         page = self.client.get("/dashboard/volatility")
+        alias_page = self.client.get("/dashboard/vix-lab")
         snapshot = self.client.get("/api/v1/intelligence/volatility")
 
         self.assertEqual(page.status_code, 200)
+        self.assertEqual(alias_page.status_code, 200)
         self.assertIn("When VIX moves", page.text)
+        self.assertIn("When VIX moves", alias_page.text)
         self.assertIn("what reacts?", page.text)
         self.assertIn("VIX Reaction Explorer", page.text)
         self.assertIn("Real results gated / validation live", page.text)
@@ -624,6 +627,10 @@ class ApiTests(unittest.TestCase):
             filtered.json()["reaction_explorer"]["validation_sample"]["period"]["episode_dates"],
             ["2026-02-02", "2026-04-06"],
         )
+        out_of_range = self.client.get(
+            "/api/v1/intelligence/volatility?start=2026-01-01&end=2026-07-06"
+        )
+        self.assertEqual(out_of_range.status_code, 422)
 
     def test_serves_policy_signal_lab_with_truth_social_collection_disabled(self) -> None:
         page = self.client.get("/dashboard/presidential-impact")
